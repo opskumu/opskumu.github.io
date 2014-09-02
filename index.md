@@ -19,18 +19,18 @@ echo "Where there's a shell, there is a way!"
     * Old Blogs - [github](http://kumu-linux.github.io/) and [CSDN](http://blog.csdn.net/kumu_Linux)
     * Wiki - [linuxwiki](http://linuxwiki.github.io/) [发起者和参与者，任重道远，努力完善中...]
 * 爱好：
-    * 阅读 - 装逼 √√√√
-    * 骑行 - no zuo no die √√√√
-    * 发呆 - 傻逼 √√√√
-    * 宅寂 - 屌丝 √√√√√
-    * --> 处女座 √√√√√
+    * 阅读 - 装逼
+    * 骑行 - no zuo no die
+    * 发呆 - 傻逼
+    * 宅寂 - 屌丝
+    * --> 处女座
 * 技能：
     * Now:
-        * Linux     √√√√
-        * Network   √√√
-        * Shell     √√√√
-        * Python    √√√
-        * MySQL     √√√
+        * Linux
+        * Network
+        * Shell
+        * Python
+        * MySQL
     * Future:
         * Go ?
         * JS ?
