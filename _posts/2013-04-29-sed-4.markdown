@@ -1,0 +1,110 @@
+---
+layout: post
+title: "1-4、Delete Lines[译]"
+date: 2013-04-29 23:29
+categories: "SED/AWK"
+keywords: Linux, sed 
+---
+
+使用sed `d`命令，你可以删除行。请注意被删除的行只是输出流。就像其它sed命令一样，`d`命令也不能修改原始文件的内容。
+
+
+默认如果你使用sed命令没有指定地址范围，它匹配所有的行。因此，接下来例子将不会打印任何输出，它匹配employee.txt文件中所有的行并且删除它们。
+``` bash
+sed 'd' employee.txt
+```
+
+指定删除的地址范围是非常有用的。接下来有很多类似的例子：
+
+__仅删除第二行:__
+``` bash
+$ sed '2 d' employee.txt
+101,John Doe,CEO
+103,Raj Reddy,Sysadmin
+... ...
+```
+
+__删除1到4行:__
+``` bash
+$ sed '1,4 d' employee.txt
+105,Jane Miller,Sales Manager
+```
+
+__删除行2到最后一行:__
+``` bash
+$ sed '2,$ d' employee.txt
+101,John Doe,CEO
+```
+
+__仅删除奇数行:__
+``` bash
+$ sed '1~2 d' employee.txt
+102,Jason Smith,IT Manager
+104,Anand Ram,Developer
+```
+
+__删除匹配词“Manager”的行：__
+``` bash
+$ sed '/Manager/ d' employee.txt
+101,John Doe,CEO
+103,Raj Reddy,Sysadmin
+104,Anand Ram,Developer
+```
+
+__删除匹配有”Jason”的行到第四行：__
+``` bash
+$ sed '/Jason/,4 d' employee.txt
+101,John Doe,CEO
+105,Jane Miller,Sales Manager
+```
+
+__注__：如果这儿没有匹配“Jason“的行在1到4行中，这条命令只删除第四行后匹配”Jason“的行
+
+__删除匹配“Raj“的行到最后一行:__
+``` bash
+$ sed '/Raj/,$ d' employee.txt
+101,John Doe,CEO
+102,Jason Smith,IT Manager
+```
+
+__删除匹配”Raj”的行到匹配“Jane“的行：__
+``` bash
+$ sed '/Raj/,/Jane/ d' employee.txt
+101,John Doe,CEO
+102,Jason Smith,IT Manager
+```
+
+__删除匹配”Jason”的行和其之后的两行：__
+``` bash
+$ sed '/Jason/,+2 d' employee.txt
+101,John Doe,CEO
+105,Jane Miller,Sales Manager
+```
+
+## 有用的删除实例
+
+下面的实例在日常操作中是非常有用的
+
+__删除所有的空行__
+``` bash
+sed '/^$/ d' employee.txt
+```
+
+grep实现过滤空行：
+``` bash
+grep -v '^$' employee.txt
+```
+
+__删除所有注释的行(假设注释行以#号开头)__
+``` bash
+sed '/^#/ d' employee.txt
+```
+
+grep实现过滤注释行：
+``` bash
+grep -v '^#' employee.txt
+```
+
+__注__：当你使用多个sed命令时，此时sed遇到'd'命令，整个匹配的匹配行将被删除，并且之后的命令对于删除的行将不会执行。
+
+--EOF--

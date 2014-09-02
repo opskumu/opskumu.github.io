@@ -1,0 +1,90 @@
+---
+layout: post
+title: "svn and git Server备忘"
+date: 2013-12-09 13:58
+comments: true
+categories: UNIX/Linux
+keywords: svn, ldap, git, apache
+---
+
+## <u>Git Server with ssh</u>
+
+
+* Server
+
+``` bash
+useradd -s /usr/bin/git-shell git   //创建git用户
+git init --bare /home/git/testrepo  //初始化名为testrepo，Server端操作
+mkdir /home/git/.ssh -p
+vim .ssh/authorized_keys            //加入客户端ssh公钥，设置ssh公钥认证
+chmod 700 /home/git/.ssh/
+chmod 400 /home/git/.ssh/authorized_keys
+chown git:git -R /home/git
+```
+
+注意：如果是root用户执行的命令，需要修改权限如下
+```
+chown -R git:git testrepo
+```
+
+* Client
+
+``` bash
+git clone git@sevrer_ip:/home/git/testrepo  //克隆repo
+```
+
+具体操作  
+``` bash
+cd testrepo                         //进入本地版本库
+echo "hello" >> test                //新建测试文件
+git add test                        //添加到git缓存
+git commit -m "first commit" test   //本地提交
+git push -u origin master           //提交给远程服务器
+git pull                            //客户端拉取数据
+```
+
+## <u>Svn Server with apache && ldap</u>
+
+``` bash
+yum install subversion mod_dav_svn -y
+```
+
+yum安装后会生成subversion.conf并添加相应模块配置
+``` bash
+# grep LoadModule /etc/httpd/conf.d/subversion.conf 
+LoadModule dav_svn_module     modules/mod_dav_svn.so
+LoadModule authz_svn_module   modules/mod_authz_svn.so
+```
+
+svn创建库  
+``` bash
+svnadmin create --fs-type fsfs /var/www/svn
+chown apache:apache -R /var/www/svn
+```
+
+设置ldap认证  
+``` bash
+# grep -vE '^$|^#' /etc/httpd/conf.d/subversion.conf 
+LoadModule dav_svn_module     modules/mod_dav_svn.so
+LoadModule authz_svn_module   modules/mod_authz_svn.so
+<Location /svn>
+    DAV svn 
+    SVNPath /var/www/svn
+    AuthBasicProvider ldap
+    AuthType Basic
+    AuthzLDAPAuthoritative off
+    AuthName "Please provide your windows login credentials to continue."
+    AuthLDAPURL "ldap://ldap_ip/ou=users,ou=test,dc=intranet,dc=test,dc=com?sAMAccountName" NONE
+    AuthLDAPBindDN "test@intranet.test.com"
+    AuthLDAPBindPassword password 
+    require valid-user
+</Location>
+```
+
+启动apache  
+```
+service httpd start
+```
+
+浏览器登陆  
+[http://svn_ip/svn](http://svn_ip/svn)

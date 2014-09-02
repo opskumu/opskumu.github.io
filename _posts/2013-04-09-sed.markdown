@@ -1,0 +1,40 @@
+---
+layout: post
+title: "sed远程替换的一个错误"
+date: 2013-04-09 15:17
+comments: true
+categories: "UNIX/Linux"
+---
+
+今天在工作中pssh远程批量执行sed替换文本时出现sed执行失败的问题 [ssh已做公钥验证，所以下例中无密码提示] ，如下:
+
+
+## 问题出现
+以下为本地执行sed替换，本地替换没有什么问题
+``` bash
+# grep 'OPTIONS=' ~/snmpd 
+OPTIONS="-LS0-6d -Lf /dev/null -p /var/run/snmpd.pid"
+# sed -i 's:OPTIONS="-LS0-6d -Lf /dev/null -p /var/run/snmpd.pid":OPTIONS="-Lf /dev/null -p /var/run/snmpd.pid":g' snmpd
+# grep 'OPTIONS=' ~/snmpd 
+OPTIONS="-Lf /dev/null -p /var/run/snmpd.pid"
+```
+
+尝试远程替换，发现ssh直接后接命令替换失败
+``` bash
+# grep 'OPTIONS=' ~/snmpd 
+OPTIONS="-LS0-6d -Lf /dev/null -p /var/run/snmpd.pid"
+# ssh root@localhost sed -i 's:OPTIONS="-LS0-6d -Lf /dev/null -p /var/run/snmpd.pid":OPTIONS="-Lf /dev/null/snmpd.pid":g' ~/snmpd 
+# grep 'OPTIONS=' ~/snmpd 
+OPTIONS="-LS0-6d -Lf /dev/null -p /var/run/snmpd.pid"
+```
+
+
+## 问题解决
+之后使用\转义命令中的"，再把远程命令加到""中,远程替换成功
+``` bash
+# ssh root@localhost "sed -i 's:OPTIONS=\"-LS0-6d -Lf /dev/null -p /var/run/snmpd.pid\":OPTIONS=\"-Lf /dev/null/snmpd.pid\":g' ~/snmpd"
+# grep "OPTIONS=" ~/snmpd
+OPTIONS="-Lf /dev/null/snmpd.pid"
+```
+
+--EOF--

@@ -1,0 +1,82 @@
+---
+layout: post
+title: "1-1、sed Command Syntax[译]"
+date: 2013-04-24 23:33
+comments: true
+keywords: sed,hacks,枯木
+categories: "SED/AWK"
+---
+
+本章节的目的是为了让你更熟悉sed语法和命令结构。这并不表示介绍单个的sed命令使用方法，后面的章节将会作详细的介绍。
+基本的语法：
+``` bash
+sed [options] {sed-commands} {input-file}
+```
+
+Sed在同一个时间点从输入处理文件{input-file}中读取一行内容并在特定的行上执行sed的命令选项。也就是说sed从输入处理文件中读取第一行并且在第一行执行sed命令选项。然后读取第二行并且在第二行执行sed命令选项。sed重复这个过程直到文件读取结束。
+
+对于sed，这里当然也有一些可选的命令行选项通过[options]表示。
+
+接下来的例子演示了sed的基本用法，这个简单的sed例子将打印/etc/passwd中所有的行。
+``` bash
+sed -n 'p' /etc/passwd
+```
+
+这里主要的一个点在{sed-commands}，它可以是一个单个的sed命令或者多个sed命令。你也可以结合多个sed-commands写入到一个文件当中，并让sed使用-f选项调用，如下所示：
+``` bash
+sed [options] -f {sed-commands-in-a-file} {input-file}
+```
+
+
+接下来的例子演示了基本的sed语法。这个例子从/etc/passwd文件中打印以root和nobody开头的行。
+``` bash
+# cat test-script.sed 
+/^root/ p
+/^nobody/ p
+# sed -n -f test-script.sed /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+nobody:x:99:99:Nobody:/:/sbin/nologin
+```
+
+当执行多个sed命令的时候，你也可以通过-e选项直接在命令行上使用它们。
+基本的sed -e用法: sed [options] -e {sed-command-1} -e {sed-command-2} {input-file}
+接下来的行就演示了-e的基本使用方法。它打印/etc/passwd文件中所有以root和nobody开头的行：
+``` bash
+# sed -n -e '/^root/p' -e '/^nobody/p' /etc/passwd 
+root:x:0:0:root:/root:/bin/bash
+nobody:x:99:99:Nobody:/:/sbin/nologin
+```
+
+如果你要在单个的命令行上通过-e选项执行多个命令，你可以使用\换行让命令分行显示，这样将会更利于阅读，如下:
+```
+# sed -n \
+> -e '/^root/ p' \
+> -e '/^nobody/ p' \
+> /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+nobody:x:99:99:Nobody:/:/sbin/nologin
+```
+
+当然你也可以使用{}选项实现如上相同的功能：
+``` bash
+sed [options] '{
+sed-command-1
+sed-command-2
+}' input-file
+```
+
+接下来的例子演示了{}的基本使用方法
+``` bash
+# sed -n '{
+> /^root/ p
+> /^nobody/ p
+> }' /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+nobody:x:99:99:Nobody:/:/sbin/nologin
+```
+
+__注__：Sed的以上选项都不会更改源文件，它打印输出到标准输出。如果你想保存文件，可以使用-i选项或者使用重定向输出，这个之后的章节将会介绍。
+
+--EOF--
+
+__扯一句__:本系列文章主要翻译自sed and awk 101 hacks一书，争取每日一篇，确保每两日一篇

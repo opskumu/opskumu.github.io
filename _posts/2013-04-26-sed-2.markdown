@@ -1,0 +1,24 @@
+---
+layout: post
+title: "1-2、Sed Scripting Flow[译]"
+date: 2013-04-26 16:28
+comments: true
+categories: "SED/AWK"
+keywords: sed,hacks,枯木
+---
+
+Sed脚本遵循易容易记住的顺序阅读、执行、输出、重复。可以使用`REPE`首字母缩写来记住sed的执行流程。
+
+
+我们来看这个序列的步骤。Sed将会：
+
+* __Read__ 读取一行到模式空间(一个内部sed的缓冲池，被用来存放从输入文件的读取行)
+* __Execute__ sed命令在sed的模式空间中执行。如果有一个以上的sed命令，无论通过sed脚本、-e选项或者是{}，它会在模式空间中按照行的顺序执行所有的命令
+* __Print__ 从模式空间中输出行。当输出该行以后，模式空间就会变成空的状态
+* __Repeat__ 一直重复直到到达输入文件的行尾结束
+
+下图为以上四步的一个示意图：
+
+<center><img src="/images/sed-2.png" alt="sed-flow" title="sed-flow" width="600" /></center>
+
+--EOF--

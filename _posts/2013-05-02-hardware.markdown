@@ -1,0 +1,33 @@
+---
+layout: post
+title: "通过sysfs获取dmi硬件信息"
+date: 2013-05-02 22:27
+comments: true
+categories: "UNIX/Linux"
+keywords: 枯木,linux,hardware
+---
+
+获取dmi系统硬件信息的方法有很多，之前笔者在[Dmidecode](http://kumu-linux.github.io//blog/2013/04/27/dmidecode/) 一文中介绍了命令dmidecode获取dmi硬件信息的方法。本文补充另外一种获取dmi硬件信息的方法，主要是通过查看sys文件系统的文件获取。关于sysfs的具体信息可以参考维基百科[sysfs](https://zh.wikipedia.org/wiki/Sysfs)
+
+
+``` bash
+# pwd
+/sys/class/dmi/id
+# ls 
+bios_date        board_name     chassis_asset_tag  chassis_version  product_serial   subsystem
+bios_vendor      board_serial   chassis_serial     modalias         product_uuid     sys_vendor
+bios_version     board_vendor   chassis_type       power            product_version  uevent
+board_asset_tag  board_version  chassis_vendor     product_name     smbios_version
+```
+
+`/sys/class/dmi/id`目录中存放了很多的硬件信息，包括产品信息、主板信息、Bios信息、底板信息等，我们可以直接`cat`所有获取信息的文件名即可，如下
+``` bash
+# cat product_serial #查看产品序列号，实验在Vmware下操作，因此显示是VMware类型
+VMware-56 4d 55 a2 5e ff cf 90-57 50 f8 4d 13 60 c4 16
+# cat product_name 
+VMware Virtual Platform
+```
+
+根据需要获取的硬件信息类别，查看相应的文件即可，这里不再一一说明，可以对照`dmidecode`学习。
+
+--EOF--
