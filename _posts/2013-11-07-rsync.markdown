@@ -1,0 +1,41 @@
+---
+layout: post
+title: "修改CentOS/RHEL rsync监听地址"
+date: 2013-11-07 10:35
+comments: true
+categories: UNIX/Linux
+keywords: rsync, listen
+---
+
+为了安全起见，服务器不对外提供的服务尽量不监听外网地址的，rsync也不例外。由于CentOS/RHEL中rpm安装的rsync为非独立进程，需要依赖xinetd进程。笔者一开始尝试修改rsync的配置文件`rsyncd.conf`中加入`address = 192.168.80.128`，重启xinetd服务，发现修改没有生效。
+
+
+``` bash
+...
+tcp        0      0 0.0.0.0:873                 0.0.0.0:*		...
+...
+```
+
+因为CentOS/RHEL是依赖xinetd的，所以我就想到了xinetd配置文件`/etc/xinetd.conf`，发现选项`# bind		= `，于是修改如下
+
+``` bash
+...
+	bind		= 192.168.80.128	# 此处ip填写主机本地ip即可
+...
+```
+
+修改完成保存，重启xinetd程序，修改生效
+
+``` bash
+...
+tcp        0      0 192.168.80.128:873               0.0.0.0:*                   LISTEN      25967/xinetd
+...
+```
+
+当然你也可以直接不依赖xinetd修改监听地址，直接使用命令启动rsync，如下
+
+``` bash
+rsync --address=192.168.80.128 --config=/etc/rsyncd.conf --daemon
+```
+
+--EOF--

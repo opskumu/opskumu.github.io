@@ -1,0 +1,87 @@
+---
+layout: post
+title: "sed -i修改链接文件注意问题"
+date: 2013-04-09 23:23
+comments: true
+categories: "UNIX/Linux"
+keywords: Linux,sed
+---
+
+## 问题重现
+因为sed -i /etc/sysconfig/selinux(selinux文件是/etc/selinux/config的软链接)配置文件重启SELINUX没有关闭，才发现原来sed -i是不能直接修改软链接文件的，如下我修改之后的后果：
+``` bash
+[root@node1 ~]# ll /etc/sysconfig/selinux   
+lrwxrwxrwx. 1 root root 19 2月  20 20:34 /etc/sysconfig/selinux -> /etc/selinux/config  
+[root@node1 ~]# sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/sysconfig/selinux  
+[root@node1 ~]# ll /etc/sysconfig/selinux   
+-rw-r--r-- 1 root root 457 2月  20 22:50 /etc/sysconfig/selinux  
+[root@node1 ~]#   
+```
+
+
+我们发现链接文件不再是链接文件了，后来查看sed man选项时发现如下选项说明
+
+* --follow-symlinks
+    * follow symlinks when processing in place; hard links will still be broken.
+
+* -i[SUFFIX], --in-place[=SUFFIX]
+    * edit  files  in  place (makes backup if extension supplied).  The default operation mode is to break symbolic and hard links.  This can be changed with --follow-symlinks and --copy.
+
+* -c, --copy
+    * use copy instead of rename when shuffling files in -i mode.  While this  will  avoid  breaking links  (symbolic  or hard), the resulting editing operation is not atomic.  This is rarely the desired mode;
+
+* --follow-symlinks is usually enough, and it is both faster and more secure.
+
+以上说明就不作过多解释了，说的很明显，看下面实例
+``` bash
+[root@node1 ~]# echo "test" >>test  
+[root@node1 ~]# ln -s ~/test ~/test_soft  
+[root@node1 ~]# ln ~/test ~/test_hard  
+[root@node1 ~]# ll -i test*  
+271653 -rw-r--r-- 2 root root  5 2月  20 23:04 test  
+271653 -rw-r--r-- 2 root root  5 2月  20 23:04 test_hard  
+271655 lrwxrwxrwx 1 root root 10 2月  20 23:04 test_soft -> /root/test  
+[root@node1 ~]# sed -i "s/test/hard/g" test_hard   
+[root@node1 ~]# sed -i "s/test/soft/g" test_soft   
+[root@node1 ~]# ll -i test*  
+271653 -rw-r--r-- 1 root root 5 2月  20 23:04 test  
+271656 -rw-r--r-- 1 root root 5 2月  20 23:05 test_hard  
+271657 -rw-r--r-- 1 root root 5 2月  20 23:06 test_soft  
+[root@node1 ~]#   
+```
+很明显如man中所说-i选项对软链接和硬链接都会使受到破坏,而-c选项则不会
+
+## 问题解决
+``` bash
+[root@node1 ~]# rm -rf test*
+[root@node1 ~]# echo "test" >>test
+[root@node1 ~]# ln -s ~/test ~/test_soft
+[root@node1 ~]# ln ~/test ~/test_hard
+[root@node1 ~]# ll -i test*
+271653 -rw-r--r-- 2 root root  5 2月  20 23:08 test
+271653 -rw-r--r-- 2 root root  5 2月  20 23:08 test_hard
+271655 lrwxrwxrwx 1 root root 10 2月  20 23:08 test_soft -> /root/test
+[root@node1 ~]# sed -i -c  "s/test/soft/g" test_soft 
+[root@node1 ~]# sed -i -c  "s/test/soft/g" test_hard 
+[root@node1 ~]# ll -i test*
+271653 -rw-r--r-- 2 root root  5 2月  20 23:11 test
+271653 -rw-r--r-- 2 root root  5 2月  20 23:11 test_hard
+271655 lrwxrwxrwx 1 root root 10 2月  20 23:08 test_soft -> /root/test
+```
+--follow-symlinks选项只对软链接有效，硬链接还是会被破坏，建议使用-c选项，这里就不举例了
+
+## 问题延伸
+后来发现在RHEL5上运行相同的操作居然没有出现类似的现象，运行结果如下：
+``` bash
+$ echo "test" >> test
+$ ln -s ~/test ~/test1
+$ ll ~/test1
+lrwxrwxrwx 1 sxkj sxkj 15 02-21 13:26 /home/sxkj/test1 -> /home/sxkj/test
+$ sed -i "s/test/test1/g" ~/test1
+$ ll ~/test1
+lrwxrwxrwx 1 sxkj sxkj 15 02-21 13:26 /home/sxkj/test1 -> /home/sxkj/test
+```
+
+经查是sed的版本不同造成的影响，RHEL5系列的还是使用老版本的sed，没有--follow-symlinks类似的选项，笔者之前实验的版本是RHEL6.3，所以出现之前的一系列问题了
+
+--EOF--

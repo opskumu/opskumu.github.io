@@ -1,0 +1,93 @@
+---
+layout: post
+title: "pssh使用方法"
+date: 2013-08-12 14:53
+comments: true
+categories: UNIX/Linux
+keywords: linux, pssh
+---
+
+pssh是一个python编写可以在多台服务器上执行命令的工具，同时支持拷贝文件，是同类工具中很出色的，类似pdsh [pdsh使用方法](http://kumu-linux.github.io/blog/2013/06/19/pdsh/) 。为方便操作，使用前请在各个服务器上配置好密钥认证访问。项目地址: [parallel-ssh](https://code.google.com/p/parallel-ssh/)
+
+<!--more -->
+
+### 安装
+
+``` bash
+wget http://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz
+tar zxvf pssh-2.3.1.tar.gz
+cd pssh-2.3.1/
+python setup.py install
+```
+
+### pssh相关参数
+
+* pssh在多个主机上并行地运行命令
+   * -h 执行命令的远程主机列表,文件内容格式[user@]host[:port]
+   		* 如 test@172.16.10.10:229
+   * -H 执行命令主机，主机格式 user@ip:port 
+   * -l 远程机器的用户名
+   * -p 一次最大允许多少连接
+   * -P 执行时输出执行信息
+   * -o 输出内容重定向到一个文件
+   * -e 执行错误重定向到一个文件
+   * -t 设置命令执行超时时间
+   * -A 提示输入密码并且把密码传递给ssh(如果私钥也有密码也用这个参数)
+   * -O 设置ssh一些选项
+   * -x 设置ssh额外的一些参数，可以多个，不同参数间空格分开
+   * -X 同-x,但是只能设置一个参数
+   * -i 显示标准输出和标准错误在每台host执行完毕后
+
+### 附加工具
+
+*	pscp 传输文件到多个hosts，类似scp
+	* pscp -h hosts.txt -l irb2 foo.txt /home/irb2/foo.txt
+*	pslurp 从多台远程机器拷贝文件到本地
+*	pnuke 并行在远程主机杀进程
+	* pnuke -h hosts.txt -l irb2 java
+*	prsync 使用rsync协议从本地计算机同步到远程主机
+	* prsync -r -h hosts.txt -l irb2 foo /home/irb2/foo
+
+### 示例
+``` bash
+kumu-opsdev ~ # cat host.txt 
+root@192.168.230.128
+wul@10.0.0.8
+```
+
+推荐使用`-i`选项输出信息而不是`-P`选项
+``` bash
+kumu-opsdev ~ # pssh -i -h host.txt 'date'
+[1] 16:32:38 [SUCCESS] root@192.168.230.128
+Mon Aug 12 16:32:38 CST 2013
+[2] 16:32:38 [SUCCESS] wul@10.0.0.8
+Mon Aug 12 16:32:38 CST 2013
+```
+
+`-x`选项
+```
+kumu-opsdev ~ # pssh -x '-t -t -o StrictHostKeyChecking=no' -i -h host.txt date
+[1] 17:20:01 [SUCCESS] root@192.168.230.128
+Mon Aug 12 17:20:01 CST 2013
+Stderr: Connection to 192.168.230.128 closed.
+[2] 17:20:01 [SUCCESS] wul@10.0.0.8
+Mon Aug 12 17:20:01 CST 2013
+Stderr: Connection to 10.0.0.8 closed.
+```
+
+`-H`选项
+```
+kumu-opsdev ~ # pssh -x '-t -t -o StrictHostKeyChecking=no' -i -H 192.168.230.128 -H wul@10.0.0.8 date
+[1] 17:22:58 [SUCCESS] 192.168.230.128
+Mon Aug 12 17:22:58 CST 2013
+Stderr: Connection to 192.168.230.128 closed.
+[2] 17:22:58 [SUCCESS] wul@10.0.0.8
+Mon Aug 12 17:22:58 CST 2013
+Stderr: Connection to 10.0.0.8 closed.
+```
+
+### 参考文档
+* [pssh](http://linux.die.net/man/1/pssh) 
+* [pssh-howto](http://www.theether.org/pssh/docs/0.2.3/pssh-HOWTO.html)
+
+--EOF--

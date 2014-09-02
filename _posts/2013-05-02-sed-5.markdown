@@ -1,0 +1,116 @@
+---
+layout: post
+title: "1-5. Write Pattern Space to File[译]"
+date: 2013-05-02 00:06
+comments: true
+categories: "SED/AWK"
+keywords: sed,枯木
+---
+
+使用sed `w`命令，你可以把当前模式空间内容写入到文件。默认的每一行sed标准流都会打印输出，因此如果你想输出文件但不想打印到屏幕，那么你还是需要使用-n选项。
+
+
+接下来的是一些例子。
+
+__把employee.txt文件内容写入到output.txt（并且打印到屏幕）:__
+``` bash
+$ sed 'w output.txt' employee.txt
+101,John Doe,CEO
+102,Jason Smith,IT Manager
+… …
+$ cat output.txt
+101,John Doe,CEO
+102,Jason Smith,IT Manager
+… …	
+```
+
+__把employee.txt文件内容写入到output.txt，但是不打印到屏幕：__
+``` bash
+$ sed -n 'w output.txt' employee.txt
+$ cat output.txt
+101,John Doe,CEO
+102,Jason Smith,IT Manager
+… …
+```
+
+__只写入第二行:__
+``` bash
+$ sed -n '2 w output.txt' employee.txt
+$ cat output.txt
+102,Jason Smith,IT Manager
+```
+
+__写入1到4行:__
+``` bash
+$ sed -n '1,4 w output.txt' employee.txt
+$ cat output.txt
+101,John Doe,CEO 
+102,Jason Smith,IT Manager
+… …
+```
+
+__写入第二行到最后一行：__
+``` bash
+$ sed -n '2,$ w output.txt' employee.txt
+$ cat output.txt
+102,Jason Smith,IT Manager
+103,Raj Reddy,Sysadmin
+… …
+```
+
+__只写入奇数行：__
+``` bash
+$ sed -n '1~2 w output.txt' employee.txt
+$ cat output.txt
+101,John Doe,CEO
+103,Raj Reddy,Sysadmin
+105,Jane Miller,Sales Manager
+```
+
+__写入匹配词”Jane”的行：__
+``` bash
+$ sed -n '/Jane/ w output.txt' employee.txt
+$ cat output.txt
+105,Jane Miller,Sales Manager
+```
+
+__从第一行开始写入匹配”Jason”的行到第四行：__
+``` bash
+$ sed -n '/Jason/,4 w output.txt' employee.txt
+$ cat output.txt
+102,Jason Smith,IT Manager
+103,Raj Reddy,Sysadmin
+104,Anand Ram,Developer
+```
+__注__：如果1到4行没有匹配到”Jason”，这条命令只写入第四行后匹配”Jason”的行
+
+__写入行从第一行开始匹配”Raj”的行到结束行：__
+``` bash
+$ sed -n '/Raj/,$ w output.txt' employee.txt
+$ cat output.txt
+103,Raj Reddy,Sysadmin
+104,Anand Ram,Developer
+105,Jane Miller,Sales Manager
+```
+
+__写入匹配”Raj”行开始直到匹配到“Jane”行：__
+``` bash
+$ sed -n '/Raj/,/Jane/ w output.txt' employee.txt
+$ cat output.txt
+103,Raj Reddy,Sysadmin
+104,Anand Ram,Developer
+105,Jane Miller,Sales Manager
+```
+
+__写入匹配“Jason”的行和其之后的2行：__
+``` bash
+$ sed -n '/Jason/,+2 w output.txt' employee.txt
+$ cat output.txt
+102,Jason Smith,IT Manager
+103,Raj Reddy,Sysadmin
+104,Anand Ram,Developer
+```
+
+__注__：你可能不经常使用w命令，大多数人使用UNIX输出重定向，来保存sed输出到一个文件，如: sed ‘p’ exployee.txt > output.txt
+
+--EOF--

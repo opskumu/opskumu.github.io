@@ -1,0 +1,50 @@
+---
+layout: post
+title: "2-1、Sed Substitute Command[译]"
+date: 2013-05-04 23:29
+comments: true
+categories: "SED/AWK" 
+keywords: 枯木,sed,linux
+---
+## Sed 替换命令语法
+
+Sed替换命令语法如下：
+``` bash
+sed '[address-range|pattern-range] s/originalstring/
+replacement-string/[substitute-flags]' inputfile
+```
+
+
+在上面的sed语法中:
+
+* 地址范围或者模式范围是可选的，如果你没有指定任何一个，那么sed会在所有的行中执行替换命令
+* `s`--告诉sed执行替换命令 
+* 原始字符串--这个字符串将会在输入文件中被搜索。原始字符串也可以是一个正则表达式
+* 替换字符串--Sed将会通过这个字符串替换原始字符串
+
+__注__:记住源文件不改变;替换是在模式空间的buffer中完成并且打印输出。
+
+## 以下是几个简单的sed替代的例子
+
+__更换所有出现的Director:__
+``` bash
+$ sed 's/Manager/Director/' employee.txt
+101,John Doe,CEO
+102,Jason Smith,IT Director
+103,Raj Reddy,Sysadmin
+104,Anand Ram,Developer
+105,Jane Miller,Sales Director
+```
+
+__只替换行中含有关键词'Sales'行中的Manager为Director:__
+``` bash
+$ sed '/Sales/s/Manager/Director/' employee.txt
+101,John Doe,CEO
+102,Jason Smith,IT Manager
+103,Raj Reddy,Sysadmin
+104,Anand Ram,Developer
+105,Jane Miller,Sales Director
+```
+__注__:使用地址范围造成只替换了一个，而之前例子显示是替换两个
+
+--EOF--
