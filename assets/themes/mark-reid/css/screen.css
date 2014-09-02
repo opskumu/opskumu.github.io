@@ -21,8 +21,8 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,p,blockquote,th,t
 /* @end */
 
 body {
-	font-family: Palatino, georgia, "times new roman", serif;
 	background-color: whitesmoke;
+	font-family: Palatino, georgia, "times new roman", serif;
 	background-position: center -18em;
 	background-repeat: repeat-x; 
 }
@@ -31,7 +31,7 @@ body {
 img { -ms-interpolation-mode:bicubic; }
 
 /* IE6 ignores this and uses default size of 16pt */
-html>body { font-size:16px; }
+html>body { font-size:14px; }
 p { margin: 0 0 1.5em 0; text-align: justify; }
 
 a { text-decoration: none; color: #339; }
@@ -45,10 +45,31 @@ h1,h2,h3,h4 {
 	font-size:1.5em; 
 	font-weight: normal; 
 	clear: left; 	
-	font-family: 'lucida grande', sans-serif; 
 }
-h1 { margin-bottom: 1em; }
+h1 { 
+	margin:1.0em 0 1.0em 0;
+	font-weight:bold;
+}
+
+.emphnext {
+    font-weight: normal;
+}
+
 h2 {
+	font-size: 1.5em;
+	line-height: 1.5em;
+	margin:1.0em 0 1.0em 0;
+	font-weight:bold;
+}
+
+h3 {
+	font-size: 100%;
+	line-height: 1.5em;
+	margin:1.5em 0 1.5em 0;
+	font-weight:bold;
+}
+
+h4 {
 	font-size: 100%;
 	line-height: 1.5em;
 	margin:1.5em 0 1.5em 0;
@@ -65,7 +86,7 @@ hr {
 sup { line-height: 1ex; }
 
 #site {
-	max-width: 46em;
+	max-width: 780px;
 	margin: 1.5em auto 3em auto;
 	line-height:1.5em;
 }
@@ -73,15 +94,8 @@ sup { line-height: 1ex; }
 #page, #disqus_thread {
 	background: white;
 /*	background-image: url(grid.png); */
-	padding: 3em 3em 1.5em 3em;
-	border: 1px solid #ccc;
-}
-
-/* More experimental CSS3 features */
-#page, #disqus_thread {
-	box-shadow: 2px 2px 8px #aaa;
-	-webkit-box-shadow: 2px 2px 8px #aaa;
-	-moz-box-shadow: 2px 2px 8px #aaa;	
+	padding: 1.0em 2em 1.5em 2em;
+    border: 1px solid #ddd;
 }
 
 #disqus_thread { padding-top: 0; }
@@ -96,20 +110,6 @@ sup { line-height: 1ex; }
 }
 */
 
-/* @group FancyFirst */
-.emphnext + p:first-letter, p.emphfirst:first-letter {
-	font-size: 48px;
-	padding: 0 0.15em 0 0;
-	margin:  0.05em 0 -0.15em 0;
-	line-height: 1em;
-	float: left;
-}
-
-.emphnext + p:first-line, p.emphfirst:first-line {
-	font-variant: small-caps;
-	font-size: larger;
-}
-/* @end */
 
 .right { float: right; clear: left; }
 .left { float: left; clear: right; }
@@ -126,11 +126,10 @@ sup { line-height: 1ex; }
 	line-height: 1.714em;
 }
 blockquote {
-	padding: 0 2.8em;
-	margin: 1.714em 0;
-	color: #444;
-	font-size: 0.875em;
-	line-height: 1.714em;
+	padding: 0 18px;
+	color: #777;
+    border-left: 4px solid #34495E;
+    font-size: 95%;
 }
 
 .note {
@@ -162,8 +161,8 @@ caption {
 
 /* @group Lists */
 ul {
-	margin-top: 1.5em;
-	margin-bottom: 1.5em;
+	margin-top: 5px;
+	margin-bottom: 5px;
 	line-height: 1.5em;
 	padding-left: 1.5em;
 }
@@ -204,7 +203,7 @@ ul.compact li a {
 	font-variant: small-caps;
 	line-height: 1em;
 	margin-top: .5em;
-	margin-bottom: 0;
+	margin-bottom: 0.5em;
 }
 #header h1 {
 	font-family: Palatino, georgia, "times new roman", serif;
@@ -338,27 +337,19 @@ p.excerpt { margin: 0; }
 
 /* @group Code */
 pre {
-	margin: 1em 0 1.5em 0;
+	margin: 1em 0 1em 0;
 	font-size: 0.75em; /* Hack to make code look same size as body font */  
 	line-height: 1.5em;	
 	color: #111;
 	background: #fffff0;
-	border: 1px solid #ddc;
-	padding: 0.5em 1em;
+	padding: 1em 1em;
 	overflow: hidden;
-
-	/* Experimental CSS3 stuff */
-	box-shadow: 1px 1px 6px #ccc;
-	-webkit-box-shadow: 1px 1px 6px #ccc;
-	-moz-box-shadow: 1px 1px 6px #ccc;
-}
-pre:hover {
-	border-right: none;
-	overflow: visible;
 }
 code {
 	font-size: 1em;
+    font-family: consolas;
 	background-color: #f7f7ff;
+    padding: 2px;
 	line-height: 1.4em;
 }
 pre > code {
@@ -465,7 +456,7 @@ p.delicious-extended:before { content: ' — '; }
 #footer a {
 	font-variant: small-caps;
 	font-style: normal;
-	color: #77d;
+	color: #777;
 	text-decoration: none;
 }
 #footer .copyright {

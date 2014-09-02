@@ -5,9 +5,11 @@ tagline: Supporting tagline
 ---
 {% include JB/setup %}
 
-Where there's a shell, there is a way.
+``` bash
+echo "Where there's a shell, there is a way!"
+```
 
-# About Me
+## Me
 
 * 昵称：枯木, kumu
 * 社交：
@@ -34,7 +36,7 @@ Where there's a shell, there is a way.
         * JS ?
         * Manage ?
 
-# About Experience
+## Experience
 
 * 工作:
     * 2013/08/19~：[上海江游](http://www.123u.com/) - Linux SA

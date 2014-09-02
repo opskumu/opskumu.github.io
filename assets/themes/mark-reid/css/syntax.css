@@ -18,7 +18,7 @@
 /* github style pygments theme for jekyll */
 /* from https://github.com/aahan/pygments-github-style */
 
-.highlight pre, pre, .highlight .hll { background-color: #f8f8f8; border: 1px solid #ccc; padding: 6px 10px; border-radius: 3px; }
+.highlight pre, pre, .highlight .hll {  padding: 6px 10px; }
 .highlight  { background: #ffffff; }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
 .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */

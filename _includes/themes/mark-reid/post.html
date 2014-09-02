@@ -8,11 +8,12 @@
 
   {{ content }}
 
-  <address class="signature">
+<!--  <address class="signature">
     <a class="author" href="{{ HOME_PATH }}">{{ site.author.name }}</a> 
     <span class="date">{{ page.date | date_to_long_string }}</span>
     <span class="location">{{ page.location }}</span>
   </address>
+  -->
   
   <div class="prev-next">
   {% if page.next %}
@@ -25,4 +26,3 @@
   
 </div><!-- End Page -->
 
-{% include JB/comments %}
