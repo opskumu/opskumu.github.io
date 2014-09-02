@@ -32,9 +32,9 @@ echo "Where there's a shell, there is a way!"
         * Python
         * MySQL
     * Future:
-        * Go ?
-        * JS ?
-        * Manage ?
+        * Go
+        * JS
+        * Manage
 
 ## Experience
 
