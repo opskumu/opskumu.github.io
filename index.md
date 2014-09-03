@@ -11,29 +11,30 @@ echo "Where there's a shell, there is a way!"
 
 ## Me
 
-* 昵称：枯木, kumu
+* 昵称：枯木 | kumu
 * 社交：
-    * Weibo - [枯木-Linux](http://weibo.com/whynoyes)
-    * Mail - opskumu@gmail.com
-    * Github - [kumu-Linux](https://github.com/kumu-linux)
-    * Old Blogs - [github](http://kumu-linux.github.io/) and [CSDN](http://blog.csdn.net/kumu_Linux)
-    * Wiki - [linuxwiki](http://linuxwiki.github.io/) [发起者和参与者，任重道远，努力完善中...]
+    * `Weibo` -- [枯木-Linux](http://weibo.com/whynoyes)
+    * `Email` -- opskumu@gmail.com
+    * `Github` -- [kumu-Linux](https://github.com/kumu-linux)
+    * `Old Blogs` -- [github](http://kumu-linux.github.io/) and [CSDN](http://blog.csdn.net/kumu_Linux)
+    * `Tech Wiki` -- [linuxwiki](http://linuxwiki.github.io/) [发起者和参与者，任重道远，努力完善中......]
 * 爱好：
-    * 阅读 - 装逼
-    * 骑行 - no zuo no die
-    * 发呆 - 傻逼
-    * 宅寂 - 屌丝
-    * --> 处女座
+    * `阅读` -- 装逼
+    * `骑行` -- no zuo no die
+    * `发呆` -- 傻逼
+    * `宅寂` -- 屌丝
+    * `根源` -- 处女座
 * 技能：
-    * Now:
+    * `Now`:
         * Linux
-        * Network
         * Shell
         * Python
         * MySQL
-    * Future:
-        * Go
-        * JS
+        * Network
+        * Virtualization
+    * `Future`:
+        * Golang
+        * Javascript
         * Manage
 
 ## Experience
