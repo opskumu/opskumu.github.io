@@ -10,7 +10,7 @@ description: "季|年计划"
 ## 书单, 2014.09.01~2014.12.30
 
 * Tech:
-    * [《程序员修炼之道](http://book.douban.com/subject/5387402/)
+    * [《程序员修炼之道》](http://book.douban.com/subject/5387402/)
         * 思想上改造自我
     * [《Go 语言程序设计》](http://book.douban.com/subject/24869910/)
         * 能写点东西，看得懂docker代码
@@ -22,6 +22,8 @@ description: "季|年计划"
     * [《影响力》](http://book.douban.com/subject/1005576/)
     * [《暗时间》](http://book.douban.com/subject/6709809/)
     * [《动物庄园》](http://book.douban.com/subject/3808982/)
+
+__要求__: 读书笔记
 
 ## Linuxwiki, 2014.09.01~2014.11.30
 
