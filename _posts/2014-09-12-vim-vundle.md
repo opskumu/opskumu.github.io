@@ -63,7 +63,7 @@ filetype plugin indent on    " required
 
 ### 运行
 
-加入相应的插件配置之后，运行 vim，末行模式下使用以上提到到安装、更新、移除命令即可，也可以终端执行`vim +PluginInstall +qall`安装插件。
+加入相应的插件配置之后，运行 vim ，末行模式下使用以上提到到安装、更新、移除命令即可，也可以终端执行`vim +PluginInstall +qall`安装插件。
 
 ## 参考
 
