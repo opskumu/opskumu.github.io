@@ -5,9 +5,7 @@ tagline: Supporting tagline
 ---
 {% include JB/setup %}
 
-``` bash
-echo "Where there's a shell, there is a way!"
-```
+> Where there's a shell, there is a way!
 
 ## Me
 
