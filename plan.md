@@ -16,7 +16,7 @@ description: "季|年计划"
         * 能写点东西，看得懂docker代码
     * [《TCP/IP 详解，卷1》](http://book.douban.com/subject/1088054/)
         * 原理性的东西，夯实基础
-    * [《高性能MySQL 第三版》](http://book.douban.com/subject/23008813/)
+    * [《高性能 MySQL 第三版》](http://book.douban.com/subject/23008813/)
         * 反复阅读、实践
 * Other:
     * [《影响力》](http://book.douban.com/subject/1005576/)
