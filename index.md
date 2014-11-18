@@ -15,7 +15,7 @@ tagline: Supporting tagline
     * `Email` -- opskumu@gmail.com
     * `Github` -- [kumu-Linux](https://github.com/kumu-linux)
     * `Old Blogs` -- [github](http://kumu-linux.github.io/) and [CSDN](http://blog.csdn.net/kumu_Linux)
-    * `Tech Wiki` -- [linuxwiki](http://linuxwiki.github.io/) [发起者和参与者，任重道远，努力完善中......]
+    * `Tech Wiki` -- [linuxwiki](http://linuxwiki.github.io/) [任重道远，努力完善中......]
 * 爱好：
     * `阅读` -- 装逼
     * `骑行` -- no zuo no die
