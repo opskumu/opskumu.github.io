@@ -31,9 +31,9 @@ tagline: Supporting tagline
         * Network
         * Virtualization
     * `Future`:
+        * Django
         * Golang
         * Javascript
-        * Manage
 
 ## Experience
 
