@@ -17,7 +17,7 @@ tagline: Supporting tagline
         * MySQL
         * Network
         * Virtualization
-    * `Future`:
+    * `Future`
         * Django
         * Golang
         * Javascript
