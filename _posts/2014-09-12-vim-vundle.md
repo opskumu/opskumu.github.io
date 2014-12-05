@@ -1,29 +1,29 @@
 ---
 layout: post
-title: "vim插件管理工具vundle"
+title: "vim 插件管理工具 vundle"
 description: "vim plugin manager"
 category: UNIX/Linux
 tags: [vim, cmd]
 ---
 {% include JB/setup %}
 
-## 简介
+## 一、简介
 
 如果你使用 vim 开发，那么不可避免的会安装一些 vim 插件，Vundle 会很方便的管理安装插件，方便开发环境的迁移改动。
 
 github 主页: [Vundle.vim](https://github.com/gmarik/Vundle.vim)
 
-## 安装配置
+## 二、安装配置
 
 其实关于 Vundle 的安装配置在 README 中讲解的非常详细了，如下：
 
-### 安装
+### 2.1 安装
 
 ``` bash
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
-### 配置
+### 2.2 配置
 
 加入以下内容到`~/.vimrc`中最顶端，配置如下：
 
@@ -61,10 +61,12 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 ```
 
-### 运行
+### 2.2 运行
 
 加入相应的插件配置之后，运行 vim ，末行模式下使用以上提到到安装、更新、移除命令即可，也可以终端执行`vim +PluginInstall +qall`安装插件。
 
-## 参考
+## 三、参考
 
 * [Vundle](https://github.com/gmarik/Vundle.vim)
+
+--EOF--

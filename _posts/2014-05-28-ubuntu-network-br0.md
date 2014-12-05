@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Ubuntu14.04重启网卡"
+title: "Ubuntu 14.04 重启网卡"
 categories: UNIX/Linux
 tags: [Linux, cmd]
 ---
@@ -22,19 +22,19 @@ Use ifdown & ifup to reconfigure desired interface.
 
 从以上日志内容可以看出，传统的service重启和停止网络已经不再支持了，需要通过使用ifdown & ifup来实现相应的操作。
 
-# 重启指定网卡
+## 一、重启指定网卡
 
 ``` bash
 # ifdown eth0 && ifup eth0
 ```
 
-# 重启除lo网卡的所有网卡
+## 二、重启除lo网卡的所有网卡
 
 ``` bash
 # ifdown --exclude=lo -a && sudo ifup --exclude=lo -a
 ```
 
-# 配置桥接
+## 三、配置桥接
 
 ``` bash
 # apt-get install bridge-utils
@@ -60,6 +60,7 @@ dns-nameservers 192.168.0.1
 bridge name	bridge id		STP enabled	interfaces
 br0		8000.02000a0080e1	no		eth0
 ```
+## 四、参考
 
 * [Networking does not restart](https://bugs.launchpad.net/ubuntu/+source/ifupdown/+bug/1301015)
 

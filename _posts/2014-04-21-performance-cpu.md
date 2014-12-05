@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "cpu性能指标"
+title: "cpu 性能指标"
 categories: UNIX/Linux
 tags: [Linux, cmd]
 ---

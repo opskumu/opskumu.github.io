@@ -9,13 +9,13 @@ tags: [Linux, kvm]
 
 grub-install ERROR: not suitable driver was found
 
-# First
+## 一、First
 
 ``` bash
 grub-install /dev/vda
 ```
 
-# Second
+## 二、Second
 
 ``` bash
 # grub
@@ -25,7 +25,7 @@ grub-install /dev/vda
 > quit
 ```
 
-# `/boot/grub/device.map`
+## 三、`/boot/grub/device.map`
 
 ``` bash
 (hd0) /dev/vda

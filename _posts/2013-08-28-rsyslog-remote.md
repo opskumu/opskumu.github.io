@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "rsyslog远程传输"
+title: "rsyslog 远程传输"
 categories: "UNIX/Linux"
 tags: [Linux, rsyslog]
 ---
 {% include JB/setup %}
 
-## 基本介绍
+## 一、基本介绍
 
 Rsyslog是一个syslogd的多线程增强版，[rsyslog vs. syslog-ng](www.rsyslog.com/doc/rsyslog_ng_comparison.html) 链接是rsyslog官方和syslog特性和性能上的一些对比，目前大部分Linux发行版本默认也是使用rsyslog记录日志。这里介绍rsyslog远程传输的几种方式，对远程日志传输可以有一个了解。
 
@@ -23,11 +23,11 @@ rsyslog提供三个远程日志传输方式：
 
 关于RELP的更进一步了解可以参考 [Using TLS with RELP](http://www.rsyslog.com/tag/relp/) [RELP Input Module](http://www.rsyslog.com/doc/imrelp.html)  [RELP Output Module (omrelp)](http://www.rsyslog.com/doc/omrelp.html)
 
-## 相关配置
+## 二、相关配置
 
 > To forward messages to another host via UDP, prepend the hostname with the at sign ("@").  To forward it via plain tcp, prepend two at signs ("@@"). To forward via RELP, prepend the string ":omrelp:" in front of the hostname.
 
-### UDP传输
+### 2.1 UDP传输
 
 #### Server端配置
 
@@ -66,7 +66,7 @@ $IncludeConfig /etc/rsyslog.d/*.conf
 
 以上配置完成之后`/etc/init.d/rsyslog restart`
 
-### TCP传输
+### 2.2 TCP传输
 
 TCP配置和UDP类似，如下
 
@@ -100,7 +100,7 @@ $template Remote,"/var/log/syslog/%fromhost-ip%/%fromhost-ip%_%$YEAR%-%$MONTH%-%
 
 > In general, we suggest to use TCP syslog. It is way more reliable than UDP syslog and still pretty fast. The main reason is, that UDP might suffer of message loss. This happens when the syslog server must receive large bursts of messages. If the system buffer for UDP is full, all other messages will be dropped. With TCP, this will not happen. But sometimes it might be good to have a UDP server configured as well. That is, because some devices (like routers) are not able to send TCP syslog by design. In that case, you would need both syslog server types to have everything covered. If you need both syslog server types configured, please make sure they run on proper ports. By default UDP syslog is received on port 514. TCP syslog needs a different port because often the RPC service is using this port as well.
 
-### RELP传输
+### 2.3 RELP传输
 
 RELP需要安装`rsyslog-relp`相应模块
 
@@ -135,13 +135,13 @@ $ActionQueueSaveOnShutdown on   # save in-memory data if rsyslog shuts down
 
 客户端和服务端重启相关服务即可
 
-## 参考和拓展资料
+## 三、参考和拓展资料
 
+* [UDP Rsyslog](http://www.rsyslog.com/tag/udp/)
+* [TCP Rsyslog](http://www.rsyslog.com/tag/tcp/)
 * [Using TLS with RELP](http://www.rsyslog.com/tag/relp/) 
 * [RELP Input Module](http://www.rsyslog.com/doc/imrelp.html)  
 * [RELP Output Module (omrelp)](http://www.rsyslog.com/doc/omrelp.html)
 * [Rsyslog remote logging using RELP](http://gertverdemme.nl/sysadm/security/rsyslog_relp_remote_logging)
-* [UDP Rsyslog](http://www.rsyslog.com/tag/udp/)
-* [TCP Rsyslog](http://www.rsyslog.com/tag/tcp/)
 
 --EOF--

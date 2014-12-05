@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "dmidecode硬件信息查看"
+title: "dmidecode 硬件信息查看"
 categories: "UNIX/Linux"
 tags: [Linux, cmd]
 ---
@@ -18,7 +18,7 @@ tags: [Linux, cmd]
 
 但是显示所有的信息不便于我们获取想要获取的信息，那么就需要结合其它选项获取信息
 
-## 常用参数
+## 一、常用参数
 
 * -q 或 --quiet
 	* 不显示太多信息，比如某条数据是从哪里读来的等等，为了得到简洁的信息，此条很有用
@@ -28,7 +28,7 @@ tags: [Linux, cmd]
 	* 显示特定的关键字
 
 
-### -t或--type后的文本参数
+### 1.1 -t或--type后的文本参数
 
 	bios 		bios的各项信息
 	system 		系统信息，在我的笔记本上可以看到版本、型号、序号等信息。
@@ -56,7 +56,7 @@ Valid type keywords are:
   slot
 ```
 
-### dmidecode -s
+### 1.2 dmidecode -s
 
 ``` bash
 # dmidecode -s
@@ -87,7 +87,7 @@ Valid string keywords are:
   processor-frequency
 ```
 
-## 常用命令举例
+## 二、常用命令举例
 
 * 1、查看服务器型号：`dmidecode | grep 'Product Name'`
 * 2、查看系统序列号：`dmidecode -s system-serial-number`
