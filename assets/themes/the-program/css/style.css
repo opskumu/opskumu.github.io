@@ -175,6 +175,13 @@ ol {
   margin: 0;
   padding: 0 0 0 40px;
 }
+ul li {
+    padding-left: 20px;
+}
+
+ol li {
+
+}
 dd {
   margin: 0 0 0 40px;
 }
@@ -723,7 +730,7 @@ pre {
 .unit-article li code {
   padding: 2px 5px;
   white-space: nowrap;
-  background-color: #fff04a;
+  background-color: #F9F2F4;
 }
 .unit-article img {
   display: block;

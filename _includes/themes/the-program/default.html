@@ -24,7 +24,8 @@
 						<li class="logo"><a href="/">{{ site.title }}</a></li>
 						<li class="archive"><a href="/archive.html">archive</a></li>
 						<li class="category"><a href="/categories.html">categories</a></li>
-						<li class="page"><a href="/pages.html">pages</a></li>
+                        <li class="rss feed"><a href="/rss.xml">rss feed</a></li>
+                        <!-- <li class="page"><a href="/pages.html">pages</a></li>-->
 						<!--<li class="tag"><a href="/tags.html">tags</a></li>
 						<li class="forkme"><div><iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=plusjade&repo=jekyll-bootstrap&type=fork&count=true"
                                     allowtransparency="true" frameborder="0" scrolling="0" width="95px" height="20px"></iframe></div></li> -->
@@ -65,7 +66,7 @@
 		js = d.createElement(s); js.src = url; js.id = id;
 		fjs.parentNode.insertBefore(js, fjs);
 		};
-	load('//platform.twitter.com/widgets.js', 'tweetjs');
+	// load('//platform.twitter.com/widgets.js', 'tweetjs');
 	// load('https://apis.google.com/js/plusone.js', 'gplus1js'); // Checkout http://j.mp/ApDgMr for usage html for this is <div class="g-plusone" data-size="medium"></div>
 	// load('//connect.facebook.net/en_US/all.js#xfbml=1', 'fbjssdk'); // Checkout http://j.mp/wZw2xR for using open graph protorol html for this is <div class="fb-like" data-href="{{ page.url }}" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="verdana"></div>
 	}(document, 'script'));

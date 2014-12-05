@@ -74,7 +74,7 @@ JB :
   #
   archive_path: /archive.html
   categories_path : /categories.html
-  # tags_path : /tags.html
+  tags_path : /tags.html
   atom_path : /atom.xml
   rss_path : /rss.xml
 
@@ -100,17 +100,17 @@ JB :
   # Set 'provider' to the analytics provider you want to use.
   # Set 'provider' to false to turn analytics off globally.
   #        
-  analytics :
-    provider : google 
-    google : 
-        tracking_id : 'UA-39949989-1'
-    getclicky :
-      site_id : 
-    mixpanel :
-        token : '_MIXPANEL_TOKEN_'
-    piwik :
-        baseURL : 'myserver.tld/piwik' # Piwik installation address (without protocol)
-        idsite : '1'                   # the id of the site on Piwik
+  # analytics :
+  #   provider : google 
+  #   google : 
+  #       tracking_id : 'UA-39949989-1'
+  #   getclicky :
+  #     site_id : 
+  #   mixpanel :
+  #       token : '_MIXPANEL_TOKEN_'
+  #   piwik :
+  #       baseURL : 'myserver.tld/piwik' # Piwik installation address (without protocol)
+  #       idsite : '1'                   # the id of the site on Piwik
 
   # Settings for sharing helper. 
   # Sharing is for things like tweet, plusone, like, reddit buttons etc.

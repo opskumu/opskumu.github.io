@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "规划"
+title: "Plan"
 description: "季|年计划"
 ---
 {% include JB/setup %}
@@ -24,13 +24,5 @@ description: "季|年计划"
     * [《动物庄园》](http://book.douban.com/subject/3808982/)
 
 __要求__: 读书笔记
-
-## Linuxwiki, 2014.09.01~2014.11.30
-
-初步完成Linuxwiki所有文档
-
-## Python, 2014.09.01~2014.12.30
-
-业余时间，1w 行代码，不是堆积，就要对自己认真
 
 ## 暂时先这样 ... ...
