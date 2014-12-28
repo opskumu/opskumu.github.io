@@ -2,8 +2,8 @@
 layout: post
 title: "golang 位运算"
 description: "golang Bitwise"
-category: 读书笔记
-tags: [Go语言程序设计, go]
+category: golang
+tags: [go]
 ---
 {% include JB/setup %}
 
