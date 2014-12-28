@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "grub with kvm virtio disk"
-categories: 虚拟化
+categories: virtualization
 tags: [Linux, kvm]
 ---
 {% include JB/setup %}
