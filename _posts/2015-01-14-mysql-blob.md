@@ -19,7 +19,10 @@ Row size too large (> 8126). Changing some columns to TEXT or BLOB or using ROW_
 
 ## 二、问题解决
 
-因为对 MySQL 行写入到页的原理性不清楚，导致问题的解决花费了一定的时间。Google 对应的错误建议修改 MySQL `innodb_file_format` 值，并修改对应表的 `row_format`。 [Mysql的大字段问题](http://blog.sina.com.cn/s/blog_8e9cceee0101k65j.html) [Change limit for “Mysql Row size too large”](http://stackoverflow.com/questions/15585602/change-limit-for-mysql-row-size-too-large)
+因为对 MySQL 行写入到页的原理性不清楚，导致问题的解决花费了一定的时间。Google 对应的错误建议修改 MySQL `innodb_file_format` 值，并修改对应表的 `row_format`。
+
+* [Mysql的大字段问题](http://blog.sina.com.cn/s/blog_8e9cceee0101k65j.html)
+* [Change limit for “Mysql Row size too large”](http://stackoverflow.com/questions/15585602/change-limit-for-mysql-row-size-too-large)
 
 查看线上表 `row_format` 类型，如下：
 
