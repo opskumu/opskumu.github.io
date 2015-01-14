@@ -7,8 +7,6 @@ tags: [MySQL]
 ---
 {% include JB/setup %}
 
-# MySQL 大字段溢出导致数据回写失败
-
 ## 一、问题描述
 
 2015-01-12 18:10  左右公司某游戏日志监控报警，查看日志显示如下错误：
@@ -143,89 +141,6 @@ Compact 行记录格式的首部是一个非 NULL 变长字段长度列表，并
 innoDB 存储引擎表是索引组织的，即 B+Tree 的结构，这样每个页中至少应该有两条行记录（否则失去了B+Tree的意义，变成链表了）。因此，如果页中只能存放下一条记录，那么 InnoDB 存储引擎会自动将行数据存放到溢出页中，所以默认页 16KB，那么一行数据列和如果超过 8kB 则会出现之前溢出的错误。
 
 按照这种算法，查询之前某个出问题的用户 Blob 字段占用为 7602 「表中有 48 个 blob 字段」，加上其它的占用超过 8kB 就导致 了 `Row size too large (> 8126). Changing some ... ...`。
-
-问题表结构如下:
-
-```
-mysql> desc t_role_90;
-+------------------+----------------------+------+-----+-------------------+-----------------------------+
-| Field            | Type                 | Null | Key | Default           | Extra                       |
-+------------------+----------------------+------+-----+-------------------+-----------------------------+
-| id               | int(10) unsigned     | NO   | PRI | NULL              |                             |
-| name             | varchar(32)          | YES  |     | NULL              |                             |
-| career           | int(11)              | YES  |     | 0                 |                             |
-| sid              | int(10) unsigned     | YES  | MUL | 0                 |                             |
-| uid              | int(10) unsigned     | YES  |     | 0                 |                             |
-| exp              | bigint(20)           | YES  |     | 0                 |                             |
-| lev              | int(11)              | YES  |     | 1                 |                             |
-| coin             | bigint(20)           | YES  |     | 0                 |                             |
-| gold             | bigint(20)           | YES  |     | 0                 |                             |
-| vip_exp          | int(11)              | YES  |     | 0                 |                             |
-| vip_lev          | int(11)              | YES  |     | 0                 |                             |
-| rand             | smallint(5) unsigned | YES  |     | 0                 |                             |
-| update_timestamp | timestamp            | YES  |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-| rds0             | blob                 | YES  |     | NULL              |                             |
-| rds1             | blob                 | YES  |     | NULL              |                             |
-| rds2             | blob                 | YES  |     | NULL              |                             |
-| rds3             | blob                 | YES  |     | NULL              |                             |
-| rds4             | blob                 | YES  |     | NULL              |                             |
-| rds5             | blob                 | YES  |     | NULL              |                             |
-| rds6             | blob                 | YES  |     | NULL              |                             |
-| rds7             | blob                 | YES  |     | NULL              |                             |
-| rds8             | blob                 | YES  |     | NULL              |                             |
-| rds9             | blob                 | YES  |     | NULL              |                             |
-| rds10            | blob                 | YES  |     | NULL              |                             |
-| rds11            | blob                 | YES  |     | NULL              |                             |
-| rds12            | blob                 | YES  |     | NULL              |                             |
-| rds13            | blob                 | YES  |     | NULL              |                             |
-| rds14            | blob                 | YES  |     | NULL              |                             |
-| rds15            | blob                 | YES  |     | NULL              |                             |
-| rds16            | blob                 | YES  |     | NULL              |                             |
-| rds17            | blob                 | YES  |     | NULL              |                             |
-| rds18            | blob                 | YES  |     | NULL              |                             |
-| rds19            | blob                 | YES  |     | NULL              |                             |
-| rds20            | blob                 | YES  |     | NULL              |                             |
-| rds21            | blob                 | YES  |     | NULL              |                             |
-| rds22            | blob                 | YES  |     | NULL              |                             |
-| rds23            | blob                 | YES  |     | NULL              |                             |
-| rds24            | blob                 | YES  |     | NULL              |                             |
-| rds25            | blob                 | YES  |     | NULL              |                             |
-| rds26            | blob                 | YES  |     | NULL              |                             |
-| rds27            | blob                 | YES  |     | NULL              |                             |
-| rds28            | blob                 | YES  |     | NULL              |                             |
-| rds29            | blob                 | YES  |     | NULL              |                             |
-| rds30            | blob                 | YES  |     | NULL              |                             |
-| rds31            | blob                 | YES  |     | NULL              |                             |
-| gds0             | blob                 | YES  |     | NULL              |                             |
-| gds1             | blob                 | YES  |     | NULL              |                             |
-| gds2             | blob                 | YES  |     | NULL              |                             |
-| gds3             | blob                 | YES  |     | NULL              |                             |
-| gds4             | blob                 | YES  |     | NULL              |                             |
-| gds5             | blob                 | YES  |     | NULL              |                             |
-| gds6             | blob                 | YES  |     | NULL              |                             |
-| gds7             | blob                 | YES  |     | NULL              |                             |
-| gds8             | blob                 | YES  |     | NULL              |                             |
-| gds9             | blob                 | YES  |     | NULL              |                             |
-| gds10            | blob                 | YES  |     | NULL              |                             |
-| gds11            | blob                 | YES  |     | NULL              |                             |
-| gds12            | blob                 | YES  |     | NULL              |                             |
-| gds13            | blob                 | YES  |     | NULL              |                             |
-| gds14            | blob                 | YES  |     | NULL              |                             |
-| gds15            | blob                 | YES  |     | NULL              |                             |
-+------------------+----------------------+------+-----+-------------------+-----------------------------+
-61 rows in set (0.00 sec)
-
-mysql> 
-```
-
-确实需要在 InnoDB 表中存储 BLOB、TEXT、长 VARCHAR 列时，有下面几点建议「摘自[优化 InnoDB 表 BLOB 列的存储效率](http://imysql.com/2014/09/28/mysql-optimization-case-blob-stored-in-innodb-optimization.shtml)」：
-
-* 1、尽可能将所有数据序列化、压缩之后，存储在同一个列里，避免发生多次 off-page；
-* 2、实际最大存储长度低于 255 的列，转成 VARCHAR 或者 CHAR 类型（如果是变长数据二者没区别，如果是定长数据，则使用 CHAR 类型）；
-* 3、如果无法将所有列整合到一个列，可以退而求其次，根据每个列最大长度进行排列组合后拆分成多个子表，尽量是的每个子表的总行长度小于 8KB，减少发生 off-page 的频率；
-* 4、上述建议是在 data page 为默认的 16KB 前提下，如果修改成 8KB 或者其他大小，请自行根据上述理论进行测试，找到最合适的值；
-* 5、字符型列长度小于 255 时，无论采用 CHAR 还是 VARCHAR 来存储，或者把 VARCHAR 列长度定义为 255，都不会导致实际表空间增大；
-* 6、一般在游戏领域会用到比较多的 BLOB 列类型，游戏界同行可以关注下。
 
 #### Barracuda
 
