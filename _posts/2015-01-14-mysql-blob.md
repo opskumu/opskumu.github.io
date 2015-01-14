@@ -56,7 +56,7 @@ mysql> SELECT `table_name`, `row_format` FROM `information_schema`.`tables` WHER
 mysql> 
 ```
 
-开发那边删减了一些不必要的数据并更新游戏服务器，但是依然没有解决 DB 回写的问题。因为目前数据量不是很大，并且支持在线修改生效 innodb `innodb_file_format` 和 表 `row_format`，也不会影响 DB，所以先测试修改一个表的  `row_format` 值，查看对应日志输出，发现问题解决，同事批量修改线上表 `row_format` 值，修改完之后，对应的问题解决，主要修改值如下：
+开发那边删减了一些不必要的数据并更新游戏服务器，但是依然没有解决 DB 回写的问题。因为目前数据量不是很大，并且支持在线修改生效 innodb `innodb_file_format` 和 表 `row_format`，也不会影响 DB，所以先测试修改一个表的  `row_format` 值，查看对应日志输出，发现问题解决，批量修改线上表 `row_format` 值，修改完之后，对应的问题解决，主要修改值如下：
 
 ```
 msyql> SET GLOBAL innodb_file_format=BARRACUDA;
