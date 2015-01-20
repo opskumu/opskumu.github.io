@@ -46,7 +46,9 @@ Jan 20 20:23:34 docker1 systemd[1]: Unit network.service entered failed state.
 
 ```
 # /etc/sysconfig/network-scripts/ifcfg-eth0 
+... ...
 HWADDR=00:xx:xx:xx:xx:xx
+... ...
 ```
 
 --EOF--
