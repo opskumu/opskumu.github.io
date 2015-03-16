@@ -16,10 +16,10 @@ description: ""
 ## 技能
 
 * 熟悉 Linux 下 Shell/Python 脚本开发
-* 熟悉日常监控软件 Nagios/Zabbix 的使用配置
-* 熟悉 KVM/ESXi/Docker 虚拟化
 * 熟悉 Linux 下的 Troubleshooting
+* 熟悉 KVM/ESXi/Docker 虚拟化
 * 优秀的技术文档编写能力
+* 熟悉监控软件 Nagios/Zabbix 的使用配置和插件编写
 
 ## 经历
 
@@ -41,7 +41,7 @@ description: ""
 ## 其他
 
 * [看过的书](http://kumu-linux.github.io/blog/books/)
-* 分享过的文档：
+* 分享过的技术文档：
     * [Linux学习笔记基础知识版](http://vdisk.weibo.com/s/EKoLFfHiSsI6)
     * [OpenNebula4.4入门](http://vdisk.weibo.com/s/EKoLFfHiE-oT)
     * [Docker 学习笔记](http://opskumu.github.io/docker.html)
