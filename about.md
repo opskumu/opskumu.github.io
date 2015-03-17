@@ -1,4 +1,9 @@
-# 个人简历
+---
+layout: page
+title: "个人简历"
+description: ""
+---
+{% include JB/setup %}
 
 ## 基本
 
@@ -35,8 +40,8 @@
 
 ## 其他
 
+* [看过的书](http://kumu-linux.github.io/blog/books/)
 * 分享过的技术文档：
     * [Linux学习笔记基础知识版](http://vdisk.weibo.com/s/EKoLFfHiSsI6)
     * [OpenNebula4.4入门](http://vdisk.weibo.com/s/EKoLFfHiE-oT)
     * [Docker 学习笔记](http://opskumu.github.io/docker.html)
-	* [看过的书](http://kumu-linux.github.io/blog/books/)
