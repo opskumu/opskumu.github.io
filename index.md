@@ -30,3 +30,9 @@ tagline: Supporting tagline
     * 2011/11/20~2012/12/30：[湖南双星科技](http://www.sxkeji.com.cn/) - Linux 助教
 * 大学
     * 2008/09/01~2012/06/18: 湖南农业大学，动物科学专业
+
+## Other
+
+* Weibo：[枯木-Linux](http://weibo.com/whynoyes)
+* Email：<a rel="nofollow" href="mailto:opskumu@gmail.com">opskumu#gmail.com</a>
+* Old Blog：[csdn](http://blog.csdn.net/kumu_Linux) | [github](http://kumu-linux.github.io)
