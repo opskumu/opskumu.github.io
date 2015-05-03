@@ -1031,10 +1031,10 @@ pre {
 /*
 	Huge-screen layout 
 */
-@media only screen and (min-width: 1410px) {
+@media only screen and (min-width: 1029px) {
   .the-header {
     float: left;
-    width: 19%;
+    width: 20%;
   }
   .the-header .unit-head {
     padding: 26px;
