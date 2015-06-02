@@ -1487,3 +1487,8 @@ hr {
   *display: inline;
   float: right;
 }
+
+img {
+    max-width: 40em;
+    text-align: center;
+}
