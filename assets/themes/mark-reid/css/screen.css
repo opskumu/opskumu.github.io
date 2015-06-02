@@ -22,7 +22,7 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,p,blockquote,th,t
 
 body {
 	background-color: whitesmoke;
-	font-family: Sans-serif;
+    font-family: "Trebuchet MS", SimSun, sans-serif;
 	background-position: center -18em;
 	background-repeat: repeat-x; 
 }
@@ -31,8 +31,12 @@ body {
 img { -ms-interpolation-mode:bicubic; }
 
 /* IE6 ignores this and uses default size of 16pt */
-html>body { font-size:14px; }
-p { margin: 0 0 1.5em 0; text-align: justify; }
+html>body { font-size: 14px; }
+p {
+    text-align: justify;
+    line-height: 1.714285714;
+    margin: 0 0 1.714285714rem;
+}
 
 a { text-decoration: none; color: #339; }
 a:hover { text-decoration: underline; color: #33f; }
@@ -40,7 +44,7 @@ a.pdf:before {
 	margin-right: 1em;
 	content: url(/files/css/icon_pdf.gif); }
 
-h1,h2,h3,h4 { 
+h1,h2,h3,h4,h5 { 
 	line-height:1em; 
 	font-size:1.5em; 
 	font-weight: normal; 
@@ -69,7 +73,7 @@ h3 {
 	font-weight:bold;
 }
 
-h4 {
+h4, h5 {
 	font-size: 100%;
 	line-height: 1.5em;
 	margin:1.5em 0 1.5em 0;
@@ -86,15 +90,15 @@ hr {
 sup { line-height: 1ex; }
 
 #site {
-	max-width: 780px;
+	max-width: 60em;
+    padding: 0px 30px;
 	margin: 1.5em auto 3em auto;
 	line-height:1.5em;
 }
 
 #page, #disqus_thread {
 	background: white;
-/*	background-image: url(grid.png); */
-	padding: 1.0em 2em 1.5em 2em;
+	padding: 1.0em 3em 1.5em 3em;
     border: 1px solid #ddd;
 }
 
@@ -167,11 +171,9 @@ ul {
 	padding-left: 1.5em;
 }
 ul li {
-	list-style-type: square;
 	list-style-position: outside;
 }
 ol li {
-	list-style-type: decimal;
 	list-style-position: inside;
 }
 dt { font-weight: bold;}
@@ -179,7 +181,6 @@ dd { margin: 0 0 1.5em 0; text-align: justify; }
 
 ul.compact { margin: 0; padding: 0;}
 ul.compact li { list-style: ;
-	list-style-type: square;
 	list-style-position: inside;
 }
 ul.compact li span.date {	
@@ -338,17 +339,14 @@ p.excerpt { margin: 0; }
 /* @group Code */
 pre {
 	margin: 1em 0 1em 0;
-	font-size: 0.75em; /* Hack to make code look same size as body font */  
 	line-height: 1.5em;	
-	color: #111;
-	background: #fffff0;
-	padding: 1em 1em;
-	overflow: hidden;
+	padding: 0.4em 0.4em;
+    overflow: auto;
+    background-color: #dfdfdf;
+    font-family: Consolas, "Courier New";
 }
 code {
 	font-size: 1em;
-    font-family: consolas;
-	background-color: #f7f7ff;
     padding: 2px;
 	line-height: 1.4em;
 }
@@ -538,3 +536,7 @@ img.maruku-png { }
 	color:#FFF;
 }
 
+img {
+    max-width: 50em;
+    text-align: center;
+}
