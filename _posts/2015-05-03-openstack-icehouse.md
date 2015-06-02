@@ -2,7 +2,7 @@
 layout: post
 title: "CentOS 6.5 icehouse 多节点安装测试 (OVS+VLAN)"
 description: "Openstack"
-category: "虚拟化"
+category: "virtualization"
 tags: [kvm, Openstack]
 ---
 {% include JB/setup %}
@@ -102,7 +102,27 @@ packstack --answer-file=multi-node.txt
 
 #### 查看当前控制节点网络配置
 
-安装完成之后可以查看控制节点相关的网络配置
+配置 br-ex
+
+```
+# cat /etc/sysconfig/network-scripts/ifcfg-eth0
+DEVICE="eth0"
+ONBOOT="yes"
+HWADDR=00:50:56:81:73:c6
+# cat /etc/sysconfig/network-scripts/ifcfg-br-ex
+DEVICE="br-ex"
+BOOTPROTO="static"
+IPV6INIT="no"
+MTU="1500"
+ONBOOT="yes"
+TYPE="Ethernet"
+IPADDR=192.168.210.120
+NETMASK=255.255.252.0
+GATEWAY=192.168.209.1
+# ovs-vsctl add-port br-ex eth0; service network restart    # 执行让配置生效
+```
+
+配置完成之后可以查看控制节点相关的网络配置
 
 ```
 # ovs-vsctl show
@@ -113,27 +133,50 @@ b371c7dc-3109-420f-90d4-f6089cc88c89
                 type: internal
         Port "eth1"
             Interface "eth1"
-        Port "phy-br-eth1"
-            Interface "phy-br-eth1"
     Bridge br-int
         fail_mode: secure
+        Port "qr-0e11fafb-7d"
+            tag: 3
+            Interface "qr-0e11fafb-7d"
+                type: internal
+        Port "qr-cb9dc948-02"
+            tag: 1
+            Interface "qr-cb9dc948-02"
+                type: internal
         Port patch-tun
             Interface patch-tun
                 type: patch
                 options: {peer=patch-int}
+        Port "tap9843cc9c-63"
+            tag: 1
+            Interface "tap9843cc9c-63"
+                type: internal
         Port "int-br-eth1"
             Interface "int-br-eth1"
+        Port "tap85be25a8-24"
+            tag: 3
+            Interface "tap85be25a8-24"
+                type: internal
         Port "qr-4a3ac452-6b"
             tag: 1
             Interface "qr-4a3ac452-6b"
+                type: internal
+        Port "tap8a63fc50-02"
+            tag: 4
+            Interface "tap8a63fc50-02"
                 type: internal
         Port br-int
             Interface br-int
                 type: internal
     Bridge br-ex
+        Port "qg-73075998-82"
+            Interface "qg-73075998-82"
+                type: internal
         Port "qg-bd06cff1-2e"
             Interface "qg-bd06cff1-2e"
                 type: internal
+        Port "eth0"
+            Interface "eth0"
         Port br-ex
             Interface br-ex
                 type: internal
@@ -158,10 +201,10 @@ b371c7dc-3109-420f-90d4-f6089cc88c89
 
 * SequenceError: Cinder's volume group 'cinder-volumes' could not be created
 
-一开始申请的虚拟机磁盘为 20G，查看日志获知默认创建的 cinder 是 20G，所以猜测是 cinder 大小配置的问题，后修改配置文件中 CINDER 大小为 4G 
+一开始申请的虚拟机磁盘为 20G，查看日志获知默认创建的 cinder 是 20G，所以猜测是 cinder 大小配置的问题，后修改配置文件中 CINDER 大小为 4G
 
 ```
-# grep CONFIG_CINDER_VOLUMES_SIZE  multi-node.txt   
+# grep CONFIG_CINDER_VOLUMES_SIZE  multi-node.txt
 CONFIG_CINDER_VOLUMES_SIZE=4G
 ```
 
@@ -199,7 +242,7 @@ epel 安装完毕之后又出现如下问题：
 
 * Error: Cannot retrieve metalink for repository: epel. Please verify its path and try again
 
-`mirrorlist` --> `baseurl`，注释 `/etc/yum.repos.d/epel.repo` [epel] 下 mirrorlist 行并取消 baseurl 行的注释。 
+`mirrorlist` --> `baseurl`，注释 `/etc/yum.repos.d/epel.repo` [epel] 下 mirrorlist 行并取消 baseurl 行的注释。
 
 ```
 [epel]
