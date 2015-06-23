@@ -73,7 +73,7 @@ ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.12.234:2380" # 定义 etcd peer
 ETCD_INITIAL_CLUSTER="paas-ci-etcd1=http://192.168.12.233:2380,paas-ci-etcd2=http://192.168.12.234:2380,paas-ci-etcd3=http://192.168.12.235:2380,paas-ci-etcd4=http://192.168.12.236:2380"
 # ETCD_INITIAL_CLUSTER 定义集群成员
 ETCD_INITIAL_CLUSTER_STATE="new"                        # 初始化状态使用 new，建立之后改此值为 existing
-ETCD_INITIAL_CLUSTER_TOKEN="dev-etcd-cluster"        # etcd 集群名
+ETCD_INITIAL_CLUSTER_TOKEN="dev-etcd-cluster"           # etcd 集群名
 ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:4001"        # 定义 client 广播端口
 ```
 
