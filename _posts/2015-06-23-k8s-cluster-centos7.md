@@ -108,6 +108,8 @@ a340818d006c60f: name=paas-ci-etcd1 peerURLs=http://192.168.12.233:2380 clientUR
 yum -y install kubernetes
 ```
 
+__注：__ CentOS7 源中最新版本是 0.15，如果需要使用最新的，替换 `/usr/bin` 下 K8s 的二进制文件即可。
+
 Master 配置文件修改
 
 ```
