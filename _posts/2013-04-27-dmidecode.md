@@ -1,10 +1,9 @@
 ---
 layout: post
 title: "dmidecode 硬件信息查看"
-categories: "UNIX/Linux"
+categories: Linux
 tags: [Linux, cmd]
 ---
-{% include JB/setup %}
 
 在介绍dmidecode命令之前，先介绍一下DMI。所谓DMI，即DesktopManagement Interface。也有被称为SMBIOS，即System Management BIOS。DMI表的意义在于让我们在不探测硬件实体的情况下获取硬件的部分信息，方便了用户，但也同时表明，表中的信息可能是不可靠的。
 

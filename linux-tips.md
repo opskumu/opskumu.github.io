@@ -2,8 +2,8 @@
 layout: page
 title: "Linux Tips"
 description: "Linux Tips"
+permalink: /tips/
 ---
-{% include JB/setup %}
 
 <u>__1__、给 __man__ 一点颜色看看</u>
 

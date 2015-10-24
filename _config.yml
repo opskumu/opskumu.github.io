@@ -18,7 +18,7 @@ tagline: Site Tagline
 author :
   name : 枯木
   email : opskumu@gmail.com
-  github : kumu-linux
+  github : opskumu
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt 

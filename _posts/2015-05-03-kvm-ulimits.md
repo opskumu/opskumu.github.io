@@ -2,10 +2,9 @@
 layout: post
 title: "kvm 进程 ulimit 设置未生效"
 description: "kvm ulimit"
-category: UNIX/Linux
+categories: Linux
 tags: [kvm,ulimit]
 ---
-{% include JB/setup %}
 
 ## 一、问题描述
 

@@ -1,5 +1,12 @@
 ---
 layout: default
 ---
-{% include JB/setup %}
-{% include themes/the-program/post.html %}
+{% include post/title.html %}
+
+<div class="content">
+    {{ content }}
+</div>
+
+{% include post/about.html %}
+
+{% include externals/disqus.html %}

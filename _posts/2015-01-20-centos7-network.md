@@ -2,10 +2,9 @@
 layout: post
 title: "CentOS 7/RHEL 7 网卡启动错误"
 description: "CentOS 7 网卡启动错误"
-category: UNIX/Linux
+categories: Linux
 tags: [Linux]
 ---
-{% include JB/setup %}
 
 在 CentOS 7/RHEL 7 下关闭 NetworkManager 服务导致网卡启动失败，在 [Disabling NetworkManager on RHEL 7](http://superuser.com/questions/782083/disabling-networkmanager-on-rhel-7) 找到相同问题并解决。
 

@@ -2,10 +2,9 @@
 layout: post
 title: "《软件开发者路线图—从学徒到高手》摘要"
 description: "读书笔记"
-category: read
+categories: read
 tags: [读书笔记]
 ---
-{% include JB/setup %}
 
 > 仅仅告诉人们去做事情并不能带来长久和可持续的变化。按照你的要求去做事的人如果遇到你的规则没有囊括的新情况，他们马上就会迷失。
 

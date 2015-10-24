@@ -1,10 +1,9 @@
 ---
 layout: post
 title: "ssh MaxAuthTries"
-categories: UNIX/Linux
+categories: Linux
 tags: [Linux, ssh]
 ---
-{% include JB/setup %}
 
 新建了一个Ubuntu14.04的虚拟机，使用xshell登陆，刚输入用户名后却直接抛出了 `Too many authentication failures for username` 的错误。ssh登陆失败尝试次数和`MaxAuthTries`值相关，直接`man sshd_config`获取该参数说明，得到如下内容：
 

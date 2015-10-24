@@ -1,10 +1,9 @@
 ---
 layout: post
 title: "rsyslog 远程传输"
-categories: "UNIX/Linux"
+categories: Linux
 tags: [Linux, rsyslog]
 ---
-{% include JB/setup %}
 
 ## 一、基本介绍
 

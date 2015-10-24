@@ -1,0 +1,17 @@
+- slug: tools
+  name: Tools
+
+- slug: coding
+  name: Coding
+
+- slug: mysql
+  name: MySQL
+
+- slug: virtualization
+  name: Virtualization
+
+- slug: linux
+  name: Linux
+
+- slug: other
+  name: Other

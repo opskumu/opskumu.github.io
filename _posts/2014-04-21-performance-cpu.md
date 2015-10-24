@@ -1,10 +1,9 @@
 ---
 layout: post
 title: "cpu 性能指标"
-categories: UNIX/Linux
+categories: Linux
 tags: [Linux, cmd]
 ---
-{% include JB/setup %}
 
 Linux性能相关可以从以下几方面入手： 
 

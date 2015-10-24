@@ -2,10 +2,9 @@
 layout: post
 title: "基于 CentOS7 的 Kubernetes 集群"
 description: "Kubernetes"
-category: virtualization
+categories: virtualization
 tags: [docker,Kubernetes,etcd]
 ---
-{% include JB/setup %}
 
 ## 一、环境
 

@@ -1,10 +1,9 @@
 ---
 layout: post
 title: "nslookup、host 和 dig"
-categories: "UNIX/Linux"
+categories: Linux
 tags: [Linux, cmd]
 ---
-{% include JB/setup %}
 
 `nslookup`、`host` 和 `dig` 是三个 DNS 查询工具，以下会分别介绍它们的使用方法。
 

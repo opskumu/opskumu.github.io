@@ -2,10 +2,9 @@
 layout: post
 title: "MySQL 大字段溢出导致数据回写失败"
 description: " mysql blob"
-category: mysql
+categories: mysql
 tags: [MySQL]
 ---
-{% include JB/setup %}
 
 ## 一、问题描述
 

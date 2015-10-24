@@ -2,10 +2,9 @@
 layout: post
 title: "CentOS 6.5 icehouse 多节点安装测试 (OVS+VLAN)"
 description: "Openstack"
-category: "virtualization"
+categories: "virtualization"
 tags: [kvm, Openstack]
 ---
-{% include JB/setup %}
 
 ## 一、环境
 
