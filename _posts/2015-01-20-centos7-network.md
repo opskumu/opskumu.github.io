@@ -10,14 +10,14 @@ tags: [Linux]
 
 ## 一、关闭并移除开机启动 NetworkManager
 
-```
+``` bash
 systemctl stop NetworkManager
 systemctl disable NetworkManager
 ```
 
 ## 二、启动 network 错误输出如下:
 
-```
+``` bash
 # systemctl restart network
 Job for network.service failed. See 'systemctl status network.service' and 'journalctl -xn' for details.
 # systemctl status network
@@ -43,7 +43,7 @@ Jan 20 20:23:34 docker1 systemd[1]: Unit network.service entered failed state.
 
 对应网卡配置文件添加 MAC 地址行，即：
 
-```
+``` bash
 # /etc/sysconfig/network-scripts/ifcfg-eth0 
 ... ...
 HWADDR=00:xx:xx:xx:xx:xx
