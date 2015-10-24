@@ -46,15 +46,6 @@ permalink: /categories/an-awesome-category/
 
 - Then you will see it in the footer in the `Explore` section.
 
-# Sneak peek
-
-![img][home_desktop]
-
-![img][home_phone]
-
-[home_desktop]: https://raw.githubusercontent.com/kronik3r/assets/master/daktilo/desktop.png
-[home_phone]: https://raw.githubusercontent.com/kronik3r/assets/master/daktilo/phone.png
-
 # License
 
 The contents of this repository is licensed under [The MIT License.](https://opensource.org/licenses/MIT)
