@@ -2,10 +2,9 @@
 layout: post
 title: "微信公众号--开篇"
 description: "微信公众号"
-category: life
+categories: other
 tags: [微信公众号]
 ---
-{% include JB/setup %}
 
 ![start](images/start.jpg)
 

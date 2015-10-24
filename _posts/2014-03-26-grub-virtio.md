@@ -4,7 +4,6 @@ title: "grub with kvm virtio disk"
 categories: virtualization
 tags: [Linux, kvm]
 ---
-{% include JB/setup %}
 
 
 grub-install ERROR: not suitable driver was found

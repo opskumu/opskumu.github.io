@@ -2,10 +2,9 @@
 layout: post
 title: "golang 位运算"
 description: "golang Bitwise"
-category: golang
+categories: coding
 tags: [go]
 ---
-{% include JB/setup %}
 
 > 位操作是程序设计中对位模式按位或二进制数的一元和二元操作. 在许多古老的微处理器上, 位运算比加减运算略快, 通常位运算比乘除法运算要快很多. 在现代架构中, 情况并非如此:位运算的运算速度通常与加法运算相同(仍然快于乘法运算). [位操作符](http://zh.wikipedia.org/zh/%E4%BD%8D%E6%93%8D%E4%BD%9C)
 

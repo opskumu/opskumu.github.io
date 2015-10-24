@@ -1,9 +1,10 @@
 ---
 layout: page
-title: About Me
-tagline: Supporting tagline
+title: 
+permalink: /about/
 ---
-{% include JB/setup %}
+
+# About Me
 
 * Weibo：[枯木-Linux](http://weibo.com/whynoyes)
 * Email：<a rel="nofollow" href="mailto:opskumu@gmail.com">opskumu#gmail.com</a>

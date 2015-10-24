@@ -1,10 +1,9 @@
 ---
 layout: post
 title: "30 Handy Bash Shell Aliases"
-categories: UNIX/Linux
+categories: Linux
 tags: [Linux, cmd]
 ---
-{% include JB/setup %}
 
 本文为 [原文地址](http://www.cyberciti.biz/tips/bash-aliases-mac-centos-linux-unix.html) 翻译而来，有些地方稍作改动。
 
