@@ -36,7 +36,7 @@ VMware VM 2 台 「控制节点+计算节点」
 
 两台 VM 除 IP 和 MAC 外其它配置一致，VM1 的配置情况如下：
 
-```
+``` bash
 # cat /etc/sysconfig/network-scripts/ifcfg-eth0 
 DEVICE="eth0"
 BOOTPROTO="static"
@@ -60,7 +60,7 @@ NETMASK=255.255.255.0
 
 系统自带的源国内速度有点慢，这里我使用的阿里源
 
-```
+``` bash
 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
 yum clean all
 ```
@@ -69,7 +69,7 @@ yum clean all
 
 以下安装操作都是在 VM1 即控制节点操作的。
 
-```
+``` bash
 yum install -y openstack-packstack
 ```
 
@@ -77,14 +77,14 @@ yum install -y openstack-packstack
 
 #### 生成安装配置文件
 
-```
+``` bash
 packstack --gen-answer-file=multi-node.txt
 ```
 
 
 根据实际需求修改 `multi-node.txt` 相应的配置选项
 
-```
+``` bash
 CONFIG_CINDER_VOLUMES_CREATE=y                      # 如果之前已经配置 CINDER，则此处修改为 n
 CONFIG_NOVA_COMPUTE_HOSTS=192.168.210.121
 CONFIG_NEUTRON_OVS_TENANT_NETWORK_TYPE=vlan         # 这里网络模式使用 vlan
@@ -95,7 +95,7 @@ CONFIG_NEUTRON_OVS_BRIDGE_IFACES=br-eth1:eth1       # 设置 eth1 桥接到 br-e
 
 #### 安装 OpenStack
 
-```
+``` bash
 packstack --answer-file=multi-node.txt
 ```
 
@@ -103,7 +103,7 @@ packstack --answer-file=multi-node.txt
 
 配置 br-ex
 
-```
+``` bash
 # cat /etc/sysconfig/network-scripts/ifcfg-eth0
 DEVICE="eth0"
 ONBOOT="yes"
@@ -123,7 +123,7 @@ GATEWAY=192.168.209.1
 
 配置完成之后可以查看控制节点相关的网络配置
 
-```
+``` bash
 # ovs-vsctl show
 b371c7dc-3109-420f-90d4-f6089cc88c89
     Bridge "br-eth1"
@@ -202,7 +202,7 @@ b371c7dc-3109-420f-90d4-f6089cc88c89
 
 一开始申请的虚拟机磁盘为 20G，查看日志获知默认创建的 cinder 是 20G，所以猜测是 cinder 大小配置的问题，后修改配置文件中 CINDER 大小为 4G
 
-```
+``` bash
 # grep CONFIG_CINDER_VOLUMES_SIZE  multi-node.txt
 CONFIG_CINDER_VOLUMES_SIZE=4G
 ```
@@ -211,14 +211,14 @@ CONFIG_CINDER_VOLUMES_SIZE=4G
 
 __创建独立的 Cinder 分区：__
 
-```
+``` bash
 pvcreate /dev/sda2 
 vgcreate cinder-volumes /dev/sda2
 ```
 
 或者
 
-```
+``` bash
 dd if=/dev/zero of=/var/lib/cinder/cinder-volumes bs=1 count=0 seek=2048M
 losetup /dev/loop2 cinder-volumes
 pvcreate /dev/loop2
@@ -233,7 +233,7 @@ vgcreate cinder-volumes /dev/loop2
 
 通过手动安装 epel 源包解决：
 
-```
+``` bash
 rpm -ivh http://mirrors.zju.edu.cn/epel/6/x86_64/epel-release-6-8.noarch.rpm
 ```
 
@@ -243,7 +243,7 @@ epel 安装完毕之后又出现如下问题：
 
 `mirrorlist` --> `baseurl`，注释 `/etc/yum.repos.d/epel.repo` [epel] 下 mirrorlist 行并取消 baseurl 行的注释。
 
-```
+``` bash
 [epel]
 ... ...
 baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
@@ -260,7 +260,7 @@ baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
 
 浏览器访问 [http://192.168.210.120](http://192.168.210.120) 登陆 Dashboard，密码可以通过以下方式获取
 
-```
+``` bash
 # cat ~/keystonerc_admin 
 export OS_USERNAME=admin
 export OS_TENANT_NAME=admin
@@ -273,3 +273,5 @@ export PS1='[\u@\h \W(keystone_admin)]\$ '
 
 * [RDO Quickstart](https://www.rdoproject.org/Quickstart)
 * [CentOS 6.4 Openstack Havana 多节点安装（OVS+VLAN）](http://www.chenshake.com/centos-6-4-openstack-havana-multinode-installation/)
+
+--EOF--
