@@ -62,3 +62,5 @@ Max open files            10240                10240                files
 ```
 
 OK，至此问题解决。说了那么多废话，其实关键点就 `/etc/sysconfig/libvirtd` 中的 `LIBVIRTD_NOFILES_LIMIT` 变量值的修改。
+
+--EOF--
