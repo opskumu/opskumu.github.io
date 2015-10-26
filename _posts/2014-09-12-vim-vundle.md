@@ -2,7 +2,7 @@
 layout: post
 title: "vim 插件管理工具 vundle"
 description: "vim plugin manager"
-categories: Linux
+categories: tools
 tags: [vim, cmd]
 ---
 

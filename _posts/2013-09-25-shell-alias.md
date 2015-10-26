@@ -478,3 +478,5 @@ alias amzcdnmdel='/home/scripts/admin/cdn/purge_cdn_cache --profile amazon --std
 
 ### 30：The End Is the Beginning 
 ... ...
+
+--EOF--

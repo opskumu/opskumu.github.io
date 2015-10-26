@@ -37,3 +37,5 @@ tags: [go]
 
 * [位操作符](http://zh.wikipedia.org/zh/%E4%BD%8D%E6%93%8D%E4%BD%9C)
 * [golang 位运算详解](http://www.wokugame.com/article/533d4ec21fc9010586000003.html)
+
+--EOF--

@@ -191,3 +191,5 @@ mysql>
 * [innodb 使用大字段 text，blob 的一些优化建议](http://hidba.org/?p=551)
 
 关于 InnoDB 表 BLOB 字段的优化推荐阅读  [优化 InnoDB 表 BLOB 列的存储效率](http://imysql.com/2014/09/28/mysql-optimization-case-blob-stored-in-innodb-optimization.shtml) 和 [innodb 使用大字段 text，blob 的一些优化建议](http://hidba.org/?p=551) 这两篇文章，避免类似问题的产生。
+
+--EOF--
