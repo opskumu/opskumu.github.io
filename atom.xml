@@ -7,7 +7,6 @@ title : Atom Feed
  
  <title>{{ site.title | xml_escape }}</title>
  <link href="{{ site.baseurl }}" rel="self"/>
- <link href="{{ site.baseurl }}"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
  <id>{{ site.baseurl }}</id>
  <author>
