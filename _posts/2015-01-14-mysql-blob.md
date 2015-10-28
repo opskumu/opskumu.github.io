@@ -117,7 +117,7 @@ mysql>
 
 ### 3.1 Antelope 和 Barracuda 文件格式
 
-![Antelope && Barracuda](images/mysql-innodb-file-format.png)
+![Antelope && Barracuda](/images/mysql-innodb-file-format.png)
 
 #### Antelope
 
@@ -125,7 +125,7 @@ InnoDB 存储引擎和大多数数据库一样（如 Oracle 和 Microsoft SQL Se
 
 Compact 行记录是在 MySQL 5.0 中引入的，其设计目标是高效地存储数据。简单来说，一个页中存放的行数据越多，其性能就越高。Compact 行记录的存储方式如下：
 
-![Compact](images/Compact.png)
+![Compact](/images/Compact.png)
 
 Compact 行记录格式的首部是一个非 NULL 变长字段长度列表，并且其是按照列的顺序逆序放置的，其长度为：
 
@@ -134,11 +134,11 @@ Compact 行记录格式的首部是一个非 NULL 变长字段长度列表，并
 
 变长字段的长度最大不可以超过 2 字节，这是因在 MySQL 数据库中 VARCHAR 类型的最大长度限制为 65535。变长字段之后的第二个部分是 NULL 标志位，该位指示了该行数据中是否有 NULL 值，有则用 1 表示。该部分所占的字节应该为 1 字节。接下来的部分是记录头信息（record header），固定占用 5 字节（40 位）,每位的含义见表:
 
-![Compact-record](images/Compact-record.png)
+![Compact-record](/images/Compact-record.png)
 
 对于 blob，text，varchar(8099 这样的大字段，innodb 只会存放前 768 字节在数据页中，而剩余的数据则会存储在溢出段中（发生溢出情况的时候适用），对于行溢出数据，其存放采用下图中所示方法；
 
-![Compact-blob](images/Compact-blob.png)
+![Compact-blob](/images/Compact-blob.png)
 
 innoDB 存储引擎表是索引组织的，即 B+Tree 的结构，这样每个页中至少应该有两条行记录（否则失去了B+Tree的意义，变成链表了）。因此，如果页中只能存放下一条记录，那么 InnoDB 存储引擎会自动将行数据存放到溢出页中，所以默认页 16KB，那么一行数据列和如果超过 8kB 则会出现之前溢出的错误。
 
@@ -150,7 +150,7 @@ InnoDB 1. 0.x 版本开始引入了新的文件格式（file format，用户可�
 
 新的两种记录格式对于存放在 BLOB 中的数据采用了完全的行溢出的方式，如图所示，在数据页中只存放 20 个字节的指针，实际的数据都存放在 Off Page 中，而之前的 Compact 和 Redundant 两种格式会存放 768 个前缀字节。
 
-![Compressed-blob](images/Compressed-blob.png)
+![Compressed-blob](/images/Compressed-blob.png)
 
 Compressed 行记录格式的另一个功能就是，存储在其中的行数据会以 zlib 的算法进行压缩，因此对于 BLOB、TEXT、VARCHAR 这类大长度类型的数据能够进行非常有效的存储。
 
