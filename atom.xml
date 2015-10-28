@@ -19,7 +19,7 @@ title : Atom Feed
   {% for post in site.posts limit:20 %}
   <entry>
     <title>{{ post.title | xml_escape }}</title>
-    <link rel="alternate" type="text/html" href="{{ site.baseurl }}{{ post.url }}/?utm_source=RSS&amp;utm_medium=RSS&amp;utm_campaign={{ post.title | replace: ',','' | replace: ' ', '' | xml_escape }}" />
+    <link rel="alternate" type="text/html" href="{{ site.baseurl }}{{ post.url }} | xml_escape }}" />
     <published>{{ post.date | date: "%Y-%m-%dT%H:%M:%SZ" }}</published>
     <updated>{{ post.date | date_to_xmlschema }}</updated>
     <id>{{ site.baseurl }}{{ post.id }}</id>
