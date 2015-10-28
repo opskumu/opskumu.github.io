@@ -8,7 +8,7 @@ url: "http://blog.opskumu.com" # the base hostname & protocol for your site
 author:
   fullname: kumu
   github: opskumu
-  twitter: electrik_frog
+  # twitter:
   # disqus: your_disqus_username
 
 # google_analytics: 'UA-XXXXXXXX-X'
