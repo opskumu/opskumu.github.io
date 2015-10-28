@@ -1,32 +1,22 @@
-# This is the default format. 
-# For more see: http://jekyllrb.com/docs/permalinks/
-permalink: /:title.html
+# Site settings
+title: "Kumu's Blog"
+description: >
+  Kumu's Blog
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://blog.opskumu.com" # the base hostname & protocol for your site
 
+author:
+  fullname: kumu
+  github: opskumu
+  twitter: electrik_frog
+  # disqus: your_disqus_username
+
+# google_analytics: 'UA-XXXXXXXX-X'
+
+# Build settings
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
-# markdown: rdiscount
-# highlighter: pygments
 markdown: redcarpet
 redcarpet:
     extensions: ["fenced_code_blocks", "tables", "highlight", "strikethrough"]
     highlighter: pygments
-
-# Themes are encouraged to use these universal variables 
-# so be sure to set them if your theme uses them.
-#
-title : Kumu's Blog
-tagline: Site Tagline
-author :
-  name : kumu
-  fullname : kumu
-  email : opskumu@gmail.com
-  github : opskumu
-
-# The production_url is only used when full-domain names are needed
-# such as sitemap.txt 
-# Most places will/should use BASE_PATH to make the urls
-#
-# If you have set a CNAME (pages.github.com) set your custom domain here.
-# Else if you are pushing to username.github.io, replace with your username.
-# Finally if you are pushing to a GitHub project page, include the project name at the end.
-#
-production_url : blog.opskumu.com
+permalink: /:categories/:year/:month/:day/:title.html
