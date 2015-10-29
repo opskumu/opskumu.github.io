@@ -454,3 +454,15 @@ td,
 th {
   padding: 0;
 }
+
+/**
+ * TOC
+ */
+
+#markdown-toc:before {
+  content: "Table of Contents";
+}
+
+ul#markdown-toc {
+  list-style: none;
+}
