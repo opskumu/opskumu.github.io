@@ -264,6 +264,7 @@ samp {
   /* font-family: monospace, monospace; */
   font-family: "Source Code Pro Light",Consolas,"Courier New",monospace;
   font-size: 1em;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Forms
