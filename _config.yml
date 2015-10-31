@@ -26,3 +26,7 @@ kramdown:
 #     extensions: ["fenced_code_blocks", "tables", "highlight", "strikethrough"]
 #     highlighter: pygments
 permalink: /:title.html
+comments:
+    provider: duoshuo
+    duoshuo:
+        short_name: kumu
