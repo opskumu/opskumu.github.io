@@ -5,7 +5,7 @@ description: "Linux Tips"
 permalink: /tips/
 ---
 
-<u>__1__、给 __man__ 一点颜色看看</u>
+<u>1、给 man 一点颜色看看</u>
 
 在 `~/.bashrc` 或者 `~/.bash_profile` 中加入如下内容,`source` 即可生效
 
@@ -19,7 +19,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m' 
 ```
 
-<u>__2__、通过文件添加 __Swap__ 分区</u>
+<u>2、通过文件添加 Swap 分区</u>
 
 * a、生成实际需求大小的文件
 	* `dd if=/dev/zero of=/swapfile bs=1024 count=65536`
@@ -34,18 +34,18 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 
 
 
-<u>__3__、查看某个进程占用 __Swap__ 大小</u>
+<u>3、查看某个进程占用 Swap 大小</u>
 
 * 方法1、`top` 按 `f` 键输入 `p` 回车即可 
 * 方法2、`grep --color -i swap /proc/pid/status`
 
-<u>__4__、RHEL 常用 Yum 源</u>
+<u>4、RHEL 常用 Yum 源</u>
 
 * 源1、[epel 企业版 Linux 附加软件包](http://fedoraproject.org/wiki/EPEL/zh-cn) 
 * 源2、[RepoForge ](http://repoforge.org/use/) CentOS 社区认为是最安全也是最稳定的一个软件仓库
 * 源3、[网易163 mirrors](http://mirrors.163.com/.help/centos.html) [搜狐 mirrors](http://mirrors.sohu.com/help/centos.html) [阿里 mirrors](http://mirrors.aliyun.com/help/centos)
 
-<u>__5__、bash history 记录命令执行时间</u>
+<u>5、bash history 记录命令执行时间</u>
 
 ``` bash
 kumu-opsdev ~ # export HISTTIMEFORMAT='%F %T '
@@ -56,7 +56,7 @@ kumu-opsdev ~ # history | less
    42  2013-07-31 10:54:40 chmod 700 a 
 ```
 
-<u>__6__、避免程序因网络原因/窗口意外断开中断</u>
+<u>6、避免程序因网络原因/窗口意外断开中断</u>
 
 * 使用 [tmux](http://kumu-linux.github.io/blog/2013/08/06/tmux/)/[screen](http://www.ibm.com/developerworks/cn/linux/l-cn-screen/)等工具
 * 使用 `nohup 程序名 &` 或者 `setsid 程序名 &` 或者 `(命令名 &)` [参考文章](http://hi.baidu.com/xtyangjie/item/3f5aaff7e9c145de6225d23f)
@@ -66,7 +66,7 @@ kumu-opsdev ~ # history | less
 	* 3、`bg %jobid` 让程序后台运行
 	* 4、`disown -h %jobid` 使运行程序忽略 HUP 信号
 
-<u>__7__、Linux终端录制和回放</u>
+<u>7、Linux终端录制和回放</u>
 
 * `script` 和 `scriptreplay` 命令 
 * 【 script 负责录制 | scriptreplay 负责回放 】 [参考文章](http://blog.csdn.net/signmem/article/details/8734476)
@@ -78,11 +78,11 @@ kumu-opsdev ~ # history | less
 # scriptreplay test.time test.txt       # 终端回放
 ```
 
-<u>__8__、退出无响应的ssh连接</u>
+<u>8、退出无响应的ssh连接</u>
 
 * 快捷键 `~.` [波浪线和点]
 
-<u>__9__、ssh 配置文件定义 ssh 连接端口</u>
+<u>9、ssh 配置文件定义 ssh 连接端口</u>
 
 * 为方便连接，可以在 `~/.ssh/config` 文件中定义 ssh 连接端口和私钥等
 
@@ -93,7 +93,7 @@ HOST 172.16.*.*
     IdentityFile ~/.ssh/kumu_id_rsa
 ```
 
-<u>__10__、vim 分屏功能</u>
+<u>10、vim 分屏功能</u>
 
 * vim 打开多个文件横屏 `-o` 选项: `vim -o2 /etc/passwd test1 test2` [n 是数字，表示分成几个屏]
     * 上下切换使用 `Ctrl+w` + 上下方向键
@@ -103,7 +103,7 @@ HOST 172.16.*.*
     * `split 文件名` 横屏
     * `vsplit 文件名` 竖屏
 
-<u>__11__、显示 bash 当前所在层级</u>
+<u>11、显示 bash 当前所在层级</u>
 
 * 变量 `SHLVL`
 
@@ -112,13 +112,13 @@ kumu-opsdev ssh # echo $SHLVL
 2 
 ```
 
-<u>__12__、清空内存缓存</u>
+<u>12、清空内存缓存</u>
 
 ``` bash
 sync; echo 3 > /proc/sys/vm/drop_caches
 ```
 
-<u>__13__、rsync 同步目录指定文件</u>
+<u>13、rsync 同步目录指定文件</u>
 
 有时候有需求只同步 rsync 库中单个文件，则可以通过如下方式同步
 
@@ -127,11 +127,11 @@ RSYNC_PASSWORD=your_pass rsync -az --include=filename --exclude=* \
     test@test.com::test /test/
 ```
 
-<u>__14__、crontab 百分号</u>
+<u>14、crontab 百分号</u>
 
 当写 crontab 时，如果命令中有 % 号的时候，需要使用\转移，否则计划任务会执行失败
 
-<u>__15__、ssh controlmaster 选项</u>
+<u>15、ssh controlmaster 选项</u>
 
 有时用 ssh 使用密码登陆多个相同主机时，为避免多次输入密码，可以在 `~/.ssh/config` 文件中加入如下选项
 
