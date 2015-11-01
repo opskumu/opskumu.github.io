@@ -60,6 +60,7 @@ dns-nameservers 192.168.0.1
 bridge name	bridge id		STP enabled	interfaces
 br0		8000.02000a0080e1	no		eth0
 ```
+
 ## 四、参考
 
 * [Networking does not restart](https://bugs.launchpad.net/ubuntu/+source/ifupdown/+bug/1301015)
