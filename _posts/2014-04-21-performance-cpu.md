@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "cpu 性能指标"
-categories: Linux
+categories: linux
 tags: [Linux, cmd]
 ---
 

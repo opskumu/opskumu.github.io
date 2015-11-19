@@ -2,7 +2,7 @@
 layout: post
 title: "《软件开发者路线图—从学徒到高手》摘要"
 description: "读书笔记"
-categories: read
+categories: other
 tags: [读书笔记]
 ---
 

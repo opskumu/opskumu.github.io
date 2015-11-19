@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "nslookup、host 和 dig"
-categories: Linux
+categories: linux
 tags: [Linux, cmd]
 ---
 
