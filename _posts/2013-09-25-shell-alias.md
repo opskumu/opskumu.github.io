@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "30 Handy Bash Shell Aliases"
-categories: Linux
+categories: linux
 tags: [Linux, cmd]
 ---
 

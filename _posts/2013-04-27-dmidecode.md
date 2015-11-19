@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "dmidecode 硬件信息查看"
-categories: Linux
+categories: linux
 tags: [Linux, cmd]
 ---
 

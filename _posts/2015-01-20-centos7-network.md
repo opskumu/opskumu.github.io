@@ -2,7 +2,7 @@
 layout: post
 title: "CentOS 7/RHEL 7 网卡启动错误"
 description: "CentOS 7 网卡启动错误"
-categories: Linux
+categories: linux
 tags: [Linux]
 ---
 

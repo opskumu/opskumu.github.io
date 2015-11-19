@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Ubuntu 14.04 重启网卡"
-categories: Linux
+categories: linux
 tags: [Linux, cmd]
 ---
 

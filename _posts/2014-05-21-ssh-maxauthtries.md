@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "ssh MaxAuthTries"
-categories: Linux
+categories: linux
 tags: [Linux, ssh]
 ---
 

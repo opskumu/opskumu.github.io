@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "rsyslog 远程传输"
-categories: Linux
+categories: linux
 tags: [Linux, rsyslog]
 ---
 
