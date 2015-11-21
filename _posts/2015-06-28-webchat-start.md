@@ -20,4 +20,4 @@ tags: [微信公众号]
 
 * 公众号原文链接 [开篇](http://mp.weixin.qq.com/s?__biz=MzAxODUwNDc4MA==&mid=213596736&idx=1&sn=d3785ef4b66771a15d63a35bc4781909#rd)
 
---EOF--
+![微信公众号](/images/weixin.jpg)
