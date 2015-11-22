@@ -1,0 +1,8 @@
+---
+# Remember to set url in your _config.yml file!
+title : Sitemap
+---
+{% for page in site.pages %}
+{{site.url}}{{ page.url }}{% endfor %}
+{% for post in site.posts %}
+{{site.url}}{{ post.url }}{% endfor %}
