@@ -76,7 +76,7 @@ rbd docker plugin driver 会做如下操作(前提是当前镜像不存在):
 * 2、map image 并格式化为 XFS 文件系统
 * 3、挂载到对应容器
 
-如果容器启动没有添加 `--rm` 选择则容器退出后，镜像依然可以被其它容器复用(即使加上 `--rm` 选项，plugin driver 也只是 rename image 而并不是直接 rm)。
+如果容器启动没有添加 `--rm` 选择则容器退出后，镜像依然可以被其它容器复用(除非 docker run 的时候添加了 `--rm` 选项并且 rbd-docker-plugin 添加了 `--remove` 选项才会执行删除操作，否则如果只是添加了 `--rm` 的选项，plugin driver 也只是 rename image 而并不是直接 rm)。
 
 > 实际测试过程中如果使用的不是默认的 pool rbd，rename 的过程出现错误，应该是 plugin 的 bug，修改代码执行 `rbd rename` 时添加 `--dest-pool` 选项即可。
 
