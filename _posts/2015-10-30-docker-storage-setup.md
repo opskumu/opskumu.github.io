@@ -19,7 +19,7 @@ tags: [docker]
 
 data [存放数据] 和 metadata [存放元数据] 的大小从输出可以看出初始化默认为 100G 和 2G 大小，都是稀疏文件，使用多少占用多少。
 
-Docker 在初始化的过程中，创建 data 和 metadata 这两个稀疏文件，并分别附加到回环设备 `/dev/loop0` 和 `/dev/loop1` 上，然后基于回环设备创建 [thin pool](https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt)。 默认一个 container 最大存放数据不超过 10G，如果需要调整则需要修改 `/etc/sysconfig/docker` 配置文件添加相关选项 `--storage-opt` 调整即可（详细参考 man docker 查看 STORAGE DRIVER OPTIONS 具体参数说明）。
+Docker 在初始化的过程中，创建 data 和 metadata 这两个稀疏文件，并分别附加到回环设备 `/dev/loop0` 和 `/dev/loop1` 上，然后基于回环设备创建 [thin pool](https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt)。 默认一个 container 最大存放数据不超过 10G [注：docker 1.8 之后默认的大小已经为 100G]，如果需要调整则需要修改 `/etc/sysconfig/docker` 配置文件添加相关选项 `--storage-opt` 调整即可（详细参考 man docker 查看 STORAGE DRIVER OPTIONS 具体参数说明）。
 
 ``` bash
 # docker info
@@ -41,16 +41,16 @@ Storage Driver: devicemapper
  Data loop file: /var/lib/docker/devicemapper/devicemapper/data
  Metadata loop file: /var/lib/docker/devicemapper/devicemapper/metadata
 ... ...
-# lsblk 
+# lsblk
 ... ...
-loop0                                                                                         7:0    0  100G  0 loop 
+loop0                                                                                         7:0    0  100G  0 loop
 └─docker-253:1-100673362-pool                                                               252:0    0  100G  0 dm   
   ├─docker-253:1-100673362-61f1302169c719e4f671942d6158bba061a0b5081c98d40e8ca9749f1a521ca4 252:1    0   10G  0 dm   
   └─docker-253:1-100673362-79c4340c3e06584d4e3630ad4a9b3a768066a52b0a04c9cb7bffa0b45bec8747 252:2    0   10G  0 dm   
-loop1                                                                                         7:1    0    2G  0 loop 
+loop1                                                                                         7:1    0    2G  0 loop
 └─docker-253:1-100673362-pool                                                               252:0    0  100G  0 dm   
   ├─docker-253:1-100673362-61f1302169c719e4f671942d6158bba061a0b5081c98d40e8ca9749f1a521ca4 252:1    0   10G  0 dm   
-  └─docker-253:1-100673362-79c4340c3e06584d4e3630ad4a9b3a768066a52b0a04c9cb7bffa0b45bec8747 252:2    0   10G  0 dm 
+  └─docker-253:1-100673362-79c4340c3e06584d4e3630ad4a9b3a768066a52b0a04c9cb7bffa0b45bec8747 252:2    0   10G  0 dm
 ... ...
 ```
 
@@ -64,7 +64,7 @@ CentOS7 从 `docker-1.6.2-14.el7.centos.x86_64.rpm` 开始提供 `docker-storage
 
 ``` bash
 # systemctl stop docker # 停止当前运行的 docker
-# cat /etc/sysconfig/docker-storage-setup 
+# cat /etc/sysconfig/docker-storage-setup
 DEVS=/dev/vdc   # A quoted, space-separated list of devices to be used.
 VG=docker-vg    # The volume group to use for docker storage.
 SETUP_LVM_THIN_POOL=yes
@@ -83,7 +83,7 @@ EnvironmentFile=-/etc/sysconfig/docker-storage  # 可以看出 docker 启动会�
 删除源数据并启动 docker
 
 ``` bash
-# cat /etc/sysconfig/docker-storage-setup 
+# cat /etc/sysconfig/docker-storage-setup
 # DEVS=/dev/vdc     # 注释该行
 VG=docker-vg
 SETUP_LVM_THIN_POOL=yes
@@ -99,8 +99,8 @@ Storage Driver: devicemapper
  Pool Name: docker--vg-docker--pool     # 此处已经变为相关的设备文件
  Pool Blocksize: 524.3 kB
  Backing Filesystem: <unknown>
- Data file: 
- Metadata file: 
+ Data file:
+ Metadata file:
  Data Space Used: 14.16 GB
  Data Space Total: 64.35 GB            
  Data Space Available: 50.19 GB
