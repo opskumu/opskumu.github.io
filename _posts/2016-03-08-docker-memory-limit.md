@@ -6,7 +6,7 @@ categories: virtualization
 tags: [docker]
 ---
 
-## 压测工具
+## 一、压测工具
 
 * [stress](http://people.seas.harvard.edu/~apw/stress/)
 
@@ -21,7 +21,7 @@ RUN apt-get update && \
 ➜   docker build -t ubuntu-stress:latest .
 ```
 
-## 一、内存测试
+## 二、内存测试
 
 * 目前 Docker 支持内存资源限制选项
     * `-m`, `--memory=""`
@@ -43,7 +43,7 @@ RUN apt-get update && \
 默认启动一个 container，对于容器的内存是没有任何限制的。
 
 ```
-➜  ~ docker help run | grep memory  # 测试 docker 版本 1.10.2
+➜  ~ docker help run | grep memory  # 测试 docker 版本 1.10.2，宿主系统 Ubuntu 14.04.1
   --kernel-memory                 Kernel memory limit
   -m, --memory                    Memory limit
   --memory-reservation            Memory soft limit
@@ -52,7 +52,7 @@ RUN apt-get update && \
 ➜  ~
 ```
 
-### 1.1 `-m ... --memory-swap ...`
+### 2.1 `-m ... --memory-swap ...`
 
 * `docker run -it --rm -m 100M --memory-swap -1 ubuntu-stress:latest /bin/bash`
 
@@ -186,7 +186,7 @@ KiB Swap: 15625212 total,   366160 used, 15259052 free.  4102076 cached Mem
 
 根据实际测试可以理解，`-m` 为物理内存上限，而 `--memory-swap` 则是 memory + swap 之和，当压测值是 `--memory-swap` 上限时，则容器中的进程会被直接 OOM kill。
 
-### 1.2 `-m ... --memory-swappiness ...`
+### 2.2 `-m ... --memory-swappiness ...`
 
 swappiness 可以认为是宿主 `/proc/sys/vm/swappiness` 设定：
 
@@ -206,11 +206,11 @@ stress: FAIL: [18] (452) failed run completed in 0s
 root@e3fd6cc73849:/#
 ```
 
-### 1.3 `--memory-reservation ...`
+### 2.3 `--memory-reservation ...`
 
 `--memory-reservation ...` 选项可以理解为内存的软限制。如果不设置 `-m` 选项，那么容器使用内存可以理解为是不受限的。按照官方的说法，memory reservation 设置可以确保容器不会长时间占用大量内存。
 
-### 1.4 `--oom-kill-disable`
+### 2.4 `--oom-kill-disable`
 
 ```
 ➜  ~ docker run -it --rm -m 100M --memory-swappiness=0 --oom-kill-disable ubuntu-stress:latest /bin/bash
@@ -226,6 +226,62 @@ $ docker run -it --oom-kill-disable ubuntu:14.04 /bin/bash
 
 因为此时容器内存没有限制，并且不会被 oom kill，此时系统则会 kill 系统进程用于释放内存。
 
-## 二、内存资源限制 Docker 源码解析
+## 三、内存资源限制 Docker 源码解析
 
-待补充 ...
+关于 Docker 资源限制主要是依赖 Linux cgroups 去实现的，关于 cgroups 资源限制实现可以参考：[Docker背后的内核知识——cgroups资源限制](http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation/), libcontainer 配置相关的选项：
+
+* `github.com/opencontainers/runc/libcontainer/cgroups/fs/memory.go`
+
+```
+68 func (s *MemoryGroup) Set(path string, cgroup *configs.Cgroup) error {
+69     if cgroup.Resources.Memory != 0 {
+70         if err := writeFile(path, "memory.limit_in_bytes", strconv.FormatInt(cgroup.Resources.Memory, 10)); err != nil {
+71             return err
+72         }
+73     }
+74     if cgroup.Resources.MemoryReservation != 0 {
+75         if err := writeFile(path, "memory.soft_limit_in_bytes", strconv.FormatInt(cgroup.Resources.MemoryReservation, 10)); err != nil {
+76             return err
+77         }
+78     }
+79     if cgroup.Resources.MemorySwap > 0 {
+80         if err := writeFile(path, "memory.memsw.limit_in_bytes", strconv.FormatInt(cgroup.Resources.MemorySwap, 10)); err != nil {
+81             return err   // 如果 MemorySwap 没有设置，则 cgroup 默认设定值是 Memory 2 倍，详见后文测试
+82         }
+83     }
+84     if cgroup.Resources.OomKillDisable {
+85         if err := writeFile(path, "memory.oom_control", "1"); err != nil {
+86             return err
+87         }
+88     }
+89     if cgroup.Resources.MemorySwappiness >= 0 && cgroup.Resources.MemorySwappiness <= 100 {
+90         if err := writeFile(path, "memory.swappiness", strconv.FormatInt(cgroup.Resources.MemorySwappiness, 10)); err != nil {
+91             return err
+92         }
+93     } else if cgroup.Resources.MemorySwappiness == -1 {
+94         return nil  // 如果 MemorySwappiness 设置为 -1，则不做任何操作，经测试默认值为 60，后文附测试
+95     } else {
+96         return fmt.Errorf("invalid value:%d. valid memory swappiness range is 0-100", cgroup.Resources.MemorySwappiness)
+97     }
+98
+99     return nil
+100 }  
+```
+
+附测试：
+
+```
+➜  ~ docker run -it --rm -m 100M --memory-swappiness=-1 ubuntu-stress:latest /bin/bash
+root@fbe9b0abf665:/#
+```
+
+查看宿主对应 container cgroup 对应值：
+
+```
+➜  ~ cd /sys/fs/cgroup/memory/docker/fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356
+➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356 cat memory.swappiness           # swappiness 如果设置 -1 则该值默认为 60
+60
+➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356 cat memory.memsw.limit_in_bytes # 为设置的 memory 2 倍 
+209715200
+➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356 
+```
