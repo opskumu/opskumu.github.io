@@ -37,6 +37,7 @@ RUN apt-get update && \
         * Memory soft limit (format: `<number>[<unit>]`). Number is a positive integer. Unit can be one of `b`, `k`, `m`, or `g`.
     * `--kernel-memory=""`
         * Kernel memory limit (format: `<number>[<unit>]`). Number is a positive integer. Unit can be one of `b`, `k`, `m`, or `g`. Minimum is 4M.
+        * kernel memory 没有特殊需求，则无需额外设置
     * `--oom-kill-disable=false`
         * Whether to disable OOM Killer for the container or not.
 
@@ -100,9 +101,9 @@ stress 96 kB
 
 * `docker run -it --rm -m 100M ubuntu-stress:latest /bin/bash`
 
-按照官方文档的理解，如果指定 `-m` 内存限制时不添加 `--memory-swap` 选项，则表示容器中程序可以使用 100M 内存和 100M swap 内存。默认情况下，虚拟内存大小（--memory-swap）会被设置成 memory 的 2倍。
+按照官方文档的理解，如果指定 `-m` 内存限制时不添加 `--memory-swap` 选项，则表示容器中程序可以使用 100M 内存和 100M swap 内存。默认情况下，`--memory-swap` 会被设置成 memory 的 2倍。
 
-> We set memory limit(300M) only, this means the processes in the container can use 300M memory and 300M swap memory, by default, the total virtual memory size (--memory-swap) will be set as double of memory, in this case, memory + swap would be 2*300M, so processes can use 300M swap memory as well.
+> We set memory limit(300M) only, this means the processes in the container can use 300M memory and 300M swap memory, by default, the total virtual memory size `--memory-swap` will be set as double of memory, in this case, memory + swap would be 2*300M, so processes can use 300M swap memory as well.
 
 如果按照以上方式运行容器提示如下信息：
 
@@ -225,6 +226,17 @@ $ docker run -it --oom-kill-disable ubuntu:14.04 /bin/bash
 ```
 
 因为此时容器内存没有限制，并且不会被 oom kill，此时系统则会 kill 系统进程用于释放内存。
+
+### 2.5 `--kernel-memory`
+
+> Kernel memory is fundamentally different than user memory as kernel memory can’t be swapped out. The inability to swap makes it possible for the container to block system services by consuming too much kernel memory. Kernel memory includes:
+
+* stack pages
+* slab pages
+* sockets memory pressure
+* tcp memory pressure
+
+这里直接引用 Docker 官方介绍，如果无特殊需求，kernel-memory 一般无需设置，这里不作过多说明。
 
 ## 三、内存资源限制 Docker 源码解析
 
