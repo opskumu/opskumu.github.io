@@ -6,6 +6,10 @@ categories: virtualization
 tags: [docker]
 ---
 
+* [Docker 资源限制之内存](http://blog.opskumu.com/docker-memory-limit.html)
+* [Docker 资源限制之 CPU](http://blog.opskumu.com/docker-cpu-limit.html)
+* [Docker 资源限制之 IO](http://blog.opskumu.com/docker-io-limit.html)
+
 ## 一、压测工具
 
 * [stress](http://people.seas.harvard.edu/~apw/stress/)

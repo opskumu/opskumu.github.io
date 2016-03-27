@@ -6,6 +6,10 @@ categories: virtualization
 tags: [docker]
 ---
 
+* [Docker 资源限制之内存](http://blog.opskumu.com/docker-memory-limit.html)
+* [Docker 资源限制之 CPU](http://blog.opskumu.com/docker-cpu-limit.html)
+* [Docker 资源限制之 IO](http://blog.opskumu.com/docker-io-limit.html)
+
 ## 一、压测工具
 
 同上文 [Docker 资源限制之内存](http://blog.opskumu.com/docker-memory-limit.html) 使用 stress 测试。
@@ -57,7 +61,7 @@ CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %             
 
 ### 2.2 CPU period constraint: `--cpu-period` & `--cpu-quota`
 
-默认的 CPU CFS「Completely Fair Scheduler」period 是 100ms。我们可以通过 `--cpu-period` 值限制容器的 CPU 使用。一半 `--cpu-period` 配合 `--cpu-quota` 一起使用。
+默认的 CPU CFS「Completely Fair Scheduler」period 是 100ms。我们可以通过 `--cpu-period` 值限制容器的 CPU 使用。一般 `--cpu-period` 配合 `--cpu-quota` 一起使用。
 
 设置 cpu-period 为 100ms，cpu-quota 为 200ms，表示最多可以使用 2 个 cpu，如下测试：
 
