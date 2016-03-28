@@ -61,7 +61,7 @@ RUN apt-get update && \
 
 * `docker run -it --rm -m 100M --memory-swap -1 ubuntu-stress:latest /bin/bash`
 
-指定限制内存大小并且设置 memory-swap 值为 -1，表示容器程序使用内存受限，而 swap 空间使用不受限制（宿主 swap 支持使用多少则容器即可使用多少）。
+指定限制内存大小并且设置 memory-swap 值为 -1，表示容器程序使用内存受限，而 swap 空间使用不受限制（宿主 swap 支持使用多少则容器即可使用多少。如果 `--memory-swap` 设置小于 `--memory` 则设置不生效，使用默认设置）。
 
 ```
 ➜  ~ docker run -it --rm -m 100M --memory-swap -1 ubuntu-stress:latest /bin/bash
@@ -223,7 +223,7 @@ root@f54f93440a04:/# stress --vm 1 --vm-bytes 200M  # 正常情况不添加 --oo
 stress: info: [17] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 ```
 
-但是如果是以下的这种没有对容器作任何资源限制的情况，添加 `--oom-kill-disable` 选项就比较**危险**了：
+但是如果是以下的这种没有对容器作任何资源限制的情况，添加 `--oom-kill-disable` 选项就比较 __危险__ 了：
 
 ```
 $ docker run -it --oom-kill-disable ubuntu:14.04 /bin/bash
