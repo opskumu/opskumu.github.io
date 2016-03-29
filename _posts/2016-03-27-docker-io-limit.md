@@ -118,7 +118,7 @@ root@6778b6b39686:/#
 
 ```
 ➜  ~ docker run -it --rm --device-write-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
-root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100
+root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 100+0 records in
 100+0 records out
 104857600 bytes (105 MB) copied, 100.064 s, 1.0 MB/s    # 可以得知写入的平均速度是 1.0 MB/s
@@ -140,7 +140,7 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100
 
 ```
 ➜  ~ docker run -it --rm --device-write-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
-root@c2a2fa232594:/# dd if=/dev/zero of=test.out bs=1M count=100
+root@c2a2fa232594:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 100+0 records in
 100+0 records out
 104857600 bytes (105 MB) copied, 42.6987 s, 2.5 MB/s
