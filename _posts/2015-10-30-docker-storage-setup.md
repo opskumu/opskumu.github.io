@@ -19,7 +19,7 @@ tags: [docker]
 
 data [存放数据] 和 metadata [存放元数据] 的大小从输出可以看出初始化默认为 100G 和 2G 大小，都是稀疏文件，使用多少占用多少。
 
-Docker 在初始化的过程中，创建 data 和 metadata 这两个稀疏文件，并分别附加到回环设备 `/dev/loop0` 和 `/dev/loop1` 上，然后基于回环设备创建 [thin pool](https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt)。 默认一个 container 最大存放数据不超过 10G，如果需要调整则需要修改 `/etc/sysconfig/docker` 配置文件添加相关选项 `--storage-opt` 调整即可（详细参考 man docker 查看 STORAGE DRIVER OPTIONS 具体参数说明）。
+Docker 在初始化的过程中，创建 data 和 metadata 这两个稀疏文件，并分别附加到回环设备 `/dev/loop0` 和 `/dev/loop1` 上，然后基于回环设备创建 [thin pool](https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt)。 默认一个 container 最大存放数据不超过 10G[注：docker 1.8 之后默认的大小已经为 100G]，如果需要调整则需要修改 `/etc/sysconfig/docker` 配置文件添加相关选项 `--storage-opt` 调整即可（详细参考 man docker 查看 STORAGE DRIVER OPTIONS 具体参数说明）。
 
 ``` bash
 # docker info
