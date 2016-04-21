@@ -2,7 +2,7 @@
 layout: post
 title: Docker 使用 Ceph RBD Volume
 description: "Docker RBD Volume Plugin"
-categories: virtualization 
+categories: virtualization
 tags: [docker]
 ---
 
@@ -10,19 +10,19 @@ tags: [docker]
 
 * OS: CentOS 7.1
     * Ubuntu 14.04 下测试也是可行的
-* ceph-common version: 0.94 
+* ceph-common version: 0.94
     * 因为 rbd-docker-plugin 通过 `nbd map` 命令返回值获取 map 设备名，而 `0.80` 不支持，所以如果你是旧版本的 ceph-common 推荐升级至 `0.94`，或者修改 plugin 源码通过 `nbd showmapped` 过滤获取 map 设备名也是同样可行的
 * Docker version: 1.8.2
     * 原则上 `1.8` 版本都支持，`1.9` 没有测试可行性
 * rbd plugin: [rbd-docker-plugin](https://github.com/yp-engineering/rbd-docker-plugin)
 
-## 二、环境构建 
+## 二、环境构建
 
-rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说明。 
+rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说明。
 
 ```
 go get github.com/yp-engineering/rbd-docker-plugin
-``` 
+```
 
 完成之后编译的二进制路径为 `$GOPATH/bin/rbd-docker-plugin`，拷贝到相应测试主机即可。
 
@@ -41,7 +41,7 @@ docker run -d --net=host -e MON_IP=当前主机IP -e CEPH_NETWORK=当前主机�
 
 > 关于 ceph/demo 镜像的更多说明可以参考 [ceph/ceph-docker/demo](https://github.com/ceph/ceph-docker/tree/master/demo)
 
-## 三、运行 rbd docker plugin 
+## 三、运行 rbd docker plugin
 
 ```
 # ceph osd pool create docker 128
@@ -70,7 +70,7 @@ rbd-volume-plugin: 2016/02/17 10:58:00 main.go:86: INFO: Opening Socket for Dock
 /dev/rbd0            xfs            20.0G     32.6M     20.0G   0% /mnt/foo
 ```
 
-rbd docker plugin driver 会做如下操作(前提是当前镜像不存在): 
+rbd docker plugin driver 会做如下操作(前提是当前镜像不存在):
 
 * 1、创建一个 20GB 的镜像
 * 2、map image 并格式化为 XFS 文件系统

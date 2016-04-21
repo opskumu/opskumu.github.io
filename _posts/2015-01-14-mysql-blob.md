@@ -52,7 +52,7 @@ mysql> SELECT `table_name`, `row_format` FROM `information_schema`.`tables` WHER
 +---------------------+------------+
 10 rows in set (0.00 sec)
 
-mysql> 
+mysql>
 ```
 
 开发那边删减了一些不必要的数据并更新游戏服务器，但是依然没有解决 DB 回写的问题。因为目前数据量不是很大，并且支持在线修改生效 innodb `innodb_file_format` 和 表 `row_format`，也不会影响 DB，所以先测试修改一个表的  `row_format` 值，查看对应日志输出，发现问题解决，批量修改线上表 `row_format` 值，修改完之后，对应的问题解决，主要修改值如下：
@@ -89,13 +89,13 @@ Max_data_length: 0
       Collation: utf8_general_ci
        Checksum: NULL
  Create_options: row_format=DYNAMIC
-        Comment: 
+        Comment:
 1 row in set (0.00 sec)
 
-ERROR: 
+ERROR:
 No query specified
 
-mysql> 
+mysql>
 ```
 
 加入 `innodb_file_format=BARRACUDA` 到 MySQL 配置文件 my.cnf 中，防止下次 DB 重启造成 `innodb_file_format` 恢复默认。
@@ -146,7 +146,7 @@ innoDB 存储引擎表是索引组织的，即 B+Tree 的结构，这样每个�
 
 #### Barracuda
 
-InnoDB 1. 0.x 版本开始引入了新的文件格式（file format，用户可以理解为新的页格式），以前支持的 Compact 和 Redundant 格式称为 Antelope 文件格式，新的文件格式称为 Barracuda 文件格式。Barracuda 文件格式下拥有两种新的行记录格式：Compressed 和 Dynamic。 
+InnoDB 1. 0.x 版本开始引入了新的文件格式（file format，用户可以理解为新的页格式），以前支持的 Compact 和 Redundant 格式称为 Antelope 文件格式，新的文件格式称为 Barracuda 文件格式。Barracuda 文件格式下拥有两种新的行记录格式：Compressed 和 Dynamic。
 
 新的两种记录格式对于存放在 BLOB 中的数据采用了完全的行溢出的方式，如图所示，在数据页中只存放 20 个字节的指针，实际的数据都存放在 Off Page 中，而之前的 Compact 和 Redundant 两种格式会存放 768 个前缀字节。
 
@@ -176,10 +176,10 @@ Max_data_length: 0
       Collation: utf8_general_ci
        Checksum: NULL
  Create_options: row_format=DYNAMIC
-        Comment: 
+        Comment:
 1 row in set (0.00 sec)
 
-mysql> 
+mysql>
 ```
 
 ## 四、参考延伸

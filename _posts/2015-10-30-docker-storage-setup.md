@@ -41,16 +41,16 @@ Storage Driver: devicemapper
  Data loop file: /var/lib/docker/devicemapper/devicemapper/data
  Metadata loop file: /var/lib/docker/devicemapper/devicemapper/metadata
 ... ...
-# lsblk 
+# lsblk
 ... ...
-loop0                                                                                         7:0    0  100G  0 loop 
-└─docker-253:1-100673362-pool                                                               252:0    0  100G  0 dm   
-  ├─docker-253:1-100673362-61f1302169c719e4f671942d6158bba061a0b5081c98d40e8ca9749f1a521ca4 252:1    0   10G  0 dm   
-  └─docker-253:1-100673362-79c4340c3e06584d4e3630ad4a9b3a768066a52b0a04c9cb7bffa0b45bec8747 252:2    0   10G  0 dm   
-loop1                                                                                         7:1    0    2G  0 loop 
-└─docker-253:1-100673362-pool                                                               252:0    0  100G  0 dm   
-  ├─docker-253:1-100673362-61f1302169c719e4f671942d6158bba061a0b5081c98d40e8ca9749f1a521ca4 252:1    0   10G  0 dm   
-  └─docker-253:1-100673362-79c4340c3e06584d4e3630ad4a9b3a768066a52b0a04c9cb7bffa0b45bec8747 252:2    0   10G  0 dm 
+loop0                                                                                         7:0    0  100G  0 loop
+└─docker-253:1-100673362-pool                                                               252:0    0  100G  0 dm
+  ├─docker-253:1-100673362-61f1302169c719e4f671942d6158bba061a0b5081c98d40e8ca9749f1a521ca4 252:1    0   10G  0 dm
+  └─docker-253:1-100673362-79c4340c3e06584d4e3630ad4a9b3a768066a52b0a04c9cb7bffa0b45bec8747 252:2    0   10G  0 dm
+loop1                                                                                         7:1    0    2G  0 loop
+└─docker-253:1-100673362-pool                                                               252:0    0  100G  0 dm
+  ├─docker-253:1-100673362-61f1302169c719e4f671942d6158bba061a0b5081c98d40e8ca9749f1a521ca4 252:1    0   10G  0 dm
+  └─docker-253:1-100673362-79c4340c3e06584d4e3630ad4a9b3a768066a52b0a04c9cb7bffa0b45bec8747 252:2    0   10G  0 dm
 ... ...
 ```
 
@@ -64,7 +64,7 @@ CentOS7 从 `docker-1.6.2-14.el7.centos.x86_64.rpm` 开始提供 `docker-storage
 
 ``` bash
 # systemctl stop docker # 停止当前运行的 docker
-# cat /etc/sysconfig/docker-storage-setup 
+# cat /etc/sysconfig/docker-storage-setup
 DEVS=/dev/vdc   # A quoted, space-separated list of devices to be used.
 VG=docker-vg    # The volume group to use for docker storage.
 SETUP_LVM_THIN_POOL=yes
@@ -83,7 +83,7 @@ EnvironmentFile=-/etc/sysconfig/docker-storage  # 可以看出 docker 启动会�
 删除源数据并启动 docker
 
 ``` bash
-# cat /etc/sysconfig/docker-storage-setup 
+# cat /etc/sysconfig/docker-storage-setup
 # DEVS=/dev/vdc     # 注释该行
 VG=docker-vg
 SETUP_LVM_THIN_POOL=yes
@@ -99,10 +99,10 @@ Storage Driver: devicemapper
  Pool Name: docker--vg-docker--pool     # 此处已经变为相关的设备文件
  Pool Blocksize: 524.3 kB
  Backing Filesystem: <unknown>
- Data file: 
- Metadata file: 
+ Data file:
+ Metadata file:
  Data Space Used: 14.16 GB
- Data Space Total: 64.35 GB            
+ Data Space Total: 64.35 GB
  Data Space Available: 50.19 GB
  Metadata Space Used: 4.702 MB
  Metadata Space Total: 109.1 MB

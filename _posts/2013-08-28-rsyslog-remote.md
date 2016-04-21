@@ -18,7 +18,7 @@ rsyslog提供三个远程日志传输方式：
 
 以下为man手册对RELP协议的一个介绍：
 
-> RELP can be used instead of UDP or plain TCP syslog to  provide  reliable  delivery  of syslog  messages.  Please  note that plain TCP syslog does NOT provide truly reliable delivery, with it messages may be  lost when there is a connection problem or the server shuts down. RELP prevents message loss in hose cases. 
+> RELP can be used instead of UDP or plain TCP syslog to  provide  reliable  delivery  of syslog  messages.  Please  note that plain TCP syslog does NOT provide truly reliable delivery, with it messages may be  lost when there is a connection problem or the server shuts down. RELP prevents message loss in hose cases.
 
 关于RELP的更进一步了解可以参考 [Using TLS with RELP](http://www.rsyslog.com/tag/relp/) [RELP Input Module](http://www.rsyslog.com/doc/imrelp.html)  [RELP Output Module (omrelp)](http://www.rsyslog.com/doc/omrelp.html)
 
@@ -30,19 +30,19 @@ rsyslog提供三个远程日志传输方式：
 
 #### Server端配置
 
-``` bash 
+``` bash
 # /etc/rsyslog.conf
 # Provides UDP syslog reception
 $ModLoad imudp
 $UDPServerRun 514
 $AllowedSender UDP, 192.168.80.0/24
 
-# This one is the template to generate the log filename dynamically, depending on the client's IP address. 
-# 根据客户端的IP单独存放主机日志在不同目录，syslog需要手动创建             
+# This one is the template to generate the log filename dynamically, depending on the client's IP address.
+# 根据客户端的IP单独存放主机日志在不同目录，syslog需要手动创建
 $template Remote,"/var/log/syslog/%fromhost-ip%/%fromhost-ip%_%$YEAR%-%$MONTH%-%$DAY%.log"
 
 # Log all messages to the dynamically formed file.
-:fromhost-ip, !isequal, "127.0.0.1" ?Remote     
+:fromhost-ip, !isequal, "127.0.0.1" ?Remote
 # 排除本地主机IP日志记录，只记录远程主机日志
 # 注意此规则需要在其它规则之前，否则配置没有意义，远程主机的日志也会记录到Server的日志文件中
 & ~ # 忽略之前所有的日志，远程主机日志记录完之后不再继续往下记录
@@ -51,14 +51,14 @@ $template Remote,"/var/log/syslog/%fromhost-ip%/%fromhost-ip%_%$YEAR%-%$MONTH%-%
 或者把以上配置单独存放在`/etc/rsyslog.d/`中的xxx.conf配置文件中，尽量避免修改主配置文件，当然如果要独立文件主配置文件中必须含有以下配置
 
 ``` bash
-# grep 'rsyslog.d' /etc/rsyslog.conf 
+# grep 'rsyslog.d' /etc/rsyslog.conf
 # Include all config files in /etc/rsyslog.d/
 $IncludeConfig /etc/rsyslog.d/*.conf
 ```
 
 #### Client端配置
 
-``` bash 
+``` bash
 # /etc/rsyslog.conf
 *.*                     @192.168.80.130
 ```
@@ -71,14 +71,14 @@ TCP配置和UDP类似，如下
 
 #### Server端配置
 
-``` bash 
+``` bash
 # /etc/rsyslog.conf
 # Provides TCP syslog reception
 $ModLoad imtcp
 $InputTCPServerRun 514
 $AllowedSender TCP, 192.168.80.0/24
 
-# This one is the template to generate the log filename dynamically, depending on the client's IP address.          
+# This one is the template to generate the log filename dynamically, depending on the client's IP address.
 $template Remote,"/var/log/syslog/%fromhost-ip%/%fromhost-ip%_%$YEAR%-%$MONTH%-%$DAY%.log"
 
 # Log all messages to the dynamically formed file.
@@ -109,12 +109,12 @@ RELP需要安装`rsyslog-relp`相应模块
 
 #### Server端配置
 
-``` bash 
+``` bash
 # /etc/rsyslog.conf
 $ModLoad imrelp # 加载相应模块
 $InputRELPServerRun 20514 # 监听端口
 
-# This one is the template to generate the log filename dynamically, depending on the client's IP address.          
+# This one is the template to generate the log filename dynamically, depending on the client's IP address.
 $template Remote,"/var/log/syslog/%fromhost-ip%/%fromhost-ip%_%$YEAR%-%$MONTH%-%$DAY%.log"
 
 # Log all messages to the dynamically formed file.
@@ -123,7 +123,7 @@ $template Remote,"/var/log/syslog/%fromhost-ip%/%fromhost-ip%_%$YEAR%-%$MONTH%-%
 
 #### Client端配置
 
-``` bash 
+``` bash
 # /etc/rsyslog.conf
 $ActionQueueType LinkedList     # use asynchronous processing
 $ActionQueueFileName srvrfwd    # set file name, also enables disk mode
@@ -138,8 +138,8 @@ $ActionQueueSaveOnShutdown on   # save in-memory data if rsyslog shuts down
 
 * [UDP Rsyslog](http://www.rsyslog.com/tag/udp/)
 * [TCP Rsyslog](http://www.rsyslog.com/tag/tcp/)
-* [Using TLS with RELP](http://www.rsyslog.com/tag/relp/) 
-* [RELP Input Module](http://www.rsyslog.com/doc/imrelp.html)  
+* [Using TLS with RELP](http://www.rsyslog.com/tag/relp/)
+* [RELP Input Module](http://www.rsyslog.com/doc/imrelp.html)
 * [RELP Output Module (omrelp)](http://www.rsyslog.com/doc/omrelp.html)
 * [Rsyslog remote logging using RELP](http://gertverdemme.nl/sysadm/security/rsyslog_relp_remote_logging)
 

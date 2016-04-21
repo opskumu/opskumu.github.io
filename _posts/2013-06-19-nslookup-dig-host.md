@@ -29,7 +29,7 @@ www.google.com has address 74.125.135.106
 Using domain server:
 Name: 8.8.8.8
 Address: 8.8.8.8#53
-Aliases: 
+Aliases:
 
 www.google.com has address 173.194.72.147
 ```
@@ -51,7 +51,7 @@ google.com has SOA record ns1.google.com. dns-admin.google.com. 2013061100 7200 
 ### 查询 `MX` 记录
 
 ``` bash
-$ host -t MX google.com 
+$ host -t MX google.com
 google.com mail is handled by 10 aspmx.l.google.com.
 google.com mail is handled by 40 alt3.aspmx.l.google.com.
 google.com mail is handled by 20 alt1.aspmx.l.google.com.
@@ -74,11 +74,11 @@ Nameserver 216.239.32.10:
 ### 查询 DNS Server 软件版本信息
 
 ``` bash
-# host -c CH -t txt version.bind 10.10.10.2  
+# host -c CH -t txt version.bind 10.10.10.2
 Using domain server:
 Name: 10.10.10.2   # 10.10.10.2 为 DNS Server
 Address: 10.10.10.2#53
-Aliases: 
+Aliases:
 
 version.bind descriptive text "9.8.1-P2"
 ```

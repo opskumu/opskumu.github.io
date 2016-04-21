@@ -7,7 +7,7 @@ tags: [Linux, cmd]
 
 在介绍dmidecode命令之前，先介绍一下DMI。所谓DMI，即DesktopManagement Interface。也有被称为SMBIOS，即System Management BIOS。DMI表的意义在于让我们在不探测硬件实体的情况下获取硬件的部分信息，方便了用户，但也同时表明，表中的信息可能是不可靠的。
 
-`dmidecode`的作用则是将DMI表中的信息用人可以读懂的方式显示出来。 
+`dmidecode`的作用则是将DMI表中的信息用人可以读懂的方式显示出来。
 
 最简单的使用方法，它将显示dmidecode所能获取到的全部dmi信息：
 
@@ -37,10 +37,10 @@ tags: [Linux, cmd]
 	memory 		内存信息，包括目前插的内存条数及大小，支持的单条最大内存和总内存大小等
 	cache 		缓存信息
 	connector 	PCI设备信息
-	slot 		插槽信息 
+	slot 		插槽信息
 
 ``` bash
-# dmidecode -t 
+# dmidecode -t
 dmidecode: option requires an argument -- 't'
 Type number or keyword expected
 Valid type keywords are:

@@ -102,7 +102,7 @@ root@6778b6b39686:/#
 
 官方的测试说明是：
 
-> You’ll find that the proportion of time is the same as the proportion of blkio weights of the two containers. 
+> You’ll find that the proportion of time is the same as the proportion of blkio weights of the two containers.
 
 * `--blkio-weight-device="DEVICE_NAME:WEIGHT"`
 

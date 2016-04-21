@@ -92,7 +92,7 @@ Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
 KiB Mem:   8102564 total,  6397064 used,  1705500 free,   182864 buffers
 KiB Swap: 15625212 total,  1030028 used, 14595184 free.  4113952 cached Mem
 
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                                           
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
  8210 root      20   0 1007.1m 100.3m   0.6m D  13.1  1.3   0:22.59 stress
 ```
 
@@ -155,7 +155,7 @@ Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
 KiB Mem:   8102564 total,  6403040 used,  1699524 free,   184124 buffers
 KiB Swap: 15625212 total,   149996 used, 15475216 free.  4110440 cached Mem
 
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                                           
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
 16323 root      20   0  206.1m  91.5m   0.6m D   9.9  1.2   0:52.58 stress
 ```
 
@@ -177,7 +177,7 @@ root@5ed1fd88a1aa:/# stress --vm 1 --vm-bytes 399M  # 压测到 399M 程序刚�
 ➜  ~ docker stats 5ed1fd88a1aa
 CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O
 5ed                 12.44%              104.8 MB / 104.9 MB   99.92%              4.861 kB / 648 B    9.138 GB / 10.16 GB
-➜  ~ pgrep stress                                                                                                                   
+➜  ~ pgrep stress
 22721
 22722
 ➜  ~ top -p 22722
@@ -187,7 +187,7 @@ Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie
 KiB Mem:   8102564 total,  6397416 used,  1705148 free,   184608 buffers
 KiB Swap: 15625212 total,   366160 used, 15259052 free.  4102076 cached Mem
 
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                                           
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
 22722 root      20   0  406.1m  84.1m   0.7m D  11.7  1.1   0:08.82 stress
 ```
 
@@ -283,7 +283,7 @@ $ docker run -it --oom-kill-disable ubuntu:14.04 /bin/bash
 97     }
 98
 99     return nil
-100 }  
+100 }
 ```
 
 附测试：
@@ -299,7 +299,7 @@ root@fbe9b0abf665:/#
 ➜  ~ cd /sys/fs/cgroup/memory/docker/fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356
 ➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356 cat memory.swappiness           # swappiness 如果设置 -1 则该值默认为 60
 60
-➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356 cat memory.memsw.limit_in_bytes # 为设置的 memory 2 倍 
+➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356 cat memory.memsw.limit_in_bytes # 为设置的 memory 2 倍
 209715200
-➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356 
+➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356
 ```

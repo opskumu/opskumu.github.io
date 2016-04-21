@@ -2,7 +2,7 @@
 layout: post
 title: "马上毕业了，还能做些什么？"
 description: "毕业"
-categories: 
+categories:
 tags: [毕业, 计算机]
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: "我所能想到的一些事情"
 description: "随笔"
-categories: other 
+categories: other
 tags: []
 ---
 

@@ -123,7 +123,7 @@ fi
 ``` bash
 ### Get os name via uname ###
 _myos="$(uname)"
- 
+
 ### add alias as per os using $_myos ###
 case $_myos in
    Linux) alias foo='/path/to/linux/bin/foo';;
@@ -144,10 +144,10 @@ esac
 ``` bash
 ## Colorize the ls output ##
 alias ls='ls --color=auto'
- 
+
 ## Use a long listing format ##
 alias ll='ls -la'
- 
+
 ## Show hidden files ##
 alias l.='ls -d .* --color=auto'
 ```
@@ -157,7 +157,7 @@ alias l.='ls -d .* --color=auto'
 ``` bash
 ## get rid of command not found ##
 alias cd..='cd ..'
- 
+
 ## a quick way to get out of current directory ##
 alias ..='cd ..'
 alias ...='cd ../../../'
@@ -264,7 +264,7 @@ alias wakeupnas03='/usr/bin/wakeonlan 00:11:32:11:15:FE'
 ``` bash
 ## shortcut  for iptables and pass it via sudo#
 alias ipt='sudo /sbin/iptables'
- 
+
 # display all rules #
 alias iptlist='sudo /sbin/iptables -L -n -v --line-numbers'
 alias iptlistin='sudo /sbin/iptables -L INPUT -n -v --line-numbers'
@@ -278,7 +278,7 @@ alias firewall=iptlist
 ``` bash
 # get web server headers #
 alias header='curl -I'
- 
+
 # find out if remote server supports gzip / mod_deflate or not #
 alias headerc='curl -I --compress'
 ```
@@ -288,12 +288,12 @@ alias headerc='curl -I --compress'
 ``` bash
 # do not delete / or prompt if deleting more than 3 files at a time #
 alias rm='rm -I --preserve-root'
- 
+
 # confirmation #
 alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
- 
+
 # Parenting changing perms on / #
 alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
@@ -341,7 +341,7 @@ alias httpdtest='sudo /usr/sbin/apachectl -t && /usr/sbin/apachectl -t -D DUMP_V
 ### 22：给备份做别名
 
 ``` bash
-# if cron fails or if you want backup on demand just run these commands # 
+# if cron fails or if you want backup on demand just run these commands #
 # again pass it via sudo so whoever is in admin group can start the job #
 # Backup scripts #
 alias backup='sudo /home/scripts/admin/scripts/backup/wrapper.backup.sh --type local --taget /raid1/backups'
@@ -363,7 +363,7 @@ alias vnstat='vnstat -i eth1'
 alias iftop='iftop -i eth1'
 alias tcpdump='tcpdump -i eth1'
 alias ethtool='ethtool eth1'
- 
+
 # work on wlan0 by default #
 # Only useful for laptop as all servers are without wireless interface
 alias iwconfig='iwconfig wlan0'
@@ -372,24 +372,24 @@ alias iwconfig='iwconfig wlan0'
 ### 24：快速获取系统内存、cpu使用以及gpu内存信息
 
 ``` bash
-## pass options to free ## 
+## pass options to free ##
 alias meminfo='free -m -l -t'
- 
+
 ## get top process eating memory
 alias psmem='ps auxf | sort -nr -k 4'
 alias psmem10='ps auxf | sort -nr -k 4 | head -10'
- 
+
 ## get top process eating cpu ##
 alias pscpu='ps auxf | sort -nr -k 3'
 alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
- 
+
 ## Get server cpu info ##
 alias cpuinfo='lscpu'
- 
+
 ## older system use /proc/cpuinfo ##
 ##alias cpuinfo='less /proc/cpuinfo' ##
- 
-## get GPU ram on desktop / laptop## 
+
+## get GPU ram on desktop / laptop##
 alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
 ```
 
@@ -398,8 +398,8 @@ alias gpumeminfo='grep -i --color memory /var/log/Xorg.0.log'
 ``` bash
 # Reboot my home Linksys WAG160N / WAG54 / WAG320 / WAG120N Router / Gateway from *nix.
 alias rebootlinksys="curl -u 'admin:my-super-password' 'http://192.168.1.2/setup.cgi?todo=reboot'"
- 
-# Reboot tomato based Asus NT16 wireless bridge 
+
+# Reboot tomato based Asus NT16 wireless bridge
 alias reboottomato="ssh admin@192.168.1.1 /sbin/reboot"
 ```
 
@@ -418,11 +418,11 @@ alias ff4='/opt/firefox4/firefox'
 alias ff13='/opt/firefox13/firefox'
 alias chrome='/opt/google/chrome/chrome'
 alias opera='/opt/opera/opera'
- 
-#default ff 
+
+#default ff
 alias ff=ff13
- 
-#my default browser 
+
+#my default browser
 alias browser=chrome
 ```
 
@@ -452,31 +452,31 @@ $ ssh server10
 ## set some other defaults ##
 alias df='df -H'
 alias du='du -ch'
- 
+
 # top is atop, just like vi is vim
 alias top='atop'
- 
+
 ## nfsrestart  - must be root  ##
 ## refresh nfs mount / cache etc for Apache ##
 alias nfsrestart='sync && sleep 2 && /etc/init.d/httpd stop && umount netapp2:/exports/http && sleep 2 && mount -o rw,sync,rsize=32768,wsize=32768,intr,hard,proto=tcp,fsc natapp2:/exports /http/var/www/html &&  /etc/init.d/httpd start'
- 
+
 ## Memcached server status  ##
 alias mcdstats='/usr/bin/memcached-tool 10.10.27.11:11211 stats'
 alias mcdshow='/usr/bin/memcached-tool 10.10.27.11:11211 display'
- 
+
 ## quickly flush out memcached server ##
 alias flushmcd='echo "flush_all" | nc 10.10.27.11 11211'
- 
+
 ## Remove assets quickly from Akamai / Amazon cdn ##
 alias cdndel='/home/scripts/admin/cdn/purge_cdn_cache --profile akamai'
 alias amzcdndel='/home/scripts/admin/cdn/purge_cdn_cache --profile amazon'
- 
+
 ## supply list of urls via file or stdin
 alias cdnmdel='/home/scripts/admin/cdn/purge_cdn_cache --profile akamai --stdin'
 alias amzcdnmdel='/home/scripts/admin/cdn/purge_cdn_cache --profile amazon --stdin'
 ```
 
-### 30：The End Is the Beginning 
+### 30：The End Is the Beginning
 ... ...
 
 --EOF--

@@ -9,8 +9,8 @@ tags: [Linux, ssh]
 
 MaxAuthTries
 
-    Specifies the maximum number of authentication attempts permitted per connection.  
-    Once the number of failures reaches half this value,  # 失败次数为该值一半时登录失败  
+    Specifies the maximum number of authentication attempts permitted per connection.
+    Once the number of failures reaches half this value,  # 失败次数为该值一半时登录失败
     additional failures are logged.  The default is 6.
 
 让我很诧异的是，关键尼玛我还没有输入密码什么的啊，只是输入一个用户名就报错了。于是测试虚拟机本地ssh登陆，登陆正常，其它Linux主机登陆测试也正常，再测试xshell，依然是输入用户名之后报之前同样的错误。ssh本地`debug`模式再看下过程

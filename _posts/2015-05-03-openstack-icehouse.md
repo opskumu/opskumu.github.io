@@ -37,7 +37,7 @@ VMware VM 2 台 「控制节点+计算节点」
 两台 VM 除 IP 和 MAC 外其它配置一致，VM1 的配置情况如下：
 
 ``` bash
-# cat /etc/sysconfig/network-scripts/ifcfg-eth0 
+# cat /etc/sysconfig/network-scripts/ifcfg-eth0
 DEVICE="eth0"
 BOOTPROTO="static"
 ONBOOT="yes"
@@ -65,7 +65,7 @@ wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-
 yum clean all
 ```
 
-### 2.3 安装 Packstack Installer  
+### 2.3 安装 Packstack Installer
 
 以下安装操作都是在 VM1 即控制节点操作的。
 
@@ -73,7 +73,7 @@ yum clean all
 yum install -y openstack-packstack
 ```
 
-### 2.4 运行 Packstack 安装 OpenStack 
+### 2.4 运行 Packstack 安装 OpenStack
 
 #### 生成安装配置文件
 
@@ -212,7 +212,7 @@ CONFIG_CINDER_VOLUMES_SIZE=4G
 __创建独立的 Cinder 分区：__
 
 ``` bash
-pvcreate /dev/sda2 
+pvcreate /dev/sda2
 vgcreate cinder-volumes /dev/sda2
 ```
 
@@ -261,7 +261,7 @@ baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
 浏览器访问 [http://192.168.210.120](http://192.168.210.120) 登陆 Dashboard，密码可以通过以下方式获取
 
 ``` bash
-# cat ~/keystonerc_admin 
+# cat ~/keystonerc_admin
 export OS_USERNAME=admin
 export OS_TENANT_NAME=admin
 export OS_PASSWORD=12b58d1d10f44d94

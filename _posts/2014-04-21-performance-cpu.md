@@ -5,7 +5,7 @@ categories: linux
 tags: [Linux, cmd]
 ---
 
-Linux性能相关可以从以下几方面入手： 
+Linux性能相关可以从以下几方面入手：
 
 * CPU
 * Memory
