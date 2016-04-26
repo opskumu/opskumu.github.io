@@ -174,7 +174,7 @@ __注：__ 在容器中通过 `dd` 测试读速度并没有看到很好的效果
 
 libcontainer 主要操作是对 cgroup 下相关文件根据选项写操作，具体更进一步的资源限制操作可以看 cgroup 的实现方式。
 
-### 四、拓展
+## 四、拓展
 
 * [Docker背后的内核知识——cgroups资源限制](http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation)
 * [cgroup 内存、IO、CPU、网络资源管理](http://pan.baidu.com/share/home?uk=1429463486&view=share#category/type=0)
