@@ -1,5 +1,5 @@
 # Daktilo
-Daktilo is a [Jekyll](jekyllrb.com) theme with a minimal design inspired from typewriters.
+[Daktilo](https://github.com/kronik3r/daktilo) is a Jekyll theme with a minimal design inspired from typewriters.
 
 # License
 
