@@ -115,7 +115,7 @@ $ grep -vE '^$|^#' /etc/kubernetes/apiserver
 KUBE_API_ADDRESS="--address=0.0.0.0"
 KUBE_API_PORT="--port=8080"
 KUBELET_PORT="--kubelet_port=10250"
-KUBE_ETCD_SERVERS="--etcd_servers=http://192.168.12.233:4001,http://192.168.12.234:4001,http://192.168.12.235:4001,http://192.168.12.236:4001"
+KUBE_ETCD_SERVERS="--etcd_servers=http://192.168.12.233:4001,http://192.168.12.234:4001,http://192.168.12.235:4001"
 KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
 KUBE_ADMISSION_CONTROL="--admission_control=NamespaceAutoProvision,LimitRanger,ResourceQuota"
 KUBE_API_ARGS=""
