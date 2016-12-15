@@ -2,7 +2,7 @@
 layout: post
 title: "马上毕业了，还能做些什么？"
 description: "毕业"
-categories:
+categories: other
 tags: [毕业, 计算机]
 ---
 
@@ -76,3 +76,5 @@ tags: [毕业, 计算机]
 说了那么多，其实总体来说就是个人意识到位，然后行动。路是自己走出来的，很多事情还是靠自己去摸索。
 
 ![微信公众号](/images/weixin.jpg)
+
+--EOF--

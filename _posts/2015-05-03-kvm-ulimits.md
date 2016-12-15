@@ -10,7 +10,7 @@ tags: [kvm,ulimit]
 
 系统的 ulimit 设置生效，但是 kvm 本身的进程 open files 没有改变
 
-``` bash
+```
 # ulimit -HSn
 655350
 # grep -vE '^#|^$'  /etc/security/limits.conf       # 配置文件也没有问题
@@ -29,7 +29,7 @@ Max open files            1024                 4096                 files
 
 系统的 ulimit 设置是生效的，此时可以定位 limits 这块的配置我们是没有问题的，排除 limits 配置这块的问题，那就需要考虑 kvm 本身这块的问题。CentOS 和 kvm 相关服务主要是 libvirtd 服务，查看 `/etc/init.d/libvirtd` 启动进程脚本找到相关逻辑：
 
-``` bash
+```
 78      # LIBVIRTD_NOFILES_LIMIT from /etc/sysconfig/libvirtd is not handled
 79      # automatically
 80      if [ -n "$LIBVIRTD_NOFILES_LIMIT" ]; then
@@ -39,14 +39,14 @@ Max open files            1024                 4096                 files
 
 如果这个值为空，则 kvm 默认就 fork 父进程即 init 相关值了，顺藤摸瓜查看配置文件 `/etc/sysconfig/libvirtd` 得到如下信息：
 
-``` bash
+```
 # Override the maximum number of opened files
 #LIBVIRTD_NOFILES_LIMIT=2048
 ```
 
 修改该值重启 libvirtd 服务，测试环境测试开启一个 kvm 虚拟机，发现配置生效：
 
-``` bash
+```
 # ulimit -HSn
 65535
 # grep -i nofiles /etc/sysconfig/libvirtd

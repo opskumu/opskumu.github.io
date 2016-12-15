@@ -31,12 +31,12 @@ tags: [docker,Kubernetes,etcd]
 
 ### 2.1 Prerequisites
 
-``` bash
+```
 systemctl stop firewalld
 systemctl disable firewalld
 ```
 
-``` bash
+```
 yum -y install ntp
 systemctl start ntpd
 systemctl enable ntpd
@@ -46,30 +46,29 @@ systemctl enable ntpd
 
 `etcd` 官方文档 [Clustering Guide](https://github.com/coreos/etcd/blob/master/Documentation/clustering.md) 定义集群有三种方式，本示例采用 `Static` 方法。
 
-``` bash
+```
 yum install etcd -y
 ```
 
-* paas-ci-etcd1
+* test-etcd1
     * 192.168.12.233
-* paas-ci-etcd2
+* test-etcd2
     * 192.168.12.234
-* paas-ci-etcd3
+* test-etcd3
     * 192.168.12.235
-* paas-ci-etcd4
-    * 192.168.12.236
 
+> etcd 集群主机数遵循 `2n + 1` 规则
 
 这里以 `192.168.12.234` 为例，配置文件修改如下：
 
-``` bash
+```
 # grep -vE '^$|^#' /etc/etcd/etcd.conf
-ETCD_NAME=paas-ci-etcd2                                 # 不同的 etcd 主机定义不同的 NAME
-ETCD_DATA_DIR="/var/lib/etcd/paas-ci-etcd2.etcd"        # 定义 etcd 存储的数据目录
-ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"      # 定义 peer 绑定端口，即内部集群通信端口
+ETCD_NAME=test-etcd2                                    # 不同的 etcd 主机定义不同的 NAME
+ETCD_DATA_DIR="/var/lib/etcd/test-etcd2.etcd"           # 定义 etcd 存储的数据目录
+ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"             # 定义 peer 绑定端口，即内部集群通信端口
 ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:4001"           # 定义 client 绑定端口，即 client 访问通信端口
 ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.12.234:2380" # 定义 etcd peer 初始化广播端口
-ETCD_INITIAL_CLUSTER="paas-ci-etcd1=http://192.168.12.233:2380,paas-ci-etcd2=http://192.168.12.234:2380,paas-ci-etcd3=http://192.168.12.235:2380,paas-ci-etcd4=http://192.168.12.236:2380"
+ETCD_INITIAL_CLUSTER="test-etcd1=http://192.168.12.233:2380,test-etcd2=http://192.168.12.234:2380,test-etcd3=http://192.168.12.235:2380"
 # ETCD_INITIAL_CLUSTER 定义集群成员
 ETCD_INITIAL_CLUSTER_STATE="new"                        # 初始化状态使用 new，建立之后改此值为 existing
 ETCD_INITIAL_CLUSTER_TOKEN="dev-etcd-cluster"           # etcd 集群名
@@ -79,24 +78,23 @@ ETCD_ADVERTISE_CLIENT_URLS="http://192.168.12.234:4001"
 
 配置完成之后，启动各主机 `etcd`
 
-``` bash
+```
 systemctl enable etcd
 systemctl start etcd
 ```
 
 查看当前集群成员
 
-``` bash
+```
 # etcdctl member list
-a340818d006c60f: name=paas-ci-etcd1 peerURLs=http://192.168.12.233:2380 clientURLs=http://0.0.0.0:4001
-3045ba54dbc291dd: name=paas-ci-etcd4 peerURLs=http://192.168.12.236:2380 clientURLs=http://0.0.0.0:4001
-75b057b0086f534b: name=paas-ci-etcd2 peerURLs=http://192.168.12.234:2380 clientURLs=http://0.0.0.0:4001
-84562a66304940a1: name=paas-ci-etcd3 peerURLs=http://192.168.12.235:2380 clientURLs=http://0.0.0.0:4001
+a340818d006c60f: name=test-etcd1 peerURLs=http://192.168.12.233:2380 clientURLs=http://0.0.0.0:4001
+75b057b0086f534b: name=test-etcd2 peerURLs=http://192.168.12.234:2380 clientURLs=http://0.0.0.0:4001
+84562a66304940a1: name=test-etcd3 peerURLs=http://192.168.12.235:2380 clientURLs=http://0.0.0.0:4001
 ```
 
 配置 `flannel` 通信网段
 
-``` bash
+```
 # etcdctl mk /coreos.com/network/config '{"Network":"172.17.0.0/16"}'
 # etcdctl get /coreos.com/network/config
 {"Network":"172.17.0.0/16"}
@@ -104,7 +102,7 @@ a340818d006c60f: name=paas-ci-etcd1 peerURLs=http://192.168.12.233:2380 clientUR
 
 ### 2.3 K8s Master 安装配置
 
-``` bash
+```
 yum -y install kubernetes
 ```
 
@@ -112,7 +110,7 @@ __注：__ CentOS7 源中最新版本是 0.15，如果需要使用最新的，�
 
 Master 配置文件修改
 
-``` bash
+```
 $ grep -vE '^$|^#' /etc/kubernetes/apiserver
 KUBE_API_ADDRESS="--address=0.0.0.0"
 KUBE_API_PORT="--port=8080"
@@ -125,7 +123,7 @@ KUBE_API_ARGS=""
 
 启动相关服务
 
-``` bash
+```
 for SERVICES in kube-apiserver kube-controller-manager kube-scheduler; do
     systemctl restart $SERVICES
     systemctl enable $SERVICES
@@ -135,13 +133,13 @@ done
 
 ### 2.4 K8s Minions 安装配置
 
-``` bash
+```
 yum -y install kubernetes docker flannel bridge-utils
 ```
 
 Minion 配置文件修改
 
-``` bash
+```
 # grep -vE '^$|^#' /etc/kubernetes/config
 KUBE_LOGTOSTDERR="--logtostderr=true"
 KUBE_LOG_LEVEL="--v=0"
@@ -149,23 +147,23 @@ KUBE_ALLOW_PRIV="--allow_privileged=false"
 KUBE_MASTER="--master=http://192.168.12.197:8080"               # 指定 master 主机 IP
 ```
 
-``` bash
+```
 # grep -vE '^$|^#' /etc/kubernetes/kubelet
 KUBELET_ADDRESS="--address=0.0.0.0"
 KUBELET_PORT="--port=10250"
 KUBELET_HOSTNAME="--hostname_override=192.168.12.198"           # 根据实际的 minion 对于 hostname 或者 IP 修改
 KUBELET_API_SERVER="--api_servers=http://192.168.12.197:8080"   # 指定 master 主机 IP
-KUBELET_ARGS="--pod-infra-container-image=your_regestry_url:5000/google_containers/pause:0.8.0"    # 指定私有 registry pull pause image
+KUBELET_ARGS="--pod-infra-container-image=<your_regestry_url:5000/google_containers/pause:0.8.0>"    # 指定私有 registry pull pause image
 ```
 
-__注：__ pause:0.8.0 因为 Google 被 GFW 屏蔽，所以该镜像需要翻墙下载，下载不了的可以联系我^_^
+__注：__ pause:0.8.0 因为 Google 被 GFW 屏蔽，所以该镜像需要翻墙下载，下载不了的可以联系我 ^_^
 
-``` bash
+```
 # grep "FLANNEL_ETCD=" /etc/sysconfig/flanneld
 FLANNEL_ETCD="http://192.168.12.233:4001,http://192.168.12.234:4001,http://192.168.12.235:4001,http://192.168.12.236:4001"
 ```
 
-``` bash
+```
 # cat /usr/lib/systemd/system/kubelet.service
 ... ...
 [Service]
@@ -191,7 +189,7 @@ __注：__ docker、kube-proxy 这些默认已经设置好相应的 limit，无�
 
 启动相关服务
 
-``` bash
+```
 systemctl daemon-reload
 for SERVICES in kube-proxy kubelet flanneld docker; do
     systemctl restart $SERVICES
@@ -202,7 +200,7 @@ done
 
 如果出现 docker0 和 flannel 设置的 IP 地址不同，则可以采取如下方式修改：
 
-``` bash
+```
 systemctl stop docker
 ifconfig docker0 down
 brctl delbr docker0
@@ -215,13 +213,13 @@ systemctl start docker
 
 设置对于 nodes 的 label [目前环境有 dev 和 fat 两种]
 
-``` bash
+```
 kubectl label nodes 192.168.12.198 usetype=dev
 ```
 
 关于 nodes label 具体可参考 [Node selection example](https://github.com/GoogleCloudPlatform/kubernetes/tree/master/examples/node-selection)
 
-``` bash
+```
 # kubectl get nodes
 NAME             LABELS                                                 STATUS
 192.168.12.198   kubernetes.io/hostname=192.168.12.198,usetype=dev      Ready
@@ -235,12 +233,11 @@ NAME             LABELS                                                 STATUS
 
 ### 3.2 etcd 集群
 
-``` bash
+```
 # etcdctl --peers 192.168.12.235:4001 member list
-a340818d006c60f: name=paas-ci-etcd1 peerURLs=http://192.168.12.233:2380 clientURLs=http://0.0.0.0:4001
-3045ba54dbc291dd: name=paas-ci-etcd4 peerURLs=http://192.168.12.236:2380 clientURLs=http://0.0.0.0:4001
-75b057b0086f534b: name=paas-ci-etcd2 peerURLs=http://192.168.12.234:2380 clientURLs=http://0.0.0.0:4001
-84562a66304940a1: name=paas-ci-etcd3 peerURLs=http://192.168.12.235:2380 clientURLs=http://0.0.0.0:4001
+a340818d006c60f: name=test-etcd1 peerURLs=http://192.168.12.233:2380 clientURLs=http://0.0.0.0:4001
+75b057b0086f534b: name=test-etcd2 peerURLs=http://192.168.12.234:2380 clientURLs=http://0.0.0.0:4001
+84562a66304940a1: name=test-etcd3 peerURLs=http://192.168.12.235:2380 clientURLs=http://0.0.0.0:4001
 ```
 
 ### 3.3 Other

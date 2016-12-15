@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "MySQL 大字段溢出导致数据回写失败"
-description: " mysql blob"
-categories: mysql
+description: "mysql blob"
+categories: linux
 tags: [MySQL]
 ---
 
@@ -10,7 +10,7 @@ tags: [MySQL]
 
 2015-01-12 18:10  左右公司某游戏日志监控报警，查看日志显示如下错误：
 
-``` bash
+```
 Row size too large (> 8126). Changing some columns to TEXT or BLOB or using ROW_FORMAT=DYNAMIC or ROW_FORMAT=COMPRESSED may help. In current row format, BLOB prefix of 768 bytes is stored inline.
 ```
 
@@ -25,7 +25,7 @@ Row size too large (> 8126). Changing some columns to TEXT or BLOB or using ROW_
 
 查看线上表 `row_format` 类型，如下：
 
-``` bash
+```
 mysql> show variables like 'innodb_file_format';    # MySQL 5.6 默认使用 innodb_file_format 为 Antelope
 +--------------------+----------+
 | Variable_name      | Value    |
@@ -57,7 +57,7 @@ mysql>
 
 开发那边删减了一些不必要的数据并更新游戏服务器，但是依然没有解决 DB 回写的问题。因为目前数据量不是很大，并且支持在线修改生效 innodb `innodb_file_format` 和 表 `row_format`，也不会影响 DB，所以先测试修改一个表的  `row_format` 值，查看对应日志输出，发现问题解决，批量修改线上表 `row_format` 值，修改完之后，对应的问题解决，主要修改值如下：
 
-``` bash
+```
 msyql> SET GLOBAL innodb_file_format=BARRACUDA;
 mysql> show variables like 'innodb_file_format';
 +--------------------+-----------+
@@ -156,7 +156,7 @@ Compressed 行记录格式的另一个功能就是，存储在其中的行数据
 
 可以查看改用 Dynamic 之后的表信息：
 
-``` bash
+```
 mysql> show table status like 't_role_90'\G
 *************************** 1. row ***************************
            Name: t_role_90

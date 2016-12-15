@@ -10,7 +10,7 @@ tags: [docker]
 
 默认 CentOS7 下 Docker 使用的 Device Mapper 设备默认使用 loopback 设备，后端为自动生成的稀疏文件，如下:
 
-``` bash
+```
 # ls -lsh /var/lib/docker/devicemapper/devicemapper/
 总用量 510M
 508M -rw-------. 1 root root 100G 10月 30 00:00 data
@@ -21,7 +21,7 @@ data [存放数据] 和 metadata [存放元数据] 的大小从输出可以看�
 
 Docker 在初始化的过程中，创建 data 和 metadata 这两个稀疏文件，并分别附加到回环设备 `/dev/loop0` 和 `/dev/loop1` 上，然后基于回环设备创建 [thin pool](https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt)。 默认一个 container 最大存放数据不超过 10G[注：docker 1.8 之后默认的大小已经为 100G，建议生产环境针对 container pool 大小监控。]，如果需要调整则需要修改 `/etc/sysconfig/docker` 配置文件添加相关选项 `--storage-opt` 调整即可（详细参考 man docker 查看 STORAGE DRIVER OPTIONS 具体参数说明）。
 
-``` bash
+```
 # docker info
 Containers: 2
 Images: 13
@@ -93,7 +93,7 @@ activation {
 
 主机先添加一块设备，本例设备名为 `/dev/vdc`，添加 `docker-storage-setup` 配置文件：
 
-``` bash
+```
 # systemctl stop docker # 停止当前运行的 docker
 # cat /etc/sysconfig/docker-storage-setup
 DEVS=/dev/vdc   # A quoted, space-separated list of devices to be used. 如果添加多个设备则以空格分隔 DEVS="/dev/sdc /dev/sdd /dev/sde"
@@ -113,17 +113,17 @@ EnvironmentFile=-/etc/sysconfig/docker-storage  # 可以看出 docker 启动会�
 
 删除源数据并启动 docker
 
-``` bash
+```
 # cat /etc/sysconfig/docker-storage-setup
 # DEVS=/dev/vdc     # 注释该行
 VG=docker-vg
 SETUP_LVM_THIN_POOL=yes
 # rm -rf /var/lib/docker
-# systemctl restart lvm2-monitor    # 确保 lvm2-monitor 服务运行
+# systemctl restart lvm2-monitor        # 确保 lvm2-monitor 服务运行
 # systemctl start docker
 ```
 
-``` bash
+```
 # docker info
 Containers: 39
 Images: 98

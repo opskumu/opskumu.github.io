@@ -178,3 +178,5 @@ libcontainer 主要操作是对 cgroup 下相关文件根据选项写操作，�
 
 * [Docker背后的内核知识——cgroups资源限制](http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation)
 * [cgroup 内存、IO、CPU、网络资源管理](http://pan.baidu.com/share/home?uk=1429463486&view=share#category/type=0)
+
+--EOF--
