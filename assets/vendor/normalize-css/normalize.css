@@ -445,15 +445,23 @@ optgroup {
 /**
  * Remove most spacing between table cells.
  */
-
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+    margin: 10px 0px 15px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border:1px solid #000000;
+    width: 100%;
+    overflow: auto;
 }
 
-td,
 th {
-  padding: 0;
+    border:1px solid #000000;
+    font-weight: bold;
+}
+
+td {
+    border:1px solid #000000;
+    padding: 6px 13px;
 }
 
 /**

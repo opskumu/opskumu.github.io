@@ -55,8 +55,8 @@ blockquote {
         font-size: 1em;
         color: $cloudy;
         font-weight: 400;
-        &:before { content: "“ "; }
-        &:after { content: " ”"; }
+        /* &:before { content: "“ "; } */
+        /* &:after { content: " ”"; } */
     }
 }
 
