@@ -2,7 +2,7 @@
 layout: post
 title: "Docker 资源限制之 IO"
 description: "docker io"
-categories: virtualization
+categories: docker
 tags: [docker]
 ---
 

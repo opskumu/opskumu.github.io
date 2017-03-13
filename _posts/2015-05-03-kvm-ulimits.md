@@ -2,7 +2,7 @@
 layout: post
 title: "kvm 进程 ulimit 设置未生效"
 description: "kvm ulimit"
-categories: virtualization
+categories: linux
 tags: [kvm,ulimit]
 ---
 

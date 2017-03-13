@@ -2,7 +2,7 @@
 layout: post
 title: "Docker 资源限制之 CPU"
 description: "docker cpu"
-categories: virtualization
+categories: docker
 tags: [docker]
 ---
 

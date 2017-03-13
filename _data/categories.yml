@@ -1,11 +1,14 @@
-- slug: coding
-  name: Coding
+- slug: programming 
+  name: Programming
 
-- slug: virtualization
-  name: Virtualization
+- slug: docker
+  name: Docker
 
 - slug: linux
   name: Linux
+
+- slug: tools
+  name: Tools
 
 - slug: other
   name: Other

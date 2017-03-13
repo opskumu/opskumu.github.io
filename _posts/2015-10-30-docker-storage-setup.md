@@ -2,7 +2,7 @@
 layout: post
 title: "Docker Device Mapper 使用 direct-lvm"
 description: "docker"
-categories: virtualization
+categories: docker
 tags: [docker]
 ---
 

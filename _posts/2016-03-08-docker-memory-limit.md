@@ -2,7 +2,7 @@
 layout: post
 title: "Docker 资源限制之内存"
 description: "docker memory"
-categories: virtualization
+categories: docker
 tags: [docker]
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: Docker 使用 Ceph RBD Volume
 description: "Docker RBD Volume Plugin"
-categories: virtualization
+categories: docker
 tags: [docker]
 ---
 

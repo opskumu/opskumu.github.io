@@ -2,7 +2,7 @@
 layout: post
 title: "Go 指针、defer、匿名函数"
 description: "go pointers, defer, functions"
-categories: coding
+categories: programming 
 tags: [go]
 ---
 
