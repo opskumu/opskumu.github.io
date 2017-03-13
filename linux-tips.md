@@ -69,7 +69,7 @@ kumu-opsdev ~ # history | less
 <u>7、Linux终端录制和回放</u>
 
 * `script` 和 `scriptreplay` 命令 
-* 【 script 负责录制 | scriptreplay 负责回放 】 [参考文章](http://blog.csdn.net/signmem/article/details/8734476)
+* 【 script 负责录制 \| scriptreplay 负责回放 】 [参考文章](http://blog.csdn.net/signmem/article/details/8734476)
 
 ```
 # script -t 2> test.time -a test.txt    # 录制，存入历史到test.txt
