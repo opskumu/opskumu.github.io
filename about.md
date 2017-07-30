@@ -11,3 +11,4 @@ permalink: /about/
 * Old Blog：[csdn](http://blog.csdn.net/kumu_Linux) && [github](http://kumu-linux.github.io)
 
 ![微信公众号](/images/weixin.jpg)
+<center>微信公众号订阅</center>
