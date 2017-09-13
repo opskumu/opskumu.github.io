@@ -2,8 +2,6 @@
 layout: post
 title: "Go 指针、defer、匿名函数"
 description: "go pointers, defer, functions"
-categories: programming 
-tags: [go]
 ---
 
 ## 一、Go 指针

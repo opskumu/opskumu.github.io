@@ -2,8 +2,6 @@
 layout: post
 title: "Docker 资源限制之 IO"
 description: "docker io"
-categories: docker
-tags: [docker]
 ---
 
 * [Docker 资源限制之内存](http://blog.opskumu.com/docker-memory-limit.html)

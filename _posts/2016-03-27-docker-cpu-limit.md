@@ -2,8 +2,6 @@
 layout: post
 title: "Docker 资源限制之 CPU"
 description: "docker cpu"
-categories: docker
-tags: [docker]
 ---
 
 * [Docker 资源限制之内存](http://blog.opskumu.com/docker-memory-limit.html)

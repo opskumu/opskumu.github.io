@@ -2,8 +2,6 @@
 layout: post
 title: "革命，革谁的命"
 description: "运维革命"
-categories: other
-tags: [运维]
 ---
 
 ![revolution](/images/revolution.jpg)

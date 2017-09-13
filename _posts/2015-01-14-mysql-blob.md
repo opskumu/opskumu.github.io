@@ -2,8 +2,6 @@
 layout: post
 title: "MySQL 大字段溢出导致数据回写失败"
 description: "mysql blob"
-categories: linux
-tags: [MySQL]
 ---
 
 ## 一、问题描述

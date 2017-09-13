@@ -2,8 +2,6 @@
 layout: post
 title: "Docker 中玩转 GPU"
 description: "docker gpu"
-categories: docker
-tags: [docker]
 ---
 
 ## 一、GPU 驱动安装
