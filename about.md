@@ -4,6 +4,6 @@ title:
 permalink: /about/
 ---
 
-# About
+## About
 
 嗯，这是一个记录文字的地方，enjoy ;)
