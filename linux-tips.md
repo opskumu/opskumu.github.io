@@ -141,4 +141,7 @@ Host *
     controlPath ~/.ssh/master-%r@%h:%p  # 会话保存位置和格式
 ```
 
-__更多 Tips 详见__ -- [日常问题处理 Tips](https://github.com/opskumu/script/blob/master/tips/README.md)
+__更多 Tips 详见：__ 
+
+- [零碎的 Tips 记录](https://github.com/opskumu/issues/issues)
+- [日常问题处理 Tips](https://github.com/opskumu/script/blob/master/tips/README.md)
