@@ -6,12 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ "/css/main.css" | relative_url }}">
+    <link href="{{ "/css/main.css" | relative_url }}" rel="stylesheet">
     <title>{{ site.title | escape }}</title>
   </head>
   <body>
     <div class="container">
       {{ content }}
+    </div>
+
+    <div class="footer text-center">
+        <p>Maintained by <a href="https://github.com/{{ site.github_username }}"><span class="icon icon--github" style="vertical-align:middle">{% include icon-github.svg %}</a></p>
     </div>
   </body>
 </html>

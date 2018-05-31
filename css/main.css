@@ -91,7 +91,7 @@ a:hover {
     max-width: 960px;
     border: 1px solid #e8e8e8;
     margin-top: 48px;
-    margin-bottom: 48px;
+    margin-bottom: 32px;
     padding: 32px 48px;
     border-radius: 4px 4px;
   }
@@ -151,6 +151,11 @@ a:hover {
   }
 }
 
+.footer {
+  font-size: 80%;
+  color: #8c8c8c;
+  margin: 20px auto;
+}
 
 table {
   width: 100%;
@@ -194,4 +199,3 @@ pre code {
 ul, ol {
     padding-left: 20px;
 }
-

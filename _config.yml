@@ -20,7 +20,6 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://blog.opskumu.com" # the base hostname & protocol for your site, e.g. http://example.com
 author: Kumu
 permalink: /:title.html
-# twitter_username: jekyllrb
 github_username: opskumu
 
 # Build settings
