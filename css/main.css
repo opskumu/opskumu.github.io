@@ -155,6 +155,8 @@ a:hover {
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 16px;
+  font-size: 87%;
 }
 
 table, th, td {
@@ -187,4 +189,8 @@ pre {
 
 pre code {
     padding: 0 0;
+}
+
+ul, ol {
+    padding-left: 20px;
 }
