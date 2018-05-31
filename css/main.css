@@ -50,12 +50,13 @@ a:hover {
 }
 
 .post-meta {
-  color: #787878;
+  color: rgba(0,0,0,0.3);
 }
 
 .post-meta a {
-  color: #555;
+  color: #576b95;
   margin-right: 5px;
+  border-bottom: none;
 }
 
 .post-content {
