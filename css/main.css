@@ -40,20 +40,16 @@ a:hover {
   margin-bottom: 15px;
 }
 
-.post-li a {
-  color: #333;
-}
-
 .post-li:last-child {
   margin-bottom: 0px;
 }
 
 .post-meta {
-  color: rgba(0,0,0,0.3);
+  text-align: right;
+  font-size: 15px;
 }
 
 .post-meta a {
-  color: #576b95;
   margin-right: 5px;
   border-bottom: none;
 }
