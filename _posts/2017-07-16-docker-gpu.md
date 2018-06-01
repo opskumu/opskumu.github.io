@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "Docker 中玩转 GPU"
-description: "docker gpu"
 ---
 
 ## 一、GPU 驱动安装
@@ -21,7 +20,7 @@ description: "docker gpu"
 
 [CUDA Toolkit Download](https://developer.nvidia.com/cuda-downloads) 官网下载，选择所对应的版本
 
-![CUDA Toolkit](images/cuda-download.png)
+![](images/cuda-download.png)
 
 从上图中可以看到，官方也直接显示了 CUDA 的安装方式
 

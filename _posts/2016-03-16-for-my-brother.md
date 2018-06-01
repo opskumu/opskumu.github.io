@@ -1,13 +1,12 @@
 ---
 layout: post
 title: "马上毕业了，还能做些什么？"
-description: "毕业"
 ---
 
 * toc
 {:toc}
 
-![whiplash](/images/whiplash.jpeg)
+![](/images/whiplash.jpeg)
 
 年前的时候，还在读大三计算机系的表弟和我沟通了下关于毕业如何找工作，现在应该做哪些准备的问题。于是，我根据个人这几年的一些学习和工作经历，做了一些总结。
 

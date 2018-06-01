@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "基于 CentOS7 的 Kubernetes 集群"
-description: "Kubernetes"
 ---
 
 ## 一、环境

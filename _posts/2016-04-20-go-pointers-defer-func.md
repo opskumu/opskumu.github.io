@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "Go 指针、defer、匿名函数"
-description: "go pointers, defer, functions"
 ---
 
 ## 一、Go 指针
@@ -83,7 +82,7 @@ func f(i int) func() int {
 func main() {
     m1 := f(2)
     fmt.Println(m1())    // 指针指向 i, i = 2, 输出 3
-    fmt.Println(m1())    // 指针指向 i，i = 3，输出 4
+    fmt.Println(m1())    // 指针指向 i, i = 3, 输出 4
 
     m2 := f(2)
     fmt.Println(m2())    // 指针指向 另外一个 i，i = 2，输出 3

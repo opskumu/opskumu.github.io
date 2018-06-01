@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "如何优雅的关闭容器"
-description: "graceful shutdown docker"
 ---
 
 最近把 Docker 官方的 [Docker Reference](https://github.com/docker/docker-ce/blob/master/components/cli/docs/reference/builder.md) 文档又读了一遍，发现有些细节深究起来，还是有很多可挖的。针对写 `Dockerfile`，大部分时候只要照葫芦画瓢，基本也不会有什么大的问题，但是如果再深入理解一下那就更有意思了。

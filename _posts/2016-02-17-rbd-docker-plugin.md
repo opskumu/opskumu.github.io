@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Docker 使用 Ceph RBD Volume
-description: "Docker RBD Volume Plugin"
 ---
 
 ## 一、环境说明

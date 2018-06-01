@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "Docker 资源限制之 IO"
-description: "docker io"
 ---
 
 * [Docker 资源限制之内存](http://blog.opskumu.com/docker-memory-limit.html)
@@ -124,7 +123,7 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 
 通过 iotop 获取测试过程中的 bps 也是 1.0 MB 为上限：
 
-![io write bps](/images/io-write-bps.png)
+![](/images/io-write-bps.png)
 
 读 bps 限制使用方式同写 bps 限制：
 

@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "Docker Device Mapper 使用 direct-lvm"
-description: "docker"
 ---
 
 ## 一、Device Mapper: loop-lvm
