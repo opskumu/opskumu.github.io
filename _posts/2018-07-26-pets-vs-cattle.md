@@ -16,7 +16,7 @@ date: 2018-07-26 15:08 +0800
 
 ## 历史
 
-在 2011 年或者 2012 年的某个时候，我一直在努力向客户解释 AWS，云原生应用以及云和以往的情况彻底不同，大多数解释都要花费很多时间。当我遇到 Bill Bake 关于 [Scaling SQL Server](https://twitter.com/randybias/status/444306871545892864)一个很棒的演示时，我正在寻找一种方法来概括这一点。Bill 没有在云的范畴中表达，我是通过 Google 搜索找到了它，Bill 不是在谈论云或者云计算，他的重心是 `scale-up` 和 `scale-out` 架构上。
+在 2011 年或者 2012 年的某个时候，我一直在努力向客户解释 AWS，云原生应用以及云和以往的情况彻底不同，大多数解释都要花费很多时间。当我遇到 Bill Bake 关于 [Scaling SQL Server](https://twitter.com/randybias/status/444306871545892864) 一个很棒的演示时，我正在寻找一种方法来概括这一点。Bill 没有在云的范畴中表达，我是通过 Google 搜索找到了它，Bill 不是在谈论云或者云计算，他的重心是 `scale-up` 和 `scale-out` 架构上。
 
 最重要的是，Bill 使用了一个与我产生共鸣的类比。在讨论 `scale-up` 和 `scale-out` 时，他拿一只宠物和牛作为比较。我灵光一闪，我意识到就是它了。但是这儿有一个细微但重要的差别，首先我把宠物和牛放在云的背景下，其次我是强调牛的可替代性和宠物的独特性。这可比 `scale-up` 和 `scale-out` 要重要的多。我相信这会影响你如何看待一个服务器。如果你认为服务器（不管是金属的，虚拟化或者容器化）可以随时销毁和替代，那么它是牛群中的一员。但是，如果你将服务器（或者试图让一组服务器作为一个独立单元出现），那么它就是宠物。
 
@@ -48,7 +48,7 @@ date: 2018-07-26 15:08 +0800
 
 这就是为什么坚持或至少从上面的核心信息开始是很重要的。人们可以并且能够，通过这个简单的类比将其转化为他们自己的用途。相关人员已经加入的类比（例如“宠物，牛，蚂蚁”，“儿童，宠物和牛”等），并以各种方式对其进行了修改。这很好，但它经常会混淆原意，这意味着它降低了价值。以下是最近的一个案例。
 
-Kubernetes 团队今年在夏天借用了这个类比解释了他们为 Kubernetes 功能添加了 "Pet sets"，并发布了一篇题为 [Stateful Applications in Containers!? Kubernetes 1.3 Says “Yes!”](http://blog.kubernetes.io/2016/07/stateful-applications-in-containers-kubernetes.html) 的博客。可以理解的是，容器生态的人们会使用 `Pets vs Cattle`，并将其解释为有状态应用。容器适用于有状态的应用，这我个人不太清楚，可能容器生态支持持久性存储还不太好。相当多的人一直在寻找解决这个问题，包括 [Rex-Ray 项目](https://github.com/emccode/rexray)。无论怎么说，这是一个长的话题。
+Kubernetes 团队今年在夏天借用了这个类比解释了他们为 Kubernetes 添加了 "Pet sets" 功能，并发布了一篇题为 [Stateful Applications in Containers!? Kubernetes 1.3 Says “Yes!”](http://blog.kubernetes.io/2016/07/stateful-applications-in-containers-kubernetes.html) 的博客。可以理解的是，容器生态的人们会使用 `Pets vs Cattle`，并将其解释为有状态应用。容器适用于有状态的应用，这我个人不太清楚，可能容器生态支持持久性存储还不太好。相当多的人一直在寻找解决这个问题，包括 [Rex-Ray 项目](https://github.com/emccode/rexray)。无论怎么说，这是一个很长的话题。
 
 K8s 博文中的核心问题是，如果你看一下使用 Pet Sets 在 kubernetes 1.3 中支持的有状态应用程序的例子，它就是一个 Cattle 架构数据存储系统："Cassandra, Kafka, MongoDB"。所有的这些数据存储系统都是针对故障设计的，并且完全符合我上述对 Cattle 的定义。换句话说，Kubernetes 现在使用所谓的 "Pet Sets" 支持 Cattle 数据存储。
 
