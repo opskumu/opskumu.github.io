@@ -50,7 +50,7 @@ date: 2018-07-26 15:08 +0800
 
 Kubernetes 团队今年在夏天借用了这个类比解释了他们为 Kubernetes 功能添加了 "Pet sets"，并发布了一篇题为 [Stateful Applications in Containers!? Kubernetes 1.3 Says “Yes!”](http://blog.kubernetes.io/2016/07/stateful-applications-in-containers-kubernetes.html) 的博客。可以理解的是，容器生态的人们会使用 `Pets vs Cattle`，并将其解释为有状态应用。容器适用于有状态的应用，这我个人不太清楚，可能容器生态支持持久性存储还不太好。相当多的人一直在寻找解决这个问题，包括 [Rex-Ray 项目](https://github.com/emccode/rexray)。无论怎么说，这是一个长的话题。
 
-K8s 博文中的核心问题是，如果你看一下使用 Pet Sets 在 kubernetes 1.3 中支持的有状态应用程序的例子，它就是一个 cattle 架构数据存储系统："Cassandra, Kafka, MongoDB"。所有的这些数据存储系统都是针对故障设计的，并且完全符合我上述对 Cattle 的定义。换句话说，Kubernetes 现在使用所谓的 "Pet Sets" 支持 cattle 数据存储。
+K8s 博文中的核心问题是，如果你看一下使用 Pet Sets 在 kubernetes 1.3 中支持的有状态应用程序的例子，它就是一个 Cattle 架构数据存储系统："Cassandra, Kafka, MongoDB"。所有的这些数据存储系统都是针对故障设计的，并且完全符合我上述对 Cattle 的定义。换句话说，Kubernetes 现在使用所谓的 "Pet Sets" 支持 Cattle 数据存储。
 
 当然，问题在于这暗示使用 Pet Sets 支持真正的 Pet 架构系统，例如主备 Oracle 存储系统或 HA NFS 文件服务器对。虽然这里有一些步骤可以帮助实现这一个目标（例如，支持有序的主从系统），但是 Pet Sets 确实是针对横向扩展数据存储，而不是上文定义的真正的宠物。
 
