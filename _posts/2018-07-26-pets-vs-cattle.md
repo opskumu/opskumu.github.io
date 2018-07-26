@@ -6,7 +6,7 @@ date: 2018-07-26 15:08 +0800
 
 ![](images/pets-vs-cattle.jpg)
 
-一直以为针对服务宠物和牛（家畜）一说不太理解，以为只是简单意义上的有状态服务和无状态服务的类比。好比 Kubernetes 中 StatefulSet 对应 Pets，Deployment 对应 Cattle。后来看到 `Randy Bias` 的这篇文章 [The History of Pets vs Cattle and How to Use the Analogy Properly](http://cloudscaling.com/blog/cloud-computing/the-history-of-pets-vs-cattle/)，才知道完全不是这一回事，于是简单翻译了一下该文。
+一直以来对服务宠物和牛（家畜）的说法不太理解，以为只是简单意义上的有状态服务和无状态服务的类比。好比 Kubernetes 中 StatefulSet 对应 Pets，Deployment 对应 Cattle。后来看到 `Randy Bias` 的这篇文章 [The History of Pets vs Cattle and How to Use the Analogy Properly](http://cloudscaling.com/blog/cloud-computing/the-history-of-pets-vs-cattle/)，才知道完全不是这一回事。文中还不忘怼了一下 Kubernetes 官方博文中把有状态服务形容为 Pets，我想 K8s 1.5 之后把 PetSet 改名为 StatefulSet 与这篇文章是有关联的。个人觉得这是一篇很有意思的文章，索性就翻译了一下，有些翻译可能有些生涩，英文好的建议直接看原文。
 
 ---
 
