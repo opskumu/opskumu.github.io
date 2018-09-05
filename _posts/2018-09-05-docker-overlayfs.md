@@ -4,11 +4,14 @@ title: Docker OverlayFS 驱动
 date: 2018-09-05 16:30 +0800
 ---
 
+* toc
+{:toc}
+
 本文为 [Use the OverlayFS storage driver](https://docs.docker.com/storage/storagedriver/overlayfs-driver/) 译文，一直以来对 OverlayFS 工作机制不太理解，趁着间隙把 Docker 官方的文档看了一遍。虽然不涉及到底层的技术实现，但是基本的工作机制，通过这篇文章差不多可以了解个大概了。
 
 ---
 
-OverlayFS 是类似 AUFS 的现代联合文件系统（union filesystem），但是速度更快，实现更简单。针对 OverlayFS 提供了两个存储驱动：原始 overlay，以及更新更稳定的 overlay2。
+OverlayFS 是类似 AUFS 的现代联合文件系统（union filesystem），但是速度更快，实现更简单。针对 OverlayFS 提供了两个存储驱动：最初的 `overlay`，以及更新更稳定的 `overlay2`。
 
 > Note：如果你使用 OverlayFS，使用 `overlay2` 而不是 `overlay` 驱动，因为 `overlay2` 在 inode 利用率上更高效。要使用新的驱动，你需要系统内核版本 4.0 或者更高版本，除非你是使用 RHEL 或者 CentOS 用户，此时需要内核版本在 3.10.0-514 或更高版本。
 
