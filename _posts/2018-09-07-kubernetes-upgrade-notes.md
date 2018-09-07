@@ -14,7 +14,7 @@ date: 2018-09-07 16:42 +0800
 
 之所以从版本 1.5.x 升级到 1.6.x 开始说起，是因为这个大版本更新变动较大，升级注意点较多。因为牵扯一些兼容性的问题，这次升级需要在停服的情况下进行。
 
-* [WARNING: etcd backup strongly recommended](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.6.md#warning-etcd-backup-strongly-recommended）
+* [WARNING: etcd backup strongly recommended](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.6.md#warning-etcd-backup-strongly-recommended)
 
 ### etcd 备份和数据迁移
 
@@ -65,7 +65,7 @@ service etcd start
 
 另外一个需要用户明白的是，1.6.0 Kubelet 默认启用 Docker-CRI 实现，因此老版本 Kubelet 创建的容器和当前的版本是不支持的，官方建议的做法是在升级前，提前通过 `drain` 旧版本的节点，否则默认 Kubelet 会自动重启所有的容器。
 
-> https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.6.md#node-components
+> [1.6 node components](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.6.md#node-components)
 > * __Kubelet with the Docker-CRI implementation__
 >   * The Docker-CRI implementation is enabled by default.
 >   * It is not compatible with containers created by older Kubelets. It is recommended to drain your node before upgrade. If you choose to perform an in-place upgrade, the Kubelet will automatically restart all Kubernetes-managed containers on the node.
