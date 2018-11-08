@@ -31,7 +31,8 @@ hostname=minikube
 ```
 $ kubectl label node minikube disktype=ssd
 node/minikube labeled
-$ kubectl get nodes --show-labelsNAME       STATUS    ROLES     AGE       VERSION   LABELS
+$ kubectl get nodes --show-labels
+NAME       STATUS    ROLES     AGE       VERSION   LABELS
 minikube   Ready     <none>    5m        v1.10.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,disktype=ssd,kubernetes.io/hostname=minikube
 ```
 
