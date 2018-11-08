@@ -4,13 +4,16 @@ title: Kubernetes Pod 亲和性和反亲和性
 date: 2018-11-08 11:28 +0800
 ---
 
+* toc
+{:toc}
+
 * 官方原文 [Assigning Pods to Nodes](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/)
 
 通过 Kubernetes 你可以将一个 pod 限制或倾向于在某些特定节点运行。有几种方式可以达到这个目的，它们都通过 [label selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) 进行选择。通常情况下，这样的约束是不必要的，因为调度程序会自动进行合理的调度（如通过一系列的评分机制将 pods 合理分配到最优节点上，而不会将 pod 分配在没有足够资源的节点上等）。但是在某些情况下，可能需要更多的策略控制，例如，将 pod 调度到 SSD 的计算节点上，或者将两个通信比较频繁的不同服务 pod 调度到同一个可用域。
 
 `labels` 在 K8s 中是一个很重要的概念，作为一个标识，Service、Deployments 和 Pods 之间的关联都是通过 `label` 来实现的。而每个节点也都拥有 `label`，通过设置 `label` 相关的策略可以使得 pods 关联到对应 `label` 的节点上。
 
-## nodeSelector
+## 一、nodeSelector
 
 `nodeSelector` 是最简单的约束方式。`nodeSelector` 是 PodSpec 的一个字段。
 
@@ -72,7 +75,7 @@ nginx     1/1       Running   0          1m        172.18.0.4   minikube
 
 `nodeSelector` 可以很方便的解决以上比较简单的需求，但是它还不够灵活。比如我想以机架为单位，部署的服务可以很好的分散在不同机架的服务器上，此时 `nodeSelector` 就并不是那么管用了。因此，Kubernetes 引入了亲和性和反亲和性概念。
 
-## 亲和性和反亲和性（Affinity and anti-affinity）
+## 二、亲和性和反亲和性（Affinity and anti-affinity）
 
 affinity/anti-affinity 特性还处于 beta 状态，相比 `nodeSelector` 来说有几点优势：
 
@@ -82,7 +85,7 @@ affinity/anti-affinity 特性还处于 beta 状态，相比 `nodeSelector` 来�
 
 affinity 特性拥有两种类型，一种是 node affinity，一种是 pod affinity/anti-affinity。node affinity 类似 `nodeSelector`，但同时拥有上文提到的 1、2 两点优势，pod affinity/anti-affinity 针对 pods 指定 `labels`，同时拥有以上三点优势。
 
-### Node affinity
+### 2.1 Node affinity
 
 K8s 在 1.2 的时候以 alpha 的特性引入 node affinity。node affinity 通过 node `labels` 约束 pod 调度节点。Node affinity 有两种类型：
 
@@ -128,7 +131,7 @@ spec:
 
 > [Node affinity and NodeSelector 设计文档](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/scheduling/nodeaffinity.md)
 
-### Pod affinity and anti-affinity
+### 2.2 Pod affinity and anti-affinity
 
 pod 亲和性和反亲和性在 K8s 1.4 版本引入，它基于运行在 node 上的 pod 标签来限制 pod 调度在哪个节点上，而不是节点的标签。
 
@@ -191,9 +194,9 @@ spec:
 
 除了 `labelSelector` 和 `topologyKey`，还可以指定 namespace 的 `labelSelector` 作为匹配。`labelSelector` 和 `topologyKey` 属于同一级别，如果未定义或设置为空值，那么默认为定义 pod affinity 和 anti-affinity 所在的空间。
 
-## 实践案例
+## 三、实践案例
 
-### 始终调度在同一个节点
+### 3.1 始终调度在同一个节点
 
 在一个三个节点的集群中，一个 web 应用程序依赖内存存储，如 redis，我们想 web 程序尽可能的和缓存调度在同一个节点上。redis 的 Deployment 配置如下：
 
