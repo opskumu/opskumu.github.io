@@ -38,7 +38,7 @@ date: 2019-06-04 21:58 +0800
 
 如果是集群之外的用户或者应用需要调用呢，这时候 Service 可能就满足不了了，这时候就需要引入 Ingress。通过 Ingress 关联 Service，就可以把集群的服务暴露到外部访问的目的（实际还需要借助 ingress controller 才可以真正对外提供访问，受于篇幅，这里不作介绍）。
 
-> 当然不通过 Ingress，通过 `nodePort`、`hostNetwork` 的方式也可以做到集群内部服务的暴露，通俗的做法还是通过 Ingress 暴露服务，一方面是方便统一管理。另外，通过 ingress 还可以提供其他方式不具备的功能需求。
+> 当然不通过 Ingress，通过 `nodePort`、`hostNetwork` 等方式也可以做到集群内部服务的暴露，通俗的做法还是通过 Ingress 暴露服务，一方面是方便统一管理。另外，通过 ingress 还可以提供其他方式不具备的功能需求。
 
 ## 小结
 
