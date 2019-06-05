@@ -18,7 +18,7 @@ date: 2019-06-04 21:58 +0800
 
 有了 Namespace 之后，我们就可以创建 ReplicaSet 来运行应用了。那什么是 ReplicaSet 呢，在讲 ReplicaSet 之前先介绍一个 Kubernetes 中的重要概念 Pod。Pod 是 Kubernetes 可以创建和管理的最小部署单元，一个 Pod 由一个或者多个 Container 组成，Pod 中的 Container 共享存储、网络等资源。正常情况下，我们使用 Docker 运行一个容器的时候，直接指定镜像运行即可。而在 Kubernetes 中则是以 Pod 的形式创建运行，虽然实际在节点上还是以容器的方式运行，但在 Kubernetes 角度最终呈现形式则是 Pod。
 
-如果我们要运行一个应用，直接创建一个 Pod 即可运行。回到前文说的 ReplicaSet，Pod 本身就可以把应用跑起来了，为何一般不直接创建一个 Pod 呢，这是因为单个部署 Pod，如果 Pod 因为一些因素异常退出了，Pod 本身是不会自动恢复的。而 ReplicaSet 则担任管理 Pod 状态的角色，ReplicaSet 的机制保证通过它们管理的 Pod 保持固定的副本数并持续运行。如果 Pod 因异常原退出了，那么 ReplicaSet 会请求创建新的 Pod，保障 Pod 按照我们的设定运行。
+如果我们要运行一个应用，直接创建一个 Pod 即可运行。回到前文说的 ReplicaSet，Pod 本身就可以把应用跑起来了，为何一般不直接创建一个 Pod 呢？这是因为单个部署 Pod，如果 Pod 因为一些因素异常退出了，Pod 本身是不会自动恢复的。而 ReplicaSet 则担任管理 Pod 状态的角色，ReplicaSet 的机制保证通过它们管理的 Pod 保持固定的副本数并持续运行。如果 Pod 因异常原退出了，那么 ReplicaSet 会请求创建新的 Pod，保障 Pod 按照我们的设定运行。
 
 从上图中我们可以看到 ReplicaSet 上层还有一个 Deployment。Deployment 提供了 Pod 和 ReplicaSet 的更新声明。一般情况下不需要单独创建 ReplicaSet，而是直接通过创建 Deployment，由 Deployment 创建管理 ReplicaSet。这是因为 Deployment 在 ReplicaSet 基础上提供了滚动更新、回滚、暂停、恢复等功能。
 
@@ -32,7 +32,7 @@ date: 2019-06-04 21:58 +0800
 
 ## Ingress
 
-我们知道在同一个 Kubernetes 集群中同一个空间应用之间访问通过 Service Name 和端口达到相互访问的目的，可能有人会问跨空间如何访问？其实只要在 Kubernetes 集群中，不同应用之间相互访问都是有办法的。跨空间的时候我们可以通过 `<serviceName>.<namespace>:<servicePort>` 的方式达到跨空间的访问目的，即在原有的基础上加上空间字段。
+我们知道在同一个 Kubernetes 集群中同一个空间应用之间访问通过 `<serviceName>:<servicePort>` 达到相互访问的目的，可能有人会问跨空间如何访问？其实只要在 Kubernetes 集群中，不同应用之间相互访问都是有办法的。跨空间的时候我们可以通过 `<serviceName>.<namespace>:<servicePort>` 的方式达到跨空间的访问目的，即在原有的基础上加上空间字段。
 
 > 虽然可以跨空间访问，但是一般还是把每个空间看成独立的环境，不建议跨空间的访问，当然实际情况根据实际需求对待。
 
