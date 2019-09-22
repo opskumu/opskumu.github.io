@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>rsync 备份备忘</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">rsync 备份备忘</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgccef521">1. rsync 基本介绍</a></li>
+<li><a href="#org040a9db">2. rsync 选项</a>
+<ul>
+<li><a href="#orgcf8234f">2.1. 常用选项</a></li>
+</ul>
+</li>
+<li><a href="#orgc2b0834">3. 远程 Shell 方式</a></li>
+<li><a href="#org14c3a54">4. rsync C/S 方式</a></li>
+<li><a href="#orgc51da1e">5. 一些命令</a>
+<ul>
+<li><a href="#org3e37209">5.1. 常用命令</a></li>
+<li><a href="#orge9ee091">5.2. ssh 端口非默认 22 同步</a></li>
+<li><a href="#orgf4d0b8c">5.3. 查看服务器同步资源</a></li>
+</ul>
+</li>
+<li><a href="#org9ee538e">6. 参考文档</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgccef521" class="outline-2">
+<h2 id="orgccef521"><span class="section-number-2">1</span> rsync 基本介绍</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<code>rsync</code> 是类 unix 系统下的数据镜像备份工具，从软件的命名上就可以看出来了- remote sync。它的特性如下：
+</p>
+
+<ul class="org-ul">
+<li>可以镜像保存整个目录树和文件系统</li>
+<li>可以很容易做到保持原来文件的权限、时间、软硬链接等等</li>
+<li>无须特殊权限即可安装</li>
+<li>优化的流程，文件传输效率高</li>
+<li>可以使用 rsh、ssh 等方式来传输文件，当然也可以通过直接的socket连接</li>
+<li>支持匿名传输</li>
+</ul>
+
+<p>
+在使用 rsync 进行远程同步时，可以使用两种方式： 远程 <code>Shell</code> 方式（用户验证由 ssh 负责）和 <code>C/S</code> 方式 （即客户连接远程 rsync 服务器，用户验证由 rsync 服务器负责）。
+</p>
+
+<p>
+无论本地同步目录还是远程同步数据，首次运行时将会把全部文件拷贝一次，以后再运行时将只拷贝有变化的文件（对于新文件）或文件的变化部分（对于原有文件）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org040a9db" class="outline-2">
+<h2 id="org040a9db"><span class="section-number-2">2</span> rsync 选项</h2>
+<div class="outline-text-2" id="text-2">
+<pre class="example">
+Usage: rsync [OPTION]... SRC [SRC]... DEST
+  or   rsync [OPTION]... SRC [SRC]... [USER@]HOST:DEST
+  or   rsync [OPTION]... SRC [SRC]... [USER@]HOST::DEST
+  or   rsync [OPTION]... SRC [SRC]... rsync://[USER@]HOST[:PORT]/DEST
+  or   rsync [OPTION]... [USER@]HOST:SRC [DEST]
+  or   rsync [OPTION]... [USER@]HOST::SRC [DEST]
+  or   rsync [OPTION]... rsync://[USER@]HOST[:PORT]/SRC [DEST]
+The ':' usages connect via remote shell, while '::' &amp; 'rsync://' usages connect
+to an rsync daemon, and require SRC or DEST to start with a module name.
+</pre>
+
+<p>
+<b>注:</b> 在指定复制源时，路径是否有最后的 "/" 有不同的含义，例如：
+</p>
+
+<ul class="org-ul">
+<li>/data ：表示将整个 /data 目录复制到目标目录</li>
+<li><i>data</i> ：表示将 <i>data</i> 目录中的所有内容复制到目标目录</li>
+</ul>
+</div>
+
+<div id="outline-container-orgcf8234f" class="outline-3">
+<h3 id="orgcf8234f"><span class="section-number-3">2.1</span> 常用选项</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li><code>-v</code> : Verbose (try -vv for more detailed information) # 详细模式显示</li>
+<li><code>-e</code> "ssh options" : specify the ssh as remote shell # 指定 ssh 作为远程 shell</li>
+<li><code>-a</code> : archive mode # 归档模式，表示以递归方式传输文件，并保持所有文件属性，等于 -rlptgoD
+<ul class="org-ul">
+<li>=-r=(&#x2013;recursive) : 目录递归</li>
+<li>=-l=(&#x2013;links) ：保留软链接</li>
+<li>=-p=(&#x2013;perms) ：保留文件权限</li>
+<li>=-t=(&#x2013;times) ：保留文件时间信息</li>
+<li>=-g=(&#x2013;group) ：保留属组信息</li>
+<li>=-o=(&#x2013;owner) ：保留文件属主信息</li>
+<li>=-D=(&#x2013;devices) ：保留设备文件信息</li>
+</ul></li>
+<li><code>-z</code> : 压缩文件</li>
+<li><code>-h</code> : 以可读方式输出</li>
+<li><code>-H</code> : 复制硬链接</li>
+<li><code>-X</code> : 保留扩展属性</li>
+<li><code>-A</code> : 保留ACL属性</li>
+<li><code>-n</code> : 只测试输出而不正真执行命令，推荐使用，特别防止 <code>--delete</code> 误删除！</li>
+<li><code>--stats</code> : 输出文件传输的状态</li>
+<li><code>--progress</code> : 输出文件传输的进度</li>
+<li><code>––exclude=PATTERN</code> : 指定排除一个不需要传输的文件匹配模式</li>
+<li><code>––exclude-from=FILE</code> : 从 FILE 中读取排除规则</li>
+<li><code>––include=PATTERN</code> : 指定需要传输的文件匹配模式</li>
+<li><code>––include-from=FILE</code> : 从 FILE 中读取包含规则</li>
+<li><code>--numeric-ids</code> : 不映射 uid/gid 到 user/group 的名字</li>
+<li><code>-S, --sparse</code> : 对稀疏文件进行特殊处理以节省 DST 的空间</li>
+<li><code>--delete</code> : 删除 DST 中 SRC 没有的文件，也就是所谓的镜像 [mirror] 备份</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgc2b0834" class="outline-2">
+<h2 id="orgc2b0834"><span class="section-number-2">3</span> 远程 Shell 方式</h2>
+<div class="outline-text-2" id="text-3">
+<pre class="example">
+rsync [OPTION]... SRC [SRC]... [USER@]HOST:DEST # 执行“推”操作
+or   rsync [OPTION]... [USER@]HOST:SRC [DEST]   # 执行“拉”操作
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org14c3a54" class="outline-2">
+<h2 id="org14c3a54"><span class="section-number-2">4</span> rsync C/S 方式</h2>
+<div class="outline-text-2" id="text-4">
+<pre class="example">
+rsync [OPTION]... SRC [SRC]... [USER@]HOST::DEST                    # 执行“推”操作
+or   rsync [OPTION]... SRC [SRC]... rsync://[USER@]HOST[:PORT]/DEST # 执行“推”操作
+or   rsync [OPTION]... [USER@]HOST::SRC [DEST]                      # 执行“拉”操作
+or   rsync [OPTION]... rsync://[USER@]HOST[:PORT]/SRC [DEST]        # 执行“拉”操作
+</pre>
+
+<p>
+C/S 方式需要配置服务端，下面是一个配置文件示例：
+</p>
+
+<pre class="example">
+# /etc/rsyncd.conf
+
+uid = root
+gid = root
+use chroot = yes
+
+[bak-data]
+    path = /data/
+    comment = data backup
+    numeric ids = yes
+    read only = yes
+    list = no
+    auth users = data
+    filter = merge /etc/.data-filter  # 过滤规则
+    secrets file = /etc/rsync-secret
+    hosts allow = 192.168.80.0/24 172.16.0.10
+
+[bak-home]
+    path = /home/
+    comment = home backup
+    numeric ids = yes
+    read only = yes
+    list = no
+    auth users = home,test
+    exclude = .svn .git
+    secrets file = /etc/rsync-secret
+    hosts allow = 192.168.80.0/24 172.16.0.10
+</pre>
+
+<p>
+密码文件和 filter 文件内容如下：
+</p>
+
+<pre class="example">
+# cat /etc/rsync-secret
+data:123321
+home:123456
+test:654321
+# chmod 600 /etc/rsync-secret
+# cat /etc/.data-filter     # 关于 filter 的规则文件需要多测试才能彻底明白
++ mysql56/***
+- *
+# 以上规则表示匹配所有 mysql56 目录下的内容，其它都不同步
+</pre>
+
+<p>
+关于filter的匹配规则可以参考<a href="http://www.samba.org/ftp/rsync/rsyncd.conf.html">man手册</a>：
+</p>
+
+<blockquote>
+<p>
+filter
+</p>
+
+<p>
+The daemon has its own filter chain that determines what files it will let the client access. This chain is not sent to the client and is independent of any filters the client may have specified. Files excluded by the daemon filter chain (daemon-excluded files) are treated as non-existent if the client tries to pull them, are skipped with an error message if the client tries to push them (triggering exit code 23), and are never deleted from the module. You can use daemon filters to prevent clients from downloading or tampering with private administrative files, such as files you may add to support uid/gid name translations.
+</p>
+
+<p>
+The daemon filter chain is built from the "filter", "include from", "include", "exclude from", and "exclude" parameters, in that order of priority. Anchored patterns are anchored at the root of the module. To prevent access to an entire subtree, for example, "/secret", you must exclude everything in the subtree; the easiest way to do this is with a triple-star pattern like "/secret/***".
+</p>
+
+<p>
+The "filter" parameter takes a space-separated list of daemon filter rules, though it is smart enough to know not to split a token at an internal space in a rule (e.g. "- /foo - /bar" is parsed as two rules). You may specify one or more merge-file rules using the normal syntax. Only one "filter" parameter can apply to a given module in the config file, so put all the rules you want in a single parameter. Note that per-directory merge-file rules do not provide as much protection as global rules, but they can be used to make &#x2013;delete work better during a client download operation if the per-dir merge files are included in the transfer and the client requests that they be used.
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orgc51da1e" class="outline-2">
+<h2 id="orgc51da1e"><span class="section-number-2">5</span> 一些命令</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org3e37209" class="outline-3">
+<h3 id="org3e37209"><span class="section-number-3">5.1</span> 常用命令</h3>
+<div class="outline-text-3" id="text-5-1">
+<pre class="example">
+RSYNC_PASSWORD=123321 rsync -havAEHXi -n --numeric-ids --delete --stats --progress [SRC] [DEST]
+</pre>
+
+<p>
+<b>注：</b> 如果有稀疏文件，则添加 <code>-S</code> 选项可以提升传输性能。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge9ee091" class="outline-3">
+<h3 id="orge9ee091"><span class="section-number-3">5.2</span> ssh 端口非默认 22 同步</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+使用 ssh 方式传输时如果连接服务器 ssh 端口非标准，则需要通过 <code>-e</code> 选项指定：
+</p>
+
+<pre class="example">
+RSYNC_PASSWORD=123321 rsync -havAEHXi -n --numeric-ids --delete --stats --progress -e "ssh -p 22222" [USER@]HOST:SRC [DEST]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgf4d0b8c" class="outline-3">
+<h3 id="orgf4d0b8c"><span class="section-number-3">5.3</span> 查看服务器同步资源</h3>
+<div class="outline-text-3" id="text-5-3">
+<pre class="example">
+RSYNC_PASSWORD=123321 rsync --list-only data@192.168.80.150::bak-data
+</pre>
+
+<p>
+OR
+</p>
+
+<pre class="example">
+RSYNC_PASSWORD=123321 rsync --list-only rsync://data@192.168.80.150/bak-data
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9ee538e" class="outline-2">
+<h2 id="org9ee538e"><span class="section-number-2">6</span> 参考文档</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li><a href="http://www.samba.org/ftp/rsync/rsyncd.conf.html">rsync man 手册</a></li>
+<li><a href="http://www.howtocn.org/rsync:use_rsync">howtocn rsync 文档</a></li>
+<li><a href="http://blog.clanzx.net/2013/08/23/rsync-backup.html">使用 rsync 进行文件备份</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2015-01-09 Fri 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

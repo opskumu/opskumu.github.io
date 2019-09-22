@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="水寒" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#关于工作">1. 关于工作</a></li>
+<li><a href="#关于生活">2. 关于生活</a>
+<ul>
+<li><a href="#附录">2.1. 附录：</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+30 号的时候，好友 <a href="http://www.zhangjiee.com">张杰</a>
+就喊着该写文章了，年终总结似乎已成惯例。我囔囔着说，不急不急，总会写的（至于写些什么，我心里是没什么数的）。直到打开电脑的时候，也不确定该写些什么，那么就想到哪里写到哪里吧。
+</p>
+
+<p>
+今年元旦假期哪都没有去，本来计划去武功山跨年的，小伙伴临时有事，没有成行。自己又寻思着骑行去趟南浔，可恰逢雪天，便打消了出去的念头，决定好好的宅几天。
+</p>
+
+<p>
+宅着固然没有什么坏处，但是总是处于这种状态，恐怕也没有多少好处。来杭州这两年，假期宅着的日子相比以前改善太多了，不过还是不太理想。闲时状态的大部分时间都是在游戏、电影和书籍度过的。
+</p>
+
+<p>
+特别是游戏，很难相信一款游戏整整玩了两年多，还一直在玩（这对于不热衷于游戏的自己是难以想象的）。如果说有什么可以让时间走的更快，答案是游戏我一点也不会觉得奇怪。当然，电影也是必不可少的。租房时并没有考虑过电影院这些因素，凑巧的是，每次租房的地方都有影院。遇到想看的电影时，就会买个午夜场（午夜场安静），看完回来就直接睡觉，这种感觉很好。至于读书，每年都会读一些，技术的，非技术的。读技术书主要是因为工作需要，而非技术的则是为了打发时间，并没有太高尚的理由。刚刚数了一下，这一年一共读了
+27 本书。读书走量并不难，北上广深的同学如果通行时间利用好，一年读 30+
+是很容易达成的目标。去年小结的时候还说要提升读书的质量，现在来看还是太浮于表面。
+</p>
+
+<p>
+上面唠叨了那么多，回归正题，还是老规矩吧，先说工作再说生活。不管写的怎么样，流程也是需要走一遍的，回顾以及展望。
+</p>
+
+<div id="outline-container-org0e697c8" class="outline-2">
+<h2 id="关于工作"><a id="org0e697c8"></a><span class="section-number-2">1</span> 关于工作</h2>
+<div class="outline-text-2" id="text-关于工作">
+<p>
+这是工作的第七个年头，这一年和过往的一年比并没有多少起色。处于走一步算一步的状态，对于前路如何去走还是很迷茫。不确定是找不到方向，还是不愿意去找，亦或是没有用心去找。当然，没必要对过去的那个自己指责一番，因为过去的那个是我，现在的也是我。在没有改变之前，指责或者抱怨自己并不会带来什么价值，首先还是要接受这个自己，不完美或者更甚一步满是缺点的自己。如《原则》中所说，只有当你能承认甚至接受自身的弱点时，你才能做出对自身有益的改变。看到自身的弱点，承认甚至接受都异常艰难，说起来是很容易，潜意识下的自己却很难把控，需要反复提醒和磨练。
+</p>
+
+<p>
+工作的范围没有什么大的变化，还是基于 <code>Kubernetes</code> 的 <code>Docker</code>
+容器化平台那一套。在前一年的推广下，后续内部的 Docker
+化覆盖基本不需要花什么力气来推广了，测试环境的容器实例也达到了小 4000
+的数量。生产环境量虽不大，但也有一个不错的试点，流量什么的都还过得去。平台能够进一步提升还是主要依赖于好友
+<a href="http://www.zhangjiee.com">张杰</a>，无论是功能点还是产品化思路都带来很大改变，简单说平台终于有点平台该有的模样了。之前一个人做这块，技术层面的局限是一方面，沟通、管理这些都欠缺太多（说没有也没毛病），这些方面也是往后自己需要慢慢突破的。当然，代码还是要多写，写的代码还是太少了。几年前对编程一窍不通到现在还能写些东西，在我看来确实没有什么大的捷径，写着想着就慢慢上道了。
+</p>
+
+<p>
+不得不承认的一点是，这一年自己变得有些松懈了，连静下心来做一些事情都变得越来越困难。这一点看起来很糟糕，实际也是，2019
+年我需要多花些时间去解决这个问题，这个问题不去解决，其他都是空谈。
+</p>
+
+<blockquote>
+<p>
+"看别人如何苦拼，让别人看你如何苦拼，会引发各种自我情绪，如同情、怜悯、难堪、愤怒、戒备等。你需要克服这一切，不再把苦拼视为负面的东西。人一生中最好的机会大多数来自苦拼的经历。苦拼是对人的创造性和个性的考验，你应该从这些考验中挖掘出最大的价值。"
+&#x2013; 《原则》
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org240d50a" class="outline-2">
+<h2 id="关于生活"><a id="org240d50a"></a><span class="section-number-2">2</span> 关于生活</h2>
+<div class="outline-text-2" id="text-关于生活">
+<p>
+严格意义上来说，现在还算不上叫生活，还处于生存的阶段。前两天看 Linus
+自传《只是为了好玩》中谈到生活的意义，觉得很有意思。
+</p>
+
+<blockquote>
+<p>
+"基本上这个答案既干脆又漂亮。答案本身不会解释生活的意义，但会直接告诉你生活中发生什么。第一是生存，第二是社会秩序，第三是娱乐。所以从某种意义上来说，生活的意义就是要你达到第三个阶段。一旦达到第三个阶段，这辈子你就算成功了。但是你得先超越前两个阶段。"
+&#x2013; 《只是为了好玩》
+</p>
+</blockquote>
+
+<p>
+以前不太有特别想买房的想法，可能是买房的目标离实际还很遥远。当接近那个目标的时候便不再觉得遥不可及了，于是也就有了很多想法。毕竟，动不动就租房换地方，时间一长，多少有些心力交瘁。另外，有个属于自己的地方，好歹可以称作为家吧，想来总会觉得会温暖一些。可是在杭州这种城市买房考量的地方太多，主要还是钱的问题，有想法没钱只能考虑地段不太好的地方。即使这样，新房和二手房倒挂严重，二手房价格根本买不起，新房又买不到，新房摇号会摇到让人绝望，摇了几次希望都没看到。没中就只能摇下个盘，还能指望什么呢，继续摇总会有希望的吧。
+</p>
+
+<p>
+2018
+出去的地方不多，去了一次新疆，这是去过最远的地方。爬了几座山，重装去了一次清凉峰（三十岁生日就是在清凉峰上度过的），看到了转瞬即逝的云海。然后走完了天目七尖，圆了去年七尖未走完的遗憾。12
+月初的时候，趁着下完雪，成功打卡雪日西湖群山。骑行基本是搁置的，除了一月底骑行了一次龙门古镇，来年的时候要好好补补了。
+</p>
+
+<p>
+最后，你好 2019。再见 2018。
+</p>
+
+<hr />
+</div>
+
+<div id="outline-container-org30c6b5d" class="outline-3">
+<h3 id="附录"><a id="org30c6b5d"></a><span class="section-number-3">2.1</span> 附录：</h3>
+<div class="outline-text-3" id="text-附录">
+<ul class="org-ul">
+<li><a href="https://github.com/opskumu/issues/issues/20">2018 读书清单</a>
+
+<ul class="org-ul">
+<li>2018 年个人的读书清单，今年并没有写什么阅读笔记，还是处于浅读状态</li>
+</ul></li>
+
+<li><a href="https://github.com/opskumu/issues/issues/19">学习周报</a>
+
+<ul class="org-ul">
+<li>个人每周的一些知识碎片记录，2017 年的时候创建，写了 2
+次就搁置了。2018 年的七月重新拾起，没想到就一直坚持下来了</li>
+</ul></li>
+
+<li><a href="https://wiki.opskumu.com">wiki.opskumu.com</a>
+
+<ul class="org-ul">
+<li>个人的 wiki，正在慢慢的维护起来，可能更新进度有些慢，主要集中在
+<code>Docker</code> 和 <code>Kubernetes</code> 这块的知识</li>
+</ul></li>
+</ul>
+
+<p>
+&#x2013;EOF&#x2013;
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 水寒</p>
+<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

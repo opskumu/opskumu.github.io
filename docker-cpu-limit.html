@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:36 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker CPU 资源限制</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Docker CPU 资源限制</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3d687bd">1. 压测工具</a></li>
+<li><a href="#orgfa7cd7f">2. CPU 测试</a>
+<ul>
+<li><a href="#org36e6d86">2.1. CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></a></li>
+<li><a href="#orgd71a1aa">2.2. CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></a></li>
+<li><a href="#org44dd3fe">2.3. Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></a>
+<ul>
+<li><a href="#org6a5acbc">2.3.1. <code>--cpuset-cpus</code></a></li>
+<li><a href="#orgd7e697c">2.3.2. <code>--cpuset-mems</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgeb340e6">3. 源码解析</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3d687bd" class="outline-2">
+<h2 id="org3d687bd"><span class="section-number-2">1</span> 压测工具</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+同上文 <a href="docker-memory-limit.html">Docker 内存资源限制</a> 使用 stress 测试。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgfa7cd7f" class="outline-2">
+<h2 id="orgfa7cd7f"><span class="section-number-2">2</span> CPU 测试</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime constraints on resources</a></li>
+
+<li>目前 Docker 支持 CPU 资源限制选项
+<ul class="org-ul">
+<li><code>-c</code>, <code>--cpu-shares=0</code>
+<ul class="org-ul">
+<li>CPU shares (relative weight)</li>
+<li>-c 选项将会废弃，推荐使用 <code>--cpu-shares</code></li>
+</ul></li>
+<li><code>--cpu-period=0</code>
+<ul class="org-ul">
+<li>Limit the CPU CFS (Completely Fair Scheduler) period</li>
+</ul></li>
+<li><code>--cpuset-cpus=""</code>
+<ul class="org-ul">
+<li>CPUs in which to allow execution (0-3, 0,1)</li>
+</ul></li>
+<li><code>--cpuset-mems=""</code>
+<ul class="org-ul">
+<li>Memory nodes (MEMs) in which to allow execution (0-3, 0,1). Only effective on NUMA systems.</li>
+</ul></li>
+<li><code>--cpu-quota=0</code>
+<ul class="org-ul">
+<li>Limit the CPU CFS (Completely Fair Scheduler) quota</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<pre class="example">
+➜  ~ docker help run | grep cpu
+  --cpu-shares                    CPU shares (relative weight)
+  --cpu-period                    Limit CPU CFS (Completely Fair Scheduler) period
+  --cpu-quota                     Limit CPU CFS (Completely Fair Scheduler) quota
+  --cpuset-cpus                   CPUs in which to allow execution (0-3, 0,1)
+  --cpuset-mems                   MEMs in which to allow execution (0-3, 0,1)
+</pre>
+</div>
+
+<div id="outline-container-org36e6d86" class="outline-3">
+<h3 id="org36e6d86"><span class="section-number-3">2.1</span> CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+默认所有的容器对于 CPU 的利用占比都是一样的，=-c= 或者 <code>--cpu-shares</code> 可以设置 CPU 利用率权重，默认为 1024，可以设置权重为 2 或者更高(单个 CPU 为 1024，两个为 2048，以此类推)。如果设置选项为 0，则系统会忽略该选项并且使用默认值 1024。通过以上设置，只会在 CPU 密集(繁忙)型运行进程时体现出来。当一个 container 空闲时，其它容器都是可以占用 CPU 的。cpu-shares 值为一个相对值，实际 CPU 利用率则取决于系统上运行容器的数量。
+</p>
+
+<p>
+假如一个 1core 的主机运行 3 个 container，其中一个 cpu-shares 设置为 1024，而其它 cpu-shares 被设置成 512。当 3 个容器中的进程尝试使用 100% CPU 的时候「尝试使用 100% CPU 很重要，此时才可以体现设置值」，则设置 1024 的容器会占用 50% 的 CPU 时间。如果又添加一个 cpu-shares 为 1024 的 container，那么两个设置为 1024 的容器 CPU 利用占比为 33%，而另外两个则为 16.5%。简单的算法就是，所有设置的值相加，每个容器的占比就是 CPU 的利用率，如果只有一个容器，那么此时它无论设置 512 或者 1024，CPU 利用率都将是 100%。当然，如果主机是 3core，运行 3 个容器，两个 cpu-shares 设置为 512，一个设置为 1024，则此时每个 container 都能占用其中一个 CPU 为 100%。
+</p>
+
+<p>
+测试主机「4core」当只有 1 个 container 时，可以使用任意的 CPU：
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --cpu-shares 512 ubuntu-stress:latest /bin/bash
+root@4eb961147ba6:/# stress -c 4
+stress: info: [17] dispatching hogs: 4 cpu, 0 io, 0 vm, 0 hdd
+➜  ~ docker stats 4eb961147ba6
+CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O
+4eb961147ba6        398.05%             741.4 kB / 8.297 GB   0.01%               4.88 kB / 648 B     0 B / 0 B
+</pre>
+
+<p>
+测试两个 container，一个设置为 3072，一个设置 1024，CPU 占用如下：
+</p>
+
+
+<div class="figure">
+<p><img src="./images/cpu-test.png" alt="cpu-test.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd71a1aa" class="outline-3">
+<h3 id="orgd71a1aa"><span class="section-number-3">2.2</span> CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+默认的 CPU CFS「Completely Fair Scheduler」period 是 100ms。我们可以通过 <code>--cpu-period</code> 值限制容器的 CPU 使用。一般 <code>--cpu-period</code> 配合 <code>--cpu-quota</code> 一起使用。
+</p>
+
+<p>
+设置 cpu-period 为 100ms，cpu-quota 为 200ms，表示最多可以使用 2 个 cpu，如下测试：
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --cpu-period=100000 --cpu-quota=200000 ubuntu-stress:latest /bin/bash
+root@6b89f2bda5cd:/# stress -c 4    # stress 测试使用 4 个 cpu
+stress: info: [17] dispatching hogs: 4 cpu, 0 io, 0 vm, 0 hdd
+➜  ~ docker stats 6b89f2bda5cd      # stats 显示当前容器 CPU 使用率不超过 200%
+CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O
+6b89f2bda5cd        200.68%             745.5 kB / 8.297 GB   0.01%               4.771 kB / 648 B    0 B / 0 B
+</pre>
+
+<p>
+通过以上测试可以得知， <code>--cpu-period</code> 结合 <code>--cpu-quota</code> 配置是固定的，无论 CPU 是闲还是繁忙，如上配置，容器最多只能使用 2 个 CPU 到 100%。
+</p>
+
+<ul class="org-ul">
+<li><a href="https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt">CFS documentation on bandwidth limiting</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org44dd3fe" class="outline-3">
+<h3 id="org44dd3fe"><span class="section-number-3">2.3</span> Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></h3>
+<div class="outline-text-3" id="text-2-3">
+</div>
+<div id="outline-container-org6a5acbc" class="outline-4">
+<h4 id="org6a5acbc"><span class="section-number-4">2.3.1</span> <code>--cpuset-cpus</code></h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+通过 <code>--cpuset-cpus</code> 可以绑定指定容器使用指定 CPU：
+</p>
+
+<p>
+设置测试容器只能使用 cpu1 和 cpu3，即最多使用 2 个 固定的 CPU 上：
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --cpuset-cpus="1,3" ubuntu-stress:latest /bin/bash
+root@9f1fc0e11b6f:/# stress -c 4
+stress: info: [17] dispatching hogs: 4 cpu, 0 io, 0 vm, 0 hdd
+➜  ~ docker stats 9f1fc0e11b6f
+CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O
+9f1fc0e11b6f        199.16%             856.1 kB / 8.297 GB   0.01%               4.664 kB / 648 B    0 B / 0 B
+➜  ~ top    # 宿主机 CPU 使用情况
+top - 12:43:55 up  3:18,  3 users,  load average: 3.20, 2.54, 1.82
+Tasks: 211 total,   3 running, 207 sleeping,   1 stopped,   0 zombie
+%Cpu0  :  0.7 us,  0.3 sy,  0.0 ni, 99.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu1  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu2  :  0.7 us,  0.3 sy,  0.0 ni, 99.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu3  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+... ...
+</pre>
+
+<p>
+以下表示容器可以利用 CPU1、CPU2 和 CPU3：
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --cpuset-cpus="1-3" ubuntu-stress:latest /bin/bash
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgd7e697c" class="outline-4">
+<h4 id="orgd7e697c"><span class="section-number-4">2.3.2</span> <code>--cpuset-mems</code></h4>
+<div class="outline-text-4" id="text-2-3-2">
+<p>
+<code>--cpuset-mems</code> 只应用于 NUMA 架构的 CPU 生效，这个选项这里不过多介绍。关于 NUMA 架构可以参考这篇文章 <a href="http://cenalulu.github.io/linux/numa/">NUMA架构的CPU &#x2013; 你真的用好了么？</a>。
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgeb340e6" class="outline-2">
+<h2 id="orgeb340e6"><span class="section-number-2">3</span> 源码解析</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><a href="https://github.com/opencontainers/runc/tree/master/libcontainer/cgroups/fs">github.com/opencontainers/runc/libcontainer/cgroups/fs</a>
+<ul class="org-ul">
+<li>cpu.go</li>
+<li>cpuset.go</li>
+<li>cpuacct.go</li>
+</ul></li>
+</ul>
+
+<p>
+libcontainer 只是根据设定值写 cgroup 文件，这部分没有什么逻辑性的解释。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2016-03-27 Sun 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-20 Fri 22:36</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

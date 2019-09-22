@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>批量主机管理 pdsh &amp; pssh</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">批量主机管理 pdsh &amp; pssh</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgf6e622a">1. pssh</a>
+<ul>
+<li><a href="#org7b1ecf7">1.1. 安装</a></li>
+<li><a href="#org3050222">1.2. pssh相关参数</a></li>
+<li><a href="#org5bb69f0">1.3. 附加工具</a></li>
+<li><a href="#org72d6a4a">1.4. 使用实例</a></li>
+<li><a href="#org8f836cc">1.5. 参考文档</a></li>
+</ul>
+</li>
+<li><a href="#orgd644252">2. pdsh</a>
+<ul>
+<li><a href="#org84b1ca7">2.1. pdsh 基本用法</a></li>
+<li><a href="#org8f641fa">2.2. 使用实例</a>
+<ul>
+<li><a href="#org66a38d6">2.2.1. 单个主机测试</a></li>
+<li><a href="#org0eb3ddf">2.2.2. 多个主机测试</a></li>
+<li><a href="#orgb443506">2.2.3. 逗号分隔主机</a></li>
+<li><a href="#orgc3db65e">2.2.4. <code>-x</code> 排除某个主机</a></li>
+<li><a href="#orgbf5e2a4">2.2.5. 主机组</a></li>
+<li><a href="#orga853f6f">2.2.6. <code>dshbak</code> 格式化输出</a></li>
+</ul>
+</li>
+<li><a href="#org8a2dcc5">2.3. 参考文档</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+写这篇文章的时候，pdsh、pssh 还是运维管理人员的利器。而几年过去了，这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 了。
+</p>
+
+<div id="outline-container-orgf6e622a" class="outline-2">
+<h2 id="orgf6e622a"><span class="section-number-2">1</span> pssh</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<code>pssh</code> 是一个 python 编写可以在多台服务器上执行命令的工具，同时支持拷贝文件，是同类工具中很出色的，类似 <code>pdsh</code> 。为方便操作，使用前请在各个服务器上配置好密钥认证访问。项目地址: <a href="https://code.google.com/p/parallel-ssh">parallel-ssh</a>
+</p>
+</div>
+
+<div id="outline-container-org7b1ecf7" class="outline-3">
+<h3 id="org7b1ecf7"><span class="section-number-3">1.1</span> 安装</h3>
+<div class="outline-text-3" id="text-1-1">
+<pre class="example">
+wget http://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz
+tar zxvf pssh-2.3.1.tar.gz
+cd pssh-2.3.1/
+python setup.py install
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org3050222" class="outline-3">
+<h3 id="org3050222"><span class="section-number-3">1.2</span> pssh相关参数</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li><code>pssh</code> 在多个主机上并行地运行命令
+<ul class="org-ul">
+<li>-h 执行命令的远程主机列表,文件内容格式 [user@]host[:port]
+<ul class="org-ul">
+<li>如 test@172.16.10.10:229</li>
+</ul></li>
+<li>-H 执行命令主机，主机格式 user@ip:port</li>
+<li>-l 远程机器的用户名</li>
+<li>-p 一次最大允许多少连接</li>
+<li>-P 执行时输出执行信息</li>
+<li>-o 输出内容重定向到一个文件</li>
+<li>-e 执行错误重定向到一个文件</li>
+<li>-t 设置命令执行超时时间</li>
+<li>-A 提示输入密码并且把密码传递给 ssh (如果私钥也有密码也用这个参数)</li>
+<li>-O 设置 ssh 一些选项</li>
+<li>-x 设置 ssh 额外的一些参数，可以多个，不同参数间空格分开</li>
+<li>-X 同 -x ,但是只能设置一个参数</li>
+<li>-i 显示标准输出和标准错误在每台 host 执行完毕后</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5bb69f0" class="outline-3">
+<h3 id="org5bb69f0"><span class="section-number-3">1.3</span> 附加工具</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li><code>pscp</code> 传输文件到多个 hosts，类似 <code>scp</code>
+<ul class="org-ul">
+<li><code>pscp -h hosts.txt -l irb2 foo.txt /home/irb2/foo.txt</code></li>
+</ul></li>
+<li><code>pslurp</code> 从多台远程机器拷贝文件到本地</li>
+<li><code>pnuke</code> 并行在远程主机杀进程
+<ul class="org-ul">
+<li><code>pnuke -h hosts.txt -l irb2 java</code></li>
+</ul></li>
+<li><code>prsync</code> 使用rsync协议从本地计算机同步到远程主机
+<ul class="org-ul">
+<li><code>prsync -r -h hosts.txt -l irb2 foo /home/irb2/foo</code></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org72d6a4a" class="outline-3">
+<h3 id="org72d6a4a"><span class="section-number-3">1.4</span> 使用实例</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+写入主机到文件中，语法为 <code>用户名@主机ip</code>
+</p>
+
+<pre class="example">
+$ cat host.txt
+root@192.168.230.128
+kumu@10.0.0.8
+</pre>
+
+<p>
+推荐使用 <code>-i</code> 选项输出信息而不是 <code>-P</code> 选项， <code>-h</code> 指定定义主机组
+</p>
+
+<pre class="example">
+$ pssh -i -h host.txt 'date'
+[1] 16:32:38 [SUCCESS] root@192.168.230.128
+Mon Aug 12 16:32:38 CST 2013
+[2] 16:32:38 [SUCCESS] kumu@10.0.0.8
+Mon Aug 12 16:32:38 CST 2013
+</pre>
+
+<p>
+<code>-x</code> 选项：指定 ssh 的一些额外选项
+</p>
+
+<pre class="example">
+$ pssh -x '-t -t -o StrictHostKeyChecking=no' -i -h host.txt date
+[1] 17:20:01 [SUCCESS] root@192.168.230.128
+Mon Aug 12 17:20:01 CST 2013
+Stderr: Connection to 192.168.230.128 closed.
+[2] 17:20:01 [SUCCESS] kumu@10.0.0.8
+Mon Aug 12 17:20:01 CST 2013
+Stderr: Connection to 10.0.0.8 closed.
+</pre>
+
+<p>
+<code>-H</code> 选项：指定单个主机
+</p>
+
+<pre class="example">
+$ pssh -x '-t -t -o StrictHostKeyChecking=no' -i -H 192.168.230.128 -H kumu@10.0.0.8 date
+[1] 17:22:58 [SUCCESS] 192.168.230.128
+Mon Aug 12 17:22:58 CST 2013
+Stderr: Connection to 192.168.230.128 closed.
+[2] 17:22:58 [SUCCESS] kumu@10.0.0.8
+Mon Aug 12 17:22:58 CST 2013
+Stderr: Connection to 10.0.0.8 closed.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org8f836cc" class="outline-3">
+<h3 id="org8f836cc"><span class="section-number-3">1.5</span> 参考文档</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li><a href="http://linux.die.net/man/1/pssh">pssh</a></li>
+<li><a href="http://www.theether.org/pssh/docs/0.2.3/pssh-HOWTO.html">pssh-howto</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd644252" class="outline-2">
+<h2 id="orgd644252"><span class="section-number-2">2</span> pdsh</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<code>pdsh</code> (Parallel Distributed Shell) 可并行的执行对目标主机的操作，对于批量执行命令和分发任务有很大的帮助，在使用前需要配置 ssh 无密码登录，<a href="http://sourceforge.net/projects/pdsh/">点击下载</a>
+</p>
+</div>
+
+<div id="outline-container-org84b1ca7" class="outline-3">
+<h3 id="org84b1ca7"><span class="section-number-3">2.1</span> pdsh 基本用法</h3>
+<div class="outline-text-3" id="text-2-1">
+<pre class="example">
+$ pdsh -h
+Usage: pdsh [-options] command ...
+-S                return largest of remote command return values
+-h                output usage menu and quit                获取帮助
+-V                output version information and quit       查看版本
+-q                list the option settings and quit         列出 `pdsh` 执行的一些信息
+-b                disable ^C status feature (batch mode)
+-d                enable extra debug information from ^C status
+-l user           execute remote commands as user           指定远程使用的用户
+-t seconds        set connect timeout (default is 10 sec)   指定超时时间
+-u seconds        set command timeout (no default)          类似 `-t`
+-f n              use fanout of n nodes                     设置同时连接的目标主机的个数
+-w host,host,...  set target node list on command line      指定主机，host 可以是主机名也可以是 ip
+-x host,host,...  set node exclusion list on command line   排除某些或者某个主机
+-R name           set rcmd module to name                   指定 rcmd 的模块名，默认使用 ssh
+-N                disable hostname: labels on output lines  输出不显示主机名或者 ip
+-L                list info on all loaded modules and exit  列出 `pdsh` 加载的模块信息
+-a                target all nodes                          指定所有的节点
+-g groupname      target hosts in dsh group "groupname"     指定 `dsh` 组名，编译安裝需要添加 `-g` 支持选项 `--with-dshgroups`
+-X groupname      exclude hosts in dsh group "groupname"    排除组，一般和 `-a` 连用
+available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命令模块，默认为 ssh
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org8f641fa" class="outline-3">
+<h3 id="org8f641fa"><span class="section-number-3">2.2</span> 使用实例</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+<div id="outline-container-org66a38d6" class="outline-4">
+<h4 id="org66a38d6"><span class="section-number-4">2.2.1</span> 单个主机测试</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<pre class="example">
+$ pdsh -w 192.168.0.231 -l root uptime
+192.168.0.231:  16:16:11 up 32 days, 22:14, ? users,  load average: 0.10, 0.14, 0.16
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org0eb3ddf" class="outline-4">
+<h4 id="org0eb3ddf"><span class="section-number-4">2.2.2</span> 多个主机测试</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<pre class="example">
+$ pdsh -w 192.168.0.[231-233] -l root uptime
+192.168.0.233:  16:17:05 up 32 days, 22:17, ? users,  load average: 0.13, 0.12, 0.10
+192.168.0.232:  16:17:05 up 32 days, 22:17, ? users,  load average: 0.45, 0.34, 0.27
+192.168.0.231:  16:17:06 up 32 days, 22:15, ? users,  load average: 0.09, 0.13, 0.15
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb443506" class="outline-4">
+<h4 id="orgb443506"><span class="section-number-4">2.2.3</span> 逗号分隔主机</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<pre class="example">
+$ pdsh -w 192.168.0.231,192.168.0.234 -l root uptime
+192.168.0.234:  16:19:44 up 32 days, 22:19, ? users,  load average: 0.17, 0.21, 0.20
+192.168.0.231:  16:19:44 up 32 days, 22:17, ? users,  load average: 0.29, 0.18, 0.16
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgc3db65e" class="outline-4">
+<h4 id="orgc3db65e"><span class="section-number-4">2.2.4</span> <code>-x</code> 排除某个主机</h4>
+<div class="outline-text-4" id="text-2-2-4">
+<pre class="example">
+$ pdsh -w 192.168.0.[231-233] -x 192.168.0.232 -l root uptime
+192.168.0.233:  16:18:24 up 32 days, 22:19, ? users,  load average: 0.11, 0.12, 0.09
+192.168.0.231:  16:18:25 up 32 days, 22:16, ? users,  load average: 0.11, 0.13, 0.15
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgbf5e2a4" class="outline-4">
+<h4 id="orgbf5e2a4"><span class="section-number-4">2.2.5</span> 主机组</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<p>
+对于 <code>-g</code> 组，把对应的主机写入到 <code>/etc/dsh/group/</code> 或 <code>~/.dsh/group/</code> 目录下的文件中即可，文件名就是对应组名
+</p>
+
+<pre class="example">
+$ cat ~/.dsh/group/dsh-test
+192.168.0.231
+192.168.0.232
+192.168.0.233
+192.168.0.234
+</pre>
+
+<pre class="example">
+$ pdsh -g dsh-test -l root uptime
+192.168.0.232:  16:21:38 up 32 days, 22:22, ? users,  load average: 0.01, 0.15, 0.21
+192.168.0.231:  16:21:38 up 32 days, 22:19, ? users,  load average: 0.17, 0.16, 0.16
+192.168.0.234:  16:21:39 up 32 days, 22:21, ? users,  load average: 0.15, 0.19, 0.19
+192.168.0.233:  16:21:40 up 32 days, 22:22, ? users,  load average: 0.15, 0.15, 0.10
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orga853f6f" class="outline-4">
+<h4 id="orga853f6f"><span class="section-number-4">2.2.6</span> <code>dshbak</code> 格式化输出</h4>
+<div class="outline-text-4" id="text-2-2-6">
+<p>
+<code>pdsh</code> 的缺省输出格式为主机名加该主机的输出，在主机或输出多时会比较混乱，可以采用 <code>dshbak</code> 做一些格式化，让输出更清晰。
+</p>
+
+<pre class="example">
+$ pdsh -g dsh-test -l root 'date'
+192.168.0.232: Wed Jun 19 16:24:40 CST 2013
+192.168.0.231: Wed Jun 19 16:24:40 CST 2013
+192.168.0.234: Wed Jun 19 16:24:40 CST 2013
+192.168.0.233: Wed Jun 19 16:24:40 CST 2013
+</pre>
+
+<p>
+查看哪些主机时间不一样，主机一多，可读性不强，以下使用 <code>dshbak</code> 之后可读性变得好了很多
+</p>
+
+<pre class="example">
+$ pdsh -g dsh-test -l root 'date' | dshbak -c
+----------------
+192.168.0.[231-232,234]
+----------------
+Wed Jun 19 16:24:18 CST 2013
+----------------
+192.168.0.233
+----------------
+Wed Jun 19 16:24:19 CST 2013
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8a2dcc5" class="outline-3">
+<h3 id="org8a2dcc5"><span class="section-number-3">2.3</span> 参考文档</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li><a href="https://code.google.com/p/pdsh/wiki/UsingPDSH">Using PDSH</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2013-06-19 Wed 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

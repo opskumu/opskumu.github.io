@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-19 Thu 22:15 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="水寒" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#一环境">1. 一、环境</a></li>
+<li><a href="#二部署和配置">2. 二、部署和配置</a>
+<ul>
+<li><a href="#prerequisites">2.1. 2.1 Prerequisites</a></li>
+<li><a href="#etcd-cluster">2.2. 2.2 etcd Cluster</a></li>
+<li><a href="#k8s-master-安装配置">2.3. 2.3 K8s Master 安装配置</a></li>
+<li><a href="#k8s-minions-安装配置">2.4. 2.4 K8s Minions 安装配置</a></li>
+</ul>
+</li>
+<li><a href="#三集群状态">3. 三、集群状态</a>
+<ul>
+<li><a href="#k8s-master">3.1. 3.1 K8s Master</a></li>
+<li><a href="#etcd-集群">3.2. 3.2 etcd 集群</a></li>
+<li><a href="#other">3.3. 3.3 Other</a></li>
+</ul>
+</li>
+<li><a href="#四参考">4. 四、参考</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc43e2e0" class="outline-2">
+<h2 id="一环境"><a id="orgc43e2e0"></a><span class="section-number-2">1</span> 一、环境</h2>
+<div class="outline-text-2" id="text-一环境">
+<p>
+相关主机
+</p>
+
+<ul class="org-ul">
+<li>master
+
+<ul class="org-ul">
+<li>192.168.12.197</li>
+</ul></li>
+
+<li>minion
+
+<ul class="org-ul">
+<li>192.168.12.198~232</li>
+</ul></li>
+
+<li>etcd
+
+<ul class="org-ul">
+<li>192.168.12.233~236</li>
+</ul></li>
+</ul>
+
+<p>
+相关软件
+</p>
+
+<ul class="org-ul">
+<li>OS
+
+<ul class="org-ul">
+<li>CentOS 7</li>
+</ul></li>
+
+<li>软件版本：
+
+<ul class="org-ul">
+<li>kubernetes-0.19.3</li>
+<li>etcd-2.0.9-2.el7.x86<sub>64</sub></li>
+<li>docker-1.6.0-11.0.1.el7.centos.x86<sub>64</sub></li>
+<li>flannel-0.2.0-7.el7.x86<sub>64</sub></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf5c28b8" class="outline-2">
+<h2 id="二部署和配置"><a id="orgf5c28b8"></a><span class="section-number-2">2</span> 二、部署和配置</h2>
+<div class="outline-text-2" id="text-二部署和配置">
+</div>
+
+<div id="outline-container-org2a83d60" class="outline-3">
+<h3 id="prerequisites"><a id="org2a83d60"></a><span class="section-number-3">2.1</span> 2.1 Prerequisites</h3>
+<div class="outline-text-3" id="text-prerequisites">
+<pre class="example">
+systemctl stop firewalld
+systemctl disable firewalld
+</pre>
+
+<pre class="example">
+yum -y install ntp
+systemctl start ntpd
+systemctl enable ntpd
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orge947548" class="outline-3">
+<h3 id="etcd-cluster"><a id="orge947548"></a><span class="section-number-3">2.2</span> 2.2 etcd Cluster</h3>
+<div class="outline-text-3" id="text-etcd-cluster">
+<p>
+<code>etcd</code> 官方文档
+<a href="https://github.com/coreos/etcd/blob/master/Documentation/clustering.md">Clustering
+Guide</a> 定义集群有三种方式，本示例采用 <code>Static</code> 方法。
+</p>
+
+<pre class="example">
+yum install etcd -y
+</pre>
+
+<ul class="org-ul">
+<li>test-etcd1
+
+<ul class="org-ul">
+<li>192.168.12.233</li>
+</ul></li>
+
+<li>test-etcd2
+
+<ul class="org-ul">
+<li>192.168.12.234</li>
+</ul></li>
+
+<li>test-etcd3
+
+<ul class="org-ul">
+<li>192.168.12.235</li>
+</ul></li>
+</ul>
+
+<blockquote>
+<p>
+etcd 集群主机数遵循 <code>2n + 1</code> 规则
+</p>
+</blockquote>
+
+<p>
+这里以 <code>192.168.12.234</code> 为例，配置文件修改如下：
+</p>
+
+<pre class="example">
+# grep -vE '^$|^#' /etc/etcd/etcd.conf
+ETCD_NAME=test-etcd2                                    # 不同的 etcd 主机定义不同的 NAME
+ETCD_DATA_DIR="/var/lib/etcd/test-etcd2.etcd"           # 定义 etcd 存储的数据目录
+ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"             # 定义 peer 绑定端口，即内部集群通信端口
+ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:4001"           # 定义 client 绑定端口，即 client 访问通信端口
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.12.234:2380" # 定义 etcd peer 初始化广播端口
+ETCD_INITIAL_CLUSTER="test-etcd1=http://192.168.12.233:2380,test-etcd2=http://192.168.12.234:2380,test-etcd3=http://192.168.12.235:2380"
+# ETCD_INITIAL_CLUSTER 定义集群成员
+ETCD_INITIAL_CLUSTER_STATE="new"                        # 初始化状态使用 new，建立之后改此值为 existing
+ETCD_INITIAL_CLUSTER_TOKEN="dev-etcd-cluster"           # etcd 集群名
+ETCD_ADVERTISE_CLIENT_URLS="http://192.168.12.234:4001"
+# 定义 client 广播端口，此处必须填写相应主机的 IP，不能填写 0.0.0.0，否则 etcd client 获取不了 etcd cluster 中的主机
+</pre>
+
+<p>
+配置完成之后，启动各主机 <code>etcd</code>
+</p>
+
+<pre class="example">
+systemctl enable etcd
+systemctl start etcd
+</pre>
+
+<p>
+查看当前集群成员
+</p>
+
+<pre class="example">
+# etcdctl member list
+a340818d006c60f: name=test-etcd1 peerURLs=http://192.168.12.233:2380 clientURLs=http://0.0.0.0:4001
+75b057b0086f534b: name=test-etcd2 peerURLs=http://192.168.12.234:2380 clientURLs=http://0.0.0.0:4001
+84562a66304940a1: name=test-etcd3 peerURLs=http://192.168.12.235:2380 clientURLs=http://0.0.0.0:4001
+</pre>
+
+<p>
+配置 <code>flannel</code> 通信网段
+</p>
+
+<pre class="example">
+# etcdctl mk /coreos.com/network/config '{"Network":"172.17.0.0/16"}'
+# etcdctl get /coreos.com/network/config
+{"Network":"172.17.0.0/16"}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6550617" class="outline-3">
+<h3 id="k8s-master-安装配置"><a id="org6550617"></a><span class="section-number-3">2.3</span> 2.3 K8s Master 安装配置</h3>
+<div class="outline-text-3" id="text-k8s-master-安装配置">
+<pre class="example">
+yum -y install kubernetes
+</pre>
+
+<p>
+<b>注：</b> CentOS7 源中最新版本是 0.15，如果需要使用最新的，替换 <code>/usr/bin</code>
+下 K8s 的二进制文件即可。
+</p>
+
+<p>
+Master 配置文件修改
+</p>
+
+<pre class="example">
+$ grep -vE '^$|^#' /etc/kubernetes/apiserver
+KUBE_API_ADDRESS="--address=0.0.0.0"
+KUBE_API_PORT="--port=8080"
+KUBELET_PORT="--kubelet_port=10250"
+KUBE_ETCD_SERVERS="--etcd_servers=http://192.168.12.233:4001,http://192.168.12.234:4001,http://192.168.12.235:4001"
+KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
+KUBE_ADMISSION_CONTROL="--admission_control=NamespaceAutoProvision,LimitRanger,ResourceQuota"
+KUBE_API_ARGS=""
+</pre>
+
+<p>
+启动相关服务
+</p>
+
+<pre class="example">
+for SERVICES in kube-apiserver kube-controller-manager kube-scheduler; do
+    systemctl restart $SERVICES
+    systemctl enable $SERVICES
+    systemctl status $SERVICES
+done
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org95788b3" class="outline-3">
+<h3 id="k8s-minions-安装配置"><a id="org95788b3"></a><span class="section-number-3">2.4</span> 2.4 K8s Minions 安装配置</h3>
+<div class="outline-text-3" id="text-k8s-minions-安装配置">
+<pre class="example">
+yum -y install kubernetes docker flannel bridge-utils
+</pre>
+
+<p>
+Minion 配置文件修改
+</p>
+
+<pre class="example">
+# grep -vE '^$|^#' /etc/kubernetes/config
+KUBE_LOGTOSTDERR="--logtostderr=true"
+KUBE_LOG_LEVEL="--v=0"
+KUBE_ALLOW_PRIV="--allow_privileged=false"
+KUBE_MASTER="--master=http://192.168.12.197:8080"               # 指定 master 主机 IP
+</pre>
+
+<pre class="example">
+# grep -vE '^$|^#' /etc/kubernetes/kubelet
+KUBELET_ADDRESS="--address=0.0.0.0"
+KUBELET_PORT="--port=10250"
+KUBELET_HOSTNAME="--hostname_override=192.168.12.198"           # 根据实际的 minion 对于 hostname 或者 IP 修改
+KUBELET_API_SERVER="--api_servers=http://192.168.12.197:8080"   # 指定 master 主机 IP
+KUBELET_ARGS="--pod-infra-container-image=&lt;your_regestry_url:5000/google_containers/pause:0.8.0&gt;"    # 指定私有 registry pull pause image
+</pre>
+
+<p>
+<b>注：</b> pause:0.8.0 因为 Google 被 GFW
+屏蔽，所以该镜像需要翻墙下载，下载不了的可以联系我 ^_^
+</p>
+
+<pre class="example">
+# grep "FLANNEL_ETCD=" /etc/sysconfig/flanneld
+FLANNEL_ETCD="http://192.168.12.233:4001,http://192.168.12.234:4001,http://192.168.12.235:4001,http://192.168.12.236:4001"
+</pre>
+
+<pre class="example">
+# cat /usr/lib/systemd/system/kubelet.service
+... ...
+[Service]
+WorkingDirectory=/var/lib/kubelet
+EnvironmentFile=-/etc/kubernetes/config
+EnvironmentFile=-/etc/kubernetes/kubelet
+ExecStart=/usr/bin/kubelet \
+            $KUBE_LOGTOSTDERR \
+            $KUBE_LOG_LEVEL \
+            $KUBELET_API_SERVER \
+            $KUBELET_ADDRESS \
+            $KUBELET_PORT \
+            $KUBELET_HOSTNAME \
+            $KUBE_ALLOW_PRIV \
+            $KUBELET_ARGS
+LimitNOFILE=65535       # 设置 limit 限制
+LimitNPROC=10240
+Restart=on-failure
+... ...
+</pre>
+
+<p>
+<b>注：</b> docker、kube-proxy 这些默认已经设置好相应的 limit，无需再次修改
+</p>
+
+<p>
+启动相关服务
+</p>
+
+<pre class="example">
+systemctl daemon-reload
+for SERVICES in kube-proxy kubelet flanneld docker; do
+    systemctl restart $SERVICES
+    systemctl enable $SERVICES
+    systemctl status $SERVICES
+done
+</pre>
+
+<p>
+如果出现 docker0 和 flannel 设置的 IP 地址不同，则可以采取如下方式修改：
+</p>
+
+<pre class="example">
+systemctl stop docker
+ifconfig docker0 down
+brctl delbr docker0
+systemctl start docker
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2760c13" class="outline-2">
+<h2 id="三集群状态"><a id="org2760c13"></a><span class="section-number-2">3</span> 三、集群状态</h2>
+<div class="outline-text-2" id="text-三集群状态">
+</div>
+
+<div id="outline-container-org29e4996" class="outline-3">
+<h3 id="k8s-master"><a id="org29e4996"></a><span class="section-number-3">3.1</span> 3.1 K8s Master</h3>
+<div class="outline-text-3" id="text-k8s-master">
+<p>
+设置对于 nodes 的 label [目前环境有 dev 和 fat 两种]
+</p>
+
+<pre class="example">
+kubectl label nodes 192.168.12.198 usetype=dev
+</pre>
+
+<p>
+关于 nodes label 具体可参考
+<a href="https://github.com/GoogleCloudPlatform/kubernetes/tree/master/examples/node-selection">Node
+selection example</a>
+</p>
+
+<pre class="example">
+# kubectl get nodes
+NAME             LABELS                                                 STATUS
+192.168.12.198   kubernetes.io/hostname=192.168.12.198,usetype=dev      Ready
+192.168.12.199   kubernetes.io/hostname=192.168.12.199,usetype=dev      Ready
+192.168.12.200   kubernetes.io/hostname=192.168.12.200,usetype=dev      Ready
+192.168.12.201   kubernetes.io/hostname=192.168.12.201,usetype=fat      Ready
+192.168.12.202   kubernetes.io/hostname=192.168.12.202,usetype=fat      Ready
+192.168.12.203   kubernetes.io/hostname=192.168.12.203,usetype=fat      Ready
+... ...
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgf227748" class="outline-3">
+<h3 id="etcd-集群"><a id="orgf227748"></a><span class="section-number-3">3.2</span> 3.2 etcd 集群</h3>
+<div class="outline-text-3" id="text-etcd-集群">
+<pre class="example">
+# etcdctl --peers 192.168.12.235:4001 member list
+a340818d006c60f: name=test-etcd1 peerURLs=http://192.168.12.233:2380 clientURLs=http://0.0.0.0:4001
+75b057b0086f534b: name=test-etcd2 peerURLs=http://192.168.12.234:2380 clientURLs=http://0.0.0.0:4001
+84562a66304940a1: name=test-etcd3 peerURLs=http://192.168.12.235:2380 clientURLs=http://0.0.0.0:4001
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgfce5d91" class="outline-3">
+<h3 id="other"><a id="orgfce5d91"></a><span class="section-number-3">3.3</span> 3.3 Other</h3>
+<div class="outline-text-3" id="text-other">
+<p>
+其它可以测试 pods、rc、service，这里不作介绍了，官方 github
+上有相应的对应实例，0.19.3 直接使用 V1 的接口即可。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8a3079a" class="outline-2">
+<h2 id="四参考"><a id="org8a3079a"></a><span class="section-number-2">4</span> 四、参考</h2>
+<div class="outline-text-2" id="text-四参考">
+<ul class="org-ul">
+<li><a href="https://github.com/coreos/flannel#flannel">flannel</a></li>
+<li><a href="https://github.com/coreos/etcd">etcd Clustering Guide</a></li>
+<li><a href="https://github.com/GoogleCloudPlatform/kubernetes/blob/master/examples/node-selection/README.md">Node
+selection example</a></li>
+<li><a href="https://github.com/GoogleCloudPlatform/kubernetes/blob/master/docs/getting-started-guides/centos/centos_manual_config.md">Getting
+started on CentOS</a></li>
+<li><a href="https://access.redhat.com/articles/1353773">Creating a Kubernetes
+Cluster to Run Docker Formatted Container Images</a></li>
+<li><a href="http://www.severalnines.com/blog/installing-kubernetes-cluster-minions-centos7-manage-pods-services">Installing
+Kubernetes Cluster with 3 minions on CentOS 7 to manage pods and
+services</a></li>
+</ul>
+
+<p>
+&#x2013;EOF&#x2013;
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 水寒</p>
+<p class="date">Created: 2019-09-19 Thu 22:15</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

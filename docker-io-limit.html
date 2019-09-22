@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker 磁盘 IO 资源限制</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Docker 磁盘 IO 资源限制</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org61da8a2">1. 压测工具</a></li>
+<li><a href="#org296d69f">2. IO 测试</a>
+<ul>
+<li><a href="#orge19577a">2.1. <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></a></li>
+<li><a href="#org3a5c606">2.2. <code>--device-read-bps=、</code>&#x2013;device-write-bps=</a></li>
+<li><a href="#org8e832fb">2.3. <code>--device-read-iops</code> 、 <code>--device-write-iops</code></a></li>
+</ul>
+</li>
+<li><a href="#org30fafd8">3. 源码解析</a></li>
+<li><a href="#org7004d06">4. 拓展</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org61da8a2" class="outline-2">
+<h2 id="org61da8a2"><span class="section-number-2">1</span> 压测工具</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+通过 Linux <code>dd</code> 命令测试
+</p>
+</div>
+</div>
+
+<div id="outline-container-org296d69f" class="outline-2">
+<h2 id="org296d69f"><span class="section-number-2">2</span> IO 测试</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime
+constraints on resources</a></li>
+<li>关于 IO 的限制
+<ul class="org-ul">
+<li><code>--blkio-weight=0</code>
+<ul class="org-ul">
+<li>Block IO weight (relative weight) accepts a weight value between
+10 and 1000.</li>
+</ul></li>
+<li><code>--blkio-weight-device=""</code>
+<ul class="org-ul">
+<li>Block IO weight (relative device weight, format: <code>DEVICE_NAME:WEIGHT</code> )</li>
+<li>针对特定设备的权重比</li>
+</ul></li>
+<li><code>--device-read-bps=""</code>
+<ul class="org-ul">
+<li>Limit read rate from a device (format: <code>&lt;device-path&gt;:&lt;number&gt;[&lt;unit&gt;]</code> ). Number is a positive integer.  Unit can be one of <code>kb</code> , <code>mb</code> , or <code>gb</code> .</li>
+<li>按每秒读取块设备的数据量设定上限</li>
+</ul></li>
+<li><code>--device-write-bps=""</code>
+<ul class="org-ul">
+<li>Limit write rate from a device (format: <code>&lt;device-path&gt;:&lt;number&gt;[&lt;unit&gt;]</code> ). Number is a positive integer.  Unit can be one of <code>kb</code> , <code>mb</code> , or <code>gb</code> .</li>
+<li>按每秒写入块设备的数据量设定上限</li>
+</ul></li>
+<li><code>--device-read-iops=""</code>
+<ul class="org-ul">
+<li>Limit read rate (IO per second) from a device (format: <code>&lt;device-path&gt;:&lt;number&gt;</code> ). Number is a positive integer.</li>
+<li>按照每秒读操作次数设定上限</li>
+</ul></li>
+<li><code>--device-write-iops=""</code>
+<ul class="org-ul">
+<li>Limit write rate (IO per second) from a device (format: <code>&lt;device-path&gt;:&lt;number&gt;</code> ). Number is a positive integer.</li>
+<li>按照每秒写操作次数设定上限</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<pre class="example">
+➜  ~ docker help run | grep -E 'bps|IO'
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+  --blkio-weight                  Block IO (relative weight), between 10 and 1000
+  --blkio-weight-device=[]        Block IO weight (relative device weight)
+  --device-read-bps=[]            Limit read rate (bytes per second) from a device
+  --device-read-iops=[]           Limit read rate (IO per second) from a device
+  --device-write-bps=[]           Limit write rate (bytes per second) to a device
+  --device-write-iops=[]          Limit write rate (IO per second) to a device
+➜  ~
+</pre>
+</div>
+
+<div id="outline-container-orge19577a" class="outline-3">
+<h3 id="orge19577a"><span class="section-number-3">2.1</span> <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li><code>--blkio-weight</code></li>
+</ul>
+
+<p>
+默认，所有的容器对于 IO 操作「block IO bandwidth &#x2013; blkio」都拥有相同优先级。可以通过 <code>--blkio-weight</code> 修改容器 blkio 权重。 <code>--blkio-weight</code> 权重值在 10 ~ 1000 之间。 
+</p>
+
+<blockquote>
+<p>
+Note: The blkio weight setting is only available for direct IO.  Buffered IO is not currently supported.
+</p>
+</blockquote>
+
+<p>
+使用 blkio weight 还需要注意 IO 的调度必须为 CFQ：
+</p>
+
+<pre class="example">
+➜  ~ cat /sys/block/sda/queue/scheduler
+noop [deadline] cfq
+➜  ~ sudo sh -c "echo cfq &gt; /sys/block/sda/queue/scheduler"
+➜  ~ cat /sys/block/sda/queue/scheduler
+noop deadline [cfq]
+</pre>
+
+<p>
+按照 Docker 官方文档的介绍测试：
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --blkio-weight 100 ubuntu-stress:latest /bin/bash
+root@0b6770ee80e0:/#
+➜  ~ docker run -it --rm --blkio-weight 1000 ubuntu-stress:latest /bin/bash
+root@6778b6b39686:/#
+</pre>
+
+<p>
+在运行的容器上同时执行如下命令，统计测试时间：
+</p>
+
+<pre class="example">
+root@0b6770ee80e0:/# time dd if=/dev/zero of=test.out bs=1M count=1024 oflag=direct
+1024+0 records in
+1024+0 records out
+1073741824 bytes (1.1 GB) copied, 122.442 s, 8.8 MB/s
+
+real    2m2.524s
+user    0m0.008s
+sys     0m0.492s
+root@6778b6b39686:/# time dd if=/dev/zero of=test.out bs=1M count=1024 oflag=direct
+1024+0 records in
+1024+0 records out
+1073741824 bytes (1.1 GB) copied, 122.493 s, 8.8 MB/s
+
+real    2m2.574s
+user    0m0.020s
+sys     0m0.480s
+root@6778b6b39686:/#
+</pre>
+
+<p>
+测试下来，效果不是很理想，没有获得官档的效果，类似的问题可以在相关的 issue 上找到，如 <a href="https://github.com/docker/docker/issues/16173">&#x2013;blkio-weight doesn't take effect in docker Docker version 1.8.1 #16173</a>
+</p>
+
+<p>
+官方的测试说明是：
+</p>
+
+<blockquote>
+<p>
+You'll find that the proportion of time is the same as the proportion of blkio weights of the two containers.
+</p>
+</blockquote>
+
+<ul class="org-ul">
+<li><code>--blkio-weight-device="DEVICE_NAME:WEIGHT"</code></li>
+</ul>
+
+<p>
+<code>--blkio-weight-device</code> 可以指定某个设备的权重大小，如果同时指定 <code>--blkio-weight</code> 则以 <code>--blkio-weight</code> 为全局默认配置，针对指定设备以 <code>--blkio-weight-device</code> 指定设备值为主。
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --blkio-weight-device "/dev/sda:100" ubuntu-stress:latest /bin/bash
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org3a5c606" class="outline-3">
+<h3 id="org3a5c606"><span class="section-number-3">2.2</span> <code>--device-read-bps=、</code>&#x2013;device-write-bps=</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+限制容器的写入速度是 1mb「 <code>&lt;device-path&gt;:&lt;limit&gt;[unit]</code> ，单位可以是 kb、mb、gb 正整数」:
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --device-write-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
+root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
+100+0 records in
+100+0 records out
+104857600 bytes (105 MB) copied, 100.064 s, 1.0 MB/s    # 可以得知写入的平均速度是 1.0 MB/s
+</pre>
+
+<p>
+通过 iotop 获取测试过程中的 bps 也是 1.0 MB 为上限：
+</p>
+
+
+<div class="figure">
+<p><img src="./images/io-write-bps.png" alt="io-write-bps.png" />
+</p>
+</div>
+
+<p>
+读 bps 限制使用方式同写 bps 限制：
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --device-read-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org8e832fb" class="outline-3">
+<h3 id="org8e832fb"><span class="section-number-3">2.3</span> <code>--device-read-iops</code> 、 <code>--device-write-iops</code></h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+限制容器 write iops 为 5「 <code>&lt;device-path&gt;:&lt;limit&gt;</code> ，必须为正整数」：
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --device-write-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
+root@c2a2fa232594:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
+100+0 records in
+100+0 records out
+104857600 bytes (105 MB) copied, 42.6987 s, 2.5 MB/s
+</pre>
+
+<p>
+通过 <code>iostat</code> 监控 tps「此处即为 iops」 基本上持续在 10 左右「会有些偏差」：
+</p>
+
+<pre class="example">
+➜  ~ iostat 1
+... ...
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           1.13    0.00    0.13   23.46    0.00   75.28
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+sda              10.00         0.00      2610.00          0       5220
+... ...
+</pre>
+
+<p>
+读 iops 限制使用方式同写 iops 限制：
+</p>
+
+<pre class="example">
+➜  ~ docker run -it --rm --device-read-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
+</pre>
+
+<p>
+<b>注：</b> 在容器中通过 <code>dd</code> 测试读速度并没有看到很好的效果，经查没有找到磁盘读操作的好工具，所以文中没有介绍读测试。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org30fafd8" class="outline-2">
+<h2 id="org30fafd8"><span class="section-number-2">3</span> 源码解析</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><a href="https://github.com/opencontainers/runc/tree/master/libcontainer/cgroups/fs">github.com/opencontainers/runc/libcontainer/cgroups/fs</a>
+<ul class="org-ul">
+<li>blkio.go</li>
+</ul></li>
+</ul>
+
+<p>
+libcontainer 主要操作是对 cgroup 下相关文件根据选项写操作，具体更进一步的资源限制操作可以看 cgroup 的实现方式。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7004d06" class="outline-2">
+<h2 id="org7004d06"><span class="section-number-2">4</span> 拓展</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><a href="http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation">Docker背后的内核知识 - cgroups资源限制</a></li>
+<li><a href="http://pan.baidu.com/share/home?uk=1429463486&amp;view=share#category/type=0">cgroup 内存、IO、CPU、网络资源管理</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2016-03-27 Sun 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

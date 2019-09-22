@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-19 Thu 22:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="水寒" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#一确定方向">1. 一、确定方向</a></li>
+<li><a href="#二如何行动">2. 二、如何行动</a>
+<ul>
+<li><a href="#拥有一个-github-账户">2.1. 2.1 拥有一个 Github 账户</a></li>
+<li><a href="#拥有一个属于自己的技术博客">2.2. 2.2 拥有一个属于自己的技术博客</a></li>
+<li><a href="#选择好的专业书籍阅读">2.3. 2.3 选择好的专业书籍阅读</a></li>
+<li><a href="#关注行业的动态">2.4. 2.4 关注行业的动态</a></li>
+</ul>
+</li>
+<li><a href="#三工作地点">3. 三、工作地点</a></li>
+<li><a href="#四大四找工作">4. 四、大四找工作</a></li>
+</ul>
+</div>
+</div>
+<ul class="org-ul">
+<li>toc {:toc}</li>
+</ul>
+
+
+<div class="figure">
+<p><img src="file:///images/whiplash.jpeg" alt="whiplash.jpeg" />
+</p>
+</div>
+
+<p>
+年前的时候，还在读大三计算机系的表弟和我沟通了下关于毕业如何找工作，现在应该做哪些准备的问题。于是，我根据个人这几年的一些学习和工作经历，做了一些总结。
+</p>
+
+<div id="outline-container-orgc617a62" class="outline-2">
+<h2 id="一确定方向"><a id="orgc617a62"></a><span class="section-number-2">1</span> 一、确定方向</h2>
+<div class="outline-text-2" id="text-一确定方向">
+<p>
+大学已经学了三年，对自己以后的方向差不多应该有一个基本定位。广义上来说互联网是一个很庞大的行业，具体到实际要做的事情分工是很多的（前端、后端、运维、安全、测试等等，再具体细化又要分很多种），面对那么多的方向如何抉择：
+</p>
+
+<ul class="org-ul">
+<li>1、罗列自己目前具备的技能
+
+<ul class="org-ul">
+<li>根据实际情况认清自己当前的技术优势所在；</li>
+</ul></li>
+
+<li>2、是否有心仪的公司和具体的职位
+
+<ul class="org-ul">
+<li>带着目标性做事要相对明朗很多，如果有特别想去的公司和岗位，那就要特别留意相关公司的招聘信息和岗位的技能需求「如果没有，那么从现在开始确定」；</li>
+<li>结合第 1 点，对比岗位的招聘需求，明白自己欠缺什么，然后着重学习。</li>
+</ul></li>
+
+<li>3、善用网络
+
+<ul class="org-ul">
+<li>现在大部分的问题都是可以通过网络去找到答案的，如果实在找不到的也是可以在网上提问的。当然在提问之前最好先看下<a href="http://doc.zengrong.net/smart-questions/cn.html">提问的智慧</a>，提问也是需要技巧的；</li>
+<li>推荐网站
+
+<ul class="org-ul">
+<li>中文问答：<a href="http://www.zhihu.com">知乎</a>「职业规划、学习方法以及生活的疑惑，在知乎都能找到很好的解答，当然也会有很多误人子弟的回答，自己需要首先学会辨别」</li>
+<li>搜索引擎：<a href="https://www.google.com.hk">Google</a>「因为众所周知的原因，要用上
+Google 总需要费点周折。但是，作为一个技术人，如果能够上
+Google，你会发现所有的努力都是值得的」</li>
+<li>代码托管：<a href="http://www.github.com/">Github</a> 「如今，Github
+已不仅仅是一个代码托管平台了」</li>
+<li>技术问答：<a href="http://stackoverflow.com/">Stack
+Overflow</a>「基本上，解决技术问题的时候多多少少都要依赖它」</li>
+<li>技术视频：<a href="http://www.imooc.com/">慕课网</a>「初学者，结合视频来学习还是很有帮助的，上面也会有学习路线图借鉴」</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge827d1d" class="outline-2">
+<h2 id="二如何行动"><a id="orge827d1d"></a><span class="section-number-2">2</span> 二、如何行动</h2>
+<div class="outline-text-2" id="text-二如何行动">
+<p>
+对于应届生来说，扎实的计算机理论基础是很有必要的，关于基础知识的技能点因为我是非科班出身，可以参考这篇文章
+毕业生应该具有的基本素养。其实要达到扎实的理论基础，结合当前大学所教的知识点以及大学整体的氛围还是蛮难达到的。
+</p>
+
+<p>
+一般企业校招都是从 10
+月份开始，结合你现在已经大三下学期了，也就是说离大四校招给你的时间只有七个月了，这个时候理论基础是一点，更多的有针对性的学习相对来说更实际一点。
+</p>
+</div>
+
+<div id="outline-container-orgbdc5d57" class="outline-3">
+<h3 id="拥有一个-github-账户"><a id="orgbdc5d57"></a><span class="section-number-3">2.1</span> 2.1 拥有一个 Github 账户</h3>
+<div class="outline-text-3" id="text-拥有一个-github-账户">
+<p>
+学习代码管理工具 Git 或者 SVN，建议直接使用
+Git。当然光会这些工具还不够，需要一个代码的管理平台，那么你就需要注册一个
+github 账户，把自己平常的代码练习或者做的小项目都提交到 github 上。
+</p>
+
+<p>
+为什么需要一个 github 账户？功利点的说法就是 github
+会帮你在简历中添彩，但更重要的是 github
+会让你学到很多东西。现在大部分的开源项目都是托管在 github 上，你可以通过
+github
+阅读大量的优秀代码，也可以创建自己的项目。当然，如果有能力你还可以为一些开源项目贡献一份自己的力量，想想就很酷「当然，这是相对靠后的事情了」。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org76b9ca9" class="outline-3">
+<h3 id="拥有一个属于自己的技术博客"><a id="org76b9ca9"></a><span class="section-number-3">2.2</span> 2.2 拥有一个属于自己的技术博客</h3>
+<div class="outline-text-3" id="text-拥有一个属于自己的技术博客">
+<p>
+从现在开始拥有一个技术博客，推荐直接使用 Jekyll + Markdown + Github
+Pages，如何搭建可以参考
+<a href="http://jekyllbootstrap.com/usage/jekyll-quick-start.html">Jekyll
+QuickStart</a>
+。对于一个技术人，拥有一个博客是很重要的，初期的定位就从记录学习笔记开始。坚持下来，以后回顾的时候将会是一个巨大的财富，它见证你技术和写作功底的不断提升。千万不要觉得把自己的学习笔记公布出去会让别人捡了便宜，最大的受益人永远都是自己。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb783f59" class="outline-3">
+<h3 id="选择好的专业书籍阅读"><a id="orgb783f59"></a><span class="section-number-3">2.3</span> 2.3 选择好的专业书籍阅读</h3>
+<div class="outline-text-3" id="text-选择好的专业书籍阅读">
+<p>
+现在学习比较以前来说，资料的获取是越来越容易了，量一上来，那么质量就会有些参差不齐了。因为你之前和我说过想做安全，所以这里先推荐两本基础的书籍给你，书不在多，在于读透理解：
+</p>
+
+<ul class="org-ul">
+<li><a href="http://book.douban.com/subject/4889838/">鸟哥的Linux私房菜.基础学习篇</a>
+
+<ul class="org-ul">
+<li>Linux
+一般大学教的东西比较少，但是如果以后从事技术，多多少少是需要接触
+Linux 的，有一定的 Linux 基础会是一个很好的开始；</li>
+<li>结合书中的习题和内容学习，争取能够把习题都过一遍；</li>
+</ul></li>
+
+<li><a href="http://book.douban.com/subject/3112503/">Python核心编程</a>
+
+<ul class="org-ul">
+<li>做安全的话懂一门脚本语言是很重要的，可以从 Python
+入手，掌握基本的语法之后，可以通过书中习题或者在网上找一些小的案例练手，编程还是得多写「建议写的代码都提交的自己的
+github 上」；</li>
+<li>书籍介绍的东西总是有限的，最好结合相关的官方文档阅读，多写多练。</li>
+</ul></li>
+</ul>
+
+<p>
+遇到问题不要怕，如果可能尽量尝试自己解决，自己实在解决不了尝试咨询他人，一定要培养自己独立思考的能力。​对于安全知识的学习可以参考知乎安全牛人的回答
+<a href="https://www.zhihu.com/question/21680381">立志在网络安全领域发展，应该如何系统学习安全知识？</a>。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgad25084" class="outline-3">
+<h3 id="关注行业的动态"><a id="orgad25084"></a><span class="section-number-3">2.4</span> 2.4 关注行业的动态</h3>
+<div class="outline-text-3" id="text-关注行业的动态">
+<p>
+关注行业的动态也是很重要的一件事情，就拿安全举例，那么你应该知道通过什么渠道获取。如果是从事
+web 安全，那么 <a href="http://www.wooyun.org/">乌云</a>
+这个网站的关注是必不可少的。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8abee7d" class="outline-2">
+<h2 id="三工作地点"><a id="org8abee7d"></a><span class="section-number-2">3</span> 三、工作地点</h2>
+<div class="outline-text-2" id="text-三工作地点">
+<p>
+互联网行业机会比较多的那就属于北上广深了，你之前和我提过想去南京，如果不是有特别好的选择的话，我个人的建议还是先去一线城市。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgda2d775" class="outline-2">
+<h2 id="四大四找工作"><a id="orgda2d775"></a><span class="section-number-2">4</span> 四、大四找工作</h2>
+<div class="outline-text-2" id="text-四大四找工作">
+<p>
+鉴于一般比较大的公司校招的话都会选择相对知名的大学，所以不要拘泥于自己大学的校招。你离南京比较近，那么就要关注南京各个大学的校园招聘「每个大学官网应该都会发布一些招聘信息」。如果有合适的公司去校招，直接投简历参加面试，不一定能面上，但是不排除可能性，要懂得去争取一些机会。当然简历也要有不能盲投，根据个人的意愿和实际情况有选择的投，做好准备，切勿乱了阵脚。
+</p>
+
+<p>
+从现在开始，最好开始准备自己的简历，慢慢的完善自己的技能，简历要求实去写。关于程序员怎么写简历，可以参考知乎上的回答
+<a href="https://www.zhihu.com/question/25002833">程序员简历应该怎么写？</a>。
+</p>
+
+<p>
+说了那么多，其实总体来说就是个人意识到位，然后行动。路是自己走出来的，很多事情还是靠自己去摸索。
+</p>
+
+<p>
+&#x2013;EOF&#x2013;
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 水寒</p>
+<p class="date">Created: 2019-09-19 Thu 22:19</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

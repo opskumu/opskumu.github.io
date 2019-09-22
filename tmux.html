@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>终端利器 Tmux</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">终端利器 Tmux</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org827c7b5">1. 安装</a></li>
+<li><a href="#org9c259e6">2. 使用实例</a>
+<ul>
+<li><a href="#orgc55c3aa">2.1. 几个名词</a></li>
+<li><a href="#org52d00f7">2.2. 绑定快捷键</a></li>
+<li><a href="#org12f0d09">2.3. 基本操作</a></li>
+<li><a href="#orge35a8bc">2.4. 窗口操作</a></li>
+<li><a href="#orgff9c4f1">2.5. 面板操作</a></li>
+</ul>
+</li>
+<li><a href="#org8b6630e">3. <code>~/.tmux.conf</code> 基本配置</a></li>
+<li><a href="#org13ecdaf">4. 开启批量执行</a></li>
+<li><a href="#org9388545">5. 脚本化启动</a></li>
+<li><a href="#orge167bdd">6. 参考文档</a></li>
+</ul>
+</div>
+</div>
+<p>
+对于终端复用工具这里推荐使用 tmux，当然此类工具比较好的还有 screen，不过相对 <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-screen/">screen</a> 这里我更倾向于推荐 tmux （强悍的分屏等）。如果仅仅只是多标签的功能，那么 putty 结合一些工具也可以做到，或者干脆使用 xshell，当然 tmux 此类工具不仅仅是那么简单。另外一个选择使用 tmux/screen 工具的原因是，有时我们会经常需要 SSH 或者 telent 远程登录到 Linux 服务器，有一些任务需要长时间运行，比如系统备份、数据传输等。通常情况下我们都是开一个远程终端窗口，因为执行时间比较长，一般需要等待它执行完毕，在此过程中不能关闭窗口或者网络原因断开连接，断开之后就 Game Over 了。这个功能就有点类似 <code>nohup</code> 和 <code>setsid</code> 命令的实现了，而 <code>tmux/screen</code> 则集 <code>nohup/setsid</code> 和多标签于一身。
+</p>
+
+<div id="outline-container-org827c7b5" class="outline-2">
+<h2 id="org827c7b5"><span class="section-number-2">1</span> 安装</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+安装的话这里就不过说明了，不同的 Linux 发行版相应的包管理机制不同，安装 tmux 包即可。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9c259e6" class="outline-2">
+<h2 id="org9c259e6"><span class="section-number-2">2</span> 使用实例</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgc55c3aa" class="outline-3">
+<h3 id="orgc55c3aa"><span class="section-number-3">2.1</span> 几个名词</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+tmux 主要包括以下几个模块：
+</p>
+
+<ul class="org-ul">
+<li>session
+<ul class="org-ul">
+<li>会话:一个服务器可以包含多个会话</li>
+</ul></li>
+<li>window
+<ul class="org-ul">
+<li>窗口:一个会话可以包含多个窗口</li>
+</ul></li>
+<li>pane
+<ul class="org-ul">
+<li>面板:一个窗口可以包含多个面板（强悍的分屏）</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org52d00f7" class="outline-3">
+<h3 id="org52d00f7"><span class="section-number-3">2.2</span> 绑定快捷键</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+列出了 tmux 的几个基本模块之后，就要来点实实在在的干货了，和 <code>screen</code> 默认激活控制台的 <code>Ctrl+a</code> 不同，tmux 默认的是 <code>Ctrl+b</code> ，使用快捷键之后就可以执行一些相应的指令了。当然如果你不习惯使用 <code>Ctrl+b</code> ，也可以在 <code>~/.tmux</code> 文件中加入以下内容把快捷键变为 <code>Ctrl+a</code> ：
+</p>
+
+<pre class="example">
+# Set prefix key to Ctrl-a
+unbind-key C-b
+set-option -g prefix C-a
+</pre>
+
+<p>
+以下所有的操作都是激活控制台之后，即键入快捷键 <code>Ctrl+a</code> 前提下才可以使用的命令（如果没有修改，则快捷键默认 <code>Ctrl+b</code> ）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org12f0d09" class="outline-3">
+<h3 id="org12f0d09"><span class="section-number-3">2.3</span> 基本操作</h3>
+<div class="outline-text-3" id="text-2-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">操作</th>
+<th scope="col" class="org-left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">?</td>
+<td class="org-left">列出所有快捷键；按q返回</td>
+</tr>
+
+<tr>
+<td class="org-left">d</td>
+<td class="org-left">脱离当前会话,可暂时返回 Shell 界面，输入 tmux attach 能够重新进入之前会话</td>
+</tr>
+
+<tr>
+<td class="org-left">s</td>
+<td class="org-left">选择并切换会话；在同时开启了多个会话时使用</td>
+</tr>
+
+<tr>
+<td class="org-left">D</td>
+<td class="org-left">选择要脱离的会话；在同时开启了多个会话时使用</td>
+</tr>
+
+<tr>
+<td class="org-left">:</td>
+<td class="org-left">进入命令行模式；此时可输入支持的命令，例如 kill-server 所有 tmux 会话</td>
+</tr>
+
+<tr>
+<td class="org-left">[</td>
+<td class="org-left">复制模式，光标移动到复制内容位置，空格键开始，方向键选择复制，回车确认，q/Esc 退出</td>
+</tr>
+
+<tr>
+<td class="org-left">]</td>
+<td class="org-left">进入粘贴模式，粘贴之前复制的内容，按 q/Esc 退出</td>
+</tr>
+
+<tr>
+<td class="org-left">~</td>
+<td class="org-left">列出提示信息缓存；其中包含了之前 tmux 返回的各种提示信息</td>
+</tr>
+
+<tr>
+<td class="org-left">t</td>
+<td class="org-left">显示当前的时间</td>
+</tr>
+
+<tr>
+<td class="org-left">Ctrl+z</td>
+<td class="org-left">挂起当前会话</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orge35a8bc" class="outline-3">
+<h3 id="orge35a8bc"><span class="section-number-3">2.4</span> 窗口操作</h3>
+<div class="outline-text-3" id="text-2-4">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">操作</th>
+<th scope="col" class="org-left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">c</td>
+<td class="org-left">创建新窗口</td>
+</tr>
+
+<tr>
+<td class="org-left">&amp;</td>
+<td class="org-left">关闭当前窗口</td>
+</tr>
+
+<tr>
+<td class="org-left">数字键</td>
+<td class="org-left">切换到指定窗口</td>
+</tr>
+
+<tr>
+<td class="org-left">p</td>
+<td class="org-left">切换至上一窗口</td>
+</tr>
+
+<tr>
+<td class="org-left">n</td>
+<td class="org-left">切换至下一窗口</td>
+</tr>
+
+<tr>
+<td class="org-left">l</td>
+<td class="org-left">前后窗口间互相切换</td>
+</tr>
+
+<tr>
+<td class="org-left">w</td>
+<td class="org-left">通过窗口列表切换窗口</td>
+</tr>
+
+<tr>
+<td class="org-left">,</td>
+<td class="org-left">重命名当前窗口，便于识别</td>
+</tr>
+
+<tr>
+<td class="org-left">.</td>
+<td class="org-left">修改当前窗口编号，相当于重新排序</td>
+</tr>
+
+<tr>
+<td class="org-left">f</td>
+<td class="org-left">在所有窗口中查找关键词，便于窗口多了切换</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgff9c4f1" class="outline-3">
+<h3 id="orgff9c4f1"><span class="section-number-3">2.5</span> 面板操作</h3>
+<div class="outline-text-3" id="text-2-5">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">操作</th>
+<th scope="col" class="org-left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">"</td>
+<td class="org-left">将当前面板上下分屏</td>
+</tr>
+
+<tr>
+<td class="org-left">%</td>
+<td class="org-left">将当前面板左右分屏</td>
+</tr>
+
+<tr>
+<td class="org-left">x</td>
+<td class="org-left">关闭当前分屏</td>
+</tr>
+
+<tr>
+<td class="org-left">!</td>
+<td class="org-left">将当前面板置于新窗口,即新建一个窗口,其中仅包含当前面板</td>
+</tr>
+
+<tr>
+<td class="org-left">Ctrl+方向键</td>
+<td class="org-left">以 1 个单元格为单位移动边缘以调整当前面板大小</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt+方向键</td>
+<td class="org-left">以 5 个单元格为单位移动边缘以调整当前面板大小</td>
+</tr>
+
+<tr>
+<td class="org-left">空格键</td>
+<td class="org-left">可以在默认面板布局中切换，试试就知道了</td>
+</tr>
+
+<tr>
+<td class="org-left">q</td>
+<td class="org-left">显示面板编号</td>
+</tr>
+
+<tr>
+<td class="org-left">o</td>
+<td class="org-left">选择当前窗口中下一个面板</td>
+</tr>
+
+<tr>
+<td class="org-left">方向键</td>
+<td class="org-left">移动光标选择对应面板</td>
+</tr>
+
+<tr>
+<td class="org-left">{</td>
+<td class="org-left">向前置换当前面板</td>
+</tr>
+
+<tr>
+<td class="org-left">}</td>
+<td class="org-left">向后置换当前面板</td>
+</tr>
+
+<tr>
+<td class="org-left">Alt+o</td>
+<td class="org-left">逆时针旋转当前窗口的面板</td>
+</tr>
+
+<tr>
+<td class="org-left">Ctrl+o</td>
+<td class="org-left">顺时针旋转当前窗口的面板</td>
+</tr>
+
+<tr>
+<td class="org-left">z</td>
+<td class="org-left">tmux 1.8 新特性，最大化当前所在面板</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8b6630e" class="outline-2">
+<h2 id="org8b6630e"><span class="section-number-2">3</span> <code>~/.tmux.conf</code> 基本配置</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+tmux 通过 <code>~/.tmux.conf</code> 配置文件自定义配置，个人配置文件见 <a href="https://github.com/opskumu/Day/blob/master/conf/.tmux.conf">tmux.conf</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org13ecdaf" class="outline-2">
+<h2 id="org13ecdaf"><span class="section-number-2">4</span> 开启批量执行</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+如果已经修改 prefix 键位 <code>Ctrl+a</code> ，则 <code>Ctrl+a</code> （默认 Ctrl+b） 后输入 <code>:set synchronize-panes</code> ，输入 <code>:set sync [TAB]</code> 键可自动补齐
+</p>
+
+<p>
+取消批量执行模式重复之前操作即可
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9388545" class="outline-2">
+<h2 id="org9388545"><span class="section-number-2">5</span> 脚本化启动</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+把以下脚本内容加入到 <code>~/.bashrc</code> ，即可每次登录进入到 tmux
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #d75fd7; font-weight: bold;">tmux_init</span>()
+{
+    tmux new-session -s <span style="color: #2aa198;">"kumu"</span> -d -n <span style="color: #2aa198;">"local"</span>   <span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">&#24320;&#21551;&#19968;&#20010;&#20250;&#35805;</span>
+    tmux new-window -n <span style="color: #2aa198;">"other"</span>                 <span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">&#24320;&#21551;&#19968;&#20010;&#31383;&#21475;</span>
+    tmux split-window -h                       <span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">&#24320;&#21551;&#19968;&#20010;&#31446;&#23631;</span>
+    tmux split-window -v <span style="color: #2aa198;">"top"</span>                 <span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">&#24320;&#21551;&#19968;&#20010;&#27178;&#23631;,&#24182;&#25191;&#34892; top &#21629;&#20196;</span>
+    tmux -2 attach-session -d                  <span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">tmux -2 &#24378;&#21046;&#21551;&#29992; 256color&#65292;&#36830;&#25509;&#24050;&#24320;&#21551;&#30340; tmux</span>
+}
+
+<span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">&#21028;&#26029;&#26159;&#21542;&#24050;&#26377;&#24320;&#21551;&#30340; tmux &#20250;&#35805;&#65292;&#27809;&#26377;&#21017;&#24320;&#21551;</span>
+<span style="color: #268bd2; font-weight: bold;">if </span><span style="color: #268bd2;">which</span> tmux 2&gt;&amp;1 &gt;/dev/null; <span style="color: #268bd2; font-weight: bold;">then</span>
+    test -z <span style="color: #2aa198;">"$TMUX"</span> &amp;&amp; (tmux attach || tmux_init)
+<span style="color: #268bd2; font-weight: bold;">fi</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge167bdd" class="outline-2">
+<h2 id="orge167bdd"><span class="section-number-2">6</span> 参考文档</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li><a href="https://wiki.freebsdchina.org/software/t/tmux">使用 tmux</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Tmux">archlinux tmux</a></li>
+<li><a href="http://wiki.wutianqi.com/software/tmux.html">Tankywoo tmux wiki</a></li>
+<li><a href="http://www.lovelin.info/blog/2012/10/25/tmuxshi-yong-xin-de-xiao-ji/">Tmux 使用心得小记</a></li>
+<li><a href="http://www.openbsd.org/cgi-bin/man.cgi?query=tmux&amp;sektion=1">Tmux Openbsd Manual Pages</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2013-08-06 Tue 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

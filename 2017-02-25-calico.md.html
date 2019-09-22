@@ -1,0 +1,1021 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-19 Thu 22:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="水寒" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#calico">1. Calico</a>
+<ul>
+<li><a href="#calicoctl">1.1. calicoctl</a>
+<ul>
+<li><a href="#command-reference">1.1.1. Command Reference</a>
+<ul>
+<li><a href="#overview">1.1.1.1. Overview</a></li>
+<li><a href="#createreplaceapplydelete">1.1.1.2. <code>create=、=replace=、=apply=、=delete</code></a></li>
+<li><a href="#get">1.1.1.3. <code>get</code></a></li>
+<li><a href="#config">1.1.1.4. <code>config</code></a></li>
+<li><a href="#ipam">1.1.1.5. <code>ipam</code></a></li>
+<li><a href="#node">1.1.1.6. <code>node</code></a></li>
+</ul>
+</li>
+<li><a href="#资源类型">1.1.2. 资源类型</a></li>
+</ul>
+</li>
+<li><a href="#orgd18f922">1.2. [[http://docs.projectcalico.org/v2.0/reference/cni-plugin/configuration][Calico</a></li>
+<li><a href="#orgb67dd36">1.3. [[http://docs.projectcalico.org/v2.0/usage/configuration/bgp][BGP</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+本文为流水式备忘，一切以 Calico 官方文档为主：
+</p>
+
+<ul class="org-ul">
+<li><a href="http://docs.projectcalico.org/v2.0/reference/">Calico Reference</a></li>
+<li><a href="http://docs.projectcalico.org/v2.0/usage/">Calico Usage</a></li>
+</ul>
+
+<div id="outline-container-org0ac25f5" class="outline-2">
+<h2 id="calico"><a id="org0ac25f5"></a><span class="section-number-2">1</span> Calico</h2>
+<div class="outline-text-2" id="text-calico">
+<p>
+Calico v2.0 版本支持以下平台：
+</p>
+
+<ul class="org-ul">
+<li>Kubernetes v1.1+</li>
+<li>Mesos</li>
+<li>Docker</li>
+<li>Openstack Mitaka, Liberty, Kilo, Juno and icehouse</li>
+</ul>
+</div>
+
+<div id="outline-container-orgafae9de" class="outline-3">
+<h3 id="calicoctl"><a id="orgafae9de"></a><span class="section-number-3">1.1</span> calicoctl</h3>
+<div class="outline-text-3" id="text-calicoctl">
+</div>
+
+<div id="outline-container-orgded35e3" class="outline-4">
+<h4 id="command-reference"><a id="orgded35e3"></a><span class="section-number-4">1.1.1</span> Command Reference</h4>
+<div class="outline-text-4" id="text-command-reference">
+</div>
+
+<div id="outline-container-org534eff1" class="outline-5">
+<h5 id="overview"><a id="org534eff1"></a><span class="section-number-5">1.1.1.1</span> Overview</h5>
+<div class="outline-text-5" id="text-overview">
+<pre class="example">
+# calicoctl --help
+Usage:
+  calicoctl [options] &lt;command&gt; [&lt;args&gt;...]
+
+    create    Create a resource by filename or stdin.   
+              // 从标准输入或者文件创建资源
+    replace   Replace a resource by filename or stdin.  
+              // 从标准输入或者文件更新资源
+    apply     Apply a resource by filename or stdin.  This creates a resource
+              if it does not exist, and replaces a resource if it does exists.
+              // 从标准输入或者文件应用资源，如果资源存在则更新「Replace」，不在则创建 「Create」
+    delete    Delete a resource identified by file, stdin or resource type and
+              name.
+              // 从文件、标准输出或者资源类型和名字删除资源
+    get       Get a resource identified by file, stdin or resource type and
+              name.
+              // 通过文件、标准输入或者资源类型和名字获取定义的资源
+    config    Manage system-wide and low-level node configuration options.
+              // 管理系统层和较低级别的节点配置选项
+    ipam      IP address management.
+              // IP 地址管理
+    node      Calico node management.
+              // Calico 节点管理
+    version   Display the version of calicoctl.
+              // 显示 calicoctl 版本
+
+Options:
+  -h --help               Show this screen.
+  -l --log-level=&lt;level&gt;  Set the log level (one of panic, fatal, error,
+                          warn, info, debug) [default: panic]
+                          // 设置日志级别
+
+Description:
+  The calicoctl command line tool is used to manage Calico network and security
+  policy, to view and manage endpoint configuration, and to manage a Calico
+  node instance.
+
+  See 'calicoctl &lt;command&gt; --help' to read about a specific subcommand.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgc56a709" class="outline-5">
+<h5 id="createreplaceapplydelete"><a id="orgc56a709"></a><span class="section-number-5">1.1.1.2</span> <code>create=、=replace=、=apply=、=delete</code></h5>
+<div class="outline-text-5" id="text-createreplaceapplydelete">
+<pre class="example">
+# Create a policy using the data in policy.yaml.
+calicoctl create -f ./policy.yaml
+
+# Create a policy based on the JSON passed into stdin.
+cat policy.json | calicoctl create -f -
+</pre>
+
+<pre class="example">
+# Replace a policy using the data in policy.yaml.
+calicoctl replace -f ./policy.yaml
+
+# Replace a policy based on the JSON passed into stdin.
+cat policy.json | calicoctl replace -f -
+</pre>
+
+<pre class="example">
+# Apply a policy using the data in policy.yaml.
+calicoctl apply -f ./policy.yaml
+
+# Apply a policy based on the JSON passed into stdin.
+cat policy.json | calicoctl apply -f -
+</pre>
+
+<pre class="example">
+# Delete a policy using the type and name specified in policy.yaml.
+calicoctl delete -f ./policy.yaml
+
+# Delete a policy based on the type and name in the YAML passed into stdin.
+cat policy.yaml | calicoctl delete -f -
+
+# Delete policy with name "foo"
+calicoctl delete policy foo
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org81d91ec" class="outline-5">
+<h5 id="get"><a id="org81d91ec"></a><span class="section-number-5">1.1.1.3</span> <code>get</code></h5>
+<div class="outline-text-5" id="text-get">
+<pre class="example">
+# List all policy in default output format.
+ calicoctl get policy
+
+# List a specific policy in YAML format
+calicoctl get -o yaml policy my-policy-1
+</pre>
+
+<pre class="example">
+-o --output=&lt;OUTPUT FORMAT&gt;  Output format.  One of: yaml, json, ps, wide,
+                             custom-columns=..., go-template=...,
+                             go-template-file=...   [Default: ps]
+</pre>
+
+<p>
+默认 <code>get</code> 命令输出格式为 <code>ps</code>
+</p>
+
+<pre class="example">
+$ calicoctl get hostEndpoint
+HOSTNAME   NAME        
+host1      endpoint1   
+myhost     eth0  
+</pre>
+
+<p>
+<code>wide</code> 格式输出会更详细，会输出资源的一些附加列
+</p>
+
+<pre class="example">
+$ calicoctl get hostEndpoint --output=wide
+HOSTNAME   NAME        INTERFACE   IPS                PROFILES      
+host1      endpoint1               1.2.3.4,0:bb::aa   prof1,prof2   
+myhost     eth0                                       profile1
+</pre>
+
+<p>
+<code>custom-columns</code> 可以自定义输出列
+</p>
+
+<pre class="example">
+$ calicoctl get hostEndpoint --output=custom-columns=NAME,IPS
+NAME        IPS                
+endpoint1   1.2.3.4,0:bb::aa   
+eth0          
+</pre>
+
+<p>
+<code>yaml=/=json</code> 以 <code>yaml</code> 或者 <code>json</code> 格式输出
+</p>
+
+<pre class="example">
+$ calicoctl get hostEndpoint --output=yaml
+- apiVersion: v1
+  kind: hostEndpoint
+  metadata:
+    hostname: host1
+    labels:
+      type: database
+    name: endpoint1
+  spec:
+    expectedIPs:
+    - 1.2.3.4
+    - 0:bb::aa
+    profiles:
+    - prof1
+    - prof2
+- apiVersion: v1
+  kind: hostEndpoint
+  metadata:
+    hostname: myhost
+    name: eth0
+  spec:
+    profiles:
+    - profile1
+</pre>
+
+<p>
+如果节点没有运行 etcd，那么需要通过 <code>ETCD_ENDPOINTS</code> 指定 etcd
+地址，否则将无法操作：
+</p>
+
+<pre class="example">
+ETCD_ENDPOINTS=http://172.16.0.10:2379 calicoctl get bgppeers
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb14906c" class="outline-5">
+<h5 id="config"><a id="orgb14906c"></a><span class="section-number-5">1.1.1.4</span> <code>config</code></h5>
+<div class="outline-text-5" id="text-config">
+<pre class="example">
+# calicoctl config --help
+Set the Calico datastore access information in the environment variables or
+or supply details in a config file.
+
+Usage:
+  calicoctl config set &lt;NAME&gt; &lt;VALUE&gt; [--node=&lt;NODE&gt;]
+                                      [--raw=(bgp|felix)]
+                                      [--config=&lt;CONFIG&gt;]
+  calicoctl config unset &lt;NAME&gt; [--node=&lt;NODE&gt;]
+                                [--raw=(bgp|felix)]
+                                [--config=&lt;CONFIG&gt;]
+  calicoctl config get &lt;NAME&gt; [--node=&lt;NODE&gt;]
+                              [--raw=(bgp|felix)]
+                              [--config=&lt;CONFIG&gt;]
+
+Examples:
+  # Turn off the full BGP node-to-node mesh
+  calicoctl config set nodeToNodeMesh off
+
+  # Set global log level to warning
+  calicoctl config set logLevel warning
+
+  # Set log level to info for node "node1"
+  calicoctl config set logLevel info --node=node1
+
+  # Display the current setting for the nodeToNodeMesh
+  calicoctl config get nodeToNodeMesh
+
+Options:
+  -n --node=&lt;NODE&gt;      The node name.
+     --raw=(bgp|felix)  Apply raw configuration for the specified component.
+                        This option should be used with care; the data is not
+                        validated and it is possible to configure or remove
+                        data that may prevent the component from working as
+                        expected.
+  -c --config=&lt;CONFIG&gt;  Path to the file containing connection configuration in
+                        YAML or JSON format.
+                        [default: /etc/calico/calicoctl.cfg]
+
+Description:
+
+These commands can be used to manage global system-wide configuration and some
+node-specific low level configuration.
+
+The --node option is used to specify the node name for low-level configuration
+that is specific to a particular node.
+
+For configuration that has both global values and node-specific values, the
+--node parameter is optional:  including the parameter will manage the
+node-specific value,  excluding it will manage the global value.  For these
+options, if the node-specific value is unset, the global value will be used on
+the node.
+
+For configuration that is only global, the --node option should not be
+included.  Unsetting the global value will return it to it's original default.
+
+For configuration that is node-specific only, the --node option should be
+included.  Unsetting the node value will remove the configuration, and for
+supported configuration will then inherit the value from the global settings.
+
+The table below details the valid config options.
+
+ Name            | Scope       | Value                                  |
+-----------------+-------------+----------------------------------------+
+ logLevel        | global,node | none,debug,info,warning,error,critical |
+ nodeToNodeMesh  | global      | on,off                                 |
+ asNumber        | global      | 0-4294967295                           |
+ ipip            | global      | on,off                                 |
+</pre>
+
+<p>
+目前 <code>calicoctl config</code> 只有 <code>logLevel</code> 可以单独设置节点，其它如
+<code>nodeToNodeMesh=、=asNumber=、=ipip</code> 配置的都是全局选项。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1d69896" class="outline-5">
+<h5 id="ipam"><a id="org1d69896"></a><span class="section-number-5">1.1.1.5</span> <code>ipam</code></h5>
+<div class="outline-text-5" id="text-ipam">
+<pre class="example">
+Usage:
+  calicoctl ipam &lt;command&gt; [&lt;args&gt;...]
+
+    release      Release a Calico assigned IP address.
+    show         Show details of a Calico assigned IP address.
+
+Options:
+  -h --help      Show this screen.
+
+Description:
+  IP Address Management specific commands for calicoctl.
+
+  See 'calicoctl ipam &lt;command&gt; --help' to read about a specific subcommand.
+</pre>
+
+<p>
+目前 <code>calicoctl ipam</code> 的地址管理相对 <code>v2.0</code>
+以下的版本，功能还是比较弱的，有 <code>release</code> 和 <code>show</code> 两个命令。
+</p>
+
+<p>
+<code>calico ipam release</code> 用于从 Calico 清除未被正常回收的地址
+</p>
+
+<pre class="example">
+$ calicoctl ipam release --ip=192.168.1.2
+</pre>
+
+<p>
+<code>calico ipam show</code> 用于获取指定 ip 地址使用情况
+</p>
+
+<pre class="example">
+# IP is not assigned to an endpoint
+$ calicoctl ipam show --ip=192.168.1.2
+IP 192.168.1.2 is not currently assigned
+
+# Basic Docker container has the assigned IP
+# 表明该 IP 地址已绑定 Docker 容器
+$ calicoctl ipam show --ip=192.168.1.1
+No attributes defined for 192.168.1.1
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgf0e8e2a" class="outline-5">
+<h5 id="node"><a id="orgf0e8e2a"></a><span class="section-number-5">1.1.1.6</span> <code>node</code></h5>
+<div class="outline-text-5" id="text-node">
+<pre class="example">
+Usage:
+  calicoctl node &lt;command&gt; [&lt;args&gt;...]
+
+    status       View the current status of a Calico node.
+                 // 获取 Calico 节点当前状态
+    diags        Gather a diagnostics bundle for a Calico node.
+                 // 收集节点诊断信息
+    checksystem  Verify the compute host is able to run a Calico node instance.
+                 // 验证系统环境是否可以运行 Calico 节点实例
+
+Options:
+  -h --help      Show this screen.
+
+Description:
+  Node specific commands for calicoctl.  These commands must be run directly on
+  the compute host running the Calico node instance.
+
+  See 'calicoctl node &lt;command&gt; --help' to read about a specific subcommand.
+</pre>
+
+<p>
+获取 Calico 节点状态信息：
+</p>
+
+<pre class="example">
+$ sudo calicoctl node status
+Calico process is running.
+
+IPv4 BGP status
++--------------+-------------------+-------+----------+-------------+
+| PEER ADDRESS |     PEER TYPE     | STATE |  SINCE   |    INFO     |
++--------------+-------------------+-------+----------+-------------+
+| 172.17.8.102 | node-to-node mesh | up    | 23:30:04 | Established |
++--------------+-------------------+-------+----------+-------------+
+
+IPv6 BGP status
+No IPv6 peers found.
+</pre>
+
+<p>
+<code>calicoctl node run</code> calico 节点启动参数选项：
+</p>
+
+<pre class="example">
+Usage:
+  calicoctl node run [--ip=&lt;IP&gt;] [--ip6=&lt;IP6&gt;] [--as=&lt;AS_NUM&gt;]
+                     [--name=&lt;NAME&gt;]
+                     [--log-dir=&lt;LOG_DIR&gt;]
+                     [--node-image=&lt;DOCKER_IMAGE_NAME&gt;]
+                     [--backend=(bird|gobgp|none)]
+                     [--config=&lt;CONFIG&gt;]
+                     [--no-default-ippools]
+                     [--dryrun]
+                     [--init-system]
+                     [--disable-docker-networking]
+                     [--docker-networking-ifprefix=&lt;IFPREFIX&gt;]
+
+Options:
+  -h --help                Show this screen.
+     --name=&lt;NAME&gt;         The name of the Calico node.  If this is not
+                           supplied it defaults to the host name.
+                           // 指定 Calico 节点名，如果没有指定则默认主机名
+     --as=&lt;AS_NUM&gt;         Set the AS number for this node.  If omitted, it
+                           will use the value configured on the node resource.
+                           If there is no configured value and --as option is
+                           omitted, the node will inherit the global AS number
+                           (see 'calicoctl config' for details).
+                           // 设置当前节点的 AS number，如果未指定，默认使用全局 As number
+     --ip=&lt;IP&gt;             Set the local IPv4 routing address for this node.
+                           If omitted, it will use the value configured on the
+                           node resource.  If there is no configured value
+                           and the --ip option is omitted, the node will
+                           attempt to autodetect an IP address to use.  Use a
+                           value of 'autodetect' to always force autodetection
+                           of the IP each time the node starts.
+                           // 设置当前节点本地 IPv4 路由地址，如果未指定，
+                           // 则使用节点资源配置的值，如果也未配置，则自动探测使用地址
+     --ip6=&lt;IP6&gt;           Set the local IPv6 routing address for this node.
+                           If omitted, it will use the value configured on the
+                           node resource.  If there is no configured value
+                           and the --ip6 option is omitted, the node will not
+                           route IPv6.
+                           // 设置当前节点本地 IPv6 路由地址，如果未指定选项 ，如果未指定，
+                           // 则使用节点资源配置的值，如果也未配置，则不会路由 IPv6
+     --log-dir=&lt;LOG_DIR&gt;   The directory containing Calico logs.
+                           [default: /var/log/calico]
+                           // 指定 Calico 日志存储目录，默认为 /var/log/calico
+     --node-image=&lt;DOCKER_IMAGE_NAME&gt;
+                           Docker image to use for Calico's per-node container.
+                           [default: calico/node:%s]
+                           // 指定节点镜像
+     --backend=(bird|gobgp|none)
+                           Specify which networking backend to use.  When set
+                           to "none", Calico node runs in policy only mode.
+                           The option to run with gobgp is currently
+                           experimental.
+                           [default: bird]
+                           // 指定网络存储类型，gobgp 当前处于实验性阶段，默认使用 bird
+     --dryrun              Output the appropriate command, without starting the
+                           container.
+                           // 只输出执行命令信息，而不启动容器
+     --init-system         Run the appropriate command to use with an init
+                           system.
+                           // 使用 init system 运行命令
+     --no-default-ippools  Do not create default pools upon startup.
+                           Default IP pools will be created if this is not set
+                           and there are no pre-existing Calico IP pools.
+                           // 启动不创建默认的 IP 池
+     --disable-docker-networking
+                           Disable Docker networking.
+                           // 停用容器网络
+     --docker-networking-ifprefix=&lt;IFPREFIX&gt;
+                           Interface prefix to use for the network interface
+                           within the Docker containers that have been networked
+                           by the Calico driver.
+                           [default: cali]
+                           // docker 容器接口前缀，默认 cali
+  -c --config=&lt;CONFIG&gt;     Path to the file containing connection
+                           configuration in YAML or JSON format.
+                           [default: /etc/calico/calicoctl.cfg]
+                           // 配置文件路径，默认 /etc/calico/calicoctl.cfg
+
+Description:
+  This command is used to start a calico/node container instance which provides
+  Calico networking and network policy on your compute host.
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7c99304" class="outline-4">
+<h4 id="资源类型"><a id="org7c99304"></a><span class="section-number-4">1.1.2</span> 资源类型</h4>
+<div class="outline-text-4" id="text-资源类型">
+<p>
+资源结构概览：
+</p>
+
+<pre class="example">
+apiVersion: v1                      // API 版本号
+kind: &lt;type of resource&gt;            // 资源类型
+metadata:                           // 元数据
+  # Identifying information
+  name: &lt;name of resource&gt;
+  ...
+spec:                               // 资源配置信息
+  # Specification of the resource
+  ...
+</pre>
+
+<ul class="org-ul">
+<li><b>bgpPeer</b>
+
+<ul class="org-ul">
+<li><a href="http://docs.projectcalico.org/v2.0/reference/private-cloud/l3-interconnect-fabric">Calico's
+documentation on L3 Topologies</a></li>
+</ul></li>
+</ul>
+
+<p>
+配置 Calico
+集群节点，支持如下别名：=bgppeer=、=bgppeers=、=bgpp=、=bgpps=、=bp=、=bps=
+</p>
+
+<pre class="example">
+apiVersion: v1
+kind: bgpPeer
+metadata:
+  scope: node           // 范围：global/node
+  node: rack1-host1     // 节点对应的主机名，如果是 scope 为 global，则此行必须省略
+  peerIP: 192.168.1.1   // 当前 peer ip 地址
+spec:
+  asNumber: 63400       // 当前 peer As Number
+</pre>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Field</th>
+<th scope="col" class="org-left">Description</th>
+<th scope="col" class="org-left">Accepted Values</th>
+<th scope="col" class="org-left">Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">scope</td>
+<td class="org-left">Determines the Calico nodes to which this peer applies.</td>
+<td class="org-left">global, node</td>
+<td class="org-left">string</td>
+</tr>
+
+<tr>
+<td class="org-left">node</td>
+<td class="org-left">Must be specified if scope is node, and must be omitted when scope is global.</td>
+<td class="org-left">The <code>hostname</code> of the node to which this peer applies.</td>
+<td class="org-left">string</td>
+</tr>
+
+<tr>
+<td class="org-left">peerIP</td>
+<td class="org-left">The IP address of this peer.</td>
+<td class="org-left">Valid IPv4 or IPv6 address.</td>
+<td class="org-left">string</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>
+此处 node 官档标明为主机名，另外实际测试中如果此处指定 calico node
+启动时指定的节点名「非主机名」时，跨容器路由会有问题，所以此处必须标注为主机名。
+</p>
+</blockquote>
+
+<p>
+关于 BGP 的一些术语：
+</p>
+
+<blockquote>
+<p>
+在 BGP 网络中，所有参与 BGP 进程的路由器都称为 BGP-speaking
+路由器（BGP-speaking 可以看成是 BGP 会话的意思）
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+对于活动的 BGP-speaking设备，称为 peer设备，它与其他 BGP-speaking
+设备之间有一个活动的 TCP 连接。BGP speaker是指本地 BGP 路由器，而
+peer（对等，或者对端）是指任何其他 BGP-speaking 网络设备
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+当 BGP peer 路由器位于不同 AS 中时，它们之间互称对方为外部
+peer，当它们位于同一个 AS 中时，则称为内部 peer
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+当在 peer 设备间（也就是相互直接连接的 BGP 路由器之间）建立了 TCP
+连接，每个 BGP peer 就会立即与对端交换所有的路由表，也就是完整的 BGP
+路由表
+</p>
+</blockquote>
+
+<ul class="org-ul">
+<li><b>Host Endpoint Resource (hostEndpoint)</b></li>
+</ul>
+
+<p>
+<code>Host Endpoint</code> 资源表示运行 Calico 主机关联接口，每个主机的 endpoint
+包括针对该接口设置 labels 和 profiles，用以应用相关策略。
+</p>
+
+<pre class="example">
+apiVersion: v1
+kind: hostEndpoint
+metadata:
+  name: eth0
+  node: myhost
+  labels:
+    type: production
+spec:
+  interfaceName: eth0
+  expectedIPs:
+  - 192.168.0.1
+  - 192.168.0.2
+  profiles:
+  - profile1
+  - profile2
+</pre>
+
+<ul class="org-ul">
+<li><b>IP Pool Resource(ipPool)</b></li>
+</ul>
+
+<p>
+定义 Calico IP 地址资源池，除了 <code>ipPool</code>
+还有以下别名：=ippool=、=ippools=、=ipp=、=ipps=、=pool=、=pools=
+</p>
+
+<pre class="example">
+apiVersion: v1
+kind: ipPool
+metadata:
+  cidr: 10.1.0.0/16
+spec:
+  ipip:
+    enabled: false
+  nat-outgoing: true
+  disabled: false       # 标注为 true 表示不启用该地址池
+</pre>
+
+<p>
+=ipip=：ipip tunneling configuration for this pool. If not specified,
+ipip tunneling is disabled for this pool.
+在公有云平台跨主机通信需要添加这一选项
+</p>
+
+<p>
+=nat-outgoing=：When enabled, packets sent from calico networked
+containers in this pool to destinations outside of this pool will be
+masqueraded。简单说，使得容器可以访问外网
+</p>
+
+<blockquote>
+<p>
+<code>ipip</code> 的实际运行原理还需深究！
+</p>
+</blockquote>
+
+<ul class="org-ul">
+<li><b>Node Resource (node)</b></li>
+</ul>
+
+<p>
+定义节点资源，除了 <code>node=，还可以使用 =nodes=、=no=、=nos</code>
+</p>
+
+<p>
+默认启动 Calico node 实例，会自动创建一个使用主机名的节点资源。
+</p>
+
+<pre class="example">
+apiVersion: v1
+kind: node
+metadata:
+  name: node-hostname
+spec:
+  bgp:
+    asNumber: 64512
+    ipv4Address: 10.244.0.1
+    ipv6Address: 2001:db8:85a3::8a2e:370:7334
+</pre>
+
+<p>
+获取节点信息：
+</p>
+
+<pre class="example">
+# calicoctl get node  -o wide
+NAME                   ASN     IPV4            IPV6
+k8smaster-64-1-hzifc   64511   172.16.64.1
+k8snode-47-200-hzifc   64514   172.16.47.200
+k8snode-64-10-hzifc    64513   172.16.64.10
+</pre>
+
+<ul class="org-ul">
+<li><b>Policy Resource(policy)</b> 和 <b>Profile Resource(profile)</b></li>
+</ul>
+
+<p>
+关于规则的设置，当前还没有实际使用，具体可参考官网内容
+<a href="http://docs.projectcalico.org/v2.0/reference/calicoctl/resources/policy">Policy
+Resource (policy)</a> 和
+<a href="http://docs.projectcalico.org/v2.0/reference/calicoctl/resources/profile">Profile
+Resource(profile)</a>。
+</p>
+
+<ul class="org-ul">
+<li><b><a href="http://docs.projectcalico.org/v2.0/reference/calicoctl/resources/workloadendpoint">Workload
+Endpoint Resource (workloadEndpoint)</a></b></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd18f922" class="outline-3">
+<h3 id="orgd18f922"><span class="section-number-3">1.2</span> [[<a href="http://docs.projectcalico.org/v2.0/reference/cni-plugin/configuration">http://docs.projectcalico.org/v2.0/reference/cni-plugin/configuration</a>][Calico</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+CNI Plugins]]
+</p>
+<p>
+:CUSTOM<sub>ID</sub>: calico-cni-plugins
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb67dd36" class="outline-3">
+<h3 id="orgb67dd36"><span class="section-number-3">1.3</span> [[<a href="http://docs.projectcalico.org/v2.0/usage/configuration/bgp">http://docs.projectcalico.org/v2.0/usage/configuration/bgp</a>][BGP</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Peering]]
+</p>
+<p>
+:CUSTOM<sub>ID</sub>: bgp-peering
+</p>
+
+<p>
+&#x2013;EOF&#x2013;
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 水寒</p>
+<p class="date">Created: 2019-09-19 Thu 22:19</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

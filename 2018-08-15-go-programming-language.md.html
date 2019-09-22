@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="水寒" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#二程序结构">1. 二、程序结构</a>
+<ul>
+<li><a href="#命名">1.1. 命名</a></li>
+<li><a href="#声明">1.2. 声明</a></li>
+</ul>
+</li>
+<li><a href="#三基础数据类型">2. 三、基础数据类型</a>
+<ul>
+<li><a href="#字符串">2.1. 字符串</a></li>
+</ul>
+</li>
+<li><a href="#四复合数据类型">3. 四、复合数据类型</a>
+<ul>
+<li><a href="#数组">3.1. 数组</a></li>
+<li><a href="#切片">3.2. 切片</a></li>
+<li><a href="#map">3.3. Map</a></li>
+<li><a href="#结构体">3.4. 结构体</a></li>
+</ul>
+</li>
+<li><a href="#五函数">4. 五、函数</a>
+<ul>
+<li><a href="#可变函数">4.1. 可变函数</a></li>
+</ul>
+</li>
+<li><a href="#六方法">5. 六、方法</a>
+<ul>
+<li><a href="#封装">5.1. 封装</a></li>
+</ul>
+</li>
+<li><a href="#七接口">6. 七、接口</a></li>
+<li><a href="#八goroutines-和-channel">7. 八、Goroutines 和 Channel</a></li>
+<li><a href="#十包和工具">8. 十、包和工具</a></li>
+</ul>
+</div>
+</div>
+<p>
+本文为阅读 <a href="https://book.douban.com/subject/26337545/">The Go
+Programming Language</a> 一书的笔记摘要。
+</p>
+
+<div id="outline-container-org0bfe9d2" class="outline-2">
+<h2 id="二程序结构"><a id="org0bfe9d2"></a><span class="section-number-2">1</span> 二、程序结构</h2>
+<div class="outline-text-2" id="text-二程序结构">
+</div>
+
+<div id="outline-container-org55ea4d8" class="outline-3">
+<h3 id="命名"><a id="org55ea4d8"></a><span class="section-number-3">1.1</span> 命名</h3>
+<div class="outline-text-3" id="text-命名">
+<ul class="org-ul">
+<li>包名 <code>小写</code></li>
+<li>Go 语言尽量使用短小的名字，特别是局部变量
+
+<ul class="org-ul">
+<li>如果一个名字的作用域比较大，生命周期比较长，则用长的名字会更有意义</li>
+</ul></li>
+
+<li>Go 推荐使用 <code>驼峰式</code> 命名，当名字有几个单词组成时优先使用 <code>大小写</code>
+分隔，而非下划线</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgbf3cad5" class="outline-3">
+<h3 id="声明"><a id="orgbf3cad5"></a><span class="section-number-3">1.2</span> 声明</h3>
+<div class="outline-text-3" id="text-声明">
+<ul class="org-ul">
+<li>Go 语言主要有四种类型的声明语句：=var=、=const=、=type=、=func=</li>
+<li>变量的生命周期指的是在程序运行期间变量有效存在的时间间隔。对于在包一级声明的变量来说，它们的生命周期和整个程序的运行周期是一致的。而相比之下，局部变量的声明周期则是动态的:每次从创建一个新变量的声明语句开始，直到该变量不再被引用为止，然后变量的存储空间可能被回收。函数的参数变量和返回值变量都是局部变量。它们在函数每次被调用的时候创建。</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org878bb13" class="outline-2">
+<h2 id="三基础数据类型"><a id="org878bb13"></a><span class="section-number-2">2</span> 三、基础数据类型</h2>
+<div class="outline-text-2" id="text-三基础数据类型">
+<ul class="org-ul">
+<li>Go 语言将数据类型分为四类:=基础类型=、=复合类型=、=引用类型= 和
+<code>接口类型</code></li>
+</ul>
+</div>
+
+<div id="outline-container-org49511ac" class="outline-3">
+<h3 id="字符串"><a id="org49511ac"></a><span class="section-number-3">2.1</span> <a href="https://blog.golang.org/strings">字符串</a></h3>
+<div class="outline-text-3" id="text-字符串">
+<blockquote>
+<p>
+In Go, a string is in effect a read-only slice of bytes.
+</p>
+</blockquote>
+
+<pre class="example">
+const s = "世界"
+fmt.Println(len(s))            // 输出结果为 6 表示字符串 s 占用 6 个字节，一个中文占用 3 个字节
+fmt.Println(len([]rune(s)))    // 输出结果为 2 表示字符串 s 转换成 rune 之后占用 2 个 rune 字符码
+</pre>
+
+<pre class="example">
+const s = "世界"
+for i, v := range s {
+        fmt.Printf("%#U starts at byte position %d\n", v, i)
+}
+</pre>
+
+<blockquote>
+<p>
+%#U, which shows the code point's Unicode value and its printed
+representation.
+</p>
+</blockquote>
+
+<p>
+运行结果
+</p>
+
+<pre class="example">
+U+4E16 '世' starts at byte position 0
+U+754C '界' starts at byte position 3
+</pre>
+
+<ul class="org-ul">
+<li>字符串遍历
+
+<ul class="org-ul">
+<li><code>for i :</code> 0; i &lt; xx; i++= 这种方式是一个字节一个字节遍历</li>
+<li><code>for i, v :</code> range xx= 这种方式是遍历字符串的 rune</li>
+</ul></li>
+
+<li><code>rune</code> （=int32= 类型别名）</li>
+<li><code>byte</code> (<code>uint8</code> 类型别名)</li>
+<li>Go 的字符串是 <code>UTF-8</code> 编码的，UTF8 编码使用 1 到 4 个 字节来表示每个
+Unicode 码点</li>
+<li>反引号 `` 创建原生的字符串字面量，不支持任何转义</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga3ee2e6" class="outline-2">
+<h2 id="四复合数据类型"><a id="orga3ee2e6"></a><span class="section-number-2">3</span> 四、复合数据类型</h2>
+<div class="outline-text-2" id="text-四复合数据类型">
+</div>
+
+<div id="outline-container-orgaba048e" class="outline-3">
+<h3 id="数组"><a id="orgaba048e"></a><span class="section-number-3">3.1</span> 数组</h3>
+<div class="outline-text-3" id="text-数组">
+<ul class="org-ul">
+<li>因为数组的长度是固定的，因此在 Go 中很少直接使用数组</li>
+<li>在数组字面值中，如果在数组的长度位置出现的是 <code>...</code>
+省略号，则表示数组的长度是根据初始化值的个数来计算</li>
+</ul>
+
+<pre class="example">
+q := [...]int{1, 2, 3}
+</pre>
+
+<ul class="org-ul">
+<li>可以指定一个索引和对应值列表的方式初始化数组</li>
+</ul>
+
+<pre class="example">
+symbol := [...]string{0: "$", 3: "¥"}    // 数组中指定了第一个和第四个索引值，未指定的自动取空字符串
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgb41a77b" class="outline-3">
+<h3 id="切片"><a id="orgb41a77b"></a><span class="section-number-3">3.2</span> 切片</h3>
+<div class="outline-text-3" id="text-切片">
+<ul class="org-ul">
+<li>一个 slice 由三个 部分构成:=指针=、=长度= 和 =容量=。指针指向第一个
+slice 元素对应的底层数组元素的地址，要注意的是 slice
+的第一个元素并不一定就是数组的第一个元素。长度对应 slice 中元素的数目;
+长度不能超过容量，容量一般是从 slice
+的开始位置到底层数据的结尾位置。内置的 <code>len</code> 和 <code>cap</code> 函数分别返回
+slice 的长度和容量</li>
+<li>slice 唯一合法的比较操作是和 <code>nil</code> 比较</li>
+</ul>
+
+<pre class="example">
+package main
+
+import "fmt"
+
+func array(a [4]string) [4]string {
+    a[0] = "That"
+    return a
+}
+
+func slice(s []string) []string {
+    s[0] = "That"
+    return s
+}
+
+func main() {
+    a := [4]string{"This", "is", "a", "test"}
+    s := []string{"This", "is", "a", "test"}
+
+    array(a)
+    slice(s)
+    fmt.Println(a) // 作用域问题，此处数组不会改变
+    fmt.Println(s) // 因为 slice 中元素本身是指针，所以此处 "This" 会被替换成 "That"
+}
+</pre>
+
+<p>
+输出结果：
+</p>
+
+<pre class="example">
+[This is a test]
+[That is a test]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org7f2f9c8" class="outline-3">
+<h3 id="map"><a id="org7f2f9c8"></a><span class="section-number-3">3.3</span> Map</h3>
+<div class="outline-text-3" id="text-map">
+<ul class="org-ul">
+<li>哈希表是一种巧妙并且实用的数据结构，它是一个 <code>无序</code> 的 <code>key/value</code>
+对的集合，在 Go 中，一个 map 就是一个哈希表的引用</li>
+<li>禁止对 map 元素取址的原因是 map
+可能随着元素数量的增长而重新分配更大的内存空间，
+从而可能导致之前的地址无效</li>
+<li>通过 key 作为索引下标来访问 map 将产生一个 value。如果 key 在 map
+中是存在的，那么将得到与 key 对应的 value。如果 key 不存在，那么将得到
+value 对应类型的零值</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga8bfd0e" class="outline-3">
+<h3 id="结构体"><a id="orga8bfd0e"></a><span class="section-number-3">3.4</span> 结构体</h3>
+<div class="outline-text-3" id="text-结构体">
+<ul class="org-ul">
+<li>Go
+语言有一个特性让我们只声明一个成员对应的数据类型而不指名成员的名字;这类成员就叫匿名成员。匿名成员的数据类型必须是命名的类型或指向一个命名的类型的指针。</li>
+</ul>
+
+<pre class="example">
+type Circle struct {
+    Point
+    Radius int
+}
+
+type Wheel struct {
+    Circle
+    Spokes int
+}
+</pre>
+
+<p>
+得意于匿名嵌入的特性，我们可以直接访问叶子属性而不需要给出完整的路径:
+</p>
+
+<pre class="example">
+var w Wheel w.X = 8
+w.Y = 8 w.Radius = 5 w.Spokes = 20
+// equivalent to w.Circle.Point.X = 8
+// equivalent to w.Circle.Point.Y = 8
+// equivalent to w.Circle.Radius = 5
+</pre>
+
+<ul class="org-ul">
+<li>Printf 函数中 <code>%v</code> 参数包含的 <code>#</code> 副词，它表示用和 Go
+语言类似的语法打印值。对于结构体类型来说，将包含每个成员的名字</li>
+</ul>
+
+<pre class="example">
+w = Wheel{Circle{Point{8, 8}, 5}, 20}
+
+w = Wheel{
+    Circle: Circle{
+        Point:  Point{X: 8, Y: 8},
+        Radius: 5,
+    },
+    Spokes: 20, // NOTE: trailing comma necessary here (and at Radius) }
+fmt.Printf("%#v\n", w)
+// Output:
+// Wheel{Circle:Circle{Point:Point{X:8, Y:8}, Radius:5}, Spokes:20}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge061bd4" class="outline-2">
+<h2 id="五函数"><a id="orge061bd4"></a><span class="section-number-2">4</span> 五、函数</h2>
+<div class="outline-text-2" id="text-五函数">
+</div>
+
+<div id="outline-container-orga6be90b" class="outline-3">
+<h3 id="可变函数"><a id="orga6be90b"></a><span class="section-number-3">4.1</span> 可变函数</h3>
+<div class="outline-text-3" id="text-可变函数">
+<ul class="org-ul">
+<li>参数数量可变的函数称为为可变参数函数</li>
+<li>在声明可变参数函数时，需要在参数列表的 <code>最后一个参数</code>
+类型之前加上省略符号 =&#x2026;=，这表示该函数会接收任意数量的该类型参数
+
+<ul class="org-ul">
+<li>如果原始参数已经是切片类型，只需在最后一个参数后加上省略符</li>
+</ul></li>
+
+<li>虽然在可变参数函数内部，=&#x2026;int=
+型参数的行为看起来很像切片类型，但实际上，可变参数函数和以切片作为参数的函数是不同的</li>
+</ul>
+
+<pre class="example">
+func f(...int) {}
+func g([]int) {}
+fmt.Printf("%T\n", f) // "func(...int)"
+fmt.Printf("%T\n", g) // "func([]int)"
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org230cd33" class="outline-2">
+<h2 id="六方法"><a id="org230cd33"></a><span class="section-number-2">5</span> 六、方法</h2>
+<div class="outline-text-2" id="text-六方法">
+<ul class="org-ul">
+<li>在函数声明时，在其名字之前放上一个变量，即是一个方法。这个附加的参数会将该函数附加到这种类型上，即相当于为这种类型定义了一个独占的方法</li>
+<li>在 Go 语言中，我们并不会像其它语言那样用 this 或者 self
+作为接收器;我们可以任意的选择接收器的名字。由于接收器的名字经常会被使用到，所以保持其在方法间传递时的一致性和简短性是不错的主意。这里的建议是可以使用其类型的第一个字母</li>
+</ul>
+</div>
+
+<div id="outline-container-orgfbcca8e" class="outline-3">
+<h3 id="封装"><a id="orgfbcca8e"></a><span class="section-number-3">5.1</span> 封装</h3>
+<div class="outline-text-3" id="text-封装">
+<ul class="org-ul">
+<li>一个对象的变量或者方法如果对调用方是不可见的话，一般就被称为封装。封装有时候也被叫做信息隐藏，同时也是面向对象编程中很关键的一个方面</li>
+<li>Go 语言只有一种控制可见性的手段: <code>大写首字母</code>
+的标识符会从定义它们的包中被导出，小写字母的则不会。这种限制包内成员的方式同样适用于结构体字段或者一个类型的方法</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org20cbf60" class="outline-2">
+<h2 id="七接口"><a id="org20cbf60"></a><span class="section-number-2">6</span> 七、接口</h2>
+<div class="outline-text-2" id="text-七接口">
+<ul class="org-ul">
+<li>一个类型如果拥有一个接口需要的所有方法，那么这个类型就实现了这个接口</li>
+<li>调用 <code>errors.New</code> 函数是非常稀少的，因为有一个方便的封装函数
+=fmt.Errorf=，它还会处理字符串格式化</li>
+<li>接口只有当有两个或两个以上的 具体类型必须以相同的方式进行处理时才需要</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2b08e30" class="outline-2">
+<h2 id="八goroutines-和-channel"><a id="org2b08e30"></a><span class="section-number-2">7</span> 八、Goroutines 和 Channel</h2>
+<div class="outline-text-2" id="text-八goroutines-和-channel">
+<ul class="org-ul">
+<li>如果说 goroutine 是 Go 语言程序的并发体的话，那么 channel
+则是它们之间的通信机制。一个 channel 是一个通信机制，它可以让一个
+goroutine 通过它给另一个 goroutine 发送值信息</li>
+</ul>
+
+<p>
+使用内置的 make 函数，我们可以创建一个 channel:
+</p>
+
+<pre class="example">
+ch := make(chan int) // ch has type 'chan int'
+</pre>
+
+<ul class="org-ul">
+<li>当一个 channel 被关闭后，再向该 channel 发送数据将导致 panic
+异常。当一个被关闭的 channel
+中已经发送的数据都被成功接收后，后续的接收操作将不再阻塞，它们会立即返回一个零值</li>
+<li>试图重复关闭一个 channel 将导致 panic 异常，试图关闭一个 nil 值的
+channel 也将导致 panic 异常</li>
+<li>内置函数 <code>cap</code> 可以获取 channel 内部缓存容量，内置函数 <code>len</code>
+可以获取内部缓存队列中有效元素的个数</li>
+<li>关于无缓存或带缓存 channels 之间的选择，或者是带缓存 channels
+的容量大小的选择，都可能影响程序的正确性。无缓存 channel
+更强地保证了每个发送操作与相应的同步接收操作; 但是对于带缓存
+channel，这些操作是解耦的。同样，即使我们知道将要发送到一个 channel
+的信息的数量上限，创建一个对应容量大小的带缓存 channel
+也是不现实的，因为这要求在执行任何接收操作之前缓存所有已经发送的值。如果未能分配足够的缓冲将导致程序死锁。Channel
+的缓存也可能影响程序的性能</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org119d59d" class="outline-2">
+<h2 id="十包和工具"><a id="org119d59d"></a><span class="section-number-2">8</span> 十、包和工具</h2>
+<div class="outline-text-2" id="text-十包和工具">
+<ul class="org-ul">
+<li>如果只是导入一个包而并不使用导入的包将会导致一个编译错误。但是有时候我们只是想利
+用导入包而产生的副作用:它会计算包级变量的初始化表达式和执行导入包的
+init 初始化函数。这时候我们需要抑制 "unused import"
+编译错误，我们可以用下划线 <code>_</code> 来重命名导入的包。像往常一样，下划线
+<code>_</code> 为空白标识符，并不能被访问</li>
+</ul>
+
+<pre class="example">
+import _ "image/png" // register PNG decoder
+</pre>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 水寒</p>
+<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

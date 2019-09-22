@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docker 使用 Ceph RBD Volume</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Docker 使用 Ceph RBD Volume</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3c74400">1. 环境说明</a></li>
+<li><a href="#org1214595">2. 环境构建</a></li>
+<li><a href="#orgd4dc10c">3. 运行 rbd docker plugin</a></li>
+<li><a href="#org3939055">4. docker 挂载 rbd volume 测试</a></li>
+<li><a href="#orgc11bb7b">5. 参考文档</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3c74400" class="outline-2">
+<h2 id="org3c74400"><span class="section-number-2">1</span> 环境说明</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>OS: CentOS 7.1
+<ul class="org-ul">
+<li>Ubuntu 14.04 下测试也是可行的</li>
+</ul></li>
+<li>ceph-common version: 0.94
+<ul class="org-ul">
+<li>因为 rbd-docker-plugin 通过 <code>nbd map</code> 命令返回值获取 map 设备名，而 <code>0.80</code> 不支持，所以如果你是旧版本的 ceph-common 推荐升级至 <code>0.94</code> ，或者修改 plugin 源码通过 <code>nbd showmapped</code> 过滤获取 map 设备名也是同样可行的</li>
+</ul></li>
+<li>Docker version: 1.8.2
+<ul class="org-ul">
+<li>原则上 <code>1.8</code> 版本都支持， <code>1.9</code> 没有测试可行性</li>
+</ul></li>
+<li>rbd plugin: <a href="https://github.com/yp-engineering/rbd-docker-plugin">rbd-docker-plugin</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org1214595" class="outline-2">
+<h2 id="org1214595"><span class="section-number-2">2</span> 环境构建</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说明。
+</p>
+
+<pre class="example">
+go get github.com/yp-engineering/rbd-docker-plugin
+</pre>
+
+<p>
+完成之后编译的二进制路径为 <code>$GOPATH/bin/rbd-docker-plugin</code> ，拷贝到相应测试主机即可。
+</p>
+
+<p>
+安装必要的组件：
+</p>
+
+<pre class="example">
+yum install librados2-devel librbd1-devel ceph-common xfsprogs -y
+</pre>
+
+<p>
+如果你有现成的 ceph 环境直接测试即可，这里我使用 docker 创建本地 ceph 测试环境：
+</p>
+
+<pre class="example">
+docker run -d --net=host -e MON_IP=当前主机IP -e CEPH_NETWORK=当前主机所在网段 -v /etc/ceph:/etc/ceph -v /var/lib/ceph/:/var/lib/ceph ceph/demo
+</pre>
+
+<blockquote>
+<p>
+关于 ceph/demo 镜像的更多说明可以参考 <a href="https://github.com/ceph/ceph-docker/tree/master/demo">ceph/ceph-docker/demo</a>
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orgd4dc10c" class="outline-2">
+<h2 id="orgd4dc10c"><span class="section-number-2">3</span> 运行 rbd docker plugin</h2>
+<div class="outline-text-2" id="text-3">
+<pre class="example">
+# ceph osd pool create docker 128
+pool 'docker' created
+# ceph auth get-or-create client.docker mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=docker' -o /etc/ceph/ceph.client.docker.keyring
+# RBD_DOCKER_PLUGIN_DEBUG=1 rbd-docker-plugin --create --user=docker --pool=docker
+rbd-volume-plugin: 2016/02/17 10:58:00 main.go:70: INFO: Setting up Ceph Driver for PluginID=rbd, cluster=, user=docker, pool=docker, mount=/var/lib/docker-volumes, config=
+rbd-volume-plugin: 2016/02/17 10:58:00 driver.go:83: INFO: newCephRBDVolumeDriver: setting base mount dir=/var/lib/docker-volumes/rbd
+rbd-volume-plugin: 2016/02/17 10:58:00 driver.go:496: INFO: connecting to Ceph and default pool context
+rbd-volume-plugin: 2016/02/17 10:58:00 main.go:82: INFO: Creating Docker VolumeDriver Handler
+rbd-volume-plugin: 2016/02/17 10:58:00 main.go:86: INFO: Opening Socket for Docker to connect: /run/docker/plugins/rbd.sock
+... ...
+</pre>
+
+<blockquote>
+<p>
+也可不创建 docker pool，默认使用 rbd pool，不创建 docker pool 则只需运行如下命令即可
+</p>
+</blockquote>
+
+<pre class="example">
+# RBD_DOCKER_PLUGIN_DEBUG=1 rbd-docker-plugin --create
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org3939055" class="outline-2">
+<h2 id="org3939055"><span class="section-number-2">4</span> docker 挂载 rbd volume 测试</h2>
+<div class="outline-text-2" id="text-4">
+<pre class="example">
+# docker run --volume-driver=rbd --volume foo:/mnt/foo -it busybox sh
+/ # df -Th | grep -w '/mnt/foo' # 显示设备 rbd0 挂载在 /mnt/foo 命令下，挂载成功
+/dev/rbd0            xfs            20.0G     32.6M     20.0G   0% /mnt/foo
+</pre>
+
+<p>
+rbd docker plugin driver 会做如下操作（前提是当前镜像不存在）：
+</p>
+
+<ul class="org-ul">
+<li>创建一个 20GB 的镜像</li>
+<li>map image 并格式化为 XFS 文件系统</li>
+<li>挂载到对应容器</li>
+</ul>
+
+<p>
+如果容器启动没有添加 <code>--rm</code> 选择则容器退出后，镜像依然可以被其它容器复用（除非 docker run 的时候添加了 <code>--rm</code> 选项并且 rbd-docker-plugin 添加了 <code>--remove</code> 选项才会执行删除操作，否则如果只是添加了 <code>--rm</code> 的选项，plugin driver 也只是 rename image 而并不是直接 rm）。
+</p>
+
+<blockquote>
+<p>
+实际测试过程中如果使用的不是默认的 pool rbd，rename 的过程出现错误，应该是 plugin 的 bug，修改代码执行 <code>rbd rename</code> 时添加 <code>--dest-pool</code> 选项即可。
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orgc11bb7b" class="outline-2">
+<h2 id="orgc11bb7b"><span class="section-number-2">5</span> 参考文档</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li><a href="http://www.sebastien-han.fr/blog/2015/08/17/getting-started-with-the-docker-rbd-volume-plugin/">Getting Started With the Docker RBD Volume Plugin</a></li>
+<li><a href="https://github.com/yp-engineering/rbd-docker-plugin">Ceph Rados Block Device Docker VolumeDriver Plugin</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2016-02-17 Wed 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

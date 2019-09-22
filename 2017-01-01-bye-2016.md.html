@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-19 Thu 22:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="水寒" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#关于读书">1. 关于读书</a></li>
+<li><a href="#关于工作">2. 关于工作</a></li>
+<li><a href="#关于生活">3. 关于生活</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfe7af31" class="outline-2">
+<h2 id="关于读书"><a id="orgfe7af31"></a><span class="section-number-2">1</span> 关于读书</h2>
+<div class="outline-text-2" id="text-关于读书">
+<p>
+2016
+年读的第一本书就是=《火星救援》=，当然之所以关注这本小说，还是缘起于电影的火爆。对了，小说的作者安迪·威尔还是一位程序员，用套近乎的话说，我和他还算得上是个同行呢。不过，认真起来，我就差太远了，反正人家
+15
+岁就被美国国家实验室聘为软件工程师，据说还参与了=《魔兽世界2》=的编写，现在又多了个科幻小说家的副业。所以这差距，怎么算也是地球到火星的距离啊。虽然我比安迪大叔年轻
+16 岁，可是 16
+年的时间我还是走不到火星的，至少我现在还没想明白怎么个离开地球，当然这也不是我应该想明白的。说起小说，总之植物学家带着主角光环利用他的各类学科学霸知识，听着摇滚(Boogie
+Fever)，在极其恶劣的火星上等来了休斯敦，另外小说中中国宇航局也是起了关键性作用。
+</p>
+
+<p>
+因为好友张杰的再三推荐，我看起了古龙的小说。作为光着屁股那会就幻想着耍大刀的男孩来说，当大侠是孩提时代曾经很长一段时间的梦想。于是，我接连看了=《小李飞刀1：多情剑客无情剑》=、=《楚留香新传1：借尸还魂》=、=《陆小凤传奇1：金鹏王朝》=、=《萧十一郎》=、=《火并萧十一郎》=。可能因为阅读顺序的原因，始终觉得多情剑客无情剑写的最好，萧十一郎次之，陆小凤和楚留香到是没有太大的感触。总之，看完之后，第一感觉就是我是当不了大侠的。当大侠颜值、武功不说，光说喝酒我就直接
+over
+了，况且人家喝的还是白酒。我不光不能喝酒，喝多了酒品也不好，而且还特啰嗦难缠。如此，哪还能静静的看着月亮吹吹风思考呢，所以当大侠的梦想也只适合光着屁股那会儿想。
+</p>
+
+<p>
+接着看了三册=《文明之光》=，吴军博士写起这一类的书还是很耐看的，当年一部=《浪潮之巅》=看得我是热血澎拜。既然不能满世界跑长见识，看看这类别人眼中的历史也是个不错的选择。后来闲来无事又看了渡边淳一的=《失乐园》=，抛开性爱不说，反正人性在哪儿都是那个鸟样「这样说貌似又不对&#x2026;」，总之作为年轻人还是少看这类的书为妙。=《皮囊》=、=《最璀璨的银河（刘慈欣经典作品集）》=、=《为奴十二年》=、=《白夜行》=、=《重说近代史》=、=《月亮与六便士》=、=《查令十字街84号》=、=《毛姆短篇小说精选集》=、=《一只特立独行的猪》=、=《沉默的大多数》=、=《日光流年》=、=《变形记: 卡夫卡中短篇小说集》=、=《情人》=，这是之后陆续看的一些文学书，期间还重温了一遍=《三体》=。其中，以=《日光流年》=最为深刻，阎连科把这本小说极致的写活了。而对于广为好评的=《月亮与六便士》=，对我倒并不是很感冒，毛姆的其它书也是一样。当然，王小波的文章读来还是相当有趣的，两本文集看一本就好了，这里推荐=《一只特立独行的猪》=。至于烂尾的书，这里就没有列出来了，好多书读着读着就搁置了。
+</p>
+
+<p>
+技术书，陆陆续续也读了一些，不过这里推荐最不技术的一本书，=《凤凰项目：一个IT运维的传奇故事》=。技术难免读起来有些枯燥，可是这本非技术的技术书一点也不，适合各个阶段的技术人好好看一下，多多少少都会有些收获。
+</p>
+
+<p>
+昨晚看了今年的最后一本书《被讨厌的勇气："自我启发之父"阿德勒的哲学课》，书总体不错，主要以对话的形式讲解阿德勒的哲学思想。不要总是思考人生，询问人生的意义，借用书中的话说，"并不存在普遍性的人生意义，人生的意义是自己赋予自己的"。王小波也说，"虽然人生在世会有种种不如意，但你仍可以在幸福与不幸中作选择"。
+</p>
+
+<p>
+今年看的书相比去年少了很多，以前总抱怨说没有时间阅读，当自己真正去尝试阅读的时候却发现时间简直太充足。2017
+年，希望自己能静下来阅读更多的书，公众号也要慢慢的写起来。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org53b537b" class="outline-2">
+<h2 id="关于工作"><a id="org53b537b"></a><span class="section-number-2">2</span> 关于工作</h2>
+<div class="outline-text-2" id="text-关于工作">
+<p>
+说说工作这件事，说起来，工作时间也并不算长。12
+年毕业到现在，这是第四个年头，也是我第四份工作，同时又是工作所在的第四座城市。离开长沙是因为那压根没有互联网环境，离开北京的因素有点多，现在看来也算是个正确的选择，离开上海的主因源于压力，高房价对应较低的生活质量，不离开就得妥协。几番考虑下，今年
+8
+月份的时候选择来到了杭州，现在来看杭州的房价也是不低的。关于换工作，以我换过几份工作的经验来看，某种意义上来说，换工作就好比跳坑。从一个坑跳到另一个坑，到哪儿都会有坑，找到一个差不多的坑好好填就好了，别总想着跳来跳去，到头来可能啥坑都没有填上。
+</p>
+
+<p>
+换工作那么多次，我自己的某些臭毛病倒是一直都没怎么改，相比其它这倒是我应该首要反思的。离开江游的时候，大叔对我说，我总是对这个不满那个不满，却不曾在自己的身上找问题。性格上来说，有些情绪是不应该带到工作中的，而这些基本的我也没怎么做好。工作上也好，其它事情也好，不要轻易对人对事下结论，尽可能多的站在对方的角度上去看问题，有些看似不可理喻的事情可能就不会那样难懂了。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org609b082" class="outline-2">
+<h2 id="关于生活"><a id="org609b082"></a><span class="section-number-2">3</span> 关于生活</h2>
+<div class="outline-text-2" id="text-关于生活">
+<p>
+总感觉自己的生活有些糙，在上海的时候除了在公司就是在宿舍呆着，吃饭首选兰州拉面。来杭州之后，因为和同学一起住的缘故，生活还是有所改善的，至少周末的时候有家常便饭可吃，生活也算是有了烟火。
+</p>
+
+<p>
+今年去的地方不多，4
+月份的时候，几兄弟一起去了一趟乌镇，体验了一把青年旅社，看了几眼烟雨江南。9
+月因为 G20
+的假期，又和公司大伙去了一趟大西北，也算是见识了戈壁、沙漠的壮观了。来杭州之后还爬了几次山，这点来说杭州是胜过上海的。不过，11
+月份的时候去上海走了一圈，发现上海的有些好也是杭州所没有的，好与不好也只是相对的，生活总需要有所割舍。明年应该要去更多地方走走，而且不仅限于想。读书是心理层面的享受，而出去行走则是身心的一个全方位体会。不说身心在路上，多出去看看总不会错，不是总有人说爱旅游的人一般都不会太坏吗。
+</p>
+
+<p>
+总之呢，自己还是要对自己好一点，这点太重要了，以前什么都在意就是把自己给忽视了。对了，2016
+年的最后一天和好友 Jerry 以完美的两盘 Dota
+告捷，猴子在年末终于牛逼了一发，不，是两发。
+</p>
+
+<p>
+不行了，编不下去了，我要去睡觉了，明天约了基友去南京逛，要早起赶火车&#x2026;
+&#x2026;
+</p>
+
+<p>
+再见，2016。你好，2017。
+</p>
+
+<p>
+&#x2013;EOF&#x2013;
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 水寒</p>
+<p class="date">Created: 2019-09-19 Thu 22:19</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

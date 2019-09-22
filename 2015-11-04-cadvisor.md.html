@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-19 Thu 22:19 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="水寒" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#一入口">1. 一、入口</a></li>
+<li><a href="#二machine-info">2. 二、machine info</a></li>
+<li><a href="#三docker-info">3. 三、docker info</a>
+<ul>
+<li><a href="#getprocesslist">3.1. Getprocesslist</a></li>
+<li><a href="#containerinfo">3.2. ContainerInfo</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div class="figure">
+<p><img src="file:///images/cAdvisor.png" alt="cAdvisor.png" />
+</p>
+</div>
+
+<div id="outline-container-orgdb841d8" class="outline-2">
+<h2 id="一入口"><a id="orgdb841d8"></a><span class="section-number-2">1</span> 一、入口</h2>
+<div class="outline-text-2" id="text-一入口">
+<p>
+<a href="https://github.com/google/cadvisor">cAdvisor 代码托管地址</a>
+</p>
+
+<ul class="org-ul">
+<li>代码入口： <code>github.com/google/cadvisor/cadvisor.go</code></li>
+<li>API handler: <code>github.com/google/cadvisor/api/handler.go</code></li>
+<li>基于 tag： v0.19.2</li>
+</ul>
+
+<pre class="example">
+# github.com/google/cadvisor/cadvisor.go
+... ...
+73     containerManager, err := manager.New(memoryStorage, sysFs, *maxHousekeepingInterval, *allowDynamicHousekeeping)
+74     if err != nil {
+75         glog.Fatalf("Failed to create a Container Manager: %s", err)
+76     }
+77
+78     mux := http.DefaultServeMux
+79
+80     // Register all HTTP handlers.
+81     err = cadvisorHttp.RegisterHandlers(mux, containerManager, *httpAuthFile, *httpAuthRealm, *httpDigestFile, *httpDigestRealm)
+82     if err != nil {
+83         glog.Fatalf("Failed to register HTTP handlers: %v", err)
+84     }
+85
+86     cadvisorHttp.RegisterPrometheusHandler(mux, containerManager, *prometheusEndpoint, nil)
+87
+88     // Start the manager.
+89     if err := containerManager.Start(); err != nil {
+90         glog.Fatalf("Failed to start container manager: %v", err)
+91     }
+... ...
+</pre>
+
+<p>
+从入口可以得知真正获取 container 和 machine 信息的 interface 为
+Manager，=github.com/google/cadvisor/manager/manager.go=
+</p>
+
+<pre class="example">
+# github.com/google/cadvisor/manager/manager.go
+52 // The Manager interface defines operations for starting a manager and getting
+53 // container and machine information.
+54 type Manager interface {
+55     // Start the manager. Calling other manager methods before this returns
+56     // may produce undefined behavior.
+57     Start() error
+58
+59     // Stops the manager.
+60     Stop() error
+61
+62     // Get information about a container.
+63     GetContainerInfo(containerName string, query *info.ContainerInfoRequest) (*info.ContainerInfo, error)
+... ...
+</pre>
+
+<p>
+以下对 cadvisor 具体如何获取到 machine 和 docker container
+的信息结合代码具体讲解。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga42bf60" class="outline-2">
+<h2 id="二machine-info"><a id="orga42bf60"></a><span class="section-number-2">2</span> 二、machine info</h2>
+<div class="outline-text-2" id="text-二machine-info">
+<pre class="example">
+# github.com/google/cadvisor/manager/manager.go
+158     machineInfo, err := getMachineInfo(sysfs, fsInfo) // 此处通过 getMachineInfo() 函数获取 machine 信息
+159     if err != nil {
+160         return nil, err
+161     }
+162     newManager.machineInfo = *machineInfo
+163     glog.Infof("Machine: %+v", newManager.machineInfo)
+</pre>
+
+<p>
+获取 machineinfo 的具体函数 <code>getMachineInfo()</code>
+</p>
+
+<pre class="example">
+# github.com/google/cadvisor/manager/machine.go
+52 func getMachineInfo(sysFs sysfs.SysFs, fsInfo fs.FsInfo) (*info.MachineInfo, error) {
+53     cpuinfo, err := ioutil.ReadFile("/proc/cpuinfo")
+54     clockSpeed, err := machine.GetClockSpeed(cpuinfo)
+55     if err != nil {
+56         return nil, err
+57     }
+58
+... ...
+</pre>
+
+<p>
+MachineInfo 数据结构：
+</p>
+
+<pre class="example">
+# github.com/google/cadvisor/info/v1/machine.go
+131 type MachineInfo struct {
+132     // The number of cores in this machine.
+133     NumCores int `json:"num_cores"`
+134
+135     // Maximum clock speed for the cores, in KHz.
+136     CpuFrequency uint64 `json:"cpu_frequency_khz"`
+137
+138     // The amount of memory (in bytes) in this machine
+139     MemoryCapacity int64 `json:"memory_capacity"`
+140
+141     // The machine id
+142     MachineID string `json:"machine_id"`
+143
+144     // The system uuid
+145     SystemUUID string `json:"system_uuid"`
+146
+147     // The boot id
+148     BootID string `json:"boot_id"`
+149
+150     // Filesystems on this machine.
+151     Filesystems []FsInfo `json:"filesystems"`
+152
+153     // Disk map
+154     DiskMap map[string]DiskInfo `json:"disk_map"`
+155
+156     // Network devices
+157     NetworkDevices []NetInfo `json:"network_devices"`
+158
+159     // Machine Topology
+160     // Describes cpu/memory layout and hierarchy.
+161     Topology []Node `json:"topology"`
+162
+163     // Cloud provider the machine belongs to.
+164     CloudProvider CloudProvider `json:"cloud_provider"`
+165
+166     // Type of cloud instance (e.g. GCE standard) the machine is.
+167     InstanceType InstanceType `json:"instance_type"`
+168 }
+</pre>
+
+<ul class="org-ul">
+<li>cpu <code>/proc/cpuinfo</code></li>
+<li>mem <code>/proc/meminfo</code></li>
+</ul>
+
+<pre class="example">
+# github.com/google/cadvisor/utils/machine/machine.go
+76 func GetMachineMemoryCapacity() (int64, error) {
+77     out, err := ioutil.ReadFile("/proc/meminfo")
+78     if err != nil {
+79         return 0, err
+80     }
+81
+82     memoryCapacity, err := parseCapacity(out, memoryCapacityRegexp)
+83     if err != nil {
+84         return 0, err
+85     }
+86     return memoryCapacity, err
+87 }
+</pre>
+
+<ul class="org-ul">
+<li>machine<sub>id</sub> <code>/var/lib/dbus/machine-id</code></li>
+<li>boot<sub>id</sub> <code>/proc/sys/kernel/random/boot_id</code></li>
+<li>system UUID <code>/sys/class/dmi/id/product_uuid</code></li>
+</ul>
+
+<pre class="example">
+➜  ~  cat /var/lib/dbus/machine-id
+a8919ec7c9ee43bd1bcaf6cd55e1a7bc
+➜  ~  cat /proc/sys/kernel/random/boot_id
+2f6bac7f-738a-4d85-8b58-53e71296119e
+➜  ~  cat /sys/class/dmi/id/product_uuid
+F27316D5-4DB3-E411-A26A-F0761C6D26D6
+➜  ~
+</pre>
+
+<ul class="org-ul">
+<li>disk <code>/proc/diskstats</code></li>
+</ul>
+
+<pre class="example">
+# github.com/google/cadvisor/fs/fs.go
+189 func (self *RealFsInfo) GetFsInfoForPath(mountSet map[string]struct{}) ([]Fs, error) {
+190     filesystems := make([]Fs, 0)
+191     deviceSet := make(map[string]struct{})
+192     diskStatsMap, err := getDiskStatsMap("/proc/diskstats") // 磁盘状态通过 /proc/diskstats 获取
+193     if err != nil {
+194         return nil, err
+195     }
+... ...
+</pre>
+
+<p>
+对于分配给容器的 pool 值，如果是 device mapper 类型的，则通过
+<code>dmsetup status pool_device_name</code> 获取设备使用情况
+</p>
+
+<pre class="example">
+# github.com/google/cadvisor/fs/fs.go
+... ...
+205             case "devicemapper":
+206                 total, free, avail, err = getDMStats(device, partition.blockSize)
+....
+</pre>
+
+<ul class="org-ul">
+<li>获取磁盘设备信息 <code>/sys/block</code></li>
+</ul>
+
+<pre class="example">
+# github.com/google/cadvisor/utils/sysinfo/sysinfo.go
+31 func GetBlockDeviceInfo(sysfs sysfs.SysFs) (map[string]info.DiskInfo, error) {
+32     disks, err := sysfs.GetBlockDevices()
+       // cadvisor/utils/sysfs/sysfs.go GetBlockDevices() 可知，通过 /sys/block 获取磁盘设备名，其它信息雷同
+33     if err != nil {
+34         return nil, err
+35     }
+... ...
+</pre>
+
+<pre class="example">
+➜  ~  cat /sys/block/sda/dev                # 主次设备号
+8:0
+➜  ~  cat /sys/block/sda/size               # 磁盘设备大小
+976773168
+➜  ~  cat /sys/block/sda/queue/scheduler    # 磁盘调度类型
+noop deadline [cfq]
+➜  ~
+</pre>
+
+<ul class="org-ul">
+<li>netDevices <code>/sys/class/net</code></li>
+</ul>
+
+<pre class="example">
+# github.com/google/cadvisor/utils/sysinfo/sysinfo.go
+87 func GetNetworkDevices(sysfs sysfs.SysFs) ([]info.NetInfo, error) {
+88     devs, err := sysfs.GetNetworkDevices()
+89     if err != nil {
+90         return nil, err
+91     }
+92     netDevices := []info.NetInfo{}
+... ...
+</pre>
+
+<pre class="example">
+➜  ~  cat /sys/class/net/eth0/address
+f0:76:1c:6d:26:d6
+➜  ~  cat /sys/class/net/eth0/mtu
+1500
+➜  ~  cat /sys/class/net/eth0/speed
+10
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orge8c95b7" class="outline-2">
+<h2 id="三docker-info"><a id="orge8c95b7"></a><span class="section-number-2">3</span> 三、docker info</h2>
+<div class="outline-text-2" id="text-三docker-info">
+<pre class="example">
+# github.com/google/cadvisor/manager/manager.go
+201 // Start the container manager.
+202 func (self *manager) Start() error {
+203     // Register Docker container factory.
+204     err := docker.Register(self, self.fsInfo)
+205     if err != nil {
+206         glog.Errorf("Docker container factory registration failed: %v.", err)
+207     }
+... ...
+</pre>
+
+<p>
+cAdvisor 启动 container manager，通过调用 Linux 系统 inotify 监测 cgroup
+docker 目录的文件变化判断 docker 的创建和删除。
+</p>
+</div>
+
+<div id="outline-container-org7c2d472" class="outline-3">
+<h3 id="getprocesslist"><a id="org7c2d472"></a><span class="section-number-3">3.1</span> Getprocesslist</h3>
+<div class="outline-text-3" id="text-getprocesslist">
+<p>
+cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>chroot /rootfs</code>
+（cAdvisor 在 container 中运行会通过 volume 方式把系统 / mount 到
+/rootfs 下）再执行
+=ps -e -o user,pid,ppid,stime,pcpu,pmem,rss,vsz,stat,time,comm,cgrou=，否则直接执行获取。(github.com/google/cadvisor/manager/container.go
+GetProcessList() 函数实现)
+</p>
+
+<pre class="example">
+# github.com/google/cadvisor/manager/manager.go
+687 func (m *manager) GetProcessList(containerName string, options v2.RequestOptions) ([]v2.ProcessInfo, error) {
+688     // override recursive. Only support single container listing.
+689     options.Recursive = false
+690     conts, err := m.getRequestedContainers(containerName, options)
+691     if err != nil {
+692         return nil, err
+693     }
+694     if len(conts) != 1 {
+695         return nil, fmt.Errorf("Expected the request to match only one container")
+696     }
+... ...
+</pre>
+
+<p>
+如果是获取全局而非某个 container 的 processlist，则 containername 默认为
+"/"，判断逻辑如下：
+</p>
+
+<pre class="example">
+# github.com/google/cadvisor/manager/container.go
+273         if isRoot || c.info.Name == cgroup {
+274             processes = append(processes, v2.ProcessInfo{
+275                 User:          fields[0],
+276                 Pid:           pid,
+277                 Ppid:          ppid,
+278                 StartTime:     fields[3],
+279                 PercentCpu:    float32(percentCpu),
+... ...
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgd2fc7c4" class="outline-3">
+<h3 id="containerinfo"><a id="orgd2fc7c4"></a><span class="section-number-3">3.2</span> ContainerInfo</h3>
+<div class="outline-text-3" id="text-containerinfo">
+<p>
+获取指定 container 的 info 数据：
+</p>
+
+<pre class="example">
+# github.com/google/cadvisor manager/manager.go
+531 func (self *manager) DockerContainer(containerName string, query *info.ContainerInfoRequest) (info.ContainerInfo, error) {
+532     container, err := self.getDockerContainer(containerName)
+533     if err != nil {
+534         return info.ContainerInfo{}, err
+535     }
+536
+... ...
+</pre>
+
+<p>
+具体获取函数：
+</p>
+
+<pre class="example">
+# github.com/google/cadvisor/manager/container.go
+102 func (c *containerData) GetInfo() (*containerInfo, error) {
+103     // Get spec and subcontainers.
+104     if time.Since(c.lastUpdatedTime) &gt; 5*time.Second {   // 可以看出当上一次更新时间超过 5s 的时候才会更新 info 数据 5
+105         err := c.updateSpec()
+106         if err != nil {
+107             return nil, err
+108         }
+... ...
+</pre>
+
+<ul class="org-ul">
+<li>ContainerSpec</li>
+</ul>
+
+<p>
+cAdvisor 获取 ContainerSpec 总体的逻辑是找出对应 container 对应的系统
+Spec json 文件。
+</p>
+
+<p>
+container info handler：
+</p>
+
+<pre class="example">
+# github.com/google/cadvisor/container/docker/handler.go
+220 func (self *dockerContainerHandler) GetSpec() (info.ContainerSpec, error) {
+221     mi, err := self.machineInfoFactory.GetMachineInfo()
+222     if err != nil {
+223         return info.ContainerSpec{}, err
+224     }
+</pre>
+
+<ul class="org-ul">
+<li><code>/proc/self/mountinfo</code> 当前运行进程的挂载信息</li>
+<li><code>/proc/cgroups</code> 当前内核支持的 cgroup 类型</li>
+<li>libcontainer configpath
+<code>/var/run/docker/execdriver/native/containerId</code></li>
+</ul>
+
+<pre class="example">
+# github.com/google/cadvisor/container/libcontainer/compatibility.go 读取 libcontainer config 文件信息
+150 func ReadConfig(dockerRoot, dockerRun, containerID string) (*configs.Config, error) {
+151     // Try using the new config if it is available.
+152     configPath := configPath(dockerRun, containerID)
+153     if utils.FileExists(configPath) {
+154         out, err := ioutil.ReadFile(configPath)
+155         if err != nil {
+156             return nil, err
+157         }
+158
+159         var state libcontainer.State
+160         err = json.Unmarshal(out, &amp;state)
+161         if err != nil {
+162             return nil, err
+163         }
+164         return &amp;state.Config, nil
+165     }
+</pre>
+
+<pre class="example">
+# github.com/google/cadvisor/container/docker/handler.go 磁盘使用率统计目前支持 aufs，这是目前 CentOS7 上没有 filesystem 大小的原因
+... ...
+232     // For now only enable for aufs filesystems
+233     spec.HasFilesystem = self.storageDriver == aufsStorageDriver
+... ...
+241 func (self *dockerContainerHandler) getFsStats(stats *info.ContainerStats) error {
+242     // No support for non-aufs storage drivers.
+243     if self.storageDriver != aufsStorageDriver {
+244         return nil
+245     }
+... ...
+</pre>
+
+<ul class="org-ul">
+<li>文件系统相关: <code># github.com/google/cadvisor/fs/fs.go</code></li>
+
+<li>aufs storage dir: <code>/var/lib/docker/aufs/diff/containerId</code></li>
+
+<li>获取 cgroup 和 网络状态</li>
+</ul>
+
+<pre class="example">
+# github.com/google/cadvisor/container/docker/handler.go
+# cgroup 信息是调用 github.com/docker/libcontainer/cgroups 获取
+276 func (self *dockerContainerHandler) GetStats() (*info.ContainerStats, error) {
+277     stats, err := containerLibcontainer.GetStats(self.cgroupManager, self.rootFs, self.pid)
+278     if err != nil {
+279         return stats, err
+280     }
+281     // Clean up stats for containers that don't have their own network - this
+282     // includes containers running in Kubernetes pods that use the network of the
+283     // infrastructure container. This stops metrics being reported multiple times
+284     // for each container in a pod.  如果 container 没有自己的网络，则返回空。对于 K8s pod 内部 container 都是通过 pause container 网络通信
+285     if !hasNet(self.networkMode) {
+286         stats.Network = info.NetworkStats{}
+287     }
+288
+289     // Get filesystem stats.
+290     err = self.getFsStats(stats)
+291     if err != nil {
+292         return stats, err
+293     }
+294
+295     return stats, nil
+296 }
+</pre>
+
+<p>
+具体获取 cgroup 和 network 的函数实现 <code>GetStats()</code>
+</p>
+
+<ul class="org-ul">
+<li>container 网络状态 <code>/proc/&lt;pid&gt;/net/dev</code></li>
+</ul>
+
+<pre class="example">
+# github.com/google/cadvisor/container/libcontainer/helpers.go
+81 // Get cgroup and networking stats of the specified container
+82 func GetStats(cgroupManager cgroups.Manager, rootFs string, pid int) (*info.ContainerStats, error) {
+83     cgroupStats, err := cgroupManager.GetStats()
+84     if err != nil {
+85         return nil, err
+86     }
+87     libcontainerStats := &amp;libcontainer.Stats{
+88         CgroupStats: cgroupStats,
+89     }
+90     stats := toContainerStats(libcontainerStats)
+91
+92     // If we know the pid then get network stats from /proc/&lt;pid&gt;/net/dev
+93     if pid &gt; 0 {
+94         netStats, err := networkStatsFromProc(rootFs, pid)
+95         if err != nil {
+96             glog.V(2).Infof("Unable to get network stats from pid %d: %v", pid, err)
+97         } else {
+98             stats.Network.Interfaces = append(stats.Network.Interfaces, netStats...)
+99         }
+... ...
+</pre>
+
+<p>
+cgroup status 包含信息如下(cAdvisor 调用 licontainer/cgroups 获取
+container 对应 cgroup 信息)：
+</p>
+
+<pre class="example">
+# github.com/docker/libcontainer/cgroups/stats.go
+80 type Stats struct {
+81     CpuStats    CpuStats    `json:"cpu_stats,omitempty"`
+82     MemoryStats MemoryStats `json:"memory_stats,omitempty"`
+83     BlkioStats  BlkioStats  `json:"blkio_stats,omitempty"`
+84     // the map is in the format "size of hugepage: stats of the hugepage"
+85     HugetlbStats map[string]HugetlbStats `json:"hugetlb_stats,omitempty"`
+86 }
+</pre>
+
+<p>
+&#x2013;EOF&#x2013;
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 水寒</p>
+<p class="date">Created: 2019-09-19 Thu 22:19</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

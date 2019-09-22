@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>黄山行</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">黄山行</h1>
+
+<div class="figure">
+<p><img src="./images/huangshan.png" alt="huangshan.png" />
+</p>
+</div>
+
+<hr />
+
+<p>
+想去的地方很多，但是要说这几年念叨次数最多的，恐怕就属黄山了。如果要问为什么的话，我是说不出个所以然的，因为是安徽人？这个理由想必不够充分，本来我的地域意识就很模糊，况且家离黄山也不近。倒是大学时候，每次从家来回学校的火车会经停黄山，时间虽是凌晨，也都想下去瞧一瞧的「那时候，以为到了黄山市就等于到了黄山了」。今年早些时候，也和几个朋友约着去来着，可终究没有去成。这次端午决心是要去了，找了俩个小伙伴凑个三人行，不料一小伙伴中途选择了陪妹子，三人行变成了二人基友行。当然，即使最后只有我一个人也会选择去的。
+</p>
+
+<p>
+出行前，稍微查了一下攻略。准备了些基本的装备：帐篷、睡袋、登山杖「登黄山必备」、冲锋衣「晚上防寒」、魔术头巾、巧克力「补充体力」以及其它充饥食物，当然还有充足的水「山上矿泉水 10元/瓶」，这很重要，总共基本负重 20 斤左右。从杭州到黄山，最方便的是杭州西站直达景区的大巴了，乘坐最早 8 点的班车用时三个半小时「高速很通畅」到达汤口镇。到达之后，就近选择了一家景区旁边的饭馆，总体价格合适。吃饱喝足之后，先买去往云谷寺的车票（19 元/人），到达云谷寺之后买景区门票（230 元/人），13:30 分开始正式的徒步登山旅程，人没有想像中的那么多。
+</p>
+
+<p>
+此次上山的路线是：云谷寺 -&gt; 白鹅岭 -&gt; 北海宾馆 -&gt; 猴子观海 -&gt; 光明顶。其中，云谷寺到白鹅岭的路程是最为枯燥的，风景较为一般，这一路考验的是耐力，总共用时 2 个小时。途中比较有名的景点就是 <code>仙人指路</code> 了，反正至于像不像就全凭想象了。登上白鹅岭之后，风景才开始变得美丽， 视野也变得宽阔很多。稍作停留之后，就继续往北海宾馆方向赶路。
+</p>
+
+<p>
+北海宾馆旁有个诺大的篮球场，旁边就是派出所，篮球场上全是帐篷，要是不上光明顶的话可以就地安营扎寨了「网传这里帐篷的场地费是 30 元，具体不详」。北海宾馆过去之后就是猴子观海，远观还是比较形象的。看完猴子观海之后，就往光明顶的方向去，途中看到了传说中的飞来石。大概 17:40 分到达山顶，此时离日落的时间 19:00 还有段时间，我们就在光明顶吹着风等着日落。随着日落的到来，山顶的人越来越多，虽然没有提前占据好的位置，不过看到日落本身就已经很不错了「后来据说丹霞峰看日落会更好」。
+</p>
+
+<p>
+看完日落之后，基本上夜幕就降临了，山顶的风也开始大了起来。询问得知山顶不可以扎帐篷，于是就到旁边的白云宾馆边上找了块空地扎起了帐篷。经过一天的折腾，整个人已经累的不行，不久就随着外边呼啸的山风入了眠。
+</p>
+
+<p>
+凌晨 3 点的时候就有人开始收帐篷去光明顶看日出了，我们是 4 点起来收拾，差不多日出时间爬上光明顶。和昨天的日落情况一样，等我们到山顶的时候，好的位置已经基本都被占领了，也就只能远远望着了。
+</p>
+
+<p>
+看完日出之后，才开始这一天真正的暴走。本打算那天的路线是：光明顶 -&gt; 西海大峡谷 -&gt; 天海 -&gt; 鳌鱼峰 -&gt; 一线天 -&gt; 莲花峰 -&gt; 玉屏楼 -&gt; 迎客松 -&gt; 天都峰 -&gt; 半山寺。不曾想到的是因为路线没有走好，最后的路线变成了：光明顶 -&gt; 鳌鱼峰 -&gt; 一线天 -&gt; 莲花峰 -&gt; 玉屏楼 -&gt; 迎客松，到达迎客松之后才发现离传说中风景至美的西海大峡谷越来越远了，最后又决定返回，往西海大峡谷方向，放弃了登顶天都峰。返回的路线，我们尽量走的和之前不同，不管是鳌鱼峰还是一线天，还是百步云梯，亦或是龟兔赛跑，这一路的风景还是相当赞的。从白云宾馆到步仙桥的这段路程，私以为是这两天行程的精华所在，风景独秀。本想着从步仙桥去大峡谷，可是到达步仙桥之后才发现这边通往大峡谷的路因故关闭了，通告说可以通过三溪到达大峡谷，索性就又一路往下走到了谷底到了三溪。这一段消耗的体力太多，又因为水已经不够了，最后放弃乘索道去西海大峡谷的打算，又从三溪桥走了六公里到达了钓桥庵，乘景区车再到西大门。最开始的打算是山下休息一晚去宏村看看，一来因为西大门离汤口镇相距较远，二来身体确实有些吃不消，于是到达太平之后直接去黄山市汽车站开启了回杭之路。
+</p>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2017-06-14 Wed 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

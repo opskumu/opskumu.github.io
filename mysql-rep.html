@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MySQL 复制备忘</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">MySQL 复制备忘</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org11c3b45">1. 环境说明</a></li>
+<li><a href="#org85ab2c2">2. 复制的用途</a></li>
+<li><a href="#org1b3f787">3. 复制工作过程</a></li>
+<li><a href="#orgb6a250c">4. 复制配置</a>
+<ul>
+<li><a href="#orgd5ae911">4.1. 创建复制账号</a></li>
+<li><a href="#org988ec5f">4.2. 配置主库和备库</a></li>
+<li><a href="#orgf6ea957">4.3. 启动复制</a></li>
+</ul>
+</li>
+<li><a href="#orgf32003b">5. 线上服务器配置主从</a></li>
+<li><a href="#orgb7d9cf9">6. 一些重要的选项</a></li>
+<li><a href="#org05fe8e5">7. 参考</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org11c3b45" class="outline-2">
+<h2 id="org11c3b45"><span class="section-number-2">1</span> 环境说明</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+MySQL 支持两种复制方式：基于行的复制和基于语句的复制，两种方式都是通过在主库上记录二进制日志，在被库重复日志的方式来实现异步的数据复制。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org85ab2c2" class="outline-2">
+<h2 id="org85ab2c2"><span class="section-number-2">2</span> 复制的用途</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>数据分布</li>
+<li>负载均衡</li>
+<li>备份
+<ul class="org-ul">
+<li>复制只是备份的一种技术补充，但是不能取代备份</li>
+</ul></li>
+<li>高可用性和故障切除
+<ul class="org-ul">
+<li>避免单点故障</li>
+</ul></li>
+<li>MySQL 升级测试</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org1b3f787" class="outline-2">
+<h2 id="org1b3f787"><span class="section-number-2">3</span> 复制工作过程</h2>
+<div class="outline-text-2" id="text-3">
+<ol class="org-ol">
+<li>主库把数据更改记录到二进制日志（Binary Log）中</li>
+<li>备库将主库上的日志复制到自己的中继日志 (Relay Log) 中</li>
+<li>备库读取中继日志中的事件，将其重放到备库数据之上</li>
+</ol>
+
+
+<div class="figure">
+<p><img src="./images/mysql_rep/mysql_rep1.jpg" alt="mysql_rep1.jpg" />
+</p>
+</div>
+
+<p>
+第一步是主库记录二进制日志。在每次准备提交事务完成数据更新前，主库将数据更新的事件记录到二进制日志中，MySQL 会按照事务提交的顺序而不是语句执行顺序来记录二进制日志。在记录二进制日志后，主库会告诉存储引擎可以提交事务了。然后备库复制二进制日志到其本地中继日志中，首先备库会启动一个工作线程，称为 I/O 线程，I/O 和主库建立一个普通的客户端连接，然后在主库上启动一个特殊的二进制转储（binlog dump）线程，该线程会读取主库上二进制日志的事件，如果该线程追赶上主库将睡眠状态，直到主库发送信号量通知其有新事件产生才会被唤醒，备库 I/O 线程会将收到的事件记录到中继日记。备库复制过程有两个线程，一个 SQL 线程和一个 IO 线程。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb6a250c" class="outline-2">
+<h2 id="orgb6a250c"><span class="section-number-2">4</span> 复制配置</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+要求：主备拥有同样的数据
+</p>
+
+<p>
+过程：
+</p>
+
+<ol class="org-ol">
+<li>在每台服务器上创建复制账号「推荐这么做」</li>
+<li>配置主库和备库</li>
+<li>通知备库连接到主库并从主库复制数据</li>
+</ol>
+</div>
+
+<div id="outline-container-orgd5ae911" class="outline-3">
+<h3 id="orgd5ae911"><span class="section-number-3">4.1</span> 创建复制账号</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+主从推荐都加，其实主只需要 <code>REPLICATION SLAVE</code> 权限就可以了，主要目的是:
+</p>
+
+<ol class="org-ol">
+<li>监控和管理复制的账号需要 REPLICATION CLIENT
+权限，使用同一账号方便管理</li>
+<li>方便角色切换</li>
+</ol>
+
+<pre class="example">
+mysql&gt; GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.*
+    -&gt; TO repl@'192.168.0.%' IDENTIFIED BY 'pass';
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org988ec5f" class="outline-3">
+<h3 id="org988ec5f"><span class="section-number-3">4.2</span> 配置主库和备库</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+主库：打开二进制日志选项，指定唯一的 <code>server id</code> ，在配置文件 <code>my.cnf</code> 修改如下
+</p>
+
+<pre class="example">
+[mysqld]
+log-bin=bin
+server-id=1     # server id 值应该唯一，防止相同
+</pre>
+
+<p>
+如果之前没有开启二进制日志，则需要重启 MySQL 服务，为确保二进制是否已经创建，使用 <code>SHOW MASTER STATUS</code> 命令检查
+</p>
+
+<pre class="example">
+mysql&gt; SHOW MASTER STATUS\G
++----------------+-----------+--------------+------------------+-------------------+
+| File           | Position  | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++----------------+-----------+--------------+------------------+-------------------+
+| bin-log.000001 | 400       |              |                  |                   |
++----------------+-----------+--------------+------------------+-------------------+
+1 row in set (0.00 sec)
+</pre>
+
+<p>
+备库修改配置如下：
+</p>
+
+<pre class="example">
+[mysqld]
+log-bin=bin
+server-id=2
+relay-log=mysqld-relay-bin
+log-slave-updates=1
+# 如果是 A -&gt; B -&gt; C 架构需要启用 log-slave-updates 该选项，允许备库将其重放的事件也记录到自身的二进制日志中
+read_only=1     # 防止从库被修改
+</pre>
+
+<p>
+<code>log_slave_updates</code> 选项可以让备库变成其它服务器的主库,下图为发送复制事件到其它备库
+</p>
+
+
+<div class="figure">
+<p><img src="./images/mysql_rep/mysql_rep2.jpg" alt="mysql_rep2.jpg" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf6ea957" class="outline-3">
+<h3 id="orgf6ea957"><span class="section-number-3">4.3</span> 启动复制</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+从库启动复制配置
+</p>
+
+<pre class="example">
+mysql&gt; CHANGE MASTER TO
+    -&gt; MASTER_HOST='192.168.0.10',
+    -&gt; MASTER_USER='repl',
+    -&gt; MASTER_PASSWORD='pass',
+    -&gt; MASTER_LOG_FILE='bin-log.000001',
+    -&gt; MASTER_LOG_POS=400,
+    -&gt; MASTER_CONNECT_RETRY=10;
+</pre>
+
+<p>
+查看当前状态
+</p>
+
+<pre class="example">
+mysql&gt; SHOW SLAVE STATUS\G
+ *************************** 1. row ***************************
+               Slave_IO_State:
+                  Master_Host: 192.168.0.10
+                  Master_User: repl
+                  Master_Port: 3306
+                Connect_Retry: 60
+              Master_Log_File: bin-log.000001
+          Read_Master_Log_Pos: 400
+               Relay_Log_File: mysqld-relay-bin.000001
+                Relay_Log_Pos: 400
+        Relay_Master_Log_File: bin-log.000001
+             Slave_IO_Running: No
+            Slave_SQL_Running: No
+            ...
+            Seconds_Behind_Master: NULL
+</pre>
+
+<p>
+START SLAVE
+</p>
+
+<pre class="example">
+mysql&gt; START SLAVE;
+mysql&gt; SHOW SLAVE STATUS\G
+ *************************** 1. row ***************************
+               Slave_IO_State: Waiting for master to send event
+                  Master_Host: 192.168.0.10
+                  Master_User: repl
+                  Master_Port: 3306
+                Connect_Retry: 60
+              Master_Log_File: bin-log.000001
+          Read_Master_Log_Pos: 400
+               Relay_Log_File: mysqld-relay-bin.000001
+                Relay_Log_Pos: 400
+        Relay_Master_Log_File: bin-log.000001
+             Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
+            ...
+            Seconds_Behind_Master: 0
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf32003b" class="outline-2">
+<h2 id="orgf32003b"><span class="section-number-2">5</span> 线上服务器配置主从</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+很多情况下，一些主库已经运行很长时间了，需要做主从同步，这时从库还没有数据，那么就要把主的数据导入到从。
+</p>
+
+<p>
+最基本的方法是关闭主库，把数据复制到备库。然后重启主库后，会使用一个新的二进制文件，在备库执行 <code>CHANGE MASTER TO</code> 指向这个文件的起始处即可。(缺点很明显，关闭主库)
+</p>
+
+<ul class="org-ul">
+<li>使用 <code>mysqldump</code></li>
+</ul>
+
+<p>
+如果只包含 InnoDB 表，那么使用 <code>mysqldump</code> 如下命令备份数据:
+</p>
+
+<pre class="example">
+mysqldump -hxx.xx.xx.xx --single-transaction --all-databases \
+    --master-data=1 &gt; all-databases.sql
+</pre>
+
+<p>
+或者边导出边写入
+</p>
+
+<pre class="example">
+mysqldump -hmaster_ip --single-transaction --all-databases \
+    --master-data=1 | mysql -hslave_ip
+</pre>
+
+<p>
+<code>master-data</code> 默认值是 <code>1</code> ，加上之后会记录 Position 点并执行 <code>CHANGE MASTER TO MASTER_LOG_FILE='bin-log.xxxx', MASTER_LOG_POS=xxxx;</code> 语句，为 <code>2</code> 则记录但会注释 <code>CHANGE MASTER</code> 语句，不会被执行。 
+</p>
+
+<ul class="org-ul">
+<li>A-&gt;B-&gt;C 方式 
+<ul class="org-ul">
+<li>B 为从和主身份时，B 实例上需要设置 <code>logs-slave-updates</code> 选项，这个选项告诉从服务器将其 SQL 线程执行的更新记录到从服务器自己的二进制日志上，当然前提是需要开启 binlog</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb7d9cf9" class="outline-2">
+<h2 id="orgb7d9cf9"><span class="section-number-2">6</span> 一些重要的选项</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>「主」 主库上二进制日志最重要的选项: <code>sync_binlog</code> ，推荐设置成 1，保证在服务器崩溃时不丢失事件，虽然会降低性能</li>
+<li>「主从」 <code>innodb_flush_log_at_trx_commit</code> 根据实际情况设置</li>
+<li>「主从」 二进制日志推荐使用指定命名，如 <code>log-bin=bin</code></li>
+<li>「从」 中继日志指定命名 <code>relay-log=mysqld-relay-bin</code></li>
+<li>「从」 <code>skip_slave_start</code> 选项可以阻止备库崩溃后自动启动复制，预留时间修复</li>
+<li>「从」 <code>read_only</code> ，可以阻止大部分用户更改非临时表，除了复制 SQL 线程和其它拥有超级权限的用户之外</li>
+</ul>
+
+<p>
+关于主从复制的一些问题（如延迟问题等），这里暂不讨论。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org05fe8e5" class="outline-2">
+<h2 id="org05fe8e5"><span class="section-number-2">7</span> 参考</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li><a href="http://dev.mysql.com/doc/refman/5.6/en/index.html">MySQL 5.6 Reference Manual</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2014-02-17 Mon 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

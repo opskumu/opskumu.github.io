@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-22 Sun 21:24 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>一个 HTTP 应用在 Kubernetes 的运行形式</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">一个 HTTP 应用在 Kubernetes 的运行形式</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org0bc126b">1. Namespace（空间）</a></li>
+<li><a href="#org1148e47">2. Deployment</a></li>
+<li><a href="#org5cca1c4">3. Service</a></li>
+<li><a href="#org280ab98">4. Ingress</a></li>
+<li><a href="#小结">5. 小结</a></li>
+</ul>
+</div>
+</div>
+<p>
+伴随着 Kubernetes 功能越来越多，代码量越来越大，相对的可能也就越来越复杂。我有时候在想使用 Kubernetes 的用户应该关心什么，不应该关心什么。对于一个新手来说，开始的时候首先应该弄清楚基本的工作流程。当然，如果你直接看 Kubernetes 的文档，一堆让人眼花缭乱的概念，多少会让人摸不着头脑找不到北。
+</p>
+
+<p>
+本文单纯从使用者的角度来说，从一个 HTTP 应用在 Kubernetes 运行涉及到的理念讲起，先来看下面这张图：
+</p>
+
+
+<div class="figure">
+<p><img src="./images/kubernetes-app.png" alt="kubernetes-app.png" />
+</p>
+</div>
+
+<div id="outline-container-org0bc126b" class="outline-2">
+<h2 id="org0bc126b"><span class="section-number-2">1</span> Namespace（空间）</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+这张图中涉及了很多 Kubernetes 中的术语，我们先从第一个术语 Namespace 讲起。什么是 Namespace，翻译过来就是空间。如果你要在 Kubernetes 中部署应用，第一步就要创建一个属于应用运行的空间，官方的说法是一个 Kubernetes 物理集群支持多个虚拟集群，这里的虚拟集群就是指代的 Namespace。简单来说，你可以理解为环境或者项目组的概念。Namespace之间是逻辑隔离的，针对每个 Namespace 可以做相应的资源限制（CPU、内存等资源）以及用户管理控制（<a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">RBAC</a>）。不同的空间可以运行相同的应用，通过空间逻辑隔离。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1148e47" class="outline-2">
+<h2 id="org1148e47"><span class="section-number-2">2</span> Deployment</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+有了 Namespace 之后，我们就可以创建 ReplicaSet 来运行应用了。那什么是 ReplicaSet 呢，在讲 ReplicaSet 之前先介绍一个 Kubernetes 中的重要概念 Pod。Pod 是 Kubernetes 可以创建和管理的最小部署单元，一个 Pod 由一个或者多个 Container 组成，Pod 中的 Container 共享存储、网络等资源。正常情况下，我们使用 Docker 运行一个容器的时候，直接指定镜像运行即可。而在 Kubernetes 中则是以 Pod 的形式创建运行，虽然实际在节点上还是以容器的方式运行，但在 Kubernetes 角度最终呈现形式则是 Pod。
+</p>
+
+<p>
+如果我们要运行一个应用，直接创建一个 Pod 即可运行。回到前文说的 ReplicaSet，Pod 本身就可以把应用跑起来了，为何一般不直接创建一个 Pod 呢？这是因为单个部署 Pod，如果 Pod 因为一些因素异常退出了，Pod 本身是不会自动恢复的。而 ReplicaSet 则担任管理 Pod 状态的角色，ReplicaSet 的机制保证通过它们管理的 Pod 保持固定的副本数并持续运行。如果 Pod 因异常原退出了，那么 ReplicaSet 会请求创建新的 Pod，保障 Pod 按照我们的设定运行。
+</p>
+
+<p>
+从上图中我们可以看到 ReplicaSet 上层还有一个 Deployment。Deployment 提供了 Pod 和 ReplicaSet 的更新声明。一般情况下不需要单独创建 ReplicaSet，而是直接通过创建 Deployment，由 Deployment 创建管理 ReplicaSet。这是因为 Deployment 在 ReplicaSet 基础上提供了滚动更新、回滚、暂停、恢复等功能。
+</p>
+
+<p>
+以上，说了 Pod、ReplicaSet、Deployment 之间的关系，如果要运行一个应用，那么最终我们只需要创建 Deployment 即可运行，Deployment 会自动创建和管理 ReplicaSet。它们之间的运行关系，简单来说就是 Deployment &#x2013;&gt; ReplicaSet &#x2013;&gt; Pod，对应图中这三者的关系。一层一层的抽象，看似复杂，当你了解之后就会明白，实际是相当优雅的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5cca1c4" class="outline-2">
+<h2 id="org5cca1c4"><span class="section-number-2">3</span> Service</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+有了 Deployment 运行应用之后，如果应用需要被当前空间的其他应用调用怎么办？如果之前没有了解过 Kubernetes 的用户可能会回答是 IP。不错，每个 Pod 都会有一个独立的 IP，但是这些 Deployment 每次更新之后，关联的旧的 Pod 会被销毁，并生成新的随机分配 IP 的 Pod，也就是说 Pod IP 本身是不固定的。更新前的 IP 是可以对应到具体应用，但是更新之后就会失效访问不到对应的 Pod 了。另外一个重要的点就是，如果通过 Pod IP 访问，多副本就意义不大了。那么这时候就需要引入 Service 了，通过创建 Service 可以轻松解决以上提到的问题。Service 简单可以理解为一个负载均衡器，每个 Service 都拥有一个名字和 VIP，并对应一个或者一组 Pod。同一个空间的应用相互访问，直接通过应用的 <code>&lt;serviceName&gt;:&lt;servicePort&gt;</code> 即可访问。
+</p>
+
+<p>
+这里的 Service 按照传统的架构，你可以理解应用前的一层 Nginx 代理。创建 Service 之后会自动创建 Endpoint，Endpoint 维护对应 Pod 的具体 IP 信息，并在 Deployment 每次更新的时候动态更新 Pod 列表。Service 本身对用户是透明的，用户无需关心 Pod IP 的变更。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org280ab98" class="outline-2">
+<h2 id="org280ab98"><span class="section-number-2">4</span> Ingress</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+我们知道在同一个 Kubernetes 集群中同一个空间应用之间访问通过 <code>&lt;serviceName&gt;:&lt;servicePort&gt;</code> 达到相互访问的目的，可能有人会问跨空间如何访问？其实只要在 Kubernetes 集群中，不同应用之间相互访问都是有办法的。跨空间的时候我们可以通过 <code>&lt;serviceName&gt;.&lt;namespace&gt;:&lt;servicePort&gt;</code> 的方式达到跨空间的访问目的，即在原有的基础上加上空间字段。
+</p>
+
+<blockquote>
+<p>
+虽然可以跨空间访问，但是一般还是把每个空间看成独立的环境，不建议跨空间的访问，当然实际情况根据实际需求对待。
+</p>
+</blockquote>
+
+<p>
+如果是集群之外的用户或者应用需要调用呢，这时候 Service 可能就满足不了了，这时候就需要引入 Ingress。通过 Ingress 关联 Service，就可以把集群的服务暴露到外部访问的目的（实际还需要借助 ingress controller 才可以真正对外提供访问，受于篇幅，这里不作介绍）。
+</p>
+
+<blockquote>
+<p>
+当然不通过 Ingress，通过 <code>nodePort</code> 、 <code>hostNetwork</code> 等方式也可以做到集群内部服务的暴露，通俗的做法还是通过 Ingress 暴露服务，一方面是方便统一管理。另外，通过 ingress 还可以提供其他方式不具备的功能需求。
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-org4e8ed39" class="outline-2">
+<h2 id="小结"><a id="org4e8ed39"></a><span class="section-number-2">5</span> 小结</h2>
+<div class="outline-text-2" id="text-小结">
+<p>
+以上就是一个 HTTP 应用在 Kubernetes
+中完整涉及到的知识点，回到之前那张图，针对一个应用我们真正需要创建的就是
+Deployment、Service、Ingress。如果服务不对集群外的服务访问那么就只有
+Deployment 和 Service，ReplicaSet、Endpoint、Pod
+会自动创建，用户无需关心。其中，有一个重要的点，我们可以从图中看到，贯穿其中的一个重要的标记就是
+<code>app=test</code> 这个 label，Kubernetes 中 Deployment、Service 等资源都通过
+label 关联 Pod 标识。
+</p>
+
+<p>
+&#x2013;EOF&#x2013;
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2019-06-04 Tue 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-22 Sun 21:24</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-19 Thu 21:40 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="水寒" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<p>
+本文是阅读《软件开发者路线图-从学徒到高手》笔记摘要
+</p>
+
+<blockquote>
+<p>
+仅仅告诉人们去做事情并不能带来长久和可持续的变化。按照你的要求去做事的人如果遇到你的规则没有囊括的新情况，他们马上就会迷失。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+如果你愿意钻研一件事，你就能做得更好，一切也将得以改善。用她的话说，"努力是使得你聪明能干的东西"（《Mindset》（心理定向与成功），第16页），而失败不过是引导你下次尝试不同方法的激励机制。这跟以下信念是相反的：我们每个人天生都带着固定数量的禀赋，而失败就是我们天资不够的证明。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+从你所做的事情中寻找不足之处并寻求解决办法
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+一种对注重实效而非教条主义的向往。这包括一种肯于牺牲理论上的纯洁性和未来的完美而达到"今天把事情做完"的意愿。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+一种认为分享知识胜过隐藏独享的信念。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+一种敢于实验并被证明错误的意愿。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+争论、反对、分歧（而不是盲从于自诩的权威）正是到达目标的途径。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+最好的学习方法，就是同那些使用你要学习的技能来达到某种目标的人处于同一个房间里。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+一个人帮助一个知道自己正在做什么的人，从而让他学到东西。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+靠自己也可以学习一门语言，但除非与专家交流，否则你需要更长的时间来领悟语言的精神。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+你不应该"嫁"给任何特定技术，而应该有足够宽的技术背影和经验基础，使自己能针对特定的情景选择好的解决方案。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+通常，每一步都该有进门的感觉。这是初学者的心-&#x2013;&#x2014;一种正在"成为"的状态。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+永远不要忘记：可以随便犯蠢的自由很可能是打开天才成功之门的钥匙。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+当我不能做自己喜爱的事情时，我就完全是个懦夫
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+上帝只让一小部分人开开心心地通过自己喜爱的工作谋生。感谢上帝，让我成为其中之一。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+不要因为他们没有走在你所走的路上，就认为他们已经迷失了。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+对初学者来说，不论他是从培训班开始还是通过自学，走上软件技能之路的第一步都是找一名技师来带他。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+我喜欢有足够的自由度，这样才能理解或者想出一些东西，但我也喜欢合作。我会寻找那些能让我从共事的人那里学到东西的项目，并会因此而更有活力。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+最理想的技师工场是这样一种地方：你在那里可以吸收那些只可意会、不可言传的知识；靠每天的点滴进步积累成一种实践习惯。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+如果我们放纵自己，我们将总是需要等待一些消遣或其他事情结束才能安心工作。只有那些对知识非常渴求，以至于在不利的环境下仍能坚持探索的人才会取得更大的成就。从来就没什么"有利条件"。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+学会那些本来不会做的事情，常常比去做已经会做的事情更加重要。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+为[成为一名程序员]做准备，最好的方法就是写程序，并学习其他人写过的优秀程序。我当初所做的是：到计算机科学中心的垃圾筒中，去寻找他们操作系统的清单。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+挑选一个算法精深的开源项目，如Subversion、Git或Mercurial这样的源码控制系统。浏览项目的源码，记下让你觉得新奇的算法、数据结构和设计理念。然后写一篇博客，描述一下项目的架构，着重突出自己学到的新思想。你能在日常工作中找到可运用同样思想的场合吗？
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+你也不应该低估写作本身的威力&#x2026;&#x2026;你会失掉更大的目标感。但写作能让你后退一下并完全想通一个问题。即使最怒气冲冲的演说也能使一位作者达到某种程度的深思熟虑。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+"一个人教的时候，两个人在学。"
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+天赋常常被误解。它并不是超常的智力，而是一种性格。它最需要的是一种承认失败、不遮掩缺点并努力改变的意愿。它来自于刻意的，甚至强迫性的对失败的反思，以及对新方案的持续探索。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+他将不再是个靠学习成绩激励的人，而成为一个靠知识激励的人。他不再靠外部的推动来学习。他的动力来自于内部&#x2026;&#x2026;这种激励，一旦抓住它，就会成为一种强势的力量。
+</p>
+</blockquote>
+
+<p>
+模式列表:
+</p>
+
+<ul class="org-ul">
+<li>另辟蹊径（A Different
+Road）：你发现自己想要去的那个方向跟通往软件技能的道路并不相同。</li>
+<li>只求最差（Be the
+Worst）：当快速超越了周围的每一个人，你的学习速度下降了。</li>
+<li>质脆玩具（Breakable
+Toys）：你工作在一个不允许失败的环境中，却需要一个安全的环境来学习。</li>
+<li>具体技能（Concrete
+Skills）：你想到一个优秀的团队中工作，然而你掌握的实用技能很少。</li>
+<li>正视无知（Confront Your
+Ignorance）：你发现了自身知识中的许多漏洞，而你的工作需要你理解这些主题。</li>
+<li>技重于艺（Craft over
+Art）：你需要向客户交付解决方案，你可以选择采用一种更简单且已证明有效的方案，也可以利用机会来创造一些新奇和美妙的东西。</li>
+<li>建立馈路（Create Feedback
+Loops）：你不知道自己是否正遭受"无意识的无能"（unconscious
+incompetence）之苦。</li>
+<li>深入挖掘（Dig
+Deeper）：你只拥有许多工具、技术和方法的肤浅认识，在尝试解决更困难问题的时候，不断地遇到障碍。</li>
+<li>自定路线（Draw Your Own Map）：老板提供给你的职业道路全都不适合你。</li>
+<li>提高带宽（Expand Your
+Bandwidth）：你对软件开发的理解较为狭隘，只关注日常工作中的低层次细节。</li>
+<li>暴露无知（Expose Your
+Ignorance）：你发现了自身知识中的许多漏洞，担心人们会认为你根本不明白自己所做的东西。</li>
+<li>常用工具（Familiar
+Tools）：你发现很难估算自己的工作，因为你的工具集和技术栈总是在快速变化。</li>
+<li>找人指导（Find
+Mentors）：你发现自己花费大量的时间在发明轮子，然后不断遇到障碍，但却不清楚到哪里找人指导。</li>
+<li>同道中人（Kindred
+Spirits）：你发现自己无人指导，束手无策，而且周围气氛看起来与自己的期望不一致。</li>
+<li>学会失败（Learn How You
+Fail）：学习能力提高了你的成功几率，但失败和弱点依然存在。</li>
+<li>培养激情（Nurture Your
+Passion）：你工作在一个不好的环境中，它扼杀你对软件工艺的激情。</li>
+<li>不断实践（Practice,Practice,Practice）：日常编程活动不会给你通过犯错来学习的机会。</li>
+<li>坚持阅读（Read
+Constantly）：虽然你快速掌握了许多东西，你尚未搞懂的更深入、更基本的概念却源源不断地出现。</li>
+<li>阅读列表（Reading
+List）：需要阅读的书籍数量快速增加，你不可能读完它们。</li>
+<li>记录所学（Record What You
+Learn）：你一遍又一遍地学到同样的经验。似乎没有一样能持续下来。</li>
+<li>且行且思（Reflect as You
+Work）：随着你装进肚子里的工作年限和项目经历越来越多，你发现自己在等待着一种质变，使你神奇地变成"经验丰富"的开发者。</li>
+<li>以退为进（Retreat into
+Competence）：当你发现了自己的大片无知领域时，你感觉自己要被淹没了。</li>
+<li>密切交往（Rubbing Elbows）：你感觉有更高级的技术和方法而自己却抓不住。</li>
+<li>分享所学（Share What You
+Learn）：周围的人学习起来没有你快，你感到失望了。</li>
+<li>坚守阵地（Stay in the
+Trenches）：你获得一次提升的机会，组织想把你提升到一个不再编程的职位上。</li>
+<li>钻研名著（Study the
+Classics）：你周围更有经验的人们不断地引用一些书中的概念，他们以为你已经读过那些书了。</li>
+<li>持续动力（Sustainable
+Motivations）：你发现自己工作在一个令人失望的世界里，做着含糊不清的项目，面对着客户不断摇摆而且相互冲突的需求。</li>
+<li>打扫地面（Sweep the
+Floor）：你是个缺少经验的开发者，需要赢得团队的信任。</li>
+<li>深水区域（The Deep
+End）：你开始担心自己的职业并没有处在稳定水平，而是陷在了泥沟中。</li>
+<li>漫漫长路（The Long
+Road）：你渴望成为一位软件师傅，而你的抱负同人们的期待不一致。</li>
+<li>白色腰带（The White
+Belt）：你正在奋力学习，因为已有的经验似乎使新技能的学习更加困难了。</li>
+<li>释放激情（Unleash Your
+Enthusiasm）：你发现自己为了适应团队而压抑自己对软件开发的兴奋和好奇。</li>
+<li>使用源码（Use the
+Source）：如果你周围的人没有能力区分好代码和坏代码，你如何能认识到自己工作中哪些地方做得好呢？</li>
+<li>使用头衔（Use Your
+Title）：当你在职业场合介绍自己的时候，你都会觉得自己必须道歉或者专门解释一下自己技能水平和职位描述之间的差异。</li>
+<li>入门语言（Your First
+Language）：你已熟悉了几门语言，但任何一门用得都不流畅。</li>
+</ul>
+
+<p>
+&#x2013;EOF&#x2013;
+</p>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 水寒</p>
+<p class="date">Created: 2019-09-19 Thu 21:40</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-22 Sun 21:15 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>只是为了好玩</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">只是为了好玩</h1>
+<p>
+本文是 Linus 自传 <a href="https://book.douban.com/subject/25930025/">《只是为了好玩》</a> 的一些摘要，去年 12 月底的时候把这本买了四年的书看完了。推荐想了解 Linus 本人以及 Linux 的一些趣事的人看，当然如果你只是对故事感兴趣也可以看，因为本书并没有什么深奥的技术知识，但真的很有趣。
+</p>
+
+<hr />
+
+<blockquote>
+<p>
+有时候，革命者就是得忙活些不得不做的事。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+有三件事是对生活有意义的，它们是生活中所有事情的动机 &#x2013; 包括你做的所有事和任何一个生命体会做的事：第一是生存，第二是社会秩序，第三十娱乐。生活中所有的事都遵循着这个顺序，娱乐之后再无其他。所以从某种意义上说，生活的意义就是要你达到第三个阶段。一旦达到了第三个阶段，这辈子你就算成功了。但是你得先超越前两个阶段。
+</p>
+</blockquote>
+
+<p>
+开篇，Linus 就说了他对生活意义的解答。
+</p>
+
+<blockquote>
+<p>
+甭管过程多么折腾，只要一结束，立马就成了最美好的经历。
+</p>
+</blockquote>
+
+<p>
+Linus 用这句话来总结服兵役那段经历。
+</p>
+
+<blockquote>
+<p>
+简洁需要良好的设计和卓然的品位，要做到简洁可一点都不容易。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+设计 Unix 系统的初衷并不是很复杂。一开始是有人想在 PDP-11 电脑上玩游戏 &#x2013; 其实就是丹尼斯和肯想要玩 "星际战争"，于是 Unix 系统就这样被开发出来了。
+</p>
+</blockquote>
+
+<p>
+没看书之前我也不知道 Unix 开发的初衷居然是玩游戏，一下子就减少了这两年玩游戏的罪恶感。但是，转念一想，我的想法可真是荒谬啊。
+</p>
+
+<blockquote>
+<p>
+GNU 是 "GNU 系统不是 Unix 系统" （GNU is Not Unix）的首字母缩写。这是一个递归式的首字母缩写词，即缩写词也出现在全称里。这种循环首字母缩写的冷笑话只有在计算机圈内才有市场，一般人都不觉得好笑。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+冬天的这一个月，我基本上都泡在新电脑上了，玩了整整一个月的 "波斯王子"
+</p>
+</blockquote>
+
+<p>
+第一台 386，Linus 买来后玩了一个月游戏，算得上资深玩家。
+</p>
+
+<blockquote>
+<p>
+我当时真是穷得叮当响。我一向认为，做人非常重要的一点，就是不应该跟别人开口要钱或讨钱。不过这次，我也没开口，他们就这样把钱给了我&#x2026;&#x2026;我当真是感激涕零
+</p>
+</blockquote>
+
+<p>
+开源 Linux 系统后，得知 Linus 是三年分期买的那台 386 后，网友集资把剩余的钱给还上了。
+</p>
+
+<blockquote>
+<p>
+我还是很难解释清楚，闭门三天冥思苦想缺徒劳无功，找不到一个漂亮的好方法来解决难题，这编程到底有什么好着迷的？其实，一旦找到了解决问题的那个漂亮方法，那种感觉就会是无与伦比的。
+</p>
+</blockquote>
+
+<p>
+Linus 的这句话解释了编程的乐趣所在，他是真爱。
+</p>
+
+<blockquote>
+<p>
+没错，每个模块可以做得很简洁，但比起让内核担负起所有功能来说，模块之间的交互可就复杂多了。Linux 系统采取的就是让内核负担起所有功能的做法。想想人的大脑就知道了。大脑中每一个单独的部分都不复杂，但是它们之间的相互作用使大脑成为了一个高度复杂的系统。这是一个 "1+1&gt;2" 的情况。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+微内核原理是要把内核分割为 50 个独立模块，每个模块承担 1/50 的复杂性。但这些人忽略了这个事实：各独立模块之间的联系比原来要复杂得多，更何况，每个模块也并不是那么简单。
+</p>
+</blockquote>
+
+<p>
+Linus 回应 Minix 作者关于 Linux 宏内核的过时说法，这种说法也可以对应当前流行的微服务和单体应用上来。
+</p>
+
+<blockquote>
+<p>
+朵芙是一名幼儿学前教育的老师，还曾 6 次获得过芬兰空手道冠军。
+</p>
+</blockquote>
+
+<p>
+Linus 是在赫尔辛基大学当助教的时候，认识他老婆的，他老婆就是他教的 "计算机科学入门" 课程的 15 名学生之一。另外，是他老婆约的 Linus。
+</p>
+
+<p>
+Linus 母亲还曾说 "他成长的那些年里，我的心一直悬在嗓子眼：就他这副德性，以后可怎么去结实好女孩儿啊？"。
+</p>
+
+<blockquote>
+<p>
+我相信，对于人类来说，最可悲的事莫过于一代代走下去，到头来却发现所走的方向于进化的主流方向背道而驰。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+不管人类和社会朝着哪个方向发展，只要我们能够摸清其中的规律，这就比杞人忧天本身有意思多了。
+</p>
+</blockquote>
+
+<p>
+Linus 对比尔乔伊《连线》杂志中《未来不需要我们》一文的消极观点表示不同意，Linus 认为 "阻止进化是违背自然规律的，也是徒劳的"。
+</p>
+
+<blockquote>
+<p>
+当然了，开源理念和 Linux 项目在大学里拥有庞大的拥簇，有一个很简单的原因：反主流心理。
+</p>
+</blockquote>
+
+<p>
+有意思的说法，不得不说自己当时学习 Linux 也是有反主流的心理在作祟，基本上全中国的大学都是在 Windows 下教学的，鲜有特别认真对待 Linux 的课程。当然我是钻了空子，当初觉得学 Linux 就业的竞争压力不会很大，反其道而行之。
+</p>
+
+<blockquote>
+<p>
+我从来不觉得自己身在理想主义的阵营。当然，我倡导开源的确是把它当作让世界更美好的法宝，但更重要的是，我把它当作一件很好玩的事。这可不是什么理想主义。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+我一向都觉得理想主义者很有意思，但就是有点沉闷，有时候还挺骇人的。
+</p>
+</blockquote>
+
+<p>
+Linus 认为不需要反商业化，Linux 走商业化的路，也只是给了更多的选择而已。
+</p>
+
+<p>
+书中有一段比较有意思，说有一个晚上，一个拉斯维加斯的家伙往 Linus 家里打电话，想要和 Linus 签约，搞 Linux 的 T恤生意。那这家伙怎么就知道 Linus 家里的电话号码呢，原因就是申请一个不登记在公共电话薄上的的号码比申请一个登记的号码要贵得多。（他调侃 Linux 用户倒是有几百万的，Linus 就没有几百万美元了）当然，后来很多基于 Linux 的商业公司赠送了一些期权给 Linus，如红帽等，他还常常觉得自己是世界最走运的家伙。
+</p>
+
+<blockquote>
+<p>
+理查德有一点我最受不了的，就是在他的世界里，一切非黑即白，也由此产生了一些不必要的政治分歧。他永远听不进别人的观点。他要是搞教会的，你都可以称他作宗教狂热分子了。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+事实上，除了狂热的 "传教士" 来敲我家的门劝我 "入教" 之外，最让我反感的，就是别人来敲我家的门告诉我该如何为我的软件注册版权。
+</p>
+</blockquote>
+
+<p>
+书中有几段描述了 Linus 对理查德的反感（我称他们为神仙打架），由此看来他们就不是一条道上的人。
+</p>
+
+<blockquote>
+<p>
+这就是为什么在数年前，我要极力避免与 Linux 公司有任何瓜葛。关键是，金钱越来越物质化了。要是别人发现你身边的金钱滚滚而来，他们就会开始怀疑你的动机。对我来说，我一直以保持中立为荣。你绝不会懂得保持中立对我来说有多重要，这简直快把我逼疯了，我容易吗我！
+</p>
+</blockquote>
+
+<p>
+Linus 这是诉苦啊 ：）
+</p>
+
+<blockquote>
+<p>
+放开一切事物，就会激发无限的可能性。
+</p>
+</blockquote>
+
+<p>
+Linus 关于开源运动的解读。
+</p>
+
+<blockquote>
+<p>
+醒醒吧，谁不想出名，谁不想有钱？反正我想。
+</p>
+</blockquote>
+
+<p>
+哈哈哈哈，这是一个真实的 Linus。Linus 还吐槽了很多关于他的报道，把他描述得像一个清心寡欲得修道士或是圣人，一点也不在乎钱什么的， 他感觉很不是滋味。他说他一直憎恶那个清心寡欲的修道士形象，因为那个形象一点也不酷。那是个沉闷得形象，而且还不是真的。
+</p>
+
+<blockquote>
+<p>
+是的，你应该奋斗，但生活的最终目的是为了享受乐趣
+</p>
+</blockquote>
+
+<p>
+结尾又回到了生活的意义上来了，Linus 说他对 "生活的意义" 的看法并不能真正指引去做应该做的事，顶多就是刚刚引用的这句话。当然，他还说了，"我说得不一定对"。
+</p>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2019-01-06 Sun 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-22 Sun 21:15</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

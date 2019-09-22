@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-20 Fri 23:02 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2017，小结</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">2017，小结</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3f5de1b">1. 关于工作</a></li>
+<li><a href="#org53a2785">2. 关于生活</a></li>
+</ul>
+</div>
+</div>
+<p>
+现在是 2018 年 1 月 1 日，不管有多么不想和 2017 说再见，时间已然过去。昨天是稀松平常的一天，今天依然是这么一天，时间无非就是黑夜和白昼，以及我们渐长的年华。
+</p>
+
+<p>
+新年的第一天睡了一个懒觉，起床之后收拾清洗前两日徒步的装备，然后打扫屋子，接着把废旧的衣物整理丢弃，顺便还换洗了床单和被套，算是辞旧迎新。本想着出去溜达一圈，心里还念着未完成的年终小结，索性就打开了电脑，按照往年惯例，写下了这段文字。
+</p>
+
+<div id="outline-container-org3f5de1b" class="outline-2">
+<h2 id="org3f5de1b"><span class="section-number-2">1</span> 关于工作</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+从 2011 年 11 月份正式工作算起，到 2017 年的 11 月，工作已经整整满六年了。已经不大记得初入职场的心情是怎样的了，倒是现在多少有些焦虑和疑惑。
+</p>
+
+<p>
+工作这几年以来，除去开始工作期间，焦虑可能一直伴随左右，始终找不到自己的职业方向所在，我想应该是焦虑的根因。虽说是换过几份工作，但与其说我选择了工作，倒不如说工作选择了我。因为自始至终被动的都是自己，工作之于我，我就是走在钢丝的人，而工作是钢丝。
+</p>
+
+<p>
+选择走这一条道路的是自己，决定如何走下去的依然是自己。可是迷失方向的自己，伴着焦虑的同时，怎会又没有疑惑。我依然清晰的记得，当初在大学宿舍，几经周折，在那台联想
+Y430 上编译通过输出 "Hello, World!" 的激动心情。反观现在，从事着当初期盼的工作，却没有半点的庆幸，真是件让人觉得讽刺的事情。我有时会臆想，如果大学毕业从事专业工作，成为一名畜牧饲养员，可能除了工资比现在差点，其它好像也差不太多。
+</p>
+
+<blockquote>
+<p>
+如果黑客只是一个负责实现领导意志的技术工人，职责就是根据规格说明书写出代码，那么他其实与一个挖水沟的工人是一样的，从这头挖到那头，仅此而已。
+</p>
+</blockquote>
+
+<p>
+上面这段引文出自《黑客与画家》，拿来描述现在的我，丝毫不为过。
+</p>
+
+<blockquote>
+<p>
+黑客如何才能做自己喜欢的事情？我认为这个问题的解决方法是一个几乎所有创作者都知道的方法：找一份养家糊口的"白天工作"（day job）。这个词是从音乐家身上来的，他们晚上表演音乐，所以白天可以找一份其他工作。更一般地说，"白天工作"的意思是，你有一份为了赚钱的工作，还有一份为了爱好的工作。
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+黑客解决生计问题的方法是找一份"白天工作"，然后在其余时间开发优美的软件。
+</p>
+</blockquote>
+
+<p>
+再引用《黑客与画家》中的一段，问题便有了答案，至于怎么做，这要交给 2018 年的自己。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org53a2785" class="outline-2">
+<h2 id="org53a2785"><span class="section-number-2">2</span> 关于生活</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+再说生活，生活还是有点糙，不过相对 2016 年貌似又改善了一些。吃饭已经基本告别了兰州料理，有时间的时候也不那么死宅了，想着出去看看的同时，又真正做到了走出去。
+</p>
+
+<p>
+2017 年虽说去的地方不多，但和往年比就要多多了。纯粹旅游的话，除了年初和张杰、张超游了次南京，好像就是团建去舟山普陀了，2018 年计划着去一次日本或者台湾。自行车是 16 年底买的，刚刚去看了下码表，显示骑行距离是 670 公里（还是少的可怜）。2 月份，和朋友骑行爬径山寺（尴尬的是，最后是推着车上的山顶，万恶的爬坡）。4 月份，一个人骑行到了念念已久的绍兴。11 月份，和同事骑行去了长乐林场。2018 年的话，希望可以把骑行距离提升到 2000 公里。
+</p>
+
+<p>
+骑行就是零星的三次，接着是徒步，徒步算是 2017 的一个小惊喜。5 月份，重装爬了黄山，体验了第一次山间露营。10 月份，重装两日反穿武功山，高山草甸流连忘反。12 月初，重装穿越七尖，因为走错路的原因，穿越失败。12 月底，也就是昨天和前天，重装风雪穿越临安三尖，作为告别 2017 的一次徒步。期间，还零零散散爬了很多次西湖群山。走在路上的感觉，纵使艰难，却依然欢喜。喜欢这样的踏实感，2018 年将继续徒步在路上。
+</p>
+
+<p>
+说完行走，接着就是读书了。今年读的书并不是很多，数了一下，读完的，包括技术类书籍，一共是 28 本。28 本，是这三年以来的一个新低。2018 年，我不设定读书的数量，想提升下读书的质量，最外在的形式比如多写几篇读书笔记。 
+</p>
+
+<p>
+对了，还要说一下，今年看过的电影。根据豆瓣的统计显示我 2017 年一共看了 110 部电影（其中包括剧集），这么一看好像我还是个死宅。不过，无论如何，2018 年，电影还是要看。
+</p>
+
+
+<div class="figure">
+<p><img src="./images/movie-2017.jpg" alt="movie-2017.jpg" />
+</p>
+</div>
+
+<p>
+还有什么？年底的时候买了一把雅马哈吉他送给自己，想给学了几次就放弃几次的自己，再正名一次。所以， 2018 年希望自己可以流畅的弹那么几首曲子。
+</p>
+
+<p>
+如果还有什么的话，估计可能有人会说赶紧解决单身问题，单身是原罪。可是，我想套用《火花》中德永说的话，"不管别人怎么说，真树小姐的人生是美丽的。"，当然，我的也是，不管以后一个人还是两个人。两人的话，那个女生是世界上最幸福的。
+</p>
+
+<p>
+还有，祝大家新年快乐。
+</p>
+
+<p>
+最后，你好，2018。再见，2017。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2018-01-01 Mon 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-20 Fri 23:02</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>

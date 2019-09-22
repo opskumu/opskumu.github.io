@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-09-21 Sat 22:59 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>top command tips</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">top command tips</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org853d6e6">1. top 理论</a></li>
+<li><a href="#org23f6586">2. top 技巧</a></li>
+<li><a href="#orgb53ea6a">3. 参考</a></li>
+</ul>
+</div>
+</div>
+<p>
+<code>top</code> 命令是 Linux 下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于 Windows 的任务管理器。
+</p>
+
+<div id="outline-container-org853d6e6" class="outline-2">
+<h2 id="org853d6e6"><span class="section-number-2">1</span> top 理论</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">top</span>
+top - 10:52:40 up 3 days, 52 min,  1 user,  load average: 57.28, 112.40, 123.60
+Tasks:  99 total,   1 running,  98 sleeping,   0 stopped,   0 zombie
+<span style="color: #d75fd7; font-weight: bold;">Cpu</span>(s): 19.5%us, 11.4%sy,  0.0%ni,  0.0%id, 65.7%wa,  0.0%hi,  3.4%si,  0.0%st
+Mem:  16435896k total, 16232468k used,   203428k free,    58004k buffers
+Swap:  1044476k total,   713552k used,   330924k free, 10052032k cached
+
+  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+  ... ...
+</pre>
+</div>
+
+<p>
+统计信息区前五行是系统整体的统计信息。第一行是任务队列信息，同 <code>uptime</code>  命令的执行结果。其内容如下：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">内容</th>
+<th scope="col" class="org-left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">10:52:40</td>
+<td class="org-left">当前时间</td>
+</tr>
+
+<tr>
+<td class="org-left">up 3 days, 52 min</td>
+<td class="org-left">系统运行时间</td>
+</tr>
+
+<tr>
+<td class="org-left">1 users</td>
+<td class="org-left">当前登录用户数</td>
+</tr>
+
+<tr>
+<td class="org-left">load average: 57.28, 112.40, 123.60</td>
+<td class="org-left">系统负载，即任务队列平均长度。分别为 1、5、15 分钟前到现在平均值。</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+第二、三行为进程和 CPU 的信息。当有多个 CPU 时，这些内容可能会超过两行。内容如下：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">内容</th>
+<th scope="col" class="org-left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Tasks:99 total</td>
+<td class="org-left">进程总数，键入 <code>H</code> 可查看线程数</td>
+</tr>
+
+<tr>
+<td class="org-left">1 running,  98 sleeping,  0 stopped</td>
+<td class="org-left">正在运行的进程、睡眠进程、停止的进程</td>
+</tr>
+
+<tr>
+<td class="org-left">0 zombie</td>
+<td class="org-left">僵尸进程数</td>
+</tr>
+
+<tr>
+<td class="org-left">Cpu(s): 19.5%us, 11.4%sy,</td>
+<td class="org-left">用户空间占用 CPU 百分比、内核空间占用 CPU 百分比</td>
+</tr>
+
+<tr>
+<td class="org-left">0.0%ni, 0.0%id,</td>
+<td class="org-left">用户进程空间内改变进程优先级占用 CPU、空闲 CPU 百分比</td>
+</tr>
+
+<tr>
+<td class="org-left">65.7%wa, 0.0%hi, 3.4%si, 0.0%st</td>
+<td class="org-left">等待 IO 的 CPU 时间百分比，最后三个是中断请求相关</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+倒数第 2、3 行为内存相关信息：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">内容</th>
+<th scope="col" class="org-left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Mem: 16435896k total, 16232468k used,</td>
+<td class="org-left">分别是物理内存总量、使用物理内存总量</td>
+</tr>
+
+<tr>
+<td class="org-left">203428k free, 58004k buffers</td>
+<td class="org-left">空闲内存总量、用作内核缓存内存量</td>
+</tr>
+
+<tr>
+<td class="org-left">Swap: 1044476k total, 713552k used,</td>
+<td class="org-left">分别是交换分区量、使用交换分区总量</td>
+</tr>
+
+<tr>
+<td class="org-left">330924k free, 10052032k cached</td>
+<td class="org-left">空闲交换区总量、缓存交换区总量</td>
+</tr>
+</tbody>
+</table>
+
+
+<ul class="org-ul">
+<li>buffe <a href="http://wiki.answers.com/Q/Difference_between_buffer_and_cache">Difference between buffer and cache</a></li>
+</ul>
+
+<blockquote>
+<p>
+A data area, shared by hardware devices or program a process is called buffer. They are operated at different speeds or with different sets of priorities. The buffer allows each device or process to operate without holding up by the other. In order to a buffer to be effective, the size of the buffer needs to be considered by the buffer designer. Like a cache, a buffer is a "midpoint holding place" but does not exist so much to accelerate the speed of an activity as for supporting the coordination of separate activities.
+</p>
+
+<p>
+This term is used not only in programming but in hardware as well. In programming, buffering sometimes needs to screen data from its final intended place so that it can be edited or processed before moving to a regular file or database.
+</p>
+</blockquote>
+
+<ul class="org-ul">
+<li>cached</li>
+</ul>
+
+<blockquote>
+<p>
+Cache memory is type of random access memory (RAM). Cache Memory can be accessed more quickly by the computer microprocessor than it can be accessed by regular RAM. Like microprocessor processes data, it looks first in the cache memory and if there, it finds the data from a previous reading of data, it does not need to do the more time consuming reading of data from larger memory.
+</p>
+
+<p>
+Sometimes Cache memory is described in levels of closeness and convenience to the microprocessor. An L1 cache is on the same chip like the microprocessors.
+</p>
+
+<p>
+In addition to cache memory, RAM itself is a cache memory for hard disk storage since all of RAM's contents come up to the hard disk initially when you turn on your computer and load the operating system that you are loading it into RAM and later when you start new applications and access new data. RAM also contains a special area called a disk cache that consists of the data most recently read in from the hard disk.
+</p>
+</blockquote>
+
+<p>
+最后 1 行则是进程相关的资源占用信息:
+</p>
+
+<ul class="org-ul">
+<li><code>PID</code> ：进程的 ID</li>
+<li><code>USER</code> ：进程所有者</li>
+<li><code>PR</code> ：进程的优先级别，越小越优先被执行</li>
+<li><code>NI</code> ：nice 值。负值表示高优先级，正值表示低优先级</li>
+<li><code>VIRT</code> ：进程占用的虚拟内存</li>
+<li><code>RES</code> ：进程占用的物理内存</li>
+<li><code>SHR</code> ：进程使用的共享内存</li>
+<li><code>S</code> ：进程的状态。S 表示休眠，R 表示正在运行，Z 表示僵死状态，N 表示该进程优先值为负数</li>
+<li><code>%CPU</code> ：进程占用 CPU 的使用率</li>
+<li><code>%MEM</code> ：进程使用的物理内存和总内存的百分比</li>
+<li><code>TIME+</code> ：该进程启动后占用的总的 CPU 时间，即占用 CPU 使用时间的累加值。</li>
+<li><code>COMMAND</code> ：进程启动命令名称</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org23f6586" class="outline-2">
+<h2 id="org23f6586"><span class="section-number-2">2</span> top 技巧</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+终端执行 top 命令之后（也可后接一些选项，比如 <code>top -p 1</code>  只监控 init 进程， <code>top -u root</code> 只显示 root 运行进程等等），可以通过以下按键，实现不同功能：
+</p>
+
+<ul class="org-ul">
+<li><code>h</code> ：获取 top 的命令帮助</li>
+<li><code>1</code> (数字 1)：列出所有的单个 CPU 负载情况</li>
+<li><code>z</code> ：top 显示颜色
+<ul class="org-ul">
+<li><code>x</code> ：类似高亮显示，在 <code>z</code>  模式下使用</li>
+</ul></li>
+<li><code>P</code> （大写）：按 CPU 占用高低顺序列出程序</li>
+<li><code>M</code> （大写）：按内存占用高低顺序列出程序</li>
+<li><code>c</code> ：显示进程命令的全路径与参数</li>
+<li><code>H</code> ：显示线程，默认只显示进程</li>
+<li><code>top</code>  默认按 cpu 占用排序，按 <code>F</code> （大写）即可选择相应排序</li>
+<li><code>d</code> ：top 默认刷新时间是 3s ，使用 <code>d</code>  键可自定义刷新时间</li>
+<li>top 选择列排序（高到低）的方法 （在 <code>z</code>  颜色和 <code>x</code>  高亮模式下显示效果明显）：
+<ul class="org-ul">
+<li><code>shift+&lt;</code> ：左选</li>
+<li><code>shift+&gt;</code> ：右选</li>
+</ul></li>
+<li><code>f</code> ：可以指定 top 显示的内容，如 ppid、swap 等都可以选择显示
+<ul class="org-ul">
+<li>显示 <code>Swap</code>  利用率：按 <code>f</code>  键，然后按 <code>p</code> 键，回车即可看到 Swap 状态</li>
+</ul></li>
+<li><code>k</code> ：输入 <code>k</code>  之后可以 kill 掉指定的进程</li>
+<li><code>A</code> ：分类显示各种系统资源高的进程。可用于快速识别系统上的性能要求极高的任务 <b>推荐使用</b></li>
+<li><code>W</code> （大写）:将当前设置写入 <code>~/.toprc</code> 文件中。这是写 top 配置文件的推荐方法</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb53ea6a" class="outline-2">
+<h2 id="orgb53ea6a"><span class="section-number-2">3</span> 参考</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><a href="http://linux.vbird.org/">鸟哥的 Linux 私房菜</a></li>
+<li><a href="http://www.cyberciti.biz/tips/top-linux-monitoring-tools.html">top - Process Activity Command</a></li>
+<li><a href="http://how-to.linuxcareer.com/learning-linux-commands-top">Learning Linux Commands: top</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2013-06-07 Fri 00:00</p>
+<p class="author">Author: Kumu</p>
+<p class="date">Created: 2019-09-21 Sat 22:59</p>
+<p class="validation"></p>
+</div>
+</body>
+</html>
