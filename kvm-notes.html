@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-20 Fri 22:35 -->
+<!-- 2019-09-23 Mon 10:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KVM 学习笔记</title>
@@ -438,7 +438,7 @@ cache 不同模式工作原理图：
 
 <ul class="org-ul">
 <li><code>writethrough</code> 即直写模式，KVM cache 默认使用 <code>writethrough</code> ，它是在调用 write 写入数据的同时将数据写入磁盘缓存和后端块设备才返回，缺点是写入性能较低，但是安全性高。=qcow2= 格式在使用 <code>writethrough</code> 时性能很差</li>
-<li><code>writeback</code> 即回写模式，在调用 write 写入数据时只将数据写入到主机页缓存中即返回，写入性能高，有安全风险。当使用 <code>-snapshot</code> 选项的时候，=writeback= cache 是默认项</li>
+<li><code>writeback</code> 即回写模式，在调用 write 写入数据时只将数据写入到主机页缓存中即返回，写入性能高，有安全风险。当使用 <code>-snapshot</code> 选项的时候， <code>writeback</code> cache 是默认项</li>
 <li><code>none</code> 关闭缓存，直接从磁盘 IO 读写</li>
 <li><code>unsafe</code> 这个选项告诉 QEMU 不需要写入任何数据到磁盘，只要保证在缓存即可</li>
 </ul>
@@ -466,11 +466,7 @@ qcow2 qed parallels nbd blkdebug host_cdrom host_floppy host_device file
 <h5 id="org5f2e43e"><span class="section-number-5">2.3.1.1</span> raw</h5>
 <div class="outline-text-5" id="text-2-3-1-1">
 <p>
-原始的磁盘镜像格式，qemu-img 默认支持的格式，它的优势在于它非常简单而且非常容易移植到其他模拟器（emulator，QEMU 也是一个 emulator）上去使用。如果客户机文件系统（如 Linux 上的 ext2/ext3/ext4、Windows 的 NTFS）支持"空洞" （hole），那么镜像文件只有在被写有数据的扇区才会真正占用磁盘空间，从而有节省磁盘空间的作用。 <code>qemu-img</code> 默认的 <code>raw</code> 格式的文件其实是稀疏文件（sparse file）「稀疏文件就是在文件中留有很多空余空间，留备将来插入数据使用。如果这些空余空间被 ASCII 码的 NULL 字符占据，并且这些空间相当大，那么这个文件就被称为稀疏文件，而且，并不分配相应的磁盘块」，dd 命令创建的也是 raw 格式，不过 dd 一开始就让镜像实际占用了分配的空间，而没有使用稀疏文件的方式对待空洞而节省磁盘空间。尽管一开始就实际占用磁盘空间的方式没有节省磁盘的效果，不过它在写入新的数据时不需要宿主机从现有磁盘空间中分配，从而在第一次写入数据时性能会比稀疏文件的方式更好一点。简单来说，raw
-</p>
-
-<p>
-有以下几个特点：
+原始的磁盘镜像格式，qemu-img 默认支持的格式，它的优势在于它非常简单而且非常容易移植到其他模拟器（emulator，QEMU 也是一个 emulator）上去使用。如果客户机文件系统（如 Linux 上的 ext2/ext3/ext4、Windows 的 NTFS）支持"空洞" （hole），那么镜像文件只有在被写有数据的扇区才会真正占用磁盘空间，从而有节省磁盘空间的作用。 <code>qemu-img</code> 默认的 <code>raw</code> 格式的文件其实是稀疏文件（sparse file）「稀疏文件就是在文件中留有很多空余空间，留备将来插入数据使用。如果这些空余空间被 ASCII 码的 NULL 字符占据，并且这些空间相当大，那么这个文件就被称为稀疏文件，而且，并不分配相应的磁盘块」，dd 命令创建的也是 raw 格式，不过 dd 一开始就让镜像实际占用了分配的空间，而没有使用稀疏文件的方式对待空洞而节省磁盘空间。尽管一开始就实际占用磁盘空间的方式没有节省磁盘的效果，不过它在写入新的数据时不需要宿主机从现有磁盘空间中分配，从而在第一次写入数据时性能会比稀疏文件的方式更好一点。简单来说，raw 有以下几个特点：
 </p>
 
 <ul class="org-ul">
@@ -498,7 +494,7 @@ qcow2 qed parallels nbd blkdebug host_cdrom host_floppy host_device file
 </ul>
 
 <p>
-对磁盘镜像文件进行一致性检查，查找镜像文件中的错误，目前仅支持对 <code>qcow2</code> 、 <code>qed</code> 、 <code>vdi</code> 格式文件的检查。其中，=qcow2= 是 QEMU 0.8.3 版本引入的镜像文件格式，也是目前使用最广泛的格式。 <code>qed</code> （QEMU enhanced disk）是从 QEMU 0.14 版开始加入的增强磁盘文件格式，为了避免 qcow2 格式的一些缺点，也为了提高性能，不过目前还不够成熟。而 <code>vdi</code> （Virtual Disk Image）是 Oracle 的 VirtualBox 虚拟机中的存储格式。参数 <code>-f fmt</code> 是指定文件的格式，如果不指定格式 <code>qemu-img</code> 会自动检测， <code>filename</code> 是磁盘镜像文件的名称（包括路径）。
+对磁盘镜像文件进行一致性检查，查找镜像文件中的错误，目前仅支持对 <code>qcow2</code> 、 <code>qed</code> 、 <code>vdi</code> 格式文件的检查。其中， <code>qcow2</code> 是 QEMU 0.8.3 版本引入的镜像文件格式，也是目前使用最广泛的格式。 <code>qed</code> （QEMU enhanced disk）是从 QEMU 0.14 版开始加入的增强磁盘文件格式，为了避免 qcow2 格式的一些缺点，也为了提高性能，不过目前还不够成熟。而 <code>vdi</code> （Virtual Disk Image）是 Oracle 的 VirtualBox 虚拟机中的存储格式。参数 <code>-f fmt</code> 是指定文件的格式，如果不指定格式 <code>qemu-img</code> 会自动检测， <code>filename</code> 是磁盘镜像文件的名称（包括路径）。
 </p>
 
 <pre class="example">
@@ -569,7 +565,7 @@ disk size: 954M
 </p>
 
 <p>
-如果使用 <code>qcow2</code> 、=qcow= 、=cow= 等作为输出文件格式来转换 <code>raw</code> 格式的镜像文件（非稀疏文件格式），镜像转换还可以起到将镜像文件转化为更小的镜像，因为它可以将空的扇区删除使之在生成的输出文件中并不存在。
+如果使用 <code>qcow2</code> 、 <code>qcow</code> 、 <code>cow</code> 等作为输出文件格式来转换 <code>raw</code> 格式的镜像文件（非稀疏文件格式），镜像转换还可以起到将镜像文件转化为更小的镜像，因为它可以将空的扇区删除使之在生成的输出文件中并不存在。
 </p>
 
 <pre class="example">
@@ -922,7 +918,7 @@ libvirt 主要由三个部分组成，它们分别是：应用程序编程接口
 <div id="postamble" class="status">
 <p class="date">Date: 2015-06-02 Tue 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="date">Created: 2019-09-23 Mon 10:08</p>
 <p class="validation"></p>
 </div>
 </body>

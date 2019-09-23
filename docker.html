@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-20 Fri 22:35 -->
+<!-- 2019-09-23 Mon 10:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 学习笔记</title>
@@ -379,10 +379,10 @@ for the JavaScript code in this tag.
 <li><a href="#org1b8ab81">8.4. 删除 Volumes</a></li>
 </ul>
 </li>
-<li><a href="#org4660afe">9. 链接容器</a>
+<li><a href="#org9c9b89b">9. 链接容器</a>
 <ul>
 <li><a href="#org1fa99a3">9.1. 容器命名</a></li>
-<li><a href="#orgabfe2ba">9.2. 链接容器</a>
+<li><a href="#org0f50799">9.2. 链接容器</a>
 <ul>
 <li><a href="#org01ed06d">9.2.1. 环境变量</a></li>
 <li><a href="#org7603c1e">9.2.2. 更新 <code>/etc/hosts</code> 文件</a></li>
@@ -2005,7 +2005,7 @@ USER daemon
 </pre>
 
 <p>
-指定运行容器时的用户名或 UID，后续的 <code>RUN=、=CMD=、=ENTRYPOINT</code> 也会使用指定用户。
+指定运行容器时的用户名或 UID，后续的 <code>RUN</code> 、 <code>CMD</code> 、 <code>ENTRYPOINT</code> 也会使用指定用户。
 </p>
 </div>
 </div>
@@ -2018,7 +2018,7 @@ WORKDIR /path/to/workdir
 </pre>
 
 <p>
-为后续的 <code>RUN=、=CMD=、=ENTRYPOINT</code> 指令配置工作目录。可以使用多个 <code>WORKDIR</code> 指令，后续命令如果参数是相对路径，则会基于之前命令指定的路径。
+为后续的 <code>RUN</code> 、 <code>CMD</code> 、 <code>ENTRYPOINT</code> 指令配置工作目录。可以使用多个 <code>WORKDIR</code> 指令，后续命令如果参数是相对路径，则会基于之前命令指定的路径。
 </p>
 
 <pre class="example">
@@ -2270,7 +2270,7 @@ RUN apt-get update &amp;&amp; apt-get install -y \
 </pre>
 
 <ul class="org-ul">
-<li><code>CMD</code>: 推荐使用 <code>CMD [“executable”, “param1”, “param2”…]</code> 这种格式，=CMD [“param”, “param”]= 则配合 <code>ENTRYPOINT</code> 使用</li>
+<li><code>CMD</code>: 推荐使用 <code>CMD [“executable”, “param1”, “param2”…]</code> 这种格式， <code>CMD [“param”, “param”]</code> 则配合 <code>ENTRYPOINT</code> 使用</li>
 <li><code>EXPOSE</code>: Dockerfile 指定要公开的端口，使用 <code>docker run</code> 时指定映射到宿主机的端口即可</li>
 <li><code>ENV</code>: 为了使新的软件更容易运行，可以使用 <code>ENV</code> 更新 <code>PATH</code> 变量。如 <code>ENV PATH /usr/local/nginx/bin:$PATH</code> 确保 <code>CMD ["nginx"]</code> 即可运行</li>
 </ul>
@@ -2552,8 +2552,8 @@ Volume 只有在下列情况下才能被删除：
 </div>
 </div>
 
-<div id="outline-container-org4660afe" class="outline-2">
-<h2 id="org4660afe"><span class="section-number-2">9</span> 链接容器</h2>
+<div id="outline-container-org9c9b89b" class="outline-2">
+<h2 id="org9c9b89b"><span class="section-number-2">9</span> 链接容器</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 docker 允许把多个容器连接在一起，相互交互信息。docker 链接会创建一种容器父子级别的关系，其中父容器可以看到其子容器提供的信息。
@@ -2590,8 +2590,8 @@ $ sudo docker  inspect --format="{% raw %}{{ .Nmae }}{% endraw %}" test
 </div>
 </div>
 
-<div id="outline-container-orgabfe2ba" class="outline-3">
-<h3 id="orgabfe2ba"><span class="section-number-3">9.2</span> 链接容器</h3>
+<div id="outline-container-org0f50799" class="outline-3">
+<h3 id="org0f50799"><span class="section-number-3">9.2</span> 链接容器</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 链接允许容器间安全通信，使用 <code>--link</code> 选项创建链接。
@@ -2814,7 +2814,7 @@ $ docker push 私有库IP:5000/ubuntu
 <div id="postamble" class="status">
 <p class="date">Date: 2014-12-22 Mon 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="date">Created: 2019-09-23 Mon 10:08</p>
 <p class="validation"></p>
 </div>
 </body>

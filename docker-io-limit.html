@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-20 Fri 22:35 -->
+<!-- 2019-09-23 Mon 10:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 磁盘 IO 资源限制</title>
@@ -239,7 +239,7 @@ for the JavaScript code in this tag.
 <li><a href="#org296d69f">2. IO 测试</a>
 <ul>
 <li><a href="#orge19577a">2.1. <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></a></li>
-<li><a href="#org3a5c606">2.2. <code>--device-read-bps=、</code>&#x2013;device-write-bps=</a></li>
+<li><a href="#org8ff18bb">2.2. <code>--device-read-bps</code> 、 <code>--device-write-bps</code></a></li>
 <li><a href="#org8e832fb">2.3. <code>--device-read-iops</code> 、 <code>--device-write-iops</code></a></li>
 </ul>
 </li>
@@ -404,8 +404,8 @@ You'll find that the proportion of time is the same as the proportion of blkio w
 </div>
 </div>
 
-<div id="outline-container-org3a5c606" class="outline-3">
-<h3 id="org3a5c606"><span class="section-number-3">2.2</span> <code>--device-read-bps=、</code>&#x2013;device-write-bps=</h3>
+<div id="outline-container-org8ff18bb" class="outline-3">
+<h3 id="org8ff18bb"><span class="section-number-3">2.2</span> <code>--device-read-bps</code> 、 <code>--device-write-bps</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 限制容器的写入速度是 1mb「 <code>&lt;device-path&gt;:&lt;limit&gt;[unit]</code> ，单位可以是 kb、mb、gb 正整数」:
@@ -513,7 +513,7 @@ libcontainer 主要操作是对 cgroup 下相关文件根据选项写操作，�
 <div id="postamble" class="status">
 <p class="date">Date: 2016-03-27 Sun 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-20 Fri 22:35</p>
+<p class="date">Created: 2019-09-23 Mon 10:08</p>
 <p class="validation"></p>
 </div>
 </body>

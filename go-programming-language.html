@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-21 Sat 17:11 -->
+<!-- 2019-09-23 Mon 10:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>The Go Programming Language 摘要</title>
@@ -398,7 +398,7 @@ U+754C '界' starts at byte position 3
 <h3 id="org82b4fac"><span class="section-number-3">3.2</span> 切片</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
-<li>一个 slice 由三个 部分构成:=指针=、=长度= 和 <code>容量=。指针指向第一个 slice 元素对应的底层数组元素的地址，要注意的是 slice 的第一个元素并不一定就是数组的第一个元素。长度对应 slice 中元素的数目; 长度不能超过容量，容量一般是从 slice 的开始位置到底层数据的结尾位置。内置的 =len</code> 和 <code>cap</code> 函数分别返回 slice 的长度和容量</li>
+<li>一个 slice 由三个 部分构成:=指针= 、 <code>长度</code> 和 <code>容量</code> 。指针指向第一个 slice 元素对应的底层数组元素的地址，要注意的是 slice 的第一个元素并不一定就是数组的第一个元素。长度对应 slice 中元素的数目; 长度不能超过容量，容量一般是从 slice 的开始位置到底层数据的结尾位置。内置的 <code>len</code> 和 <code>cap</code> 函数分别返回 slice 的长度和容量</li>
 <li>slice 唯一合法的比较操作是和 <code>nil</code> 比较</li>
 </ul>
 
@@ -518,7 +518,7 @@ fmt.Printf("%#v\n", w)
 <ul class="org-ul">
 <li>如果原始参数已经是切片类型，只需在最后一个参数后加上省略符</li>
 </ul></li>
-<li>虽然在可变参数函数内部，=&#x2026;int= 型参数的行为看起来很像切片类型，但实际上，可变参数函数和以切片作为参数的函数是不同的</li>
+<li>虽然在可变参数函数内部， <code>...int</code> 型参数的行为看起来很像切片类型，但实际上，可变参数函数和以切片作为参数的函数是不同的</li>
 </ul>
 
 <pre class="example">
@@ -603,7 +603,7 @@ fmt.Printf("%T\n", g) // "func([]int)"
 <div id="postamble" class="status">
 <p class="date">Date: 2018-07-26 Thu 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-21 Sat 17:11</p>
+<p class="date">Created: 2019-09-23 Mon 10:08</p>
 <p class="validation"></p>
 </div>
 </body>

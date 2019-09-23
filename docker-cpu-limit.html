@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-20 Fri 22:36 -->
+<!-- 2019-09-23 Mon 10:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker CPU 资源限制</title>
@@ -308,7 +308,7 @@ for the JavaScript code in this tag.
 <h3 id="org36e6d86"><span class="section-number-3">2.1</span> CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-默认所有的容器对于 CPU 的利用占比都是一样的，=-c= 或者 <code>--cpu-shares</code> 可以设置 CPU 利用率权重，默认为 1024，可以设置权重为 2 或者更高(单个 CPU 为 1024，两个为 2048，以此类推)。如果设置选项为 0，则系统会忽略该选项并且使用默认值 1024。通过以上设置，只会在 CPU 密集(繁忙)型运行进程时体现出来。当一个 container 空闲时，其它容器都是可以占用 CPU 的。cpu-shares 值为一个相对值，实际 CPU 利用率则取决于系统上运行容器的数量。
+默认所有的容器对于 CPU 的利用占比都是一样的， <code>-c</code> 或者 <code>--cpu-shares</code> 可以设置 CPU 利用率权重，默认为 1024，可以设置权重为 2 或者更高(单个 CPU 为 1024，两个为 2048，以此类推)。如果设置选项为 0，则系统会忽略该选项并且使用默认值 1024。通过以上设置，只会在 CPU 密集(繁忙)型运行进程时体现出来。当一个 container 空闲时，其它容器都是可以占用 CPU 的。cpu-shares 值为一个相对值，实际 CPU 利用率则取决于系统上运行容器的数量。
 </p>
 
 <p>
@@ -444,7 +444,7 @@ libcontainer 只是根据设定值写 cgroup 文件，这部分没有什么逻�
 <div id="postamble" class="status">
 <p class="date">Date: 2016-03-27 Sun 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-20 Fri 22:36</p>
+<p class="date">Created: 2019-09-23 Mon 10:08</p>
 <p class="validation"></p>
 </div>
 </body>
