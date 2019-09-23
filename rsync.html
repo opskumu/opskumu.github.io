@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-23 Mon 20:00 -->
+<!-- 2019-09-23 Mon 20:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>rsync 备份备忘</title>
@@ -333,10 +333,10 @@ to an rsync daemon, and require SRC or DEST to start with a module name.
 <li><code>-n</code> : 只测试输出而不正真执行命令，推荐使用，特别防止 <code>--delete</code> 误删除！</li>
 <li><code>--stats</code> : 输出文件传输的状态</li>
 <li><code>--progress</code> : 输出文件传输的进度</li>
-<li><code>––exclude=PATTERN</code> : 指定排除一个不需要传输的文件匹配模式</li>
-<li><code>––exclude-from=FILE</code> : 从 FILE 中读取排除规则</li>
-<li><code>––include=PATTERN</code> : 指定需要传输的文件匹配模式</li>
-<li><code>––include-from=FILE</code> : 从 FILE 中读取包含规则</li>
+<li><code>--exclude=PATTERN</code> : 指定排除一个不需要传输的文件匹配模式</li>
+<li><code>--exclude-from=FILE</code> : 从 FILE 中读取排除规则</li>
+<li><code>--include=PATTERN</code> : 指定需要传输的文件匹配模式</li>
+<li><code>--include-from=FILE</code> : 从 FILE 中读取包含规则</li>
 <li><code>--numeric-ids</code> : 不映射 uid/gid 到 user/group 的名字</li>
 <li><code>-S, --sparse</code> : 对稀疏文件进行特殊处理以节省 DST 的空间</li>
 <li><code>--delete</code> : 删除 DST 中 SRC 没有的文件，也就是所谓的镜像 [mirror] 备份</li>
@@ -501,7 +501,7 @@ RSYNC_PASSWORD=123321 rsync --list-only rsync://data@192.168.80.150/bak-data
 <div id="postamble" class="status">
 <p class="date">Date: 2015-01-09 Fri 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-23 Mon 20:00</p>
+<p class="date">Created: 2019-09-23 Mon 20:11</p>
 <p class="validation"></p>
 </div>
 </body>
