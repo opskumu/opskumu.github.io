@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-23 Mon 10:08 -->
+<!-- 2019-09-23 Mon 10:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>rsync 备份备忘</title>
@@ -314,13 +314,13 @@ to an rsync daemon, and require SRC or DEST to start with a module name.
 <li><code>-e</code> "ssh options" : specify the ssh as remote shell # 指定 ssh 作为远程 shell</li>
 <li><code>-a</code> : archive mode # 归档模式，表示以递归方式传输文件，并保持所有文件属性，等于 -rlptgoD
 <ul class="org-ul">
-<li>=-r=(&#x2013;recursive) : 目录递归</li>
-<li>=-l=(&#x2013;links) ：保留软链接</li>
-<li>=-p=(&#x2013;perms) ：保留文件权限</li>
-<li>=-t=(&#x2013;times) ：保留文件时间信息</li>
-<li>=-g=(&#x2013;group) ：保留属组信息</li>
-<li>=-o=(&#x2013;owner) ：保留文件属主信息</li>
-<li>=-D=(&#x2013;devices) ：保留设备文件信息</li>
+<li><code>-r</code> (&#x2013;recursive) : 目录递归</li>
+<li><code>-l</code> (&#x2013;links) ：保留软链接</li>
+<li><code>-p</code> (&#x2013;perms) ：保留文件权限</li>
+<li><code>-t</code> (&#x2013;times) ：保留文件时间信息</li>
+<li><code>-g</code> (&#x2013;group) ：保留属组信息</li>
+<li><code>-o</code> (&#x2013;owner) ：保留文件属主信息</li>
+<li><code>-D</code> (&#x2013;devices) ：保留设备文件信息</li>
 </ul></li>
 <li><code>-z</code> : 压缩文件</li>
 <li><code>-h</code> : 以可读方式输出</li>
@@ -498,7 +498,7 @@ RSYNC_PASSWORD=123321 rsync --list-only rsync://data@192.168.80.150/bak-data
 <div id="postamble" class="status">
 <p class="date">Date: 2015-01-09 Fri 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-23 Mon 10:08</p>
+<p class="date">Created: 2019-09-23 Mon 10:17</p>
 <p class="validation"></p>
 </div>
 </body>
