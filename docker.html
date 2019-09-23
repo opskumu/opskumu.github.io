@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-23 Mon 10:08 -->
+<!-- 2019-09-23 Mon 11:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 学习笔记</title>
@@ -181,6 +181,9 @@
   /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -379,10 +382,10 @@ for the JavaScript code in this tag.
 <li><a href="#org1b8ab81">8.4. 删除 Volumes</a></li>
 </ul>
 </li>
-<li><a href="#org9c9b89b">9. 链接容器</a>
+<li><a href="#org6d8a443">9. 链接容器</a>
 <ul>
 <li><a href="#org1fa99a3">9.1. 容器命名</a></li>
-<li><a href="#org0f50799">9.2. 链接容器</a>
+<li><a href="#orge7a0907">9.2. 链接容器</a>
 <ul>
 <li><a href="#org01ed06d">9.2.1. 环境变量</a></li>
 <li><a href="#org7603c1e">9.2.2. 更新 <code>/etc/hosts</code> 文件</a></li>
@@ -2217,7 +2220,7 @@ RUN apt-get update &amp;&amp; apt-get install -y \
 </p>
 
 <p>
-从基础镜像开始就已经在缓存中了，下一个指令会对比所有的子镜像寻找是否执行相同的指令，如果没有则缓存失效。在大多数情况下只对比 <code>Dockerfile</code> 指令和子镜像就足够了。=ADD= 和 <code>COPY</code> 指令除外，执行 <code>ADD</code> 和 <code>COPY</code> 时存放到镜像的文件也是需要检查的，完成一个文件的校验之后再利用这个校验在缓存中查找，如果检测的文件改变则缓存失效。 <code>RUN apt-get -y update</code> 命令只检查命令是否匹配，如果匹配就不会再执行更新了。
+从基础镜像开始就已经在缓存中了，下一个指令会对比所有的子镜像寻找是否执行相同的指令，如果没有则缓存失效。在大多数情况下只对比 <code>Dockerfile</code> 指令和子镜像就足够了。 <code>ADD</code> 和 <code>COPY</code> 指令除外，执行 <code>ADD</code> 和 <code>COPY</code> 时存放到镜像的文件也是需要检查的，完成一个文件的校验之后再利用这个校验在缓存中查找，如果检测的文件改变则缓存失效。 <code>RUN apt-get -y update</code> 命令只检查命令是否匹配，如果匹配就不会再执行更新了。
 </p>
 
 <blockquote>
@@ -2552,8 +2555,8 @@ Volume 只有在下列情况下才能被删除：
 </div>
 </div>
 
-<div id="outline-container-org9c9b89b" class="outline-2">
-<h2 id="org9c9b89b"><span class="section-number-2">9</span> 链接容器</h2>
+<div id="outline-container-org6d8a443" class="outline-2">
+<h2 id="org6d8a443"><span class="section-number-2">9</span> 链接容器</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 docker 允许把多个容器连接在一起，相互交互信息。docker 链接会创建一种容器父子级别的关系，其中父容器可以看到其子容器提供的信息。
@@ -2590,8 +2593,8 @@ $ sudo docker  inspect --format="{% raw %}{{ .Nmae }}{% endraw %}" test
 </div>
 </div>
 
-<div id="outline-container-org0f50799" class="outline-3">
-<h3 id="org0f50799"><span class="section-number-3">9.2</span> 链接容器</h3>
+<div id="outline-container-orge7a0907" class="outline-3">
+<h3 id="orge7a0907"><span class="section-number-3">9.2</span> 链接容器</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 链接允许容器间安全通信，使用 <code>--link</code> 选项创建链接。
@@ -2814,7 +2817,7 @@ $ docker push 私有库IP:5000/ubuntu
 <div id="postamble" class="status">
 <p class="date">Date: 2014-12-22 Mon 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-23 Mon 10:08</p>
+<p class="date">Created: 2019-09-23 Mon 11:30</p>
 <p class="validation"></p>
 </div>
 </body>

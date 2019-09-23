@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-23 Mon 10:08 -->
+<!-- 2019-09-23 Mon 11:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KVM 学习笔记</title>
@@ -181,6 +181,9 @@
   /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -437,7 +440,7 @@ cache 不同模式工作原理图：
 </div>
 
 <ul class="org-ul">
-<li><code>writethrough</code> 即直写模式，KVM cache 默认使用 <code>writethrough</code> ，它是在调用 write 写入数据的同时将数据写入磁盘缓存和后端块设备才返回，缺点是写入性能较低，但是安全性高。=qcow2= 格式在使用 <code>writethrough</code> 时性能很差</li>
+<li><code>writethrough</code> 即直写模式，KVM cache 默认使用 <code>writethrough</code> ，它是在调用 write 写入数据的同时将数据写入磁盘缓存和后端块设备才返回，缺点是写入性能较低，但是安全性高。 <code>qcow2</code> 格式在使用 <code>writethrough</code> 时性能很差</li>
 <li><code>writeback</code> 即回写模式，在调用 write 写入数据时只将数据写入到主机页缓存中即返回，写入性能高，有安全风险。当使用 <code>-snapshot</code> 选项的时候， <code>writeback</code> cache 是默认项</li>
 <li><code>none</code> 关闭缓存，直接从磁盘 IO 读写</li>
 <li><code>unsafe</code> 这个选项告诉 QEMU 不需要写入任何数据到磁盘，只要保证在缓存即可</li>
@@ -918,7 +921,7 @@ libvirt 主要由三个部分组成，它们分别是：应用程序编程接口
 <div id="postamble" class="status">
 <p class="date">Date: 2015-06-02 Tue 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-23 Mon 10:08</p>
+<p class="date">Created: 2019-09-23 Mon 11:30</p>
 <p class="validation"></p>
 </div>
 </body>

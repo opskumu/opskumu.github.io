@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-23 Mon 10:08 -->
+<!-- 2019-09-23 Mon 11:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>一个 HTTP 应用在 Kubernetes 的运行形式</title>
@@ -181,6 +181,9 @@
   /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -239,7 +242,7 @@ for the JavaScript code in this tag.
 <li><a href="#org1148e47">2. Deployment</a></li>
 <li><a href="#org5cca1c4">3. Service</a></li>
 <li><a href="#org280ab98">4. Ingress</a></li>
-<li><a href="#小结">5. 小结</a></li>
+<li><a href="#org4e8ed39">5. 小结</a></li>
 </ul>
 </div>
 </div>
@@ -326,20 +329,10 @@ for the JavaScript code in this tag.
 </div>
 
 <div id="outline-container-org4e8ed39" class="outline-2">
-<h2 id="小结"><a id="org4e8ed39"></a><span class="section-number-2">5</span> 小结</h2>
-<div class="outline-text-2" id="text-小结">
+<h2 id="org4e8ed39"><span class="section-number-2">5</span> 小结</h2>
+<div class="outline-text-2" id="text-5">
 <p>
-以上就是一个 HTTP 应用在 Kubernetes
-中完整涉及到的知识点，回到之前那张图，针对一个应用我们真正需要创建的就是
-Deployment、Service、Ingress。如果服务不对集群外的服务访问那么就只有
-Deployment 和 Service，ReplicaSet、Endpoint、Pod
-会自动创建，用户无需关心。其中，有一个重要的点，我们可以从图中看到，贯穿其中的一个重要的标记就是
-<code>app=test</code> 这个 label，Kubernetes 中 Deployment、Service 等资源都通过
-label 关联 Pod 标识。
-</p>
-
-<p>
-&#x2013;EOF&#x2013;
+以上就是一个 HTTP 应用在 Kubernetes 中完整涉及到的知识点，回到之前那张图，针对一个应用我们真正需要创建的就是 Deployment、Service、Ingress。如果服务不对集群外的服务访问那么就只有 Deployment 和 Service，ReplicaSet、Endpoint、Pod 会自动创建，用户无需关心。其中，有一个重要的点，我们可以从图中看到，贯穿其中的一个重要的标记就是 <code>app=test</code> 这个 label，Kubernetes 中 Deployment、Service 等资源都通过 label 关联 Pod 标识。
 </p>
 </div>
 </div>
@@ -347,7 +340,7 @@ label 关联 Pod 标识。
 <div id="postamble" class="status">
 <p class="date">Date: 2019-06-04 Tue 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-23 Mon 10:08</p>
+<p class="date">Created: 2019-09-23 Mon 11:30</p>
 <p class="validation"></p>
 </div>
 </body>

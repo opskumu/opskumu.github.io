@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-23 Mon 10:08 -->
+<!-- 2019-09-23 Mon 11:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker OverlayFS 驱动</title>
@@ -181,6 +181,9 @@
   /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -239,12 +242,12 @@ for the JavaScript code in this tag.
 <li><a href="#org1405bd4">2. 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</a></li>
 <li><a href="#orgf01cd80">3. <code>overlay2</code> 驱动是如何工作的</a>
 <ul>
-<li><a href="#orgfe67ec1">3.1. 磁盘上的镜像和容器层</a></li>
+<li><a href="#org51d6a46">3.1. 磁盘上的镜像和容器层</a></li>
 </ul>
 </li>
 <li><a href="#orgfe63991">4. <code>overlay</code> 驱动是如何工作的</a>
 <ul>
-<li><a href="#orgbdc1be6">4.1. 磁盘上的镜像和容器层</a>
+<li><a href="#org1639412">4.1. 磁盘上的镜像和容器层</a>
 <ul>
 <li><a href="#org5422a7f">4.1.1. 镜像层</a></li>
 <li><a href="#org10fa145">4.1.2. 容器层</a></li>
@@ -334,8 +337,8 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 </div>
 
-<div id="outline-container-orgfe67ec1" class="outline-3">
-<h3 id="orgfe67ec1"><span class="section-number-3">3.1</span> 磁盘上的镜像和容器层</h3>
+<div id="outline-container-org51d6a46" class="outline-3">
+<h3 id="org51d6a46"><span class="section-number-3">3.1</span> 磁盘上的镜像和容器层</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 当通过 <code>docker pull ubuntu</code> 下载一个五层镜像后，你可以在 <code>/var/lib/docker/overlay2</code> 目录下看到 6 个目录。
@@ -354,7 +357,7 @@ drwx------ 2 root root 4096 Jun 20 07:36 l
 </pre>
 
 <p>
-新的 <code>l=（小写 =L=） 目录包含缩短的层标识符作为软链接，这些标识符用于避免 =mount</code> 命令参数页面大小限制。
+新的 <code>l</code> （小写 <code>L</code> ） 目录包含缩短的层标识符作为软链接，这些标识符用于避免 <code>mount</code> 命令参数页面大小限制。
 </p>
 
 <pre class="example">
@@ -444,8 +447,8 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 </div>
 
-<div id="outline-container-orgbdc1be6" class="outline-3">
-<h3 id="orgbdc1be6"><span class="section-number-3">4.1</span> 磁盘上的镜像和容器层</h3>
+<div id="outline-container-org1639412" class="outline-3">
+<h3 id="org1639412"><span class="section-number-3">4.1</span> 磁盘上的镜像和容器层</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 <code>docker pull</code> 命令暂时了一个 Docker 主机下载一个包含五层的 Docker 镜像。
@@ -606,7 +609,7 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 
 <ul class="org-ul">
 <li><b>Page Caching</b> ： OverlayFS 支持页级别的缓存共享。多个容器访问同样的文件共享此文件的同一个页缓存。这个特性使得 <code>overlay</code> 和 <code>overlay2</code> 驱动高效利用内存以及高密度使用案例的优先选择如 PaaS。</li>
-<li><b>copy_up</b> ： 同 AUFS 一样，容器第一次写入文件时，OverlayFS 会有一个 copy-up 的操作。这会增加写入操作的延迟，特别是大文件操作。不过，一旦文件已经被复制，后续文件的写操作都是发生在上层的，不再会有 copy-up 的操作。OverlayFS 的 <code>copy_up</code> 比 AUFS 同样的操作要更快，因为 AUFS 比 OverlayFS 拥有更多的层级，如果在多个 AUFS 层级搜索可能会造成大的延迟。=overlay2= 也支持多层，但通过缓存减轻了性能损失。</li>
+<li><b>copy_up</b> ： 同 AUFS 一样，容器第一次写入文件时，OverlayFS 会有一个 copy-up 的操作。这会增加写入操作的延迟，特别是大文件操作。不过，一旦文件已经被复制，后续文件的写操作都是发生在上层的，不再会有 copy-up 的操作。OverlayFS 的 <code>copy_up</code> 比 AUFS 同样的操作要更快，因为 AUFS 比 OverlayFS 拥有更多的层级，如果在多个 AUFS 层级搜索可能会造成大的延迟。 <code>overlay2</code> 也支持多层，但通过缓存减轻了性能损失。</li>
 <li><b>Inode limits</b> ：使用 <code>overlay</code> 存储驱动会导致过多的 inode 损耗。特别是 Docker 主机上存在大量的镜像和容器时尤为明显。格式化文件系统增加可用的 inode 数量是唯一的解决方式。为了避免这个问题，因此建议尽可能的使用 <code>overlay2</code> 。</li>
 </ul>
 </div>
@@ -632,7 +635,7 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 <ul class="org-ul">
 <li><b>open(2)</b> ：OverlayFS 只实现了 POSIX 标准的子集。这可能导致某些 OverlayFS 操作破坏了 POSIX 标准。其中一个操作就是 copy-up 操作。假设你的应用调用 <code>fd1=open("foo", O_RDONLY)</code> 和 <code>fd2=open("foo", O_RDWR)</code> 。在这个案例中，你的应用期望 <code>fd1</code> 和 <code>fd2</code> 引用同一个文件。但是，因为发生了 copy-up 操作导致第二次调用 <code>open(2)</code> ，文件描述符指向的是不同的文件。 <code>fd1</code> 继续引用镜像层（ <code>lowerdir</code> ）而 <code>fd2</code> 引用的文件在容器层（ <code>upperdir</code> ）。解决方式是 <code>touch</code> 这些文件，引发 copy-up 操作发生。所有的后续 <code>open(2)</code> 操作无论是读写访问模式都引用容器层( <code>upperdir</code> )的文件。
 <ul class="org-ul">
-<li><code>yum</code> 是已知受影响的，除非 <code>yum-plugin-ovl</code> 已经安装了。如果 <code>yum-plugin-ovl</code> 包在你的发行版中不可用如 RHEL/CentOS 6.8 或 7.2，你可能需要在运行 <code>yum install</code> 前执行 <code>touch /var/lib/rpm/*</code> 。=yum-plugin-ovl= 软件包实现了针对 <code>yum</code> 的 <code>touch</code> 变通方案。</li>
+<li><code>yum</code> 是已知受影响的，除非 <code>yum-plugin-ovl</code> 已经安装了。如果 <code>yum-plugin-ovl</code> 包在你的发行版中不可用如 RHEL/CentOS 6.8 或 7.2，你可能需要在运行 <code>yum install</code> 前执行 <code>touch /var/lib/rpm/*</code> 。 <code>yum-plugin-ovl</code> 软件包实现了针对 <code>yum</code> 的 <code>touch</code> 变通方案。</li>
 </ul></li>
 <li><b>rename(2)</b> ：OverlayFS 不完全支持 <code>rename(2)</code> 系统调用。你的应用需要检测它的失败以及返回 "copy and unlink" 策略。</li>
 </ul>
@@ -642,7 +645,7 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 <div id="postamble" class="status">
 <p class="date">Date: 2018-09-05 Wed 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-23 Mon 10:08</p>
+<p class="date">Created: 2019-09-23 Mon 11:30</p>
 <p class="validation"></p>
 </div>
 </body>
