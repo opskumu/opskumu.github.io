@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-09-23 Mon 20:11 -->
+<!-- 2019-10-10 Thu 19:58 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 学习笔记</title>
@@ -382,10 +382,10 @@ for the JavaScript code in this tag.
 <li><a href="#org1b8ab81">8.4. 删除 Volumes</a></li>
 </ul>
 </li>
-<li><a href="#org0c27a7c">9. 链接容器</a>
+<li><a href="#org3891b95">9. 链接容器</a>
 <ul>
 <li><a href="#org1fa99a3">9.1. 容器命名</a></li>
-<li><a href="#org0c3fe77">9.2. 链接容器</a>
+<li><a href="#org0c27a7c">9.2. 链接容器</a>
 <ul>
 <li><a href="#org01ed06d">9.2.1. 环境变量</a></li>
 <li><a href="#org7603c1e">9.2.2. 更新 <code>/etc/hosts</code> 文件</a></li>
@@ -429,7 +429,7 @@ Docker 使用客户端-服务器 (C/S) 架构模式。Docker 客户端会与 Doc
 
 
 <div class="figure">
-<p><img src="./images/docker_arch.png" alt="docker_arch.png" />
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_arch.png" alt="docker_arch.png" />
 </p>
 </div>
 </div>
@@ -504,7 +504,7 @@ Docker 从 0.9 版本开始使用 libcontainer 替代 lxc，libcontainer 和 Lin
 
 
 <div class="figure">
-<p><img src="./images/libcontainer-linux.png" alt="libcontainer-linux.png" />
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libcontainer-linux.png" alt="libcontainer-linux.png" />
 </p>
 </div>
 
@@ -1334,7 +1334,7 @@ $ sudo docker run -p 127.0.0.1:53:5353/udp &lt;image&gt; &lt;cmd&gt;
 <div class="outline-text-2" id="text-6">
 
 <div class="figure">
-<p><img src="./images/docker_networking.png" alt="docker_networking.png" />
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_networking.png" alt="docker_networking.png" />
 </p>
 </div>
 
@@ -1421,7 +1421,7 @@ docker run 创建 Docker 容器时，可以用 <code>--net</code> 选项指定�
 <div class="outline-text-4" id="text-6-1-4">
 
 <div class="figure">
-<p><img src="./images/vethbridge.png" alt="vethbridge.png" />
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/vethbridge.png" alt="vethbridge.png" />
 </p>
 </div>
 
@@ -1614,7 +1614,7 @@ $ sudo systemctl start docker
 <div class="outline-text-4" id="text-6-5-3">
 
 <div class="figure">
-<p><img src="./images/docker_bridge.png" alt="docker_bridge.png" />
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_bridge.png" alt="docker_bridge.png" />
 </p>
 </div>
 
@@ -2471,7 +2471,7 @@ $ sudo docker run -t -i -d --volumes-from test1 --name test3 ubuntu:14.04 /bin/b
 
 
 <div class="figure">
-<p><img src="./images/docker_data.png" alt="docker_data.png" />
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_data.png" alt="docker_data.png" />
 </p>
 </div>
 </div>
@@ -2555,8 +2555,8 @@ Volume 只有在下列情况下才能被删除：
 </div>
 </div>
 
-<div id="outline-container-org0c27a7c" class="outline-2">
-<h2 id="org0c27a7c"><span class="section-number-2">9</span> 链接容器</h2>
+<div id="outline-container-org3891b95" class="outline-2">
+<h2 id="org3891b95"><span class="section-number-2">9</span> 链接容器</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 docker 允许把多个容器连接在一起，相互交互信息。docker 链接会创建一种容器父子级别的关系，其中父容器可以看到其子容器提供的信息。
@@ -2593,8 +2593,8 @@ $ sudo docker  inspect --format="{% raw %}{{ .Nmae }}{% endraw %}" test
 </div>
 </div>
 
-<div id="outline-container-org0c3fe77" class="outline-3">
-<h3 id="org0c3fe77"><span class="section-number-3">9.2</span> 链接容器</h3>
+<div id="outline-container-org0c27a7c" class="outline-3">
+<h3 id="org0c27a7c"><span class="section-number-3">9.2</span> 链接容器</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 链接允许容器间安全通信，使用 <code>--link</code> 选项创建链接。
@@ -2817,7 +2817,7 @@ $ docker push 私有库IP:5000/ubuntu
 <div id="postamble" class="status">
 <p class="date">Date: 2014-12-22 Mon 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-09-23 Mon 20:11</p>
+<p class="date">Created: 2019-10-10 Thu 19:58</p>
 <p class="validation"></p>
 </div>
 </body>
