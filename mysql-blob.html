@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-10-10 Thu 19:58 -->
+<!-- 2019-11-05 Tue 16:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL 大字段溢出导致数据回写失败</title>
@@ -378,7 +378,7 @@ mysql&gt;
 <h3 id="org243b0c6"><span class="section-number-3">2.1</span> 修复 Slave</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-因为主修改了环境变量和表的 =row_format=，修复了 Master 的数据回写问题，但是 Slave 这边没有更改，导致 Slave 同步出错，卡在了插入语句的地方，导致主从同步失败，修复如下：
+因为主修改了环境变量和表的 <code>row_format</code> ，修复了 Master 的数据回写问题，但是 Slave 这边没有更改，导致 Slave 同步出错，卡在了插入语句的地方，导致主从同步失败，修复如下：
 </p>
 
 <ol class="org-ol">
@@ -544,7 +544,7 @@ mysql&gt;
 <div id="postamble" class="status">
 <p class="date">Date: 2015-01-14 Wed 00:00</p>
 <p class="author">Author: Kumu</p>
-<p class="date">Created: 2019-10-10 Thu 19:58</p>
+<p class="date">Created: 2019-11-05 Tue 16:54</p>
 <p class="validation"></p>
 </div>
 </body>
