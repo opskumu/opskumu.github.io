@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-11-28 Thu 11:26 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>挖财容器化之路</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">挖财容器化之路</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org29fccf4">1. 时间线</a></li>
+<li><a href="#orgf42cc13">2. 现状</a>
+<ul>
+<li><a href="#orga7c5cad">2.1. 测试环境</a></li>
+<li><a href="#org39c884e">2.2. 线上环境</a></li>
+</ul>
+</li>
+<li><a href="#org9e903ba">3. 技术选型</a>
+<ul>
+<li><a href="#orgfae0974">3.1. 原生方案 or 自研</a></li>
+<li><a href="#org3752eaa">3.2. 镜像构建</a></li>
+<li><a href="#orge80e447">3.3. 网络</a></li>
+<li><a href="#org84571b9">3.4. 日志</a></li>
+<li><a href="#org67b0228">3.5. 监控告警</a></li>
+<li><a href="#orge8f0fe4">3.6. 其它</a></li>
+</ul>
+</li>
+<li><a href="#org352589c">4. <span class="todo TODO">TODO</span> 趟过的坑</a></li>
+<li><a href="#org4c43b8d">5. <span class="todo TODO">TODO</span> 一些感想</a></li>
+<li><a href="#org04076f3">6. <span class="todo TODO">TODO</span> 未来的路</a></li>
+</ul>
+</div>
+</div>
+<p>
+其实年初的时候就有想过写这篇文章了，不过一拖就拖到了现在，再拖下去就有点说不过去了。
+</p>
+
+<p>
+挖财内部对容器化项目的代号为 <code>K2</code> （乔戈里峰），乔戈里峰是世界第二高峰，寓意是富有挑战，但勇攀高峰。项目从 2016 年 11 月到现在已经有三年的时间了，如今挖财内部测试环境早已全部 Docker 容器化，而线上环境也运行着重要的业务。经历从零到一的整个落地过程，回顾下来，这座高峰算是拿下了。再看 K8s 技术本身现在也是遍地开花，早已赢得容器编排的战争，剩下来就是各个企业的落地实践。倒是 Docker 公司最近的境遇，这个创建 Docker 的企业沦落如此，多少有点令人唏嘘，唯有 Respect。
+</p>
+
+<div id="outline-container-org29fccf4" class="outline-2">
+<h2 id="org29fccf4"><span class="section-number-2">1</span> 时间线</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+看了一下项目提交的 Git 记录，第一次提交时间是 <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-11-01 Tue&gt;</span></span>。
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-first-commit.png" alt="k2-first-commit.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li>2016 年 11 月初开启</li>
+<li>2017 年 1 月底 V1.0 上线</li>
+<li>2017 年 6 月底测试环境全面推开</li>
+<li>2017 年 7 月线上机器学习环境线上试点</li>
+<li>2017 年 10 月线上业务试点</li>
+<li>2018 年 7 月 V2.0 版本</li>
+<li>2018 年 9 月挖财云版本（整合运维监控、告警、日志和容器系统）</li>
+<li>2018 年 12 月支持多集群管理</li>
+<li>2019 年 6 月私有化分支版本上线</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf42cc13" class="outline-2">
+<h2 id="orgf42cc13"><span class="section-number-2">2</span> 现状</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orga7c5cad" class="outline-3">
+<h3 id="orga7c5cad"><span class="section-number-3">2.1</span> 测试环境</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+当前测试环境有一个 K8s 集群（K8s 1.11.x），空间（ <code>namespace</code> ）总数有 500+，应用数（ <code>Deployment</code> + <code>StatefulSet</code> ） 4400+，实例数（ <code>Pod</code> ） 4000+（因为测试环境大部分应用都只有 1 个或 0 个副本，因此实例数少于应用数）。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org39c884e" class="outline-3">
+<h3 id="org39c884e"><span class="section-number-3">2.2</span> 线上环境</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+线上环境有三个集群，一个机器学习集群（K8s 1.7.x），一个私有云集群（K8s 1.13.x），有个主体业务集群（K8s 1.13.x），粗率统计了一下，空间数 50+，应用数 500+，实例数 1000+。
+</p>
+
+<hr />
+
+<p>
+测试环境 + 线上环境总体运行有 5000+ 的 Pod 数，这个数量已经持续了很长一段时间。大概 2018 年底的时候就是这个数据，之后因为业务的调整等等原因，数量级没有一个大的增幅。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9e903ba" class="outline-2">
+<h2 id="org9e903ba"><span class="section-number-2">3</span> 技术选型</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgfae0974" class="outline-3">
+<h3 id="orgfae0974"><span class="section-number-3">3.1</span> 原生方案 or 自研</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+对于是否使用原生方案，我们没有过多的犹豫，确定基于 K8s API 上层封装抽象，其它底层最大化使用原生方案。首先 K8s 肯定不会维护一个内部版本，对于一个快速迭代的项目，人力是一方面，后续的可维护性也是个大问题，而基于上层 API 的抽象和封装可以带来最大的灵活和便利性。针对客户端工具，内部有人建议开发命令行工具，摒弃 Dashboard。但是基于以往的经验，命令行工具的维护性以及用户上手成本相比 Dashboard 要更高。就拿 Docker 来说，虽然很火，但是实际能够熟练书写 Dockerfile 构建 Docker 镜像的开发、测试并不多，放到 2019 年来说这个比例依然不高。对于大部分用户 Dashboard 可以最大的简化上手难度，推广和维护性来说也更方便。
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-kubernetes.png" alt="k2-kubernetes.png" />
+</p>
+</div>
+
+<p>
+底层 K8s，中间层为 K2，对外暴露则是 Dashboard 和 K2 API。对于大部分用户使用 Dashboard 即可满足需求，如果有 API 的需求也提供相关渠道。K2 使用 Go 编写，针对 Namespace、Service、Deployment、StatefulSet、Ingress、Job、ConfigMap 有自身的封装抽象，屏蔽这些原生理念给用户带来的困惑，尽可能的降低用户理解难度。K2 Dashboard 则使用 <a href="https://github.com/ant-design/ant-design-pro">Ant Design Pro</a> 编写，好吧，不自觉的想到了之前 Ant Design 的圣诞彩蛋事件，当然这并不妨碍它的易用性。以下为平台的部分截图：
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-ns-dashboard.png" alt="k2-ns-dashboard.png" />
+</p>
+</div>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-dashboard.png" alt="k2-app-dashboard.png" />
+</p>
+</div>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-view-dashboard.png" alt="k2-app-view-dashboard.png" />
+</p>
+</div>
+
+<p>
+我们内部最开始使用的 K8s 版本为 1.3.x，早期 K8s 这块的用户和权限管理并不完善（后续的 RBAC 机制个人认为也很繁琐）。我们自行在 K2 上实现了一套用户和权限管理机制，权限只在空间层，应用层权限受限于空间角色（在某些场景空间层权限并不能满足需求，我们内部的另外一个版本是细化到应用层的）。测试环境和生产环境功能性是有细微差别的，比如测试环境所有的资源都是自助式的，而生产环境保持尽可能的自助化条件下，又引入了一些资源申请机制（如生产环境空间需要走审批流程）。测试环境的空间还引入了生命周期机制，在有效期内用户可以续期（续期有上限），如果过期则会自动销毁，提升资源利用率，生产环境则没有有效期一说。因为业务的特殊性，CPU 资源利用率是非常低的，因此我们测试环境节点和生产环境节点 CPU 都是超配的（limits 和 requests 控制），为了稳定性生产环境内存是没有超配的，但是测试环境为了提升资源利用率内存也是 2 倍超配的。测试环境提供了 Web 终端工具，方便用户登录容器，而生产环境一是为了安全性而是为了审计没有提供 Web 终端工具。我们在堡垒机上提供了 <code>k2ctl</code> 命令行工具方便用户登录线上容器， <code>k2ctl</code> 集成了 K2 的权限控制，原理也很简单，底层封装 <code>kubectl</code> 。等等，以上只是列举了一部分测试环境和生产环境功能性不同，简单来说在实际场景下，测试环境的自由度要更高，功能性也更多，而生产环境则是安全和稳定性排在首位，其它的细节这里就不过多介绍了。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3752eaa" class="outline-3">
+<h3 id="org3752eaa"><span class="section-number-3">3.2</span> 镜像构建</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li><a href="https://jenkins.io">Jenkins</a> + <a href="https://github.com/jenkinsci/kubernetes-plugin">Kubernetes Plugin</a> + <a href="https://goharbor.io/">Harbor</a></li>
+</ul>
+
+<p>
+早在 2015 年中的时候公司内部就推行微服务化了，后端统一使用 <a href="https://spring.io/projects/spring-boot">Spring Boot</a> + <a href="https://dubbo.apache.org/">Dubbo</a> 的技术栈，前端则是 <a href="https://github.com/facebook/react">React</a> + <a href="https://nodejs.org/">Node.js</a> 的技术栈。因为技术栈比较统一的原因，所以比较好做标准化。结合内部的打包平台（内部代号 <code>Obelisk</code> ）构建通用 Dockerfile 模板，在实际构建的过程中动态修改 Dockerfile 并生成镜像，然后 Push 到镜像中心 Harbor。
+</p>
+
+<p>
+镜像构建使用的技术中还提到了 <a href="https://github.com/jenkinsci/kubernetes-plugin">Kubernetes Plugin</a> ，在没有使用 Docker 之前，Jenkins Slave 都是使用的虚拟机运行构建软件包的。之后在内部构建了 K8s 集群，然后相应的 Jenkins Slave 则通过 <a href="https://github.com/jenkinsci/kubernetes-plugin">Kubernetes Plugin</a> （因内部需求，内部修改 K8s Plugin 源码以支持 HostNetwork 网络）动态生成，如此可以尽可能的保证打包环境的纯净性。其中 Jenkins Slave 镜像是使用 <a href="https://github.com/jenkinsci/docker-jnlp-slave">docker-jnlp-slave</a> 定制的，集成了构建相关的环境，如 Java、Maven、npm 等工具。
+</p>
+
+<p>
+当然除了 Spring Boot 和 Node.js 应用，公司还是有一些使用其它技术栈的项目，如 Python、Go 以及 Tomcat War 包等项目。对于这类比较少的项目，构建方式是在相关项目代码库中加入 Dockerfile，构建的时候通过指定的 Dockerfile 构建镜像，以满足业务需求。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge80e447" class="outline-3">
+<h3 id="orge80e447"><span class="section-number-3">3.3</span> 网络</h3>
+<div class="outline-text-3" id="text-3-3">
+<ul class="org-ul">
+<li><a href="https://www.projectcalico.org/">Calico</a> BGP 大三层网络方案</li>
+</ul>
+
+<p>
+在内部平台最早构建的时候，使用的网络方案为 <a href="https://github.com/coreos/flannel">Flannel</a> VXLAN 模式，但是测试过程中发现很多的不便利性。基于 Overlay 的性能问题是一方面，对于测试环境，很多时候都有直连 Pod Debug 的需求。还有早期的时候虚拟机和容器环境是并存的，基于 Dubbo 的服务注册发现的网络访问也是一个问题。再者数据库这些应用都是部署在集群外部的，Overlay 网络访问外部数据库都走 NAT，在数据库端追踪源 IP 的时候不便于定位实际服务。最后，决定采用 <a href="https://www.projectcalico.org/">Calico</a> BGP 大三层网络方案，通过内部交换机打通容器和实际网络，如此以上说的问题自然就解决了。Calico 网络性能接近裸机网络，下图是早期的一个测试结果：
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-1.png" alt="calico-network-test-1.png" />
+</p>
+</div>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-2.png" alt="calico-network-test-2.png" />
+</p>
+</div>
+
+<p>
+当然，实际使用什么网络方案还要看你自己的应用场景，我们机器学习平台（当前主要运行分布式 Jupyter）使用的网络方案则是基于 <a href="https://github.com/coreos/flannel">Flannel</a> VXLAN 来做的，原因是没有测试环境描述的这些需求，<a href="https://github.com/coreos/flannel">Flannel</a> 方案本身够简单。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org84571b9" class="outline-3">
+<h3 id="org84571b9"><span class="section-number-3">3.4</span> 日志</h3>
+<div class="outline-text-3" id="text-3-4">
+<ul class="org-ul">
+<li>EFK（<a href="https://github.com/elastic/elasticsearch">Elasticsearch</a> + <a href="https://github.com/elastic/beats">Filebeat</a> + <a href="https://github.com/elastic/kibana">Kibana</a>）</li>
+</ul>
+
+<p>
+日志方案使用业界比较成熟的 EFK 方案，关于 EFK 本身这里不过多解释。这里主要介绍的是如何通过 EFK 收集到容器的业务日志，我们的服务主要是 Java 相关的，大部分日志都是输出到本地文件的，除了业务日志还有一些应用访问日志、中间件组件日志以及监控日志等。如果统一都输出到标准输出的话，虽然可以通过配置实现，但是可读性却不是很好。最后采用的方案是，兼容现有的方案，自动挂载本地日志卷到容器，虚拟机中存储在什么地方就存储在什么地方。
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-log-volume.png" alt="k2-log-volume.png" />
+</p>
+</div>
+
+<p>
+如图所示，定义宿主目录 <code>/log-dir/k2-logs/&lt;namespace&gt;/&lt;appName&gt;</code> ， <code>/log-dir/k2-logs/</code> 是自定义存储容器日志的根目录，实际挂载的时候以空间名和应用名隔离目录。其中本地卷挂载到容器的目录为 <code>/log-dir/k2-logs</code> ，和宿主相同，服务在启动的时候脚本自动创建 <code>/log-dir/k2-logs/&lt;podHash&gt;</code> 目录并软链接到应用实际输出日志的目录 <code>/log-dir/logs</code> ，这样即使多个副本在同一个宿主也不会出现占用同一个目录日志文件的问题（坏处是需要修改启动脚本映射日志目录，但是因为 CI 标准化，这块成本基本没有）。如此，Filebeat 只要设置对应的规则收集日志即可，和传统虚拟机方式基本无差。如果日志输出标准化做的不好，日志目录不统一，也可以让用户自定义容器挂载目录，但为了避免滥用，内部这块是没有暴露这个功能的。
+</p>
+
+<p>
+以上是针对日志文件落盘的解决方案，对于一些开源的服务或者日志只输出到标准输出的服务则需要另外考虑。实际上我们内部对于服务日志落盘到文件的同时，服务日志也会打一份到标准输出，主要辅助用户排查问题，提供基本的 <code>tail -f</code> 的功能。如果我们针对标准输出和落盘日志文件统一都收集的话肯定会导致重复收集，因此我们对标准输出又提供了额外的方式收集。
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-stdout-log.png" alt="k2-stdout-log.png" />
+</p>
+</div>
+
+<p>
+针对标准输出收集我们的方案如上图所示，利用 Filebeat 配置动态加载的功能，生成和分发 Filebeat 配置，达到标准输出日志收集的目的。默认标准输出日志收集是关闭的，用户可以在应用界面自主开启收集。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org67b0228" class="outline-3">
+<h3 id="org67b0228"><span class="section-number-3">3.5</span> 监控告警</h3>
+<div class="outline-text-3" id="text-3-5">
+<ul class="org-ul">
+<li><a href="https://github.com/grafana/grafana">Grafana</a> + <a href="https://github.com/kubernetes/kube-state-metrics">kube-state-metrics</a> + <a href="https://github.com/prometheus">Prometheus</a> + K8s eventer（基于 K8s 事件告警，自研） + Alarmd（内部告警服务，自研）</li>
+</ul>
+
+<p>
+监控数据展示使用 Grafana，K8s 数据收集使用 kube-state-metrics，存储则使用 Prometheus。告警这块因为内部有自研的服务，因此直接对接内部服务。系统级别的告警利用 Prometheus 的数据，应用状态相关则是自研的 K8s eventer 对接自研告警服务。K8s eventer 主要借鉴了 heapster 的 eventer 组件，功能除了监听 K8s 事件，还会上报一些事件如容器 OOM 事件到 K8s，还做了一些筛选和收敛工作，以达到减少误报的目的。早期我们针对 K8s 的事件还会暴露给 Prometheus，后来我们有自己的事件中心平台，相关的事件直接 push 到内部事件中心，便于后续展示和分析。
+</p>
+
+<blockquote>
+<p>
+最近看到阿里云也开源了类似我们内部 K8s eventer 的工具 <a href="https://github.com/AliyunContainerService/kube-eventer">AliyunContainerService/kube-eventer</a> ，有需要的可以调研一下。针对告警，如果使用开源的，你也可以尝试下 <a href="https://github.com/prometheus/alertmanager">Prometheus alertmanager</a> 。
+</p>
+</blockquote>
+</div>
+</div>
+
+<div id="outline-container-orge8f0fe4" class="outline-3">
+<h3 id="orge8f0fe4"><span class="section-number-3">3.6</span> 其它</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+针对完整的组件和架构方案，可以具体看下图：
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-Kubernetes-arch.png" alt="k2-Kubernetes-arch.png" />
+</p>
+</div>
+
+<p>
+为了安全性，K8s 集群启用了 TLS 和 RBAC 部署，使用 Nginx 和 Keepalived 作为 kube-apiserver 的 HA 组件，ingress-nginx controller 也是使用类似的方案做了高可用。关于 K8s 集群部署业界也提供了诸如 <a href="https://github.com/kubernetes/kubeadm">kubeadm</a> 和 <a href="https://github.com/kubernetes-sigs/kubespray">kubespray</a> 的部署方案，我们内部则是定制了一套 K8s Ansible Playbook，集群组件使用的是二进制安装，Systemd 管理，最大化保持可控。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org352589c" class="outline-2">
+<h2 id="org352589c"><span class="section-number-2">4</span> <span class="todo TODO">TODO</span> 趟过的坑</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><a href="https://github.com/opskumu/issues/issues/19">2018 遇到的问题集锦</a></li>
+<li><a href="https://github.com/opskumu/issues/issues/23">2019 遇到的问题集锦</a></li>
+</ul>
+
+<p>
+以上是这两年遇到的一些关于 K8s 问题的碎片化记录，大部分的问题都记录了。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4c43b8d" class="outline-2">
+<h2 id="org4c43b8d"><span class="section-number-2">5</span> <span class="todo TODO">TODO</span> 一些感想</h2>
+</div>
+
+<div id="outline-container-org04076f3" class="outline-2">
+<h2 id="org04076f3"><span class="section-number-2">6</span> <span class="todo TODO">TODO</span> 未来的路</h2>
+</div>
+</div>
+</body>
+</html>
