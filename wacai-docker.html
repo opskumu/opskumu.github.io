@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-30 Sat 15:12 -->
+<!-- 2019-11-30 Sat 15:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>挖财容器化之路</title>
@@ -255,9 +255,24 @@ for the JavaScript code in this tag.
 <li><a href="#orge8f0fe4">3.6. 其它</a></li>
 </ul>
 </li>
-<li><a href="#org352589c">4. 趟过的坑</a></li>
-<li><a href="#org04076f3">5. <span class="todo TODO">TODO</span> 未来的路</a></li>
-<li><a href="#org4c43b8d">6. <span class="todo TODO">TODO</span> 一些感想</a></li>
+<li><a href="#org352589c">4. 趟过的坑</a>
+<ul>
+<li><a href="#orgb57c59a">4.1. Kubernetes DNS 解析偶尔丢包 5s 延迟问题</a></li>
+<li><a href="#orgc448fcc">4.2. Java 程序在 Docker 中运行的资源问题</a></li>
+<li><a href="#orga8eee67">4.3. 容器中的僵尸进程</a></li>
+<li><a href="#org5847550">4.4. 容器内存监控数据的问题</a></li>
+<li><a href="#org6200873">4.5. Calico CNI 网络 IP 没有正常回收的问题</a></li>
+<li><a href="#org18360bc">4.6. 容器内自定义时间的问题</a></li>
+</ul>
+</li>
+<li><a href="#org4c43b8d">5. 一些感想</a>
+<ul>
+<li><a href="#org1dd99f5">5.1. 关于基于容器的云原生应用设计原则</a></li>
+<li><a href="#orgf497355">5.2. <span class="todo TODO">TODO</span> 技术之外，产品本身</a></li>
+<li><a href="#org481039b">5.3. <span class="todo TODO">TODO</span> 落地推广的难点</a></li>
+</ul>
+</li>
+<li><a href="#org04076f3">6. <span class="todo TODO">TODO</span> 未来的路</a></li>
 </ul>
 </div>
 </div>
@@ -513,11 +528,11 @@ for the JavaScript code in this tag.
 <p>
 以上是这两年遇到的一些关于 K8s 问题的碎片化记录，大部分的问题都记录了，感兴趣的可以看点击查看。这里说一些使用 K8s 构建容器平台遇到的一些典型的问题：
 </p>
+</div>
 
-<ul class="org-ul">
-<li>Kubernetes DNS 解析偶尔丢包 5s 延迟问题</li>
-</ul>
-
+<div id="outline-container-orgb57c59a" class="outline-3">
+<h3 id="orgb57c59a"><span class="section-number-3">4.1</span> Kubernetes DNS 解析偶尔丢包 5s 延迟问题</h3>
+<div class="outline-text-3" id="text-4-1">
 <p>
 从 2017 年平台上线之后，偶尔业务出现 DNS 请求超过 5s 的问题困扰了我很久。这个问题在社区 Issue <a href="https://github.com/kubernetes/kubernetes/issues/56903">DNS intermittent delays of 5s</a> 也讨论了很长一段时间，跨度为两年之久，直到现在虽然 Issue 已经关闭，底下时常还有一些讨论。Issue 中很清楚的描述了问题产生的原因，是内核 conntrack 模块本身的 bug。那如何解决呢，Issue 中也提到了很多方法，试过其中的大多数方式，有些并没有解决。其中除了升级内核，个人最建议的方式还是使用 <a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/dns/nodelocaldns">Nodelocal DNS Cache</a> 去解决这个问题，但是它也有一个问题，就是每次升级组件的时候，所在主机的 DNS 就会中断。
 </p>
@@ -541,11 +556,12 @@ for the JavaScript code in this tag.
 <p>
 关于这个问题，腾讯云容器团队也作了详细的说明 <a href="https://tencentcloudcontainerteam.github.io/2018/10/26/DNS-5-seconds-delay/">kubernetes集群中夺命的5秒DNS延迟</a> ，大家也可以参考。
 </p>
+</div>
+</div>
 
-<ul class="org-ul">
-<li>Java 程序在 Docker 中运行的资源问题</li>
-</ul>
-
+<div id="outline-container-orgc448fcc" class="outline-3">
+<h3 id="orgc448fcc"><span class="section-number-3">4.2</span> Java 程序在 Docker 中运行的资源问题</h3>
+<div class="outline-text-3" id="text-4-2">
 <p>
 这个严格来说不是 Java 本身的问题，只是早期 Java 对容器支持不好导致的。就拿容器中的 top、free 指令，新人在容器中使用这些指令的时候，通常对输出都会感到疑惑。比较彻底的一个解决方式就是借助 <a href="https://github.com/lxc/lxcfs">lxcfs</a> ，这样无论是 Java 程序的运行也好，还是 top、free 这些指令，它们从 /proc 下读取资源信息都是实际容器配置的资源限制。不过我更倾向于其它方式解决而不是 <a href="https://github.com/lxc/lxcfs">lxcfs</a> ，因为之前调研的时候 <a href="https://github.com/lxc/lxcfs">lxcfs</a> 本身也存在一些问题，另外也不想增加一层维护成本，针对 Java 程序遇到的问题从 Java 层面上解决。
 </p>
@@ -557,11 +573,12 @@ for the JavaScript code in this tag.
 <p>
 除了 Java 版本升级之外，我们容器的 Java 程序启动脚本还集成了 <a href="https://github.com/fabric8io-images/java/tree/master/images/centos/openjdk8/jdk">Fabric8 Java Base Image OpenJDK 8 (JDK)</a> 中提供的脚本。在最早 Java 版本本身不支持对 Heap 限制以及百分比设置的时候，我们通过这个脚本根据实际分配给容器的内存大小动态伸缩 Heap Size。另外，还支持通过环境变量注入 Java 选项，支持通过环境变量开启 Debug 项等等，推荐 Java 程序容器化集成这个脚本，非常灵活。
 </p>
+</div>
+</div>
 
-<ul class="org-ul">
-<li>容器中的僵尸进程</li>
-</ul>
-
+<div id="outline-container-orga8eee67" class="outline-3">
+<h3 id="orga8eee67"><span class="section-number-3">4.3</span> 容器中的僵尸进程</h3>
+<div class="outline-text-3" id="text-4-3">
 <p>
 正常情况下，如果一个容器运行一个进程，那么不太可能出现僵尸进程的问题。对于内部的 Java 程序是没有这个问题的，我们一个容器就跑一个程序，但是有些应用很多都是跑的多进程的（比如 Jenkins slave 构建容器），这类情况下就可能会出现僵尸进程。众所周知，容器不像操作系统，正常情况下它是没有 init 进程的，PID 为 1 的一般是应用本身，而普通进程一般是不会捕获僵尸进程的，这就导致了有些多进程容器中出现 N 多的僵尸进程。
 </p>
@@ -595,11 +612,12 @@ CMD ["/my/script", "--with", "--args"]
 <p>
 不过比起直接集成 init 工具，更建议的是在 K8s 层解决这个问题。我们都知道，每个 K8s Pod 有一个 <a href="https://github.com/kubernetes/kubernetes/blob/master/build/pause/pause.c">pause</a> 容器组件，一般我们说起它的功能就是 Pod 内容器共享网络。其实除了共享网络还有睡觉之外，它还会捕获僵尸进程。默认 K8s Pod 内的 PID namespace 是不共享的，早期我们可以通过 kubelet <code>--docker-disable-shared-pid=false</code> 选项开启 Pod 内 PID namespace 共享，如此对应节点的 Pod 中 PID 为 1 的进程就是 pause 了，它便可以捕获处理僵尸进程了。kubelet 选项有一个坏处，就是调度到节点的 Pod 都会共享 PID namespace，社区就觉得应该移除这个选项，在 Pod 层实现，社区讨论见 <a href="https://github.com/kubernetes/kubernetes/issues/41938">Remove `&#x2013;docker-disable-shared-pid` from kubelet</a> 。在 K8s 1.10 就开始支持 Pod Spec 添加 <code>ShareProcessNamespace</code> 字段，支持在 Pod 层开启 PID namespace 共享。
 </p>
+</div>
+</div>
 
-<ul class="org-ul">
-<li>容器内存监控数据的问题</li>
-</ul>
-
+<div id="outline-container-org5847550" class="outline-3">
+<h3 id="org5847550"><span class="section-number-3">4.4</span> 容器内存监控数据的问题</h3>
+<div class="outline-text-3" id="text-4-4">
 <p>
 其实容器内存这个问题困扰了我很久，查了很多资料之后，最初使用的监控数据是 <code>container_memory_working_set_bytes</code> ，比如这篇文章 <a href="https://blog.freshtracks.io/a-deep-dive-into-kubernetes-metrics-part-3-container-resource-metrics-361c5ee46e66">A Deep Dive into Kubernetes Metrics — Part 3 Container Resource Metrics</a> 也是推荐这个值的。
 </p>
@@ -611,11 +629,21 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 <p>
 简而言之，OOM Killer 评判的值就是 <code>container_memory_working_set_bytes</code> ，可是实际对比发现，有些 Java 容器实际的内存占用和 <code>container_memory_working_set_bytes</code> 相差甚远，很多该值是 90%+ 的，实际使用工具 ps 等工具查看确只有 50% 或者更低。最后我们是通过 <code>container_memory_usage_bytes - container_memory_cache</code> 计算容器内存占用，相比 working_set 要准确多了。至于最后为什么使用这个计算，时间跨度有点长了，当时也没有记录，记得除了查资料之外还看了 docker stats 这块的源码。
 </p>
+</div>
+</div>
 
-<ul class="org-ul">
-<li>容器内自定义时间的问题</li>
-</ul>
+<div id="outline-container-org6200873" class="outline-3">
+<h3 id="org6200873"><span class="section-number-3">4.5</span> Calico CNI 网络 IP 没有正常回收的问题</h3>
+<div class="outline-text-3" id="text-4-5">
+<p>
+这个之前知乎相关的分享好像也提到过，也是一个比较恼人的问题，后来内部就专门写了个脚本，定时做一些清理释放的工作。
+</p>
+</div>
+</div>
 
+<div id="outline-container-org18360bc" class="outline-3">
+<h3 id="org18360bc"><span class="section-number-3">4.6</span> 容器内自定义时间的问题</h3>
+<div class="outline-text-3" id="text-4-6">
 <p>
 测试需求偶尔会有自定义服务器时间的问题，但是在容器内这个问题基本还处于无解状态。
 </p>
@@ -627,13 +655,62 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </p>
 </div>
 </div>
-
-<div id="outline-container-org04076f3" class="outline-2">
-<h2 id="org04076f3"><span class="section-number-2">5</span> <span class="todo TODO">TODO</span> 未来的路</h2>
 </div>
 
 <div id="outline-container-org4c43b8d" class="outline-2">
-<h2 id="org4c43b8d"><span class="section-number-2">6</span> <span class="todo TODO">TODO</span> 一些感想</h2>
+<h2 id="org4c43b8d"><span class="section-number-2">5</span> 一些感想</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org1dd99f5" class="outline-3">
+<h3 id="org1dd99f5"><span class="section-number-3">5.1</span> 关于基于容器的云原生应用设计原则</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+关于应用在容器中运行要注入的一些原则，国外有人已经总结的相当好了，并且还出版了一本书 <a href="https://www.redhat.com/cms/managed-files/cm-oreilly-kubernetes-patterns-ebook-f19824-201910-en.pdf">《Kubernetes Patterns: Reusable Elements for Designing Cloud-Native Applications》</a> 。点击书籍链接可以直接下载，红帽已经将其开源，没有版权问题。以下直接翻译摘录一部分内容：
+</p>
+
+<blockquote>
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cloud-native-container-design-principles.png" alt="cloud-native-container-design-principles.png" />
+</p>
+</div>
+
+<ul class="org-ul">
+<li>构建时（Build time）
+<ul class="org-ul">
+<li><code>Image Immutability Principle</code> 镜像不变原则，同一个应用镜像可以分别部署在 Dev、Test、Pro 环境</li>
+<li><code>Single Concern Principle</code> 单一职责原则，每个容器都解决一个问题并做得很好，换句话说一个容器运行一个进程</li>
+<li><code>Self-Containment Principle</code> 自遏制原则，容器只依赖 Linux 内核，构建时添加其它库</li>
+</ul></li>
+<li>运行时（Runtime）
+<ul class="org-ul">
+<li><code>High Observability Principle</code> 高可预测性原则，每个容器都必须实现所有必要的 API，以帮助平台以最佳方式观察和管理应用程序</li>
+<li><code>Lifecycle Conformance Principle</code> 生命周期一致性原则，容器必须能够捕捉来自平台的事件，并对这些事件做出应对</li>
+<li><code>Process Disposability Principle</code>  进程可处理原则，容器随时可被替代</li>
+<li><code>Runtime Confinement Principle</code> 运行时限制原则，每个容器必须声明其资源限制（CPU、Memory 等）</li>
+</ul></li>
+
+<li><a href="https://medium.com/@bibryam/cloud-native-container-design-principles-144ceaa98dba">Cloud Native Container Design Principles</a></li>
+</ul>
+</blockquote>
+
+<p>
+与其说是设计原则，我更倾向于说是最佳实践，每一条原则都有对应 K8s 的实践。强烈建议可以把前面提到的书好好阅读一遍，然后结合实际的业务调整实践。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf497355" class="outline-3">
+<h3 id="orgf497355"><span class="section-number-3">5.2</span> <span class="todo TODO">TODO</span> 技术之外，产品本身</h3>
+</div>
+
+<div id="outline-container-org481039b" class="outline-3">
+<h3 id="org481039b"><span class="section-number-3">5.3</span> <span class="todo TODO">TODO</span> 落地推广的难点</h3>
+</div>
+</div>
+
+<div id="outline-container-org04076f3" class="outline-2">
+<h2 id="org04076f3"><span class="section-number-2">6</span> <span class="todo TODO">TODO</span> 未来的路</h2>
 </div>
 </div>
 </body>
