@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-30 Sat 15:38 -->
+<!-- 2019-12-04 Wed 11:31 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>挖财容器化之路</title>
+<title>挖财 Kubernetes 容器化之路</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
 <style type="text/css">
@@ -233,7 +233,7 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">挖财容器化之路</h1>
+<h1 class="title">挖财 Kubernetes 容器化之路</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -252,7 +252,7 @@ for the JavaScript code in this tag.
 <li><a href="#orge80e447">3.3. 网络</a></li>
 <li><a href="#org84571b9">3.4. 日志</a></li>
 <li><a href="#org67b0228">3.5. 监控告警</a></li>
-<li><a href="#orge8f0fe4">3.6. 其它</a></li>
+<li><a href="#org4524857">3.6. 其它</a></li>
 </ul>
 </li>
 <li><a href="#org352589c">4. 趟过的坑</a>
@@ -262,17 +262,16 @@ for the JavaScript code in this tag.
 <li><a href="#orga8eee67">4.3. 容器中的僵尸进程</a></li>
 <li><a href="#org5847550">4.4. 容器内存监控数据的问题</a></li>
 <li><a href="#org6200873">4.5. Calico CNI 网络 IP 没有正常回收的问题</a></li>
-<li><a href="#org18360bc">4.6. 容器内自定义时间的问题</a></li>
+<li><a href="#org5ed93fd">4.6. Pod 通过 Service IP 访问不了自己的问题</a></li>
+<li><a href="#org18360bc">4.7. 容器内自定义时间的问题</a></li>
 </ul>
 </li>
-<li><a href="#org4c43b8d">5. 一些感想</a>
+<li><a href="#org5787eb1">5. 其它</a>
 <ul>
-<li><a href="#org1dd99f5">5.1. 关于基于容器的云原生应用设计原则</a></li>
-<li><a href="#orgf497355">5.2. <span class="todo TODO">TODO</span> 技术之外，产品本身</a></li>
-<li><a href="#org481039b">5.3. <span class="todo TODO">TODO</span> 落地推广的难点</a></li>
+<li><a href="#orgf497355">5.1. 技术之外，产品本身</a></li>
+<li><a href="#org53d1f0d">5.2. 基于容器的云原生应用设计原则</a></li>
 </ul>
 </li>
-<li><a href="#org04076f3">6. <span class="todo TODO">TODO</span> 未来的路</a></li>
 </ul>
 </div>
 </div>
@@ -319,7 +318,7 @@ for the JavaScript code in this tag.
 <h3 id="orga7c5cad"><span class="section-number-3">2.1</span> 测试环境</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-当前测试环境有一个 K8s 集群（K8s 1.11.x），空间（ <code>namespace</code> ）总数有 500+，应用数（ <code>Deployment</code> + <code>StatefulSet</code> ） 4400+，实例数（ <code>Pod</code> ） 4000+（因为测试环境大部分应用都只有 1 个或 0 个副本，因此实例数少于应用数）。
+当前测试环境有一个 K8s 集群（K8s 1.11.x），空间（ <code>namespace</code> ）总数有 500+，应用数（ <code>Deployment</code> + <code>StatefulSet</code> ） 4400+，实例数（ <code>Pod</code> ） 4000+（因为测试环境大部分应用都只有 1 个，有些是处于暂停状态，即 0 个副本，因此实例数少于应用数）。
 </p>
 
 <blockquote>
@@ -409,6 +408,10 @@ for the JavaScript code in this tag.
 <p>
 当然除了 Spring Boot 和 Node.js 应用，公司还是有一些使用其它技术栈的项目，如 Python、Go 以及 Tomcat War 包等项目。对于这类比较少的项目，构建方式是在相关项目代码库中加入 Dockerfile，构建的时候通过指定的 Dockerfile 构建镜像，以满足业务需求。
 </p>
+
+<p>
+当前内部 Harbor 使用的版本是 <code>1.5.x</code> ，针对 Harbor 镜像的清理这里需要提一下，我们定制了清理脚本，通过自定义保留版本数定期清理过期镜像 Tag，然后选择合适的时间进行镜像 GC 操作。
+</p>
 </div>
 </div>
 
@@ -497,8 +500,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge8f0fe4" class="outline-3">
-<h3 id="orge8f0fe4"><span class="section-number-3">3.6</span> 其它</h3>
+<div id="outline-container-org4524857" class="outline-3">
+<h3 id="org4524857"><span class="section-number-3">3.6</span> 其它</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 针对完整的组件和架构方案，可以具体看下图：
@@ -512,6 +515,10 @@ for the JavaScript code in this tag.
 
 <p>
 为了安全性，K8s 集群启用了 TLS 和 RBAC 部署，使用 Nginx 和 Keepalived 作为 kube-apiserver 的 HA 组件，ingress-nginx controller 也是使用类似的方案做了高可用。关于 K8s 集群部署业界也提供了诸如 <a href="https://github.com/kubernetes/kubeadm">kubeadm</a> 和 <a href="https://github.com/kubernetes-sigs/kubespray">kubespray</a> 的部署方案，我们内部则是定制了一套 K8s Ansible Playbook，集群组件使用的是二进制安装，Systemd 管理，最大化保持可控。
+</p>
+
+<p>
+这里还要提一下容器底层存储驱动，我们先用的 Device mapper，再用的 Overlay，之后又变更成 Overlay2。最早调研选型是准备用 Device mapper 的，结合之前的使用经验 Device mapper 运维成本较其它高而且本身也存在很多问题。最后实际选用的是当时来说较为激进的 Overlay 驱动，Overlay 本身有一些缺陷，比如 inode 问题和不能限制容器使用的存储空间大小的问题。之后又出了 Overlay2，Overlay2 解决了之前 Overlay 的很多问题，当然也可以指定存储空间限制了，而且已经是 Production Ready 了，所以我们又把存储切到了 Overlay2。
 </p>
 </div>
 </div>
@@ -627,7 +634,7 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </pre>
 
 <p>
-简而言之，OOM Killer 评判的值就是 <code>container_memory_working_set_bytes</code> ，可是实际对比发现，有些 Java 容器实际的内存占用和 <code>container_memory_working_set_bytes</code> 相差甚远，很多该值是 90%+ 的，实际使用工具 ps 等工具查看确只有 50% 或者更低。最后我们是通过 <code>container_memory_usage_bytes - container_memory_cache</code> 计算容器内存占用，相比 working_set 要准确多了。至于最后为什么使用这个计算，时间跨度有点长了，当时也没有记录，记得除了查资料之外还看了 docker stats 这块的源码。
+简而言之，OOM Killer 评判的值就是 <code>container_memory_working_set_bytes</code> ，可是实际对比发现，有些 Java 容器实际的内存占用和 <code>container_memory_working_set_bytes</code> 相差甚远，很多该值是 90%+ 的，实际使用 ps 工具查看确只占用 50% 或更低。最后我们是通过 <code>container_memory_usage_bytes - container_memory_cache</code> 计算容器内存占用，相比 working_set 要准确多了。至于最后为什么使用这个计算，时间跨度有点长了，当时也没有记录，记得除了查资料之外还看了 docker stats 这块的源码。
 </p>
 </div>
 </div>
@@ -641,9 +648,18 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </div>
 </div>
 
-<div id="outline-container-org18360bc" class="outline-3">
-<h3 id="org18360bc"><span class="section-number-3">4.6</span> 容器内自定义时间的问题</h3>
+<div id="outline-container-org5ed93fd" class="outline-3">
+<h3 id="org5ed93fd"><span class="section-number-3">4.6</span> Pod 通过 Service IP 访问不了自己的问题</h3>
 <div class="outline-text-3" id="text-4-6">
+<p>
+当 Pod 通过自身 Service IP 访问的时候，如果 kube-proxy 刚好调度的实例是 Pod 自身的话，这个时候就出现无法访问的问题。一开始排查以为是 <code>--hairpin-mode</code> 配置的问题，实际测试下来并不是。具体详细的排查流程已经更新到前文提到的 Issue 里面了 <a href="https://github.com/opskumu/issues/issues/23#issuecomment-547280434">Pod 无法通过 Service IP 访问自身</a> 。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org18360bc" class="outline-3">
+<h3 id="org18360bc"><span class="section-number-3">4.7</span> 容器内自定义时间的问题</h3>
+<div class="outline-text-3" id="text-4-7">
 <p>
 测试需求偶尔会有自定义服务器时间的问题，但是在容器内这个问题基本还处于无解状态。
 </p>
@@ -657,18 +673,31 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </div>
 </div>
 
-<div id="outline-container-org4c43b8d" class="outline-2">
-<h2 id="org4c43b8d"><span class="section-number-2">5</span> 一些感想</h2>
+<div id="outline-container-org5787eb1" class="outline-2">
+<h2 id="org5787eb1"><span class="section-number-2">5</span> 其它</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org1dd99f5" class="outline-3">
-<h3 id="org1dd99f5"><span class="section-number-3">5.1</span> 关于基于容器的云原生应用设计原则</h3>
+<div id="outline-container-orgf497355" class="outline-3">
+<h3 id="orgf497355"><span class="section-number-3">5.1</span> 技术之外，产品本身</h3>
 <div class="outline-text-3" id="text-5-1">
+<p>
+容器化相关，技术的比重是非常高的，如果容器底层不稳定，就没有上层一说了，但是又不能局限于技术。K2 这个项目可以在内部不断迭代的原因就是产品本身，2018 年初加入的小伙伴给 K2 注入了很多产品化的实质性东西。从最初 K2 只是一个单一的容器平台，慢慢的和内部平台融合成为了现在的挖财云。各平台的聚合，本身就是技术的融合，也是入口的融合。融合的同时还解决了内部跨各个平台协作的效率问题，这些带来的效益是显而易见的。对比 1.0 时候的 K2，无论从用户体验，还是上手成本都有非常大的提升。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org53d1f0d" class="outline-3">
+<h3 id="org53d1f0d"><span class="section-number-3">5.2</span> 基于容器的云原生应用设计原则</h3>
+<div class="outline-text-3" id="text-5-2">
 <p>
 关于应用在容器中运行要注意的一些原则，国外有人已经总结的相当好了，并且还出版了一本书 <a href="https://www.redhat.com/cms/managed-files/cm-oreilly-kubernetes-patterns-ebook-f19824-201910-en.pdf">《Kubernetes Patterns: Reusable Elements for Designing Cloud-Native Applications》</a> 。点击书籍链接可以直接下载，红帽已经将其开源，没有版权问题。以下直接翻译摘录一部分内容：
 </p>
 
 <blockquote>
+<ul class="org-ul">
+<li><a href="https://medium.com/@bibryam/cloud-native-container-design-principles-144ceaa98dba">Cloud Native Container Design Principles</a></li>
+</ul>
+
 
 <div class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cloud-native-container-design-principles.png" alt="cloud-native-container-design-principles.png" />
@@ -689,8 +718,6 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 <li><code>Process Disposability Principle</code>  进程可处理原则，容器随时可被替代</li>
 <li><code>Runtime Confinement Principle</code> 运行时限制原则，每个容器必须声明其资源限制（CPU、Memory 等）</li>
 </ul></li>
-
-<li><a href="https://medium.com/@bibryam/cloud-native-container-design-principles-144ceaa98dba">Cloud Native Container Design Principles</a></li>
 </ul>
 </blockquote>
 
@@ -699,18 +726,6 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgf497355" class="outline-3">
-<h3 id="orgf497355"><span class="section-number-3">5.2</span> <span class="todo TODO">TODO</span> 技术之外，产品本身</h3>
-</div>
-
-<div id="outline-container-org481039b" class="outline-3">
-<h3 id="org481039b"><span class="section-number-3">5.3</span> <span class="todo TODO">TODO</span> 落地推广的难点</h3>
-</div>
-</div>
-
-<div id="outline-container-org04076f3" class="outline-2">
-<h2 id="org04076f3"><span class="section-number-2">6</span> <span class="todo TODO">TODO</span> 未来的路</h2>
 </div>
 </div>
 </body>
