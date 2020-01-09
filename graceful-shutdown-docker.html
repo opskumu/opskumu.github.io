@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-27 Wed 23:32 -->
+<!-- 2020-01-09 Thu 15:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>如何优雅的关闭容器</title>
@@ -286,7 +286,7 @@ for the JavaScript code in this tag.
 
 <ul class="org-ul">
 <li><code>1) SIGHUP</code> 当终端断开（挂机）时，将发送该信号给终端控制进程。 <code>SIGHUP</code> 信号还可用于守护进程（比如，init 等）。许多守护进程会在收到 <code>SIGHUP</code> 信号时重新进行初始化并重读配置文件。</li>
-<li>2) SIGINT= 当用户键入终端中断字符（通常为 <b>Control-C</b> ） 时，终端驱动程序将发送该信号给前台进程组。该信号的默认行为是终止进程。</li>
+<li><code>2) SIGINT</code> 当用户键入终端中断字符（通常为 <b>Control-C</b> ） 时，终端驱动程序将发送该信号给前台进程组。该信号的默认行为是终止进程。</li>
 <li><code>3) SIGQUIT</code> 当用户在键盘上键入退出字符（通常为 <b>Control-\</b> ）时，该信号将发往前台进程组。默认情况下，该信号终止进程，并生成用于调试的核心转储文件。进程如果陷入无限循环，或者不再响应时，使用 <code>SIGQUIT</code> 信号就很合适。</li>
 <li><code>9) SIGKILL</code> 此信号为 "必杀（sure kill）" 信号，处理器程序无法将其阻塞、忽略或者捕获，故而 "一击必杀"，总能终止程序。</li>
 <li><code>15) SIGTERM</code> 这是用来终止进程的标准信号，也是 <code>kill</code> 、 <code>killall</code> 、 <code>pkill</code> 命令所发送的默认信号。精心设计的应用程序应当为 <code>SIGTERM</code> 信号设置处理器程序，以便其能够预先清除临时文件和释放其它资源，从而全身而退。因此，总是应该先尝试使用 <code>SIGTERM</code> 信号来终止进程，而把 <code>SIGKILL</code> 作为最后手段，去对付那些不响应 <code>SIGTERM</code> 信号的失控进程。</li>
@@ -392,32 +392,32 @@ Options:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">➜  ~ cat signals.go
-package main
+<pre class="src src-go">&#10140;  ~ cat <span style="color: #df005f; font-weight: bold;">signals.go</span>
+<span style="color: #268bd2; font-weight: bold;">package</span> main
 
-import (
-    "fmt"
-    "os"
-    "os/signal"
-    "syscall"
+<span style="color: #268bd2; font-weight: bold;">import</span> (
+    <span style="color: #2aa198;">"fmt"</span>
+    <span style="color: #2aa198;">"os"</span>
+    <span style="color: #2aa198;">"os/signal"</span>
+    <span style="color: #2aa198;">"syscall"</span>
 )
 
-func main() {
-    sigs := make(chan os.Signal, 1)
-    done := make(chan bool, 1)
+<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
+    <span style="color: #8787d7;">sigs</span> := <span style="color: #268bd2;">make</span>(<span style="color: #268bd2; font-weight: bold;">chan</span> <span style="color: #df005f; font-weight: bold;">os.Signal</span>, 1)
+    <span style="color: #8787d7;">done</span> := <span style="color: #268bd2;">make</span>(<span style="color: #268bd2; font-weight: bold;">chan</span> <span style="color: #df005f; font-weight: bold;">bool</span>, 1)
 
-    signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+    signal.<span style="color: #d75fd7; font-weight: bold;">Notify</span>(sigs, syscall.SIGINT, syscall.SIGTERM)
 
-    go func() {
-        sig := &lt;-sigs
-        fmt.Println()
-        fmt.Println(sig)
-        done &lt;- true
+    <span style="color: #268bd2; font-weight: bold;">go</span> <span style="color: #268bd2; font-weight: bold;">func</span>() {
+        <span style="color: #8787d7;">sig</span> := &lt;-sigs
+        fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>()
+        fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(sig)
+        done &lt;- <span style="color: #d75fd7;">true</span>
     }()
 
-    fmt.Println("awaiting signal")
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #2aa198;">"awaiting signal"</span>)
     &lt;-done
-    fmt.Println("exiting")
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #2aa198;">"exiting"</span>)
 }
 </pre>
 </div>
