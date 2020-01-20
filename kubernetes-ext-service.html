@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-01-20 Mon 16:10 -->
+<!-- 2020-01-20 Mon 16:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kumu's Blog</title>
+<title>Kubernetes 外部服务映射</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
 <style type="text/css">
@@ -233,164 +233,148 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Kumu's Blog</h1>
+<h1 class="title">Kubernetes 外部服务映射</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org9699119">1. Blog</a>
+<li><a href="#orgd12fc37">1. 外部域名映射到内部 Service -&gt; <code>ExternalName</code></a></li>
+<li><a href="#org5e9735e">2. 外部 IP 映射到内部 Service</a>
 <ul>
-<li><a href="#org0bece8e">1.1. 2020</a></li>
-<li><a href="#org5a1f987">1.2. 2019</a></li>
-<li><a href="#orgd7dcc77">1.3. 2018</a></li>
-<li><a href="#org6e60285">1.4. 2017</a></li>
-<li><a href="#org17e3db7">1.5. 2016</a></li>
-<li><a href="#org8b5f3f8">1.6. 2015</a></li>
-<li><a href="#orgf860f2d">1.7. 2014</a></li>
-<li><a href="#org40f9968">1.8. 2013</a></li>
+<li><a href="#orgaa4b4a7">2.1. IP 映射</a></li>
+<li><a href="#orgd60c794">2.2. IP + 端口映射</a></li>
 </ul>
 </li>
+<li><a href="#org740265d">3. 小结</a></li>
 </ul>
 </div>
 </div>
+<p>
+集群内的应用有时候需要调用外部的服务，我们知道集群内部服务调用都是通过 Service 互相访问，那么针对外部的服务是否也可以保持统一使用 Service 呢？答案是肯定的，通过 Service 访问外部服务，除了方式统一以外，还能带来其他好处。如配置统一，不同环境（空间）相同应用访问外部不同环境的数据库，可以通过 Service 映射保持两边配置统一，达到不同空间应用通过相同 Service Name 访问不同的外部数据库。如图 <code>test-1</code> 和 <code>test-2</code> 两个空间为两个不同的业务环境，通过服务映射，不同空间相同的 Service 访问到对应外部不同环境的数据库：
+</p>
 
-<div id="outline-container-org9699119" class="outline-2">
-<h2 id="org9699119"><span class="section-number-2">1</span> Blog</h2>
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/external-service.png" alt="external-service.png" />
+</p>
+</div>
+
+<p>
+另外，还可以保证最小化变更，如果外部数据库 IP 之类的变动，只需要修改 Service 对应映射即可，服务本身配置无需变动。具体场景如下：
+</p>
+
+<div id="outline-container-orgd12fc37" class="outline-2">
+<h2 id="orgd12fc37"><span class="section-number-2">1</span> 外部域名映射到内部 Service -&gt; <code>ExternalName</code></h2>
 <div class="outline-text-2" id="text-1">
+<pre class="example">
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  externalName: mysql.example.com
+  type: ExternalName
+</pre>
+
+<p>
+创建之后，同一空间 Pod 就可以通过 <code>mysql:3306</code> 访问外部的 MySQL 服务。
+</p>
+
+<p>
+需要注意的是，虽然 externalName 也支持填写 IP，但是并不会被 Ingress 和 CoreDNS 解析（KubeDNS 支持）。如果有 IP 相关的需求，则可以使用 Headless Service -&gt; <a href="https://kubernetes.io/docs/concepts/services-networking/service/#externalname">Type ExternalName</a> 。另外一个需要注意的是，因为 CNAME 的缘故，如果外部的服务又经过一层代理转发，如 Nginx，除非配置对应的 <code>server_name</code> ，否则映射无效。
+</p>
 </div>
-<div id="outline-container-org0bece8e" class="outline-3">
-<h3 id="org0bece8e"><span class="section-number-3">1.1</span> 2020</h3>
-<div class="outline-text-3" id="text-1-1">
+</div>
+
+<div id="outline-container-org5e9735e" class="outline-2">
+<h2 id="org5e9735e"><span class="section-number-2">2</span> 外部 IP 映射到内部 Service</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+外部 IP 映射除了前文说到映射的好处，还有即使 IP 变更了，只需变更 Service，应用本身是不需要任何变动的。
+</p>
+</div>
+
+<div id="outline-container-orgaa4b4a7" class="outline-3">
+<h3 id="orgaa4b4a7"><span class="section-number-3">2.1</span> IP 映射</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+前文提过，虽然 externalName 字段可以配置为 IP 地址，但是 Ingress 和 CoreDNS 并不会解析，如果外部服务为 IP 提供，那么可以使用 Headless Service 实现映射。
+</p>
+
+<pre class="example">
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  clusterIP: None
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: Endpoints
+metadata:
+ name: mysql
+subsets:
+ - addresses:
+     - ip: 192.168.1.10
+</pre>
+
+<p>
+service 不指定 selector，手动维护创建 endpoint，创建之后就可以通过 <code>mysql:3306</code> 访问 <code>192.168.1.10:3306</code> 服务的目的。Headless Service 不能修改端口相关，如果要修改访问端口，则需要进一步操作。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd60c794" class="outline-3">
+<h3 id="orgd60c794"><span class="section-number-3">2.2</span> IP + 端口映射</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+如果外部的端口不是标准的端口，想通过 Service 访问时候使用标准端口，如外部 MySQL 提供端口为 3307，内部想通过 Service 3306 访问，这个时候则可以通过如下方式实现：
+</p>
+
+<pre class="example">
+apiVersion: v1
+kind: Service
+metadata:
+ name: mysql
+spec:
+ type: ClusterIP
+ ports:
+ - port: 3306
+   targetPort: 3307
+
+---
+
+apiVersion: v1
+kind: Endpoints
+metadata:
+ name: mysql
+subsets:
+ - addresses:
+     - ip: 192.168.1.10
+   ports:
+     - port: 3307
+</pre>
+
+<p>
+service 不指定 selector，手动维护创建 endpoint，创建之后就可以通过 <code>mysql:3306</code> 达到访问外部 <code>192.168.1.10:3307</code> 服务的目的。
+</p>
+
 <ul class="org-ul">
-<li>2020-01-20 <a href="kubernetes-ext-service.html">Kubernetes 外部服务映射</a></li>
-<li>2020-01-01 <a href="bye-2019.html">2019，小结</a></li>
+<li>参考 <a href="https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-mapping-external-services">Kubernetes best practices: mapping external services</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org5a1f987" class="outline-3">
-<h3 id="org5a1f987"><span class="section-number-3">1.2</span> 2019</h3>
-<div class="outline-text-3" id="text-1-2">
-<ul class="org-ul">
-<li>2019-11-26 <a href="wacai-docker.html">挖财 Kubernetes 容器化之路</a></li>
-<li>2019-10-10 <a href="xinjiang-2019.html">北疆秋色</a></li>
-<li>2019-06-04 <a href="kubernetes-app.html">一个 HTTP 应用在 Kubernetes 的运行形式</a></li>
-<li>2019-02-11 <a href="nian.html">过年期间</a></li>
-<li>2019-01-06 <a href="just-for-fun.html">只是为了好玩</a></li>
-<li>2019-01-01 <a href="bye-2018.html">2018，小结</a></li>
-</ul>
-
-<hr />
-</div>
 </div>
 
-<div id="outline-container-orgd7dcc77" class="outline-3">
-<h3 id="orgd7dcc77"><span class="section-number-3">1.3</span> 2018</h3>
-<div class="outline-text-3" id="text-1-3">
-<ul class="org-ul">
-<li>2018-12-23 <a href="borg.html">Google 大规模集群管理器 Borg</a></li>
-<li>2018-11-18 <a href="k8s-pod-affinity-antiaffinity.html">Kubernetes Pod 亲和性和反亲和性</a></li>
-<li>2018-09-07 <a href="kubernetes-upgrade-notes.html">Kubernetes 版本升级标注</a></li>
-<li>2018-09-05 <a href="docker-overlayfs.html">Docker OverlayFS 驱动</a></li>
-<li>2018-08-28 <a href="2018-summer.html">夏日二三事</a></li>
-<li>2018-07-26 <a href="go-programming-language.html">The Go Programming Language 摘要</a></li>
-<li>2018-07-26 <a href="pets-vs-cattle.html">Pets vs Cattle 历史以及如何正确类比</a></li>
-<li>2018-05-01 <a href="about-30.html">三十岁的模样</a></li>
-<li>2018-04-01 <a href="cd-base.html">持续交付基础摘要</a></li>
-<li>2018-03-13 <a href="this-months-2018.html">三月琐事</a></li>
-<li>2018-01-01 <a href="bye-2017.html">2017，小结</a></li>
-</ul>
-
-<hr />
-</div>
-</div>
-
-<div id="outline-container-org6e60285" class="outline-3">
-<h3 id="org6e60285"><span class="section-number-3">1.4</span> 2017</h3>
-<div class="outline-text-3" id="text-1-4">
-<ul class="org-ul">
-<li>2017-11-12 <a href="graceful-shutdown-docker.html">如何优雅的关闭容器</a></li>
-<li>2017-09-17 <a href="slow-down.html">要不，慢点吧</a></li>
-<li>2017-09-09 <a href="persistence.html">坚持这件小事儿</a></li>
-<li>2017-08-05 <a href="young.html">一如少年模样</a></li>
-<li>2017-07-18 <a href="summer.html">夏天的记忆</a></li>
-<li>2017-07-16 <a href="docker-gpu.html">Docker 中玩转 GPU</a></li>
-<li>2017-07-08 <a href="about-hangzhou.html">关于杭州</a></li>
-<li>2017-07-02 <a href="about-drinking.html">关于喝酒</a></li>
-<li>2017-06-25 <a href="town-youth.html">小镇青年</a></li>
-<li>2017-06-18 <a href="kafka-on-the-shore.html">读《海边的卡夫卡》</a></li>
-<li>2017-06-14 <a href="huangshan.html">黄山行</a></li>
-<li>2017-02-25 <a href="calico.html">Calico 备忘</a></li>
-<li>2017-01-01 <a href="bye-2016.html">2016，小结</a></li>
-</ul>
-
-<hr />
-</div>
-</div>
-
-<div id="outline-container-org17e3db7" class="outline-3">
-<h3 id="org17e3db7"><span class="section-number-3">1.5</span> 2016</h3>
-<div class="outline-text-3" id="text-1-5">
-<ul class="org-ul">
-<li>2016-11-09 <a href="k8s-ingress.html">Kubernetes Ingress 服务负载均衡</a></li>
-<li>2016-04-20 <a href="go-pointers-defer-func.html">Go 指针、defer、匿名函数</a></li>
-<li>2016-03-27 <a href="docker-io-limit.html">Docker 磁盘 IO 资源限制</a></li>
-<li>2016-03-27 <a href="docker-cpu-limit.html">Docker CPU 资源限制</a></li>
-<li>2016-03-16 <a href="for-my-brother.html">马上毕业了，还能做些什么</a></li>
-<li>2016-03-08 <a href="docker-memory-limit.html">Docker 内存资源限制</a></li>
-<li>2016-02-17 <a href="rbd-docker-plugin.html">Docker 使用 Ceph RBD Volume</a></li>
-<li>2016-01-01 <a href="bye-2015.html">2015，小结</a></li>
-</ul>
-
-<hr />
-</div>
-</div>
-
-<div id="outline-container-org8b5f3f8" class="outline-3">
-<h3 id="org8b5f3f8"><span class="section-number-3">1.6</span> 2015</h3>
-<div class="outline-text-3" id="text-1-6">
-<ul class="org-ul">
-<li>2015-12-09 <a href="some-thoughts.html">我所能想到的一些事情</a></li>
-<li>2015-11-04 <a href="cadvisor.html">cAdvisor 容器数据采集</a></li>
-<li>2015-10-30 <a href="docker-storage-setup.html">Docker lvm device mapper</a></li>
-<li>2015-09-27 <a href="for-jerry.html">后会无期</a></li>
-<li>2015-08-14 <a href="revolution.html">革命，革谁的命</a></li>
-<li>2015-06-02 <a href="kvm-notes.html">KVM 学习笔记</a></li>
-<li>2015-05-03 <a href="kvm-ulimits.html">KVM 进程 ulimit 设置未生效</a></li>
-<li>2015-04-08 <a href="software-tips.html">软件开发者路线图摘要</a></li>
-<li>2015-01-26 <a href="bye-2014.html">2014，小结</a></li>
-<li>2015-01-14 <a href="mysql-blob.html">MySQL 大字段溢出数据回写失败</a></li>
-<li>2015-01-09 <a href="rsync.html">rsync 备份备忘</a></li>
-</ul>
-
-<hr />
-</div>
-</div>
-
-<div id="outline-container-orgf860f2d" class="outline-3">
-<h3 id="orgf860f2d"><span class="section-number-3">1.7</span> 2014</h3>
-<div class="outline-text-3" id="text-1-7">
-<ul class="org-ul">
-<li>2014-12-22 <a href="docker.html">Docker 学习笔记</a></li>
-<li>2014-12-19 <a href="sublime.html">Sublime Text2 tips</a></li>
-<li>2014-11-25 <a href="init-ssh.html">init 管理 ssh 服务</a></li>
-<li>2014-11-18 <a href="lvs-nat.html">One Network LVS-NAT</a></li>
-<li>2014-02-17 <a href="mysql-rep.html">MySQL 复制备忘</a></li>
-</ul>
-
-<hr />
-</div>
-</div>
-
-<div id="outline-container-org40f9968" class="outline-3">
-<h3 id="org40f9968"><span class="section-number-3">1.8</span> 2013</h3>
-<div class="outline-text-3" id="text-1-8">
-<ul class="org-ul">
-<li>2013-08-06 <a href="tmux.html">终端利器 Tmux</a></li>
-<li>2013-06-19 <a href="pdsh-pssh.html">批量主机管理 pdsh &amp; pssh</a></li>
-<li>2013-06-07 <a href="top.html">top command tips</a></li>
-</ul>
-</div>
+<div id="outline-container-org740265d" class="outline-2">
+<h2 id="org740265d"><span class="section-number-2">3</span> 小结</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+我们可以看出以上外部服务映射，externalName 和 Headless Service 方式映射外部服务是没有经过中间层代理的，都是通过 DNS 劫持实现。而有端口变更需求的时候，则要经过内部 kube-proxy 层转发。正常情况下，能尽可能少的引入中间层就少引用，特别是数据库类的应用，因为引入中间层虽然带来了便利，但也意味着可能会带来性能损耗，特别是那些对延迟比较敏感的服务。
+</p>
 </div>
 </div>
 </div>
