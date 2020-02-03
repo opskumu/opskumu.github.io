@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-03 Mon 22:39 -->
+<!-- 2020-02-03 Mon 22:42 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kumu's Blog</title>
+<title>Nginx Ingress 控制器工作机制</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
 <style type="text/css">
@@ -233,166 +233,140 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Kumu's Blog</h1>
+<h1 class="title">Nginx Ingress 控制器工作机制</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org9699119">1. Blog</a>
+<li><a href="#orgf366345">1. NGINX 配置</a></li>
+<li><a href="#orga2f4be3">2. NGINX 模型</a></li>
+<li><a href="#org5c508d3">3. 构建 NGINX 模型</a></li>
+<li><a href="#orgdc39bc8">4. 什么时候重新加载是必须的</a></li>
+<li><a href="#org451be0e">5. 避免重新加载</a>
 <ul>
-<li><a href="#org0bece8e">1.1. 2020</a></li>
-<li><a href="#org5a1f987">1.2. 2019</a></li>
-<li><a href="#orgd7dcc77">1.3. 2018</a></li>
-<li><a href="#org6e60285">1.4. 2017</a></li>
-<li><a href="#org17e3db7">1.5. 2016</a></li>
-<li><a href="#org8b5f3f8">1.6. 2015</a></li>
-<li><a href="#orgf860f2d">1.7. 2014</a></li>
-<li><a href="#org40f9968">1.8. 2013</a></li>
+<li><a href="#orgd7975e4">5.1. 避免 Endpoints 变更时重新加载</a></li>
+<li><a href="#orgc56beb7">5.2. 避免因错误的配置而中断</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
+<p>
+本文为 <a href="https://kubernetes.github.io/ingress-nginx/how-it-works/">NGINX ingress controller - How it works</a> 官方译文，这篇文章基本概括了 ingress-nginx 的工作机制，在这篇文章的基础上结合源码阅读对其原理会更深入。
+</p>
 
-<div id="outline-container-org9699119" class="outline-2">
-<h2 id="org9699119"><span class="section-number-2">1</span> Blog</h2>
+<hr />
+
+<p>
+本文的目的是说明 Nginx ingress controller 是如何工作的，特别是 Nginx 模型是如何构建的以及我们为何需要这个模型。
+</p>
+
+
+<div id="outline-container-orgf366345" class="outline-2">
+<h2 id="orgf366345"><span class="section-number-2">1</span> NGINX 配置</h2>
 <div class="outline-text-2" id="text-1">
+<p>
+Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求的主要含义是在配置文件有任何变更后都需要重新加载 NGINX。不过需要特别注意的是，在只有 <code>upstream</code> 配置变更的时候我们不需要重新加载 Nginx（即当你部署你的应用时 Endpoints 变更）。我们使用 <a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a> 达到这个目的。请通过<a href="https://kubernetes.github.io/ingress-nginx/how-it-works/#avoiding-reloads-on-endpoints-changes"> 下面的内容</a> 来学习我们如何做到这一点。
+</p>
 </div>
-<div id="outline-container-org0bece8e" class="outline-3">
-<h3 id="org0bece8e"><span class="section-number-3">1.1</span> 2020</h3>
-<div class="outline-text-3" id="text-1-1">
+</div>
+
+<div id="outline-container-orga2f4be3" class="outline-2">
+<h2 id="orga2f4be3"><span class="section-number-2">2</span> NGINX 模型</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+通常，一个 Kubernetes 控制器采用 <a href="https://coreos.com/kubernetes/docs/latest/replication-controller.html#the-reconciliation-loop-in-detail">synchronization loop pattern</a> 来检查控制器中所需的状态是否已更新或者需要变更。为了达到这个目的，我们需要使用集群的不同对象来构建模型，特别是（无特殊顺序）Ingresses，Services，Endpoints，Secrets，以及 Configmaps 来生成反映集群状态的时间点配置文件。
+</p>
+
+<p>
+为了从集群获取这些对象，我们使用 <a href="https://godoc.org/k8s.io/client-go/informers#NewFilteredSharedInformerFactory">Kubernetes Informers</a> ，特别是 <code>FilteredSharedInformer</code> 。当一个新的对象添加、修改或者移除的时候，informers 允许通过 <a href="https://godoc.org/k8s.io/client-go/tools/cache#ResourceEventHandlerFuncs">callbacks</a> 针对单个变更进行响应。不幸的是，没有办法知道一个特定的变更是否会影响最终的配置文件。因此在每次变更时，我们都必须基于集群的状态重新构建一个新模型，并将其和当前的模型进行比较。如果新模型等于当前模型，那么我们就可以避免生成新的 NGINX 配置并触发重新加载。相反的，我们只通过 Endpoints 检查不同。如果这样我们使用 HTTP POST 请求一个新的 Endpoints 列表发送给运行在 Nginx 中的 Lua 程序并且避免重新生成一个新的 NGINX 配置以及触发重新加载。如果运行的模型和当前的差异不仅仅是 Endpoints，我们则基于新的模型创建一个新的 NGINX 配置文件，替代当前的模型并触发一次重新加载。
+</p>
+
+<p>
+该模型的用途之一是状态没有变化时避免不必要的重新加载，并检测定义中的冲突。
+</p>
+
+<p>
+生成 NGINX 配置的最终画像是从一个 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/rootfs/etc/nginx/template/nginx.tmpl">Go template</a>，针对这个模板所需要的变量通过新的模型输入。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5c508d3" class="outline-2">
+<h2 id="org5c508d3"><span class="section-number-2">3</span> 构建 NGINX 模型</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+建立模型是一项成本比较高的操作，基于这个原因，使用同步循环是必须的。通过使用 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/internal/task/queue.go#L38">work queue</a>，可以不丢失变更并通过 <a href="https://golang.org/pkg/sync/#Mutex">sync.Mutex</a> 移除来强制执行一次同步循环，此外还可以在同步循环的开始和结束之间创建一个时间窗口，从而允许我们摒弃不必要的更新。重要的是要理解，集群中的任何变更都会生成事件，然后 informer 会发送给控制器，这也是使用 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/internal/task/queue.go#L38">work queue</a> 的原因之一。
+</p>
+
+<p>
+建立模型的操作方式：
+</p>
+
 <ul class="org-ul">
-<li>2020-02-03 <a href="how-k8s-ingress-works.html">Nginx Ingress 控制器工作机制</a></li>
-<li>2020-01-20 <a href="kubernetes-ext-service.html">Kubernetes 外部服务映射</a></li>
-<li>2020-01-01 <a href="bye-2019.html">2019，小结</a></li>
+<li>通过 <code>CreationTimestamp</code> 字段对 Ingress 规则排序，即最早创建的规则优先</li>
+<li>如果相同 host 的相同路径被多个 Ingress 定义，那么最早创建的规则优先</li>
+<li>如果多个 Ingress 包含相同 host 的 TLS 部分，那么最早创建的规则优先</li>
+<li>如果多个 Ingresses 定义了一个 annotation 影响到 Server block 配置，那么最早创建的规则优先</li>
+<li>创建一个 NGINX Servers 列表（每个主机名）</li>
+<li>创建一个 NGINX Upstreams 列表</li>
+<li>如果多个 Ingresses 定义了同一个 host 的不同路径，ingress 控制器会合并这些定义</li>
+<li>Annotations 被应用于这个 Ingress 的所有路径</li>
+<li>多个 Ingresses 可以定义不同的 annotations。这些定义不会在 Ingresses 之间共享</li>
 </ul>
-
-<hr />
 </div>
 </div>
 
-<div id="outline-container-org5a1f987" class="outline-3">
-<h3 id="org5a1f987"><span class="section-number-3">1.2</span> 2019</h3>
-<div class="outline-text-3" id="text-1-2">
+<div id="outline-container-orgdc39bc8" class="outline-2">
+<h2 id="orgdc39bc8"><span class="section-number-2">4</span> 什么时候重新加载是必须的</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+接下来的场景描述什么时候需要重新加载：
+</p>
+
 <ul class="org-ul">
-<li>2019-11-26 <a href="wacai-docker.html">挖财 Kubernetes 容器化之路</a></li>
-<li>2019-10-10 <a href="xinjiang-2019.html">北疆秋色</a></li>
-<li>2019-06-04 <a href="kubernetes-app.html">一个 HTTP 应用在 Kubernetes 的运行形式</a></li>
-<li>2019-02-11 <a href="nian.html">过年期间</a></li>
-<li>2019-01-06 <a href="just-for-fun.html">只是为了好玩</a></li>
-<li>2019-01-01 <a href="bye-2018.html">2018，小结</a></li>
+<li>新的 Ingress 资源创建</li>
+<li>添加 TLS 部分到现有的 Ingress</li>
+<li>变更 Ingress annotations 并不仅仅影响 upstream 配置。对于实例 <code>load-balance</code> annotation 不需要重新加载</li>
+<li>Ingress 的路径被添加/移除</li>
+<li>一个 Ingress，Service、Secret 被移除</li>
+<li>一些 Ingress 缺少引用的对象可用时，如 Service 或者 Secret</li>
+<li>一个 Secret 被更新</li>
 </ul>
-
-<hr />
 </div>
 </div>
 
-<div id="outline-container-orgd7dcc77" class="outline-3">
-<h3 id="orgd7dcc77"><span class="section-number-3">1.3</span> 2018</h3>
-<div class="outline-text-3" id="text-1-3">
-<ul class="org-ul">
-<li>2018-12-23 <a href="borg.html">Google 大规模集群管理器 Borg</a></li>
-<li>2018-11-18 <a href="k8s-pod-affinity-antiaffinity.html">Kubernetes Pod 亲和性和反亲和性</a></li>
-<li>2018-09-07 <a href="kubernetes-upgrade-notes.html">Kubernetes 版本升级标注</a></li>
-<li>2018-09-05 <a href="docker-overlayfs.html">Docker OverlayFS 驱动</a></li>
-<li>2018-08-28 <a href="2018-summer.html">夏日二三事</a></li>
-<li>2018-07-26 <a href="go-programming-language.html">The Go Programming Language 摘要</a></li>
-<li>2018-07-26 <a href="pets-vs-cattle.html">Pets vs Cattle 历史以及如何正确类比</a></li>
-<li>2018-05-01 <a href="about-30.html">三十岁的模样</a></li>
-<li>2018-04-01 <a href="cd-base.html">持续交付基础摘要</a></li>
-<li>2018-03-13 <a href="this-months-2018.html">三月琐事</a></li>
-<li>2018-01-01 <a href="bye-2017.html">2017，小结</a></li>
-</ul>
+<div id="outline-container-org451be0e" class="outline-2">
+<h2 id="org451be0e"><span class="section-number-2">5</span> 避免重新加载</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+在某些情况下，有可能避免重新加载，尤其是在 endpoints 发送变化的时候，如 pod 启动或者被替换时。完全移除重新加载这超过了 Ingress 控制器的范围。这将需要大量的工作，并且有时没有任何意义。仅当 NGINX 变更了读取新配置的方式时，这才可以变更，基本上，新的变更不会替代工作进程。
+</p>
+</div>
 
-<hr />
+<div id="outline-container-orgd7975e4" class="outline-3">
+<h3 id="orgd7975e4"><span class="section-number-3">5.1</span> 避免 Endpoints 变更时重新加载</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+在每个 endpoint 变更上，控制器从所有能看到的服务上获取 endpoints 并生成相应的后端对象。然后将这些对象发送给运行在 Nginx 内部的 Lua 处理程序。Lua 程序将这些后端存储在共享内存区域。然后对于在 <code>balancer_by_lua</code> 上下文运行的每个请求，Lua 代码检测 endpoints 选择对应 upstream 并应用已经配置的负载均衡算法。Nginx 负责其余的工作。这样，我们避免在 endpoint 变更时重新加载 Nginx。注意，这也包括仅影响 Nginx <code>upstream</code> 配置的 annoations 变更。
+</p>
+
+<p>
+在频繁部署应用的较大集群中，这个特性可以避免大量的 Nginx 重新加载，否则会影响响应延迟，负责均衡质量（每一次重新加载 Nginx 都会重置负载均衡状态）等等。
+</p>
 </div>
 </div>
 
-<div id="outline-container-org6e60285" class="outline-3">
-<h3 id="org6e60285"><span class="section-number-3">1.4</span> 2017</h3>
-<div class="outline-text-3" id="text-1-4">
-<ul class="org-ul">
-<li>2017-11-12 <a href="graceful-shutdown-docker.html">如何优雅的关闭容器</a></li>
-<li>2017-09-17 <a href="slow-down.html">要不，慢点吧</a></li>
-<li>2017-09-09 <a href="persistence.html">坚持这件小事儿</a></li>
-<li>2017-08-05 <a href="young.html">一如少年模样</a></li>
-<li>2017-07-18 <a href="summer.html">夏天的记忆</a></li>
-<li>2017-07-16 <a href="docker-gpu.html">Docker 中玩转 GPU</a></li>
-<li>2017-07-08 <a href="about-hangzhou.html">关于杭州</a></li>
-<li>2017-07-02 <a href="about-drinking.html">关于喝酒</a></li>
-<li>2017-06-25 <a href="town-youth.html">小镇青年</a></li>
-<li>2017-06-18 <a href="kafka-on-the-shore.html">读《海边的卡夫卡》</a></li>
-<li>2017-06-14 <a href="huangshan.html">黄山行</a></li>
-<li>2017-02-25 <a href="calico.html">Calico 备忘</a></li>
-<li>2017-01-01 <a href="bye-2016.html">2016，小结</a></li>
-</ul>
+<div id="outline-container-orgc56beb7" class="outline-3">
+<h3 id="orgc56beb7"><span class="section-number-3">5.2</span> 避免因错误的配置而中断</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+因为 ingress 控制器使用 <a href="https://coreos.com/kubernetes/docs/latest/replication-controller.html#the-reconciliation-loop-in-detail">synchronization loop pattern</a>，它对所有匹配到的对象应用配置。如果某些 ingress 对象配置损坏，如 <code>nginx.ingress.kubernetes.io/configuration-snippet</code> annotation 语法错误，生成的配置变得不可用，将不会重新加载并不再考虑其它入口。
+</p>
 
-<hr />
-</div>
-</div>
-
-<div id="outline-container-org17e3db7" class="outline-3">
-<h3 id="org17e3db7"><span class="section-number-3">1.5</span> 2016</h3>
-<div class="outline-text-3" id="text-1-5">
-<ul class="org-ul">
-<li>2016-11-09 <a href="k8s-ingress.html">Kubernetes Ingress 服务负载均衡</a></li>
-<li>2016-04-20 <a href="go-pointers-defer-func.html">Go 指针、defer、匿名函数</a></li>
-<li>2016-03-27 <a href="docker-io-limit.html">Docker 磁盘 IO 资源限制</a></li>
-<li>2016-03-27 <a href="docker-cpu-limit.html">Docker CPU 资源限制</a></li>
-<li>2016-03-16 <a href="for-my-brother.html">马上毕业了，还能做些什么</a></li>
-<li>2016-03-08 <a href="docker-memory-limit.html">Docker 内存资源限制</a></li>
-<li>2016-02-17 <a href="rbd-docker-plugin.html">Docker 使用 Ceph RBD Volume</a></li>
-<li>2016-01-01 <a href="bye-2015.html">2015，小结</a></li>
-</ul>
-
-<hr />
-</div>
-</div>
-
-<div id="outline-container-org8b5f3f8" class="outline-3">
-<h3 id="org8b5f3f8"><span class="section-number-3">1.6</span> 2015</h3>
-<div class="outline-text-3" id="text-1-6">
-<ul class="org-ul">
-<li>2015-12-09 <a href="some-thoughts.html">我所能想到的一些事情</a></li>
-<li>2015-11-04 <a href="cadvisor.html">cAdvisor 容器数据采集</a></li>
-<li>2015-10-30 <a href="docker-storage-setup.html">Docker lvm device mapper</a></li>
-<li>2015-09-27 <a href="for-jerry.html">后会无期</a></li>
-<li>2015-08-14 <a href="revolution.html">革命，革谁的命</a></li>
-<li>2015-06-02 <a href="kvm-notes.html">KVM 学习笔记</a></li>
-<li>2015-05-03 <a href="kvm-ulimits.html">KVM 进程 ulimit 设置未生效</a></li>
-<li>2015-04-08 <a href="software-tips.html">软件开发者路线图摘要</a></li>
-<li>2015-01-26 <a href="bye-2014.html">2014，小结</a></li>
-<li>2015-01-14 <a href="mysql-blob.html">MySQL 大字段溢出数据回写失败</a></li>
-<li>2015-01-09 <a href="rsync.html">rsync 备份备忘</a></li>
-</ul>
-
-<hr />
-</div>
-</div>
-
-<div id="outline-container-orgf860f2d" class="outline-3">
-<h3 id="orgf860f2d"><span class="section-number-3">1.7</span> 2014</h3>
-<div class="outline-text-3" id="text-1-7">
-<ul class="org-ul">
-<li>2014-12-22 <a href="docker.html">Docker 学习笔记</a></li>
-<li>2014-12-19 <a href="sublime.html">Sublime Text2 tips</a></li>
-<li>2014-11-25 <a href="init-ssh.html">init 管理 ssh 服务</a></li>
-<li>2014-11-18 <a href="lvs-nat.html">One Network LVS-NAT</a></li>
-<li>2014-02-17 <a href="mysql-rep.html">MySQL 复制备忘</a></li>
-</ul>
-
-<hr />
-</div>
-</div>
-
-<div id="outline-container-org40f9968" class="outline-3">
-<h3 id="org40f9968"><span class="section-number-3">1.8</span> 2013</h3>
-<div class="outline-text-3" id="text-1-8">
-<ul class="org-ul">
-<li>2013-08-06 <a href="tmux.html">终端利器 Tmux</a></li>
-<li>2013-06-19 <a href="pdsh-pssh.html">批量主机管理 pdsh &amp; pssh</a></li>
-<li>2013-06-07 <a href="top.html">top command tips</a></li>
-</ul>
+<p>
+为了防止这种情况发生，nginx ingress 控制器选择暴露一个 <a href="https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#validatingadmissionwebhook">validating admission webhook server</a> 以确保传入的 ingress 对象可用性。这个 webhook 把传入的 ingress 对象追加到 ingresses 列表上，生成配置并调用 nginx 以确保配置没有语法错误。
+</p>
 </div>
 </div>
 </div>
