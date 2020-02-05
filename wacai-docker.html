@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-04 Wed 11:31 -->
+<!-- 2020-02-05 Wed 19:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>挖财 Kubernetes 容器化之路</title>
@@ -252,7 +252,8 @@ for the JavaScript code in this tag.
 <li><a href="#orge80e447">3.3. 网络</a></li>
 <li><a href="#org84571b9">3.4. 日志</a></li>
 <li><a href="#org67b0228">3.5. 监控告警</a></li>
-<li><a href="#org4524857">3.6. 其它</a></li>
+<li><a href="#org80d41e5">3.6. 用户行为分析和统计</a></li>
+<li><a href="#orgfd4027e">3.7. 其它</a></li>
 </ul>
 </li>
 <li><a href="#org352589c">4. 趟过的坑</a>
@@ -266,7 +267,7 @@ for the JavaScript code in this tag.
 <li><a href="#org18360bc">4.7. 容器内自定义时间的问题</a></li>
 </ul>
 </li>
-<li><a href="#org5787eb1">5. 其它</a>
+<li><a href="#org98385f3">5. 其它</a>
 <ul>
 <li><a href="#orgf497355">5.1. 技术之外，产品本身</a></li>
 <li><a href="#org53d1f0d">5.2. 基于容器的云原生应用设计原则</a></li>
@@ -387,6 +388,24 @@ for the JavaScript code in this tag.
 <p>
 我们内部最开始使用的 K8s 版本为 1.3.x，早期 K8s 这块的用户和权限管理并不完善（后续的 RBAC 机制个人认为也很繁琐）。我们自行在 K2 上实现了一套用户和权限管理机制，权限只在空间层，应用层权限受限于空间角色（在某些场景空间层权限并不能满足需求，我们内部的另外一个版本是细化到应用层的）。测试环境和生产环境功能性是有细微差别的，比如测试环境所有的资源都是自助式的，而生产环境保持尽可能的自助化条件下，引入了一些资源申请机制（如生产环境空间需要走 <code>审批流程</code> ）。测试环境的空间还引入了 <code>生命周期机制</code> ，在有效期内用户可以续期（续期有上限），如果过期则会自动销毁（提醒续期的同时会备份编排文件，即使销毁了也可以轻易的恢复）。空间生命周期一定程度上提升了资源利用率，而生产环境的空间则没有有效期一说。因为业务的特殊性，CPU 资源利用率是非常低的，因此我们测试环境节点和生产环境节点 CPU 都是超配的（limits 和 requests 控制）。为了稳定性生产环境内存是没有超配的，但测试环境内存则是 2 倍超配的。测试环境提供了 Web 终端工具，方便用户登录容器，而生产环境一是为了安全和审计并没有提供 Web 终端工具。我们在堡垒机上提供了 <code>k2ctl</code> 命令行工具方便用户登录线上容器， <code>k2ctl</code> 集成了 K2 的权限控制，原理也很简单，底层封装 <code>kubectl</code> 。等等，以上只是列举了一部分测试环境和生产环境功能区别，简单来说在实际场景下，测试环境的自由度要更高，功能性也更多，而生产环境则是安全和稳定性排在首位，其它的细节这里就不过多介绍了。
 </p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-clone.png" alt="k2-app-clone.png" />
+</p>
+</div>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-statefulset.png" alt="k2-app-statefulset.png" />
+</p>
+</div>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-canary.png" alt="k2-app-canary.png" />
+</p>
+</div>
 </div>
 </div>
 
@@ -500,9 +519,24 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org4524857" class="outline-3">
-<h3 id="org4524857"><span class="section-number-3">3.6</span> 其它</h3>
+<div id="outline-container-org80d41e5" class="outline-3">
+<h3 id="org80d41e5"><span class="section-number-3">3.6</span> 用户行为分析和统计</h3>
 <div class="outline-text-3" id="text-3-6">
+<p>
+针对用户在平台的操作，我们后端服务对相关的接口操作做了一些埋点，统一上报内部的 DataStat 平台，根据这些数据一方面是统计相关的数据，另外一方面则是分析用户的操作然后再改善平台（如根据访问频次确定核心用户，咨询他们采纳一些合理的意见等等）。
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-datastat.png" alt="k2-app-datastat.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfd4027e" class="outline-3">
+<h3 id="orgfd4027e"><span class="section-number-3">3.7</span> 其它</h3>
+<div class="outline-text-3" id="text-3-7">
 <p>
 针对完整的组件和架构方案，可以具体看下图：
 </p>
@@ -673,15 +707,15 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </div>
 </div>
 
-<div id="outline-container-org5787eb1" class="outline-2">
-<h2 id="org5787eb1"><span class="section-number-2">5</span> 其它</h2>
+<div id="outline-container-org98385f3" class="outline-2">
+<h2 id="org98385f3"><span class="section-number-2">5</span> 其它</h2>
 <div class="outline-text-2" id="text-5">
 </div>
 <div id="outline-container-orgf497355" class="outline-3">
 <h3 id="orgf497355"><span class="section-number-3">5.1</span> 技术之外，产品本身</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
-容器化相关，技术的比重是非常高的，如果容器底层不稳定，就没有上层一说了，但是又不能局限于技术。K2 这个项目可以在内部不断迭代的原因就是产品本身，2018 年初加入的小伙伴给 K2 注入了很多产品化的实质性东西。从最初 K2 只是一个单一的容器平台，慢慢的和内部平台融合成为了现在的挖财云。各平台的聚合，本身就是技术的融合，也是入口的融合。融合的同时还解决了内部跨各个平台协作的效率问题，这些带来的效益是显而易见的。对比 1.0 时候的 K2，无论从用户体验，还是上手成本都有非常大的提升。
+容器化相关，技术的比重是非常高的，如果容器底层不稳定，就没有上层一说了，但是又不能局限于技术。K2 这个项目可以在内部不断迭代的原因就是产品本身，2018 年初加入的 <a href="http://zhangjiee.com/">小伙伴</a> 给 K2 注入了很多产品化的实质性东西。从最初 K2 只是一个单一的容器平台，慢慢的和内部平台融合成为了现在的挖财云。各平台的聚合，本身就是技术的融合，也是入口的融合。融合的同时还解决了内部跨各个平台协作的效率问题，这些带来的效益是显而易见的。对比 1.0 时候的 K2，无论从用户体验，还是上手成本都有非常大的提升。
 </p>
 </div>
 </div>
