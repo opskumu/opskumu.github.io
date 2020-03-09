@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-02-05 Wed 19:35 -->
+<!-- 2020-03-09 Mon 15:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>挖财 Kubernetes 容器化之路</title>
@@ -253,7 +253,7 @@ for the JavaScript code in this tag.
 <li><a href="#org84571b9">3.4. 日志</a></li>
 <li><a href="#org67b0228">3.5. 监控告警</a></li>
 <li><a href="#org80d41e5">3.6. 用户行为分析和统计</a></li>
-<li><a href="#orgfd4027e">3.7. 其它</a></li>
+<li><a href="#org98385f3">3.7. 其它</a></li>
 </ul>
 </li>
 <li><a href="#org352589c">4. 趟过的坑</a>
@@ -267,7 +267,7 @@ for the JavaScript code in this tag.
 <li><a href="#org18360bc">4.7. 容器内自定义时间的问题</a></li>
 </ul>
 </li>
-<li><a href="#org98385f3">5. 其它</a>
+<li><a href="#org5ff3c6b">5. 其它</a>
 <ul>
 <li><a href="#orgf497355">5.1. 技术之外，产品本身</a></li>
 <li><a href="#org53d1f0d">5.2. 基于容器的云原生应用设计原则</a></li>
@@ -534,8 +534,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgfd4027e" class="outline-3">
-<h3 id="orgfd4027e"><span class="section-number-3">3.7</span> 其它</h3>
+<div id="outline-container-org98385f3" class="outline-3">
+<h3 id="org98385f3"><span class="section-number-3">3.7</span> 其它</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 针对完整的组件和架构方案，可以具体看下图：
@@ -698,6 +698,12 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 测试需求偶尔会有自定义服务器时间的问题，但是在容器内这个问题基本还处于无解状态。
 </p>
 
+<blockquote>
+<p>
+经网友 <code>79</code> 提醒，可以采用 libfaketime 来修改容器时间 <a href="https://github.com/wolfcw/libfaketime">https://github.com/wolfcw/libfaketime</a> ，虽然会有些成本，不过大部分场景应该是适用的，感谢指出。
+</p>
+</blockquote>
+
 <hr />
 
 <p>
@@ -707,8 +713,8 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </div>
 </div>
 
-<div id="outline-container-org98385f3" class="outline-2">
-<h2 id="org98385f3"><span class="section-number-2">5</span> 其它</h2>
+<div id="outline-container-org5ff3c6b" class="outline-2">
+<h2 id="org5ff3c6b"><span class="section-number-2">5</span> 其它</h2>
 <div class="outline-text-2" id="text-5">
 </div>
 <div id="outline-container-orgf497355" class="outline-3">
