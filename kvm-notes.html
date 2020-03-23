@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-27 Wed 23:32 -->
+<!-- 2020-03-23 Mon 16:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KVM 学习笔记</title>
@@ -559,12 +559,12 @@ disk size: 954M
 </pre>
 
 <ul class="org-ul">
-<li>（4） convert [-c] [-f fmt] [-O output_fmt] [-o options] filename
-[filename2 [&#x2026;]] output_filename</li>
+<li>（4） convert [-c] [-f fmt] [-O output<sub>fmt</sub>] [-o options] filename
+[filename2 [&#x2026;]] output<sub>filename</sub></li>
 </ul>
 
 <p>
-镜像格式转换，将 fmt 格式的 filename 镜像文件根据 options 选项转换为格式为 <code>output_fmt</code> 的名为 <code>output_filename</code> 的镜像文件。它支持不同格式的镜像文件之间的转换，比如可以用 VMware 用的 vmdk 格式文件转换为 qcow2 文件，这对从其他虚拟化方案转移到 KVM 上的用户非常有用。一般来说，输入文件格式 fmt 由 qemu-img 工具自动检测到，而输出文件格式 output_fmt 根据自己需要来指定，默认会被转换为与 raw 文件格式（且默认使用稀疏文件的方式存储以节省存储空间）。 其中， <code>-c</code> 参数是对输出的镜像文件进行压缩，不过只有 qcow2 和 qcow 格式的镜像文件才支持压缩，而且这种压缩是只读的，如果压缩的扇区被重写，则会被重写为未压缩的数据。同样可以使用 <code>-o options</code> 来指定各种选项，如：后端镜像、文件大小、是否加密等等。使用 <code>backing_file</code> 选项来指定后端镜像，让生成的文件是 <code>copy-on-write</code> 的增量文件，这时必须让转换命令中指定的后端镜像与输入文件的后端镜像的内容是相同的，尽管它们各自后端镜像的目录、格式可能不同。
+镜像格式转换，将 fmt 格式的 filename 镜像文件根据 options 选项转换为格式为 <code>output_fmt</code> 的名为 <code>output_filename</code> 的镜像文件。它支持不同格式的镜像文件之间的转换，比如可以用 VMware 用的 vmdk 格式文件转换为 qcow2 文件，这对从其他虚拟化方案转移到 KVM 上的用户非常有用。一般来说，输入文件格式 fmt 由 qemu-img 工具自动检测到，而输出文件格式 output<sub>fmt</sub> 根据自己需要来指定，默认会被转换为与 raw 文件格式（且默认使用稀疏文件的方式存储以节省存储空间）。 其中， <code>-c</code> 参数是对输出的镜像文件进行压缩，不过只有 qcow2 和 qcow 格式的镜像文件才支持压缩，而且这种压缩是只读的，如果压缩的扇区被重写，则会被重写为未压缩的数据。同样可以使用 <code>-o options</code> 来指定各种选项，如：后端镜像、文件大小、是否加密等等。使用 <code>backing_file</code> 选项来指定后端镜像，让生成的文件是 <code>copy-on-write</code> 的增量文件，这时必须让转换命令中指定的后端镜像与输入文件的后端镜像的内容是相同的，尽管它们各自后端镜像的目录、格式可能不同。
 </p>
 
 <p>
@@ -785,7 +785,7 @@ Virtio 半虚拟化驱动的方式，可以获得很好的 I/O 性能，其性�
 </p>
 
 <p>
-<b>virtio_net 和 vhost_net</b>
+<b>virtio<sub>net</sub> 和 vhost<sub>net</sub></b>
 </p>
 
 
@@ -795,15 +795,15 @@ Virtio 半虚拟化驱动的方式，可以获得很好的 I/O 性能，其性�
 </div>
 
 <p>
-使用 virtio_net 半虚拟化驱动，可以提高网络吞吐量和降低网络延迟。vhost_net 能够把网络 IO 请求的后端处理在内核空间完成，则效率更高，会提高网络吞吐量和减少网络延迟。
+使用 virtio<sub>net</sub> 半虚拟化驱动，可以提高网络吞吐量和降低网络延迟。vhost<sub>net</sub> 能够把网络 IO 请求的后端处理在内核空间完成，则效率更高，会提高网络吞吐量和减少网络延迟。
 </p>
 
 <p>
-<b>virtio_blk</b>
+<b>virtio<sub>blk</sub></b>
 </p>
 
 <p>
-virtio_blk 驱动使用 virtio API 为客户机提供了一个高效访问块设备 I/O 的方法。使用 virtio_blk 驱动的磁盘显示为 <code>/dev/vd*</code> 。
+virtio<sub>blk</sub> 驱动使用 virtio API 为客户机提供了一个高效访问块设备 I/O 的方法。使用 virtio<sub>blk</sub> 驱动的磁盘显示为 <code>/dev/vd*</code> 。
 </p>
 
 <p>
@@ -917,6 +917,11 @@ libvirt 主要由三个部分组成，它们分别是：应用程序编程接口
 </ul>
 </div>
 </div>
+</div>
+<div id="postamble" class="status">
+<a class="author"
+         href="https://blog.opskumu.com">Kumu</a> / <span
+         class="date">2015-06-02 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
 </div>
 </body>
 </html>

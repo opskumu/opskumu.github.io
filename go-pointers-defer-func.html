@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-27 Wed 23:32 -->
+<!-- 2020-03-23 Mon 16:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Go 指针、defer、匿名函数</title>
@@ -262,22 +262,22 @@ for the JavaScript code in this tag.
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go">package main
+<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">package</span> main
 
-import "fmt"
+<span style="color: #268bd2; font-weight: bold;">import</span> <span style="color: #2aa198;">"fmt"</span>
 
-type number int
+<span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #df005f; font-weight: bold;">number</span> <span style="color: #df005f; font-weight: bold;">int</span>
 
-func main() {
-    var m number
-    var n *number   // 定义 n 为指针类型
+<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
+    <span style="color: #268bd2; font-weight: bold;">var</span> <span style="color: #8787d7;">m</span> <span style="color: #df005f; font-weight: bold;">number</span>
+    <span style="color: #268bd2; font-weight: bold;">var</span> <span style="color: #8787d7;">n</span> *<span style="color: #df005f; font-weight: bold;">number</span>   <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#23450;&#20041; n &#20026;&#25351;&#38024;&#31867;&#22411;</span>
 
     m = 1
-    n = &amp;m          // 指针 n 赋值
+    n = &amp;m          <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#25351;&#38024; n &#36171;&#20540;</span>
 
-    fmt.Println(m)
-    fmt.Println(n)  // 输出地址
-    fmt.Println(*n) // 输出为 1
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(m)
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(n)  <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#36755;&#20986;&#22320;&#22336;</span>
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(*n) <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#36755;&#20986;&#20026; 1</span>
 }
 </pre>
 </div>
@@ -321,18 +321,18 @@ defer 语句的执行顺序类似栈的概念， <b>后进先出</b> 。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">package main
+<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">package</span> main
 
-import "fmt"
+<span style="color: #268bd2; font-weight: bold;">import</span> <span style="color: #2aa198;">"fmt"</span>
 
-func main() {
-    fmt.Println("counting")
+<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #2aa198;">"counting"</span>)
 
-    for i := 0; i &lt; 10; i++ {
-        defer fmt.Println(i)  // 输出结果是 9， 8， 7, ..., 0
+    <span style="color: #268bd2; font-weight: bold;">for</span> <span style="color: #8787d7;">i</span> := 0; i &lt; 10; i++ {
+        <span style="color: #268bd2; font-weight: bold;">defer</span> fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(i)  <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#36755;&#20986;&#32467;&#26524;&#26159; 9&#65292; 8&#65292; 7, ..., 0</span>
     }
 
-    fmt.Println("done")
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #2aa198;">"done"</span>)
 }
 </pre>
 </div>
@@ -347,24 +347,24 @@ Go 不能在函数内部显式嵌套定义函数，但是可以定义一个匿�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">package main
+<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">package</span> main
 
-import "fmt"
+<span style="color: #268bd2; font-weight: bold;">import</span> <span style="color: #2aa198;">"fmt"</span>
 
-func f(i int) func() int {
-    return func() int {
+<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">f</span>(<span style="color: #8787d7;">i</span> <span style="color: #df005f; font-weight: bold;">int</span>) <span style="color: #268bd2; font-weight: bold;">func</span>() <span style="color: #df005f; font-weight: bold;">int</span> {
+    <span style="color: #268bd2; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">func</span>() <span style="color: #df005f; font-weight: bold;">int</span> {
         i++
-        return i
+        <span style="color: #268bd2; font-weight: bold;">return</span> i
     }
 }
 
-func main() {
-    m1 := f(2)
-    fmt.Println(m1())    // 指针指向 i, i = 2, 输出 3
-    fmt.Println(m1())    // 指针指向 i, i = 3, 输出 4
+<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
+    <span style="color: #8787d7;">m1</span> := <span style="color: #d75fd7; font-weight: bold;">f</span>(2)
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #d75fd7; font-weight: bold;">m1</span>())    <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#25351;&#38024;&#25351;&#21521; i, i = 2, &#36755;&#20986; 3</span>
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #d75fd7; font-weight: bold;">m1</span>())    <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#25351;&#38024;&#25351;&#21521; i, i = 3, &#36755;&#20986; 4</span>
 
-    m2 := f(2)
-    fmt.Println(m2())    // 指针指向 另外一个 i，i = 2，输出 3
+    <span style="color: #8787d7;">m2</span> := <span style="color: #d75fd7; font-weight: bold;">f</span>(2)
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #d75fd7; font-weight: bold;">m2</span>())    <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#25351;&#38024;&#25351;&#21521; &#21478;&#22806;&#19968;&#20010; i&#65292;i = 2&#65292;&#36755;&#20986; 3</span>
 }
 </pre>
 </div>
@@ -379,29 +379,29 @@ func main() {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">package main
+<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">package</span> main
 
-import "fmt"
+<span style="color: #268bd2; font-weight: bold;">import</span> <span style="color: #2aa198;">"fmt"</span>
 
-type number int
+<span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #df005f; font-weight: bold;">number</span> <span style="color: #df005f; font-weight: bold;">int</span>
 
-func (n number) print() {
-    fmt.Printf("输出 number 值 print: %v\n", n)
+<span style="color: #268bd2; font-weight: bold;">func</span> (<span style="color: #8787d7;">n</span> <span style="color: #df005f; font-weight: bold;">number</span>) <span style="color: #268bd2;">print</span>() {
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Printf</span>(<span style="color: #2aa198;">"&#36755;&#20986; number &#20540; print: %v\n"</span>, n)
 }
-func (n *number) pprint() {
-    fmt.Printf("输出 number 值 pprint: %v\n", *n)
+<span style="color: #268bd2; font-weight: bold;">func</span> (<span style="color: #8787d7;">n</span> *<span style="color: #df005f; font-weight: bold;">number</span>) <span style="color: #d75fd7; font-weight: bold;">pprint</span>() {
+    fmt.<span style="color: #d75fd7; font-weight: bold;">Printf</span>(<span style="color: #2aa198;">"&#36755;&#20986; number &#20540; pprint: %v\n"</span>, *n)
 }
 
-func main() {
-    var n number
+<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
+    <span style="color: #268bd2; font-weight: bold;">var</span> <span style="color: #8787d7;">n</span> <span style="color: #df005f; font-weight: bold;">number</span>
 
-    defer n.print()
-    defer n.pprint()
-    defer func() {
-        n.print()
+    <span style="color: #268bd2; font-weight: bold;">defer</span> n.<span style="color: #268bd2;">print</span>()
+    <span style="color: #268bd2; font-weight: bold;">defer</span> n.<span style="color: #d75fd7; font-weight: bold;">pprint</span>()
+    <span style="color: #268bd2; font-weight: bold;">defer</span> <span style="color: #268bd2; font-weight: bold;">func</span>() {
+        n.<span style="color: #268bd2;">print</span>()
     }()
-    defer func() {
-        n.pprint()
+    <span style="color: #268bd2; font-weight: bold;">defer</span> <span style="color: #268bd2; font-weight: bold;">func</span>() {
+        n.<span style="color: #d75fd7; font-weight: bold;">pprint</span>()
     }()
 
     n = 3
@@ -426,6 +426,11 @@ func main() {
 </p>
 </div>
 </div>
+</div>
+<div id="postamble" class="status">
+<a class="author"
+         href="https://blog.opskumu.com">Kumu</a> / <span
+         class="date">2019-04-20 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
 </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-27 Wed 23:32 -->
+<!-- 2020-03-23 Mon 16:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL 大字段溢出导致数据回写失败</title>
@@ -268,7 +268,7 @@ for the JavaScript code in this tag.
 
 <blockquote>
 <p>
-Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using ROW_FORMAT=DYNAMIC or ROW_FORMAT=COMPRESSED may help. In current row format, BLOB prefix of 768 bytes is stored inline.
+Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using ROW<sub>FORMAT</sub>=DYNAMIC or ROW<sub>FORMAT</sub>=COMPRESSED may help. In current row format, BLOB prefix of 768 bytes is stored inline.
 </p>
 </blockquote>
 
@@ -384,7 +384,7 @@ mysql&gt;
 <ol class="org-ol">
 <li>msyql&gt; stop slave;</li>
 <li>修改 slave <code>innodb_file_format=BARRACUDA</code> 「并添加该值到 my.cnf」和表 <code>row_format=dynamic</code></li>
-<li>mysql&gt; SET GLOBAL SQL_SLAVE_SKIP_COUNTER = 1; # 1 表示跳过 1 个 events</li>
+<li>mysql&gt; SET GLOBAL SQL<sub>SLAVE</sub><sub>SKIP</sub><sub>COUNTER</sub> = 1; # 1 表示跳过 1 个 events</li>
 <li>mysql&gt; start slave;</li>
 </ol>
 
@@ -540,6 +540,11 @@ mysql&gt;
 </p>
 </div>
 </div>
+</div>
+<div id="postamble" class="status">
+<a class="author"
+         href="https://blog.opskumu.com">Kumu</a> / <span
+         class="date">2015-01-14 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
 </div>
 </body>
 </html>

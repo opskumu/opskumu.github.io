@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-27 Wed 23:32 -->
+<!-- 2020-03-23 Mon 16:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 学习笔记</title>
@@ -382,10 +382,10 @@ for the JavaScript code in this tag.
 <li><a href="#org1b8ab81">8.4. 删除 Volumes</a></li>
 </ul>
 </li>
-<li><a href="#org4ff5fba">9. 链接容器</a>
+<li><a href="#org2279530">9. 链接容器</a>
 <ul>
 <li><a href="#org1fa99a3">9.1. 容器命名</a></li>
-<li><a href="#orgee53ee5">9.2. 链接容器</a>
+<li><a href="#org351c4cf">9.2. 链接容器</a>
 <ul>
 <li><a href="#org01ed06d">9.2.1. 环境变量</a></li>
 <li><a href="#org7603c1e">9.2.2. 更新 <code>/etc/hosts</code> 文件</a></li>
@@ -616,7 +616,7 @@ container 中进程交互还是采用 Linux 常见的进程间交互方法 (inte
 <h3 id="org30f76d7"><span class="section-number-3">1.6</span> 资源配额「cgroups」</h3>
 <div class="outline-text-3" id="text-1-6">
 <p>
-cgroups 实现了对资源的配额和度量。 cgroups 的使用非常简单，提供类似文件的接口，在 /cgroup 目录下新建一个文件夹即可新建一个 group，在此文件夹中新建 task 文件，并将 pid 写入该文件，即可实现对该进程的资源控制。具体的资源配置选项可以在该文件夹中新建子 subsystem ，{子系统前缀}.{资源项} 是典型的配置方法， 如 memory.usage_in_bytes 就定义了该 group 在 subsystem memory 中的一个内存限制选项。 另外，cgroups 中的 subsystem 可以随意组合，一个 subsystem 可以在不同的 group 中，也可以一个 group 包含多个 subsystem - 也就是说一个 subsystem。
+cgroups 实现了对资源的配额和度量。 cgroups 的使用非常简单，提供类似文件的接口，在 /cgroup 目录下新建一个文件夹即可新建一个 group，在此文件夹中新建 task 文件，并将 pid 写入该文件，即可实现对该进程的资源控制。具体的资源配置选项可以在该文件夹中新建子 subsystem ，{子系统前缀}.{资源项} 是典型的配置方法， 如 memory.usage<sub>in</sub><sub>bytes</sub> 就定义了该 group 在 subsystem memory 中的一个内存限制选项。 另外，cgroups 中的 subsystem 可以随意组合，一个 subsystem 可以在不同的 group 中，也可以一个 group 包含多个 subsystem - 也就是说一个 subsystem。
 </p>
 
 <ul class="org-ul">
@@ -1191,7 +1191,7 @@ $ docker exec -it ubuntu_bash bash
 </pre>
 
 <p>
-上例将在容器 ubuntu_bash 中创建一个新的 Bash 会话。
+上例将在容器 ubuntu<sub>bash</sub> 中创建一个新的 Bash 会话。
 </p>
 </div>
 </div>
@@ -1379,7 +1379,7 @@ docker run 创建 Docker 容器时，可以用 <code>--net</code> 选项指定�
 
 <ul class="org-ul">
 <li>host 模式，使用 &#x2013;net=host 指定</li>
-<li>container 模式，使用 &#x2013;net=container:NAME_or_ID 指定</li>
+<li>container 模式，使用 &#x2013;net=container:NAME<sub>or</sub><sub>ID</sub> 指定</li>
 <li>none 模式，使用 &#x2013;net=none 指定</li>
 <li>bridge 模式，使用 &#x2013;net=bridge 指定，默认设置</li>
 </ul>
@@ -2555,8 +2555,8 @@ Volume 只有在下列情况下才能被删除：
 </div>
 </div>
 
-<div id="outline-container-org4ff5fba" class="outline-2">
-<h2 id="org4ff5fba"><span class="section-number-2">9</span> 链接容器</h2>
+<div id="outline-container-org2279530" class="outline-2">
+<h2 id="org2279530"><span class="section-number-2">9</span> 链接容器</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 docker 允许把多个容器连接在一起，相互交互信息。docker 链接会创建一种容器父子级别的关系，其中父容器可以看到其子容器提供的信息。
@@ -2593,8 +2593,8 @@ $ sudo docker  inspect --format="{% raw %}{{ .Nmae }}{% endraw %}" test
 </div>
 </div>
 
-<div id="outline-container-orgee53ee5" class="outline-3">
-<h3 id="orgee53ee5"><span class="section-number-3">9.2</span> 链接容器</h3>
+<div id="outline-container-org351c4cf" class="outline-3">
+<h3 id="org351c4cf"><span class="section-number-3">9.2</span> 链接容器</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 链接允许容器间安全通信，使用 <code>--link</code> 选项创建链接。
@@ -2813,6 +2813,11 @@ $ docker push 私有库IP:5000/ubuntu
 </div>
 </div>
 </div>
+</div>
+<div id="postamble" class="status">
+<a class="author"
+         href="https://blog.opskumu.com">Kumu</a> / <span
+         class="date">2014-12-22 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
 </div>
 </body>
 </html>

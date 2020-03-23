@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-09 Mon 15:03 -->
+<!-- 2020-03-23 Mon 16:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>挖财 Kubernetes 容器化之路</title>
@@ -253,7 +253,7 @@ for the JavaScript code in this tag.
 <li><a href="#org84571b9">3.4. 日志</a></li>
 <li><a href="#org67b0228">3.5. 监控告警</a></li>
 <li><a href="#org80d41e5">3.6. 用户行为分析和统计</a></li>
-<li><a href="#org98385f3">3.7. 其它</a></li>
+<li><a href="#orgc8bf642">3.7. 其它</a></li>
 </ul>
 </li>
 <li><a href="#org352589c">4. 趟过的坑</a>
@@ -267,7 +267,7 @@ for the JavaScript code in this tag.
 <li><a href="#org18360bc">4.7. 容器内自定义时间的问题</a></li>
 </ul>
 </li>
-<li><a href="#org5ff3c6b">5. 其它</a>
+<li><a href="#orgd81f06d">5. 其它</a>
 <ul>
 <li><a href="#orgf497355">5.1. 技术之外，产品本身</a></li>
 <li><a href="#org53d1f0d">5.2. 基于容器的云原生应用设计原则</a></li>
@@ -534,8 +534,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org98385f3" class="outline-3">
-<h3 id="org98385f3"><span class="section-number-3">3.7</span> 其它</h3>
+<div id="outline-container-orgc8bf642" class="outline-3">
+<h3 id="orgc8bf642"><span class="section-number-3">3.7</span> 其它</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 针对完整的组件和架构方案，可以具体看下图：
@@ -668,7 +668,7 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </pre>
 
 <p>
-简而言之，OOM Killer 评判的值就是 <code>container_memory_working_set_bytes</code> ，可是实际对比发现，有些 Java 容器实际的内存占用和 <code>container_memory_working_set_bytes</code> 相差甚远，很多该值是 90%+ 的，实际使用 ps 工具查看确只占用 50% 或更低。最后我们是通过 <code>container_memory_usage_bytes - container_memory_cache</code> 计算容器内存占用，相比 working_set 要准确多了。至于最后为什么使用这个计算，时间跨度有点长了，当时也没有记录，记得除了查资料之外还看了 docker stats 这块的源码。
+简而言之，OOM Killer 评判的值就是 <code>container_memory_working_set_bytes</code> ，可是实际对比发现，有些 Java 容器实际的内存占用和 <code>container_memory_working_set_bytes</code> 相差甚远，很多该值是 90%+ 的，实际使用 ps 工具查看确只占用 50% 或更低。最后我们是通过 <code>container_memory_usage_bytes - container_memory_cache</code> 计算容器内存占用，相比 working<sub>set</sub> 要准确多了。至于最后为什么使用这个计算，时间跨度有点长了，当时也没有记录，记得除了查资料之外还看了 docker stats 这块的源码。
 </p>
 </div>
 </div>
@@ -713,8 +713,8 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </div>
 </div>
 
-<div id="outline-container-org5ff3c6b" class="outline-2">
-<h2 id="org5ff3c6b"><span class="section-number-2">5</span> 其它</h2>
+<div id="outline-container-orgd81f06d" class="outline-2">
+<h2 id="orgd81f06d"><span class="section-number-2">5</span> 其它</h2>
 <div class="outline-text-2" id="text-5">
 </div>
 <div id="outline-container-orgf497355" class="outline-3">
@@ -767,6 +767,11 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </div>
 </div>
 </div>
+</div>
+<div id="postamble" class="status">
+<a class="author"
+         href="https://blog.opskumu.com">Kumu</a> / <span
+         class="date">2019-11-26 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
 </div>
 </body>
 </html>
