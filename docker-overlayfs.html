@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-23 Mon 16:12 -->
+<!-- 2020-03-26 Thu 11:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker OverlayFS 驱动</title>
@@ -180,6 +180,8 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -242,12 +244,12 @@ for the JavaScript code in this tag.
 <li><a href="#org1405bd4">2. 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</a></li>
 <li><a href="#orgf01cd80">3. <code>overlay2</code> 驱动是如何工作的</a>
 <ul>
-<li><a href="#org2de6c17">3.1. 磁盘上的镜像和容器层</a></li>
+<li><a href="#org5ebbaa2">3.1. 磁盘上的镜像和容器层</a></li>
 </ul>
 </li>
 <li><a href="#orgfe63991">4. <code>overlay</code> 驱动是如何工作的</a>
 <ul>
-<li><a href="#orge3d2790">4.1. 磁盘上的镜像和容器层</a>
+<li><a href="#org77759fd">4.1. 磁盘上的镜像和容器层</a>
 <ul>
 <li><a href="#org5422a7f">4.1.1. 镜像层</a></li>
 <li><a href="#org10fa145">4.1.2. 容器层</a></li>
@@ -337,8 +339,8 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 </div>
 
-<div id="outline-container-org2de6c17" class="outline-3">
-<h3 id="org2de6c17"><span class="section-number-3">3.1</span> 磁盘上的镜像和容器层</h3>
+<div id="outline-container-org5ebbaa2" class="outline-3">
+<h3 id="org5ebbaa2"><span class="section-number-3">3.1</span> 磁盘上的镜像和容器层</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 当通过 <code>docker pull ubuntu</code> 下载一个五层镜像后，你可以在 <code>/var/lib/docker/overlay2</code> 目录下看到 6 个目录。
@@ -447,8 +449,8 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 </div>
 
-<div id="outline-container-orge3d2790" class="outline-3">
-<h3 id="orge3d2790"><span class="section-number-3">4.1</span> 磁盘上的镜像和容器层</h3>
+<div id="outline-container-org77759fd" class="outline-3">
+<h3 id="org77759fd"><span class="section-number-3">4.1</span> 磁盘上的镜像和容器层</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 <code>docker pull</code> 命令暂时了一个 Docker 主机下载一个包含五层的 Docker 镜像。

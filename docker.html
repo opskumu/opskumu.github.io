@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-23 Mon 16:12 -->
+<!-- 2020-03-26 Thu 11:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 学习笔记</title>
@@ -180,6 +180,8 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -382,10 +384,10 @@ for the JavaScript code in this tag.
 <li><a href="#org1b8ab81">8.4. 删除 Volumes</a></li>
 </ul>
 </li>
-<li><a href="#org2279530">9. 链接容器</a>
+<li><a href="#org575c9b1">9. 链接容器</a>
 <ul>
 <li><a href="#org1fa99a3">9.1. 容器命名</a></li>
-<li><a href="#org351c4cf">9.2. 链接容器</a>
+<li><a href="#org365cadb">9.2. 链接容器</a>
 <ul>
 <li><a href="#org01ed06d">9.2.1. 环境变量</a></li>
 <li><a href="#org7603c1e">9.2.2. 更新 <code>/etc/hosts</code> 文件</a></li>
@@ -2555,8 +2557,8 @@ Volume 只有在下列情况下才能被删除：
 </div>
 </div>
 
-<div id="outline-container-org2279530" class="outline-2">
-<h2 id="org2279530"><span class="section-number-2">9</span> 链接容器</h2>
+<div id="outline-container-org575c9b1" class="outline-2">
+<h2 id="org575c9b1"><span class="section-number-2">9</span> 链接容器</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 docker 允许把多个容器连接在一起，相互交互信息。docker 链接会创建一种容器父子级别的关系，其中父容器可以看到其子容器提供的信息。
@@ -2593,8 +2595,8 @@ $ sudo docker  inspect --format="{% raw %}{{ .Nmae }}{% endraw %}" test
 </div>
 </div>
 
-<div id="outline-container-org351c4cf" class="outline-3">
-<h3 id="org351c4cf"><span class="section-number-3">9.2</span> 链接容器</h3>
+<div id="outline-container-org365cadb" class="outline-3">
+<h3 id="org365cadb"><span class="section-number-3">9.2</span> 链接容器</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 链接允许容器间安全通信，使用 <code>--link</code> 选项创建链接。
