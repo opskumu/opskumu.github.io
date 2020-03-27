@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-26 Thu 11:17 -->
+<!-- 2020-03-27 Fri 12:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sublime Text2 tips</title>
@@ -180,8 +180,6 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -242,23 +240,23 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org789da3a">1. 设置 tab 为 4 个空格</a>
 <ul>
-<li><a href="#orgfd05f93">1.1. Reference</a></li>
+<li><a href="#orge7e1c0e">1.1. Reference</a></li>
 </ul>
 </li>
 <li><a href="#org04a32b5">2. 设置 vim 模式</a>
 <ul>
-<li><a href="#org6b565af">2.1. Reference</a></li>
+<li><a href="#org14f2dec">2.1. Reference</a></li>
 </ul>
 </li>
 <li><a href="#orge732459">3. 列编辑模式</a>
 <ul>
-<li><a href="#org6095dcf">3.1. Reference</a></li>
+<li><a href="#org4e0e6a0">3.1. Reference</a></li>
 </ul>
 </li>
 <li><a href="#org14dbcdf">4. Package Control</a></li>
 <li><a href="#org2c98cbb">5. Markdown Preview 插件</a>
 <ul>
-<li><a href="#orge7e1c0e">5.1. Reference</a></li>
+<li><a href="#orgbaed82a">5.1. Reference</a></li>
 </ul>
 </li>
 <li><a href="#orgd73cbb2">6. 撤销恢复</a></li>
@@ -286,8 +284,8 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
-<div id="outline-container-orgfd05f93" class="outline-3">
-<h3 id="orgfd05f93"><span class="section-number-3">1.1</span> Reference</h3>
+<div id="outline-container-orge7e1c0e" class="outline-3">
+<h3 id="orge7e1c0e"><span class="section-number-3">1.1</span> Reference</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/settings.html">Settings</a></li>
@@ -332,8 +330,8 @@ add:
 </pre>
 </div>
 
-<div id="outline-container-org6b565af" class="outline-3">
-<h3 id="org6b565af"><span class="section-number-3">2.1</span> Reference</h3>
+<div id="outline-container-org14f2dec" class="outline-3">
+<h3 id="org14f2dec"><span class="section-number-3">2.1</span> Reference</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/vintage.html">Vintage Mode</a></li>
@@ -351,8 +349,8 @@ add:
 </ul>
 </div>
 
-<div id="outline-container-org6095dcf" class="outline-3">
-<h3 id="org6095dcf"><span class="section-number-3">3.1</span> Reference</h3>
+<div id="outline-container-org4e0e6a0" class="outline-3">
+<h3 id="org4e0e6a0"><span class="section-number-3">3.1</span> Reference</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/column_selection.html">Column Selection</a></li>
@@ -369,7 +367,7 @@ add:
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-python"><span style="color: #268bd2; font-weight: bold;">import</span> urllib2,os; <span style="color: #8787d7;">pf</span>=<span style="color: #2aa198;">'Package Control.sublime-package'</span>; <span style="color: #8787d7;">ipp</span> = sublime.installed_packages_path(); os.makedirs( ipp ) <span style="color: #268bd2; font-weight: bold;">if</span> <span style="color: #268bd2; font-weight: bold;">not</span> os.path.exists(ipp) <span style="color: #268bd2; font-weight: bold;">else</span> <span style="color: #d75fd7;">None</span>; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); <span style="color: #268bd2;">open</span>( os.path.join( ipp, pf), <span style="color: #2aa198;">'wb'</span> ).write( urllib2.urlopen( <span style="color: #2aa198;">'http://sublime.wbond.net/'</span> +pf.replace( <span style="color: #2aa198;">' '</span>,<span style="color: #2aa198;">'%20'</span> )).read()); <span style="color: #268bd2; font-weight: bold;">print</span>( <span style="color: #2aa198;">'Please restart Sublime Text to finish installation'</span>)
+<pre class="src src-python"><span class="org-keyword">import</span> urllib2,os; <span class="org-variable-name">pf</span>=<span class="org-string">'Package Control.sublime-package'</span>; <span class="org-variable-name">ipp</span> = sublime.installed_packages_path(); os.makedirs( ipp ) <span class="org-keyword">if</span> <span class="org-keyword">not</span> os.path.exists(ipp) <span class="org-keyword">else</span> <span class="org-constant">None</span>; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); <span class="org-builtin">open</span>( os.path.join( ipp, pf), <span class="org-string">'wb'</span> ).write( urllib2.urlopen( <span class="org-string">'http://sublime.wbond.net/'</span> +pf.replace( <span class="org-string">' '</span>,<span class="org-string">'%20'</span> )).read()); <span class="org-keyword">print</span>( <span class="org-string">'Please restart Sublime Text to finish installation'</span>)
 </pre>
 </div>
 
@@ -388,8 +386,8 @@ add:
 </ul>
 </div>
 
-<div id="outline-container-orge7e1c0e" class="outline-3">
-<h3 id="orge7e1c0e"><span class="section-number-3">5.1</span> Reference</h3>
+<div id="outline-container-orgbaed82a" class="outline-3">
+<h3 id="orgbaed82a"><span class="section-number-3">5.1</span> Reference</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li><a href="https://github.com/revolunet/sublimetext-markdown-preview">Markdown Preview</a></li>

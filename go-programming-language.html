@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-26 Thu 11:17 -->
+<!-- 2020-03-27 Fri 12:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>The Go Programming Language 摘要</title>
@@ -180,8 +180,6 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -326,16 +324,16 @@ In Go, a string is in effect a read-only slice of bytes.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">const</span> <span style="color: #d75fd7;">s</span> = <span style="color: #2aa198;">"&#19990;&#30028;"</span>
-fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #268bd2;">len</span>(s))            <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#36755;&#20986;&#32467;&#26524;&#20026; 6 &#34920;&#31034;&#23383;&#31526;&#20018; s &#21344;&#29992; 6 &#20010;&#23383;&#33410;&#65292;&#19968;&#20010;&#20013;&#25991;&#21344;&#29992; 3 &#20010;&#23383;&#33410;</span>
-fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #268bd2;">len</span>([]<span style="color: #d75fd7; font-weight: bold;">rune</span>(s)))    <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#36755;&#20986;&#32467;&#26524;&#20026; 2 &#34920;&#31034;&#23383;&#31526;&#20018; s &#36716;&#25442;&#25104; rune &#20043;&#21518;&#21344;&#29992; 2 &#20010; rune &#23383;&#31526;&#30721;</span>
+<pre class="src src-go"><span class="org-keyword">const</span> <span class="org-constant">s</span> = <span class="org-string">"&#19990;&#30028;"</span>
+fmt.<span class="org-function-name">Println</span>(<span class="org-builtin">len</span>(s))            <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#32467;&#26524;&#20026; 6 &#34920;&#31034;&#23383;&#31526;&#20018; s &#21344;&#29992; 6 &#20010;&#23383;&#33410;&#65292;&#19968;&#20010;&#20013;&#25991;&#21344;&#29992; 3 &#20010;&#23383;&#33410;</span>
+fmt.<span class="org-function-name">Println</span>(<span class="org-builtin">len</span>([]<span class="org-function-name">rune</span>(s)))    <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#32467;&#26524;&#20026; 2 &#34920;&#31034;&#23383;&#31526;&#20018; s &#36716;&#25442;&#25104; rune &#20043;&#21518;&#21344;&#29992; 2 &#20010; rune &#23383;&#31526;&#30721;</span>
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">const</span> <span style="color: #d75fd7;">s</span> = <span style="color: #2aa198;">"&#19990;&#30028;"</span>
-<span style="color: #268bd2; font-weight: bold;">for</span> <span style="color: #8787d7;">i</span>, <span style="color: #8787d7;">v</span> := <span style="color: #268bd2; font-weight: bold;">range</span> s {
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Printf</span>(<span style="color: #2aa198;">"%#U starts at byte position %d\n"</span>, v, i)
+<pre class="src src-go"><span class="org-keyword">const</span> <span class="org-constant">s</span> = <span class="org-string">"&#19990;&#30028;"</span>
+<span class="org-keyword">for</span> <span class="org-variable-name">i</span>, <span class="org-variable-name">v</span> := <span class="org-keyword">range</span> s {
+    fmt.<span class="org-function-name">Printf</span>(<span class="org-string">"%#U starts at byte position %d\n"</span>, v, i)
 }
 </pre>
 </div>
@@ -351,8 +349,8 @@ fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style=
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">U+4E16 <span style="color: #2aa198;">'&#19990;'</span> starts <span style="color: #df005f; font-weight: bold;">at</span> byte <span style="color: #df005f; font-weight: bold;">position</span> 0
-U+754C <span style="color: #2aa198;">'&#30028;'</span> starts <span style="color: #df005f; font-weight: bold;">at</span> byte <span style="color: #df005f; font-weight: bold;">position</span> 3
+<pre class="src src-go">U+4E16 <span class="org-string">'&#19990;'</span> starts <span class="org-type">at</span> byte <span class="org-type">position</span> 0
+U+754C <span class="org-string">'&#30028;'</span> starts <span class="org-type">at</span> byte <span class="org-type">position</span> 3
 </pre>
 </div>
 
@@ -384,7 +382,7 @@ U+754C <span style="color: #2aa198;">'&#30028;'</span> starts <span style="color
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #8787d7;">q</span> := [...]<span style="color: #df005f; font-weight: bold;">int</span>{1, 2, 3}
+<pre class="src src-go"><span class="org-variable-name">q</span> := [...]<span class="org-type">int</span>{1, 2, 3}
 </pre>
 </div>
 
@@ -393,7 +391,7 @@ U+754C <span style="color: #2aa198;">'&#30028;'</span> starts <span style="color
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #8787d7;">symbol</span> := [...]<span style="color: #df005f; font-weight: bold;">string</span>{0: <span style="color: #2aa198;">"$"</span>, 3: <span style="color: #2aa198;">"&#165;"</span>}    <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#25968;&#32452;&#20013;&#25351;&#23450;&#20102;&#31532;&#19968;&#20010;&#21644;&#31532;&#22235;&#20010;&#32034;&#24341;&#20540;&#65292;&#26410;&#25351;&#23450;&#30340;&#33258;&#21160;&#21462;&#31354;&#23383;&#31526;&#20018;</span>
+<pre class="src src-go"><span class="org-variable-name">symbol</span> := [...]<span class="org-type">string</span>{0: <span class="org-string">"$"</span>, 3: <span class="org-string">"&#165;"</span>}    <span class="org-comment-delimiter">// </span><span class="org-comment">&#25968;&#32452;&#20013;&#25351;&#23450;&#20102;&#31532;&#19968;&#20010;&#21644;&#31532;&#22235;&#20010;&#32034;&#24341;&#20540;&#65292;&#26410;&#25351;&#23450;&#30340;&#33258;&#21160;&#21462;&#31354;&#23383;&#31526;&#20018;</span>
 </pre>
 </div>
 </div>
@@ -408,28 +406,28 @@ U+754C <span style="color: #2aa198;">'&#30028;'</span> starts <span style="color
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">package</span> main
+<pre class="src src-go"><span class="org-keyword">package</span> main
 
-<span style="color: #268bd2; font-weight: bold;">import</span> <span style="color: #2aa198;">"fmt"</span>
+<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
 
-<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">array</span>(<span style="color: #8787d7;">a</span> [4]<span style="color: #df005f; font-weight: bold;">string</span>) [4]<span style="color: #df005f; font-weight: bold;">string</span> {
-    a[0] = <span style="color: #2aa198;">"That"</span>
-    <span style="color: #268bd2; font-weight: bold;">return</span> a
+<span class="org-keyword">func</span> <span class="org-function-name">array</span>(<span class="org-variable-name">a</span> [4]<span class="org-type">string</span>) [4]<span class="org-type">string</span> {
+    a[0] = <span class="org-string">"That"</span>
+    <span class="org-keyword">return</span> a
 }
 
-<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">slice</span>(<span style="color: #8787d7;">s</span> []<span style="color: #df005f; font-weight: bold;">string</span>) []<span style="color: #df005f; font-weight: bold;">string</span> {
-    s[0] = <span style="color: #2aa198;">"That"</span>
-    <span style="color: #268bd2; font-weight: bold;">return</span> s
+<span class="org-keyword">func</span> <span class="org-function-name">slice</span>(<span class="org-variable-name">s</span> []<span class="org-type">string</span>) []<span class="org-type">string</span> {
+    s[0] = <span class="org-string">"That"</span>
+    <span class="org-keyword">return</span> s
 }
 
-<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
-    <span style="color: #8787d7;">a</span> := [4]<span style="color: #df005f; font-weight: bold;">string</span>{<span style="color: #2aa198;">"This"</span>, <span style="color: #2aa198;">"is"</span>, <span style="color: #2aa198;">"a"</span>, <span style="color: #2aa198;">"test"</span>}
-    <span style="color: #8787d7;">s</span> := []<span style="color: #df005f; font-weight: bold;">string</span>{<span style="color: #2aa198;">"This"</span>, <span style="color: #2aa198;">"is"</span>, <span style="color: #2aa198;">"a"</span>, <span style="color: #2aa198;">"test"</span>}
+<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
+    <span class="org-variable-name">a</span> := [4]<span class="org-type">string</span>{<span class="org-string">"This"</span>, <span class="org-string">"is"</span>, <span class="org-string">"a"</span>, <span class="org-string">"test"</span>}
+    <span class="org-variable-name">s</span> := []<span class="org-type">string</span>{<span class="org-string">"This"</span>, <span class="org-string">"is"</span>, <span class="org-string">"a"</span>, <span class="org-string">"test"</span>}
 
-    <span style="color: #d75fd7; font-weight: bold;">array</span>(a)
-    <span style="color: #d75fd7; font-weight: bold;">slice</span>(s)
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(a) <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#20316;&#29992;&#22495;&#38382;&#39064;&#65292;&#27492;&#22788;&#25968;&#32452;&#19981;&#20250;&#25913;&#21464;</span>
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(s) <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#22240;&#20026; slice &#20013;&#20803;&#32032;&#26412;&#36523;&#26159;&#25351;&#38024;&#65292;&#25152;&#20197;&#27492;&#22788; "This" &#20250;&#34987;&#26367;&#25442;&#25104; "That"</span>
+    <span class="org-function-name">array</span>(a)
+    <span class="org-function-name">slice</span>(s)
+    fmt.<span class="org-function-name">Println</span>(a) <span class="org-comment-delimiter">// </span><span class="org-comment">&#20316;&#29992;&#22495;&#38382;&#39064;&#65292;&#27492;&#22788;&#25968;&#32452;&#19981;&#20250;&#25913;&#21464;</span>
+    fmt.<span class="org-function-name">Println</span>(s) <span class="org-comment-delimiter">// </span><span class="org-comment">&#22240;&#20026; slice &#20013;&#20803;&#32032;&#26412;&#36523;&#26159;&#25351;&#38024;&#65292;&#25152;&#20197;&#27492;&#22788; "This" &#20250;&#34987;&#26367;&#25442;&#25104; "That"</span>
 }
 </pre>
 </div>
@@ -464,14 +462,14 @@ U+754C <span style="color: #2aa198;">'&#30028;'</span> starts <span style="color
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #df005f; font-weight: bold;">Circle</span> <span style="color: #268bd2; font-weight: bold;">struct</span> {
+<pre class="src src-go"><span class="org-keyword">type</span> <span class="org-type">Circle</span> <span class="org-keyword">struct</span> {
     Point
-    Radius <span style="color: #df005f; font-weight: bold;">int</span>
+    Radius <span class="org-type">int</span>
 }
 
-<span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #df005f; font-weight: bold;">Wheel</span> <span style="color: #268bd2; font-weight: bold;">struct</span> {
+<span class="org-keyword">type</span> <span class="org-type">Wheel</span> <span class="org-keyword">struct</span> {
     Circle
-    Spokes <span style="color: #df005f; font-weight: bold;">int</span>
+    Spokes <span class="org-type">int</span>
 }
 </pre>
 </div>
@@ -493,17 +491,17 @@ w.Y = 8 w.Radius = 5 w.Spokes = 20
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go">w = <span style="color: #df005f; font-weight: bold;">Wheel</span>{<span style="color: #df005f; font-weight: bold;">Circle</span>{<span style="color: #df005f; font-weight: bold;">Point</span>{8, 8}, 5}, 20}
+<pre class="src src-go">w = <span class="org-type">Wheel</span>{<span class="org-type">Circle</span>{<span class="org-type">Point</span>{8, 8}, 5}, 20}
 
-w = <span style="color: #df005f; font-weight: bold;">Wheel</span>{
-    <span style="color: #d75fd7;">Circle</span>: <span style="color: #df005f; font-weight: bold;">Circle</span>{
-        <span style="color: #d75fd7;">Point</span>:  <span style="color: #df005f; font-weight: bold;">Point</span>{X: 8, Y: 8},
-        <span style="color: #d75fd7;">Radius</span>: 5,
+w = <span class="org-type">Wheel</span>{
+    <span class="org-constant">Circle</span>: <span class="org-type">Circle</span>{
+        <span class="org-constant">Point</span>:  <span class="org-type">Point</span>{X: 8, Y: 8},
+        <span class="org-constant">Radius</span>: 5,
     },
-    <span style="color: #d75fd7;">Spokes</span>: 20, <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">NOTE: trailing comma necessary here (and at Radius) }</span>
-fmt.<span style="color: #d75fd7; font-weight: bold;">Printf</span>(<span style="color: #2aa198;">"%#v\n"</span>, w)
-<span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">Output:</span>
-<span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">Wheel{Circle:Circle{Point:Point{X:8, Y:8}, Radius:5}, Spokes:20}</span>
+    <span class="org-constant">Spokes</span>: 20, <span class="org-comment-delimiter">// </span><span class="org-comment">NOTE: trailing comma necessary here (and at Radius) }</span>
+fmt.<span class="org-function-name">Printf</span>(<span class="org-string">"%#v\n"</span>, w)
+<span class="org-comment-delimiter">// </span><span class="org-comment">Output:</span>
+<span class="org-comment-delimiter">// </span><span class="org-comment">Wheel{Circle:Circle{Point:Point{X:8, Y:8}, Radius:5}, Spokes:20}</span>
 </pre>
 </div>
 </div>
@@ -578,7 +576,7 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #8787d7;">ch</span> := <span style="color: #268bd2;">make</span>(<span style="color: #268bd2; font-weight: bold;">chan</span> <span style="color: #df005f; font-weight: bold;">int</span>) <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">ch has type 'chan int'</span>
+<pre class="src src-go"><span class="org-variable-name">ch</span> := <span class="org-builtin">make</span>(<span class="org-keyword">chan</span> <span class="org-type">int</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">ch has type 'chan int'</span>
 </pre>
 </div>
 
@@ -599,7 +597,7 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">import</span> _ <span style="color: #2aa198;">"image/png"</span> <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">register PNG decoder</span>
+<pre class="src src-go"><span class="org-keyword">import</span> _ <span class="org-string">"image/png"</span> <span class="org-comment-delimiter">// </span><span class="org-comment">register PNG decoder</span>
 </pre>
 </div>
 </div>

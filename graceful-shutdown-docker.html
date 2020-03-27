@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-26 Thu 11:17 -->
+<!-- 2020-03-27 Fri 12:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>如何优雅的关闭容器</title>
@@ -180,8 +180,6 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -394,32 +392,32 @@ Options:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">&#10140;  ~ cat <span style="color: #df005f; font-weight: bold;">signals.go</span>
-<span style="color: #268bd2; font-weight: bold;">package</span> main
+<pre class="src src-go">&#10140;  ~ cat <span class="org-type">signals.go</span>
+<span class="org-keyword">package</span> main
 
-<span style="color: #268bd2; font-weight: bold;">import</span> (
-    <span style="color: #2aa198;">"fmt"</span>
-    <span style="color: #2aa198;">"os"</span>
-    <span style="color: #2aa198;">"os/signal"</span>
-    <span style="color: #2aa198;">"syscall"</span>
+<span class="org-keyword">import</span> (
+    <span class="org-string">"fmt"</span>
+    <span class="org-string">"os"</span>
+    <span class="org-string">"os/signal"</span>
+    <span class="org-string">"syscall"</span>
 )
 
-<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
-    <span style="color: #8787d7;">sigs</span> := <span style="color: #268bd2;">make</span>(<span style="color: #268bd2; font-weight: bold;">chan</span> <span style="color: #df005f; font-weight: bold;">os.Signal</span>, 1)
-    <span style="color: #8787d7;">done</span> := <span style="color: #268bd2;">make</span>(<span style="color: #268bd2; font-weight: bold;">chan</span> <span style="color: #df005f; font-weight: bold;">bool</span>, 1)
+<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
+    <span class="org-variable-name">sigs</span> := <span class="org-builtin">make</span>(<span class="org-keyword">chan</span> <span class="org-type">os.Signal</span>, 1)
+    <span class="org-variable-name">done</span> := <span class="org-builtin">make</span>(<span class="org-keyword">chan</span> <span class="org-type">bool</span>, 1)
 
-    signal.<span style="color: #d75fd7; font-weight: bold;">Notify</span>(sigs, syscall.SIGINT, syscall.SIGTERM)
+    signal.<span class="org-function-name">Notify</span>(sigs, syscall.SIGINT, syscall.SIGTERM)
 
-    <span style="color: #268bd2; font-weight: bold;">go</span> <span style="color: #268bd2; font-weight: bold;">func</span>() {
-        <span style="color: #8787d7;">sig</span> := &lt;-sigs
-        fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>()
-        fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(sig)
-        done &lt;- <span style="color: #d75fd7;">true</span>
+    <span class="org-keyword">go</span> <span class="org-keyword">func</span>() {
+        <span class="org-variable-name">sig</span> := &lt;-sigs
+        fmt.<span class="org-function-name">Println</span>()
+        fmt.<span class="org-function-name">Println</span>(sig)
+        done &lt;- <span class="org-constant">true</span>
     }()
 
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #2aa198;">"awaiting signal"</span>)
+    fmt.<span class="org-function-name">Println</span>(<span class="org-string">"awaiting signal"</span>)
     &lt;-done
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #2aa198;">"exiting"</span>)
+    fmt.<span class="org-function-name">Println</span>(<span class="org-string">"exiting"</span>)
 }
 </pre>
 </div>

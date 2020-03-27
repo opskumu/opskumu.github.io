@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-26 Thu 11:17 -->
+<!-- 2020-03-27 Fri 12:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Go 指针、defer、匿名函数</title>
@@ -180,8 +180,6 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -264,22 +262,22 @@ for the JavaScript code in this tag.
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">package</span> main
+<pre class="src src-go"><span class="org-keyword">package</span> main
 
-<span style="color: #268bd2; font-weight: bold;">import</span> <span style="color: #2aa198;">"fmt"</span>
+<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
 
-<span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #df005f; font-weight: bold;">number</span> <span style="color: #df005f; font-weight: bold;">int</span>
+<span class="org-keyword">type</span> <span class="org-type">number</span> <span class="org-type">int</span>
 
-<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
-    <span style="color: #268bd2; font-weight: bold;">var</span> <span style="color: #8787d7;">m</span> <span style="color: #df005f; font-weight: bold;">number</span>
-    <span style="color: #268bd2; font-weight: bold;">var</span> <span style="color: #8787d7;">n</span> *<span style="color: #df005f; font-weight: bold;">number</span>   <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#23450;&#20041; n &#20026;&#25351;&#38024;&#31867;&#22411;</span>
+<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
+    <span class="org-keyword">var</span> <span class="org-variable-name">m</span> <span class="org-type">number</span>
+    <span class="org-keyword">var</span> <span class="org-variable-name">n</span> *<span class="org-type">number</span>   <span class="org-comment-delimiter">// </span><span class="org-comment">&#23450;&#20041; n &#20026;&#25351;&#38024;&#31867;&#22411;</span>
 
     m = 1
-    n = &amp;m          <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#25351;&#38024; n &#36171;&#20540;</span>
+    n = &amp;m          <span class="org-comment-delimiter">// </span><span class="org-comment">&#25351;&#38024; n &#36171;&#20540;</span>
 
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(m)
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(n)  <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#36755;&#20986;&#22320;&#22336;</span>
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(*n) <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#36755;&#20986;&#20026; 1</span>
+    fmt.<span class="org-function-name">Println</span>(m)
+    fmt.<span class="org-function-name">Println</span>(n)  <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#22320;&#22336;</span>
+    fmt.<span class="org-function-name">Println</span>(*n) <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#20026; 1</span>
 }
 </pre>
 </div>
@@ -323,18 +321,18 @@ defer 语句的执行顺序类似栈的概念， <b>后进先出</b> 。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">package</span> main
+<pre class="src src-go"><span class="org-keyword">package</span> main
 
-<span style="color: #268bd2; font-weight: bold;">import</span> <span style="color: #2aa198;">"fmt"</span>
+<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
 
-<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #2aa198;">"counting"</span>)
+<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
+    fmt.<span class="org-function-name">Println</span>(<span class="org-string">"counting"</span>)
 
-    <span style="color: #268bd2; font-weight: bold;">for</span> <span style="color: #8787d7;">i</span> := 0; i &lt; 10; i++ {
-        <span style="color: #268bd2; font-weight: bold;">defer</span> fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(i)  <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#36755;&#20986;&#32467;&#26524;&#26159; 9&#65292; 8&#65292; 7, ..., 0</span>
+    <span class="org-keyword">for</span> <span class="org-variable-name">i</span> := 0; i &lt; 10; i++ {
+        <span class="org-keyword">defer</span> fmt.<span class="org-function-name">Println</span>(i)  <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#32467;&#26524;&#26159; 9&#65292; 8&#65292; 7, ..., 0</span>
     }
 
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #2aa198;">"done"</span>)
+    fmt.<span class="org-function-name">Println</span>(<span class="org-string">"done"</span>)
 }
 </pre>
 </div>
@@ -349,24 +347,24 @@ Go 不能在函数内部显式嵌套定义函数，但是可以定义一个匿�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">package</span> main
+<pre class="src src-go"><span class="org-keyword">package</span> main
 
-<span style="color: #268bd2; font-weight: bold;">import</span> <span style="color: #2aa198;">"fmt"</span>
+<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
 
-<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">f</span>(<span style="color: #8787d7;">i</span> <span style="color: #df005f; font-weight: bold;">int</span>) <span style="color: #268bd2; font-weight: bold;">func</span>() <span style="color: #df005f; font-weight: bold;">int</span> {
-    <span style="color: #268bd2; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">func</span>() <span style="color: #df005f; font-weight: bold;">int</span> {
+<span class="org-keyword">func</span> <span class="org-function-name">f</span>(<span class="org-variable-name">i</span> <span class="org-type">int</span>) <span class="org-keyword">func</span>() <span class="org-type">int</span> {
+    <span class="org-keyword">return</span> <span class="org-keyword">func</span>() <span class="org-type">int</span> {
         i++
-        <span style="color: #268bd2; font-weight: bold;">return</span> i
+        <span class="org-keyword">return</span> i
     }
 }
 
-<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
-    <span style="color: #8787d7;">m1</span> := <span style="color: #d75fd7; font-weight: bold;">f</span>(2)
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #d75fd7; font-weight: bold;">m1</span>())    <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#25351;&#38024;&#25351;&#21521; i, i = 2, &#36755;&#20986; 3</span>
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #d75fd7; font-weight: bold;">m1</span>())    <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#25351;&#38024;&#25351;&#21521; i, i = 3, &#36755;&#20986; 4</span>
+<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
+    <span class="org-variable-name">m1</span> := <span class="org-function-name">f</span>(2)
+    fmt.<span class="org-function-name">Println</span>(<span class="org-function-name">m1</span>())    <span class="org-comment-delimiter">// </span><span class="org-comment">&#25351;&#38024;&#25351;&#21521; i, i = 2, &#36755;&#20986; 3</span>
+    fmt.<span class="org-function-name">Println</span>(<span class="org-function-name">m1</span>())    <span class="org-comment-delimiter">// </span><span class="org-comment">&#25351;&#38024;&#25351;&#21521; i, i = 3, &#36755;&#20986; 4</span>
 
-    <span style="color: #8787d7;">m2</span> := <span style="color: #d75fd7; font-weight: bold;">f</span>(2)
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Println</span>(<span style="color: #d75fd7; font-weight: bold;">m2</span>())    <span style="color: #008787; background-color: #262626;">// </span><span style="color: #008787; background-color: #262626;">&#25351;&#38024;&#25351;&#21521; &#21478;&#22806;&#19968;&#20010; i&#65292;i = 2&#65292;&#36755;&#20986; 3</span>
+    <span class="org-variable-name">m2</span> := <span class="org-function-name">f</span>(2)
+    fmt.<span class="org-function-name">Println</span>(<span class="org-function-name">m2</span>())    <span class="org-comment-delimiter">// </span><span class="org-comment">&#25351;&#38024;&#25351;&#21521; &#21478;&#22806;&#19968;&#20010; i&#65292;i = 2&#65292;&#36755;&#20986; 3</span>
 }
 </pre>
 </div>
@@ -381,29 +379,29 @@ Go 不能在函数内部显式嵌套定义函数，但是可以定义一个匿�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go"><span style="color: #268bd2; font-weight: bold;">package</span> main
+<pre class="src src-go"><span class="org-keyword">package</span> main
 
-<span style="color: #268bd2; font-weight: bold;">import</span> <span style="color: #2aa198;">"fmt"</span>
+<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
 
-<span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #df005f; font-weight: bold;">number</span> <span style="color: #df005f; font-weight: bold;">int</span>
+<span class="org-keyword">type</span> <span class="org-type">number</span> <span class="org-type">int</span>
 
-<span style="color: #268bd2; font-weight: bold;">func</span> (<span style="color: #8787d7;">n</span> <span style="color: #df005f; font-weight: bold;">number</span>) <span style="color: #268bd2;">print</span>() {
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Printf</span>(<span style="color: #2aa198;">"&#36755;&#20986; number &#20540; print: %v\n"</span>, n)
+<span class="org-keyword">func</span> (<span class="org-variable-name">n</span> <span class="org-type">number</span>) <span class="org-builtin">print</span>() {
+    fmt.<span class="org-function-name">Printf</span>(<span class="org-string">"&#36755;&#20986; number &#20540; print: %v\n"</span>, n)
 }
-<span style="color: #268bd2; font-weight: bold;">func</span> (<span style="color: #8787d7;">n</span> *<span style="color: #df005f; font-weight: bold;">number</span>) <span style="color: #d75fd7; font-weight: bold;">pprint</span>() {
-    fmt.<span style="color: #d75fd7; font-weight: bold;">Printf</span>(<span style="color: #2aa198;">"&#36755;&#20986; number &#20540; pprint: %v\n"</span>, *n)
+<span class="org-keyword">func</span> (<span class="org-variable-name">n</span> *<span class="org-type">number</span>) <span class="org-function-name">pprint</span>() {
+    fmt.<span class="org-function-name">Printf</span>(<span class="org-string">"&#36755;&#20986; number &#20540; pprint: %v\n"</span>, *n)
 }
 
-<span style="color: #268bd2; font-weight: bold;">func</span> <span style="color: #d75fd7; font-weight: bold;">main</span>() {
-    <span style="color: #268bd2; font-weight: bold;">var</span> <span style="color: #8787d7;">n</span> <span style="color: #df005f; font-weight: bold;">number</span>
+<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
+    <span class="org-keyword">var</span> <span class="org-variable-name">n</span> <span class="org-type">number</span>
 
-    <span style="color: #268bd2; font-weight: bold;">defer</span> n.<span style="color: #268bd2;">print</span>()
-    <span style="color: #268bd2; font-weight: bold;">defer</span> n.<span style="color: #d75fd7; font-weight: bold;">pprint</span>()
-    <span style="color: #268bd2; font-weight: bold;">defer</span> <span style="color: #268bd2; font-weight: bold;">func</span>() {
-        n.<span style="color: #268bd2;">print</span>()
+    <span class="org-keyword">defer</span> n.<span class="org-builtin">print</span>()
+    <span class="org-keyword">defer</span> n.<span class="org-function-name">pprint</span>()
+    <span class="org-keyword">defer</span> <span class="org-keyword">func</span>() {
+        n.<span class="org-builtin">print</span>()
     }()
-    <span style="color: #268bd2; font-weight: bold;">defer</span> <span style="color: #268bd2; font-weight: bold;">func</span>() {
-        n.<span style="color: #d75fd7; font-weight: bold;">pprint</span>()
+    <span class="org-keyword">defer</span> <span class="org-keyword">func</span>() {
+        n.<span class="org-function-name">pprint</span>()
     }()
 
     n = 3

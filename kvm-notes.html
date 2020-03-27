@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-26 Thu 11:17 -->
+<!-- 2020-03-27 Fri 12:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KVM 学习笔记</title>
@@ -180,8 +180,6 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -713,20 +711,20 @@ br0     8000.b8975a626020   no      eth0
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">cat /tmp/qemu-ifup.sh</span>
-<span style="color: #008787; background-color: #262626;">#</span><span style="color: #008787; background-color: #262626;">!/bin/bash</span>
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">cat /tmp/qemu-ifup.sh</span>
+<span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/bash</span>
 
-<span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">&#26725;&#25509;&#32593;&#32476;&#35774;&#22791;</span>
-<span style="color: #8787d7;">switch</span>=br0
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#26725;&#25509;&#32593;&#32476;&#35774;&#22791;</span>
+<span class="org-variable-name">switch</span>=br0
 
-<span style="color: #268bd2; font-weight: bold;">if</span> [ -n $<span style="color: #8787d7;">1</span> ]; <span style="color: #268bd2; font-weight: bold;">then</span>          <span style="color: #008787; background-color: #262626;"># </span><span style="color: #008787; background-color: #262626;">$1 &#20026; qemu-kvm &#20256;&#36882;&#20540;&#65292;&#36825;&#37324;&#26159; tap</span>
-    ip link set $<span style="color: #8787d7;">1</span> up
-    brctl addif ${<span style="color: #8787d7;">switch</span>} $<span style="color: #8787d7;">1</span>
-    <span style="color: #268bd2; font-weight: bold;">exit</span> 0
-<span style="color: #268bd2; font-weight: bold;">else</span>
-   <span style="color: #268bd2;">echo</span> <span style="color: #2aa198;">"no interface!"</span>
-   <span style="color: #268bd2; font-weight: bold;">exit</span> 1
-<span style="color: #268bd2; font-weight: bold;">fi</span>
+<span class="org-keyword">if</span> [ -n $<span class="org-variable-name">1</span> ]; <span class="org-keyword">then</span>          <span class="org-comment-delimiter"># </span><span class="org-comment">$1 &#20026; qemu-kvm &#20256;&#36882;&#20540;&#65292;&#36825;&#37324;&#26159; tap</span>
+    ip link set $<span class="org-variable-name">1</span> up
+    brctl addif ${<span class="org-variable-name">switch</span>} $<span class="org-variable-name">1</span>
+    <span class="org-keyword">exit</span> 0
+<span class="org-keyword">else</span>
+   <span class="org-builtin">echo</span> <span class="org-string">"no interface!"</span>
+   <span class="org-keyword">exit</span> 1
+<span class="org-keyword">fi</span>
 </pre>
 </div>
 </div>
