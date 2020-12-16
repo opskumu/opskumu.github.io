@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2020-10-22 Thu 15:21 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Nginx Ingress 控制器工作机制</title>
@@ -189,7 +189,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -348,7 +348,7 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 <h3 id="orgd7975e4"><span class="section-number-3">5.1</span> 避免 Endpoints 变更时重新加载</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
-在每个 endpoint 变更上，控制器从所有能看到的服务上获取 endpoints 并生成相应的后端对象。然后将这些对象发送给运行在 Nginx 内部的 Lua 处理程序。Lua 程序将这些后端存储在共享内存区域。然后对于在 <code>balancer_by_lua</code> 上下文运行的每个请求，Lua 代码检测 endpoints 选择对应 upstream 并应用已经配置的负载均衡算法。Nginx 负责其余的工作。这样，我们避免在 endpoint 变更时重新加载 Nginx。注意，这也包括仅影响 Nginx <code>upstream</code> 配置的 annoations 变更。
+在每个 endpoint 变更上，控制器从所有能看到的服务上获取 endpoints 并生成相应的后端对象。然后将这些对象发送给运行在 Nginx 内部的 Lua 处理程序。Lua 程序将这些后端存储在共享内存区域。然后对于在 <code>balancer_by_lua</code> 上下文运行的每个请求，Lua 代码检测 endpoints 选择对应 upstream 并应用已经配置的负载均衡算法。Nginx 负责其余的工作。这样，我们避免在 endpoint 变更时重新加载 Nginx。注意，这包括 annotation 的变更，不过也只是影响 Nginx <code>upstream</code> 的配置。
 </p>
 
 <p>
@@ -374,7 +374,7 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2020-02-03 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2020-02-03 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.1.13)</span>
 </div>
 </body>
 </html>
