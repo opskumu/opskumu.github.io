@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-01-12 Tue 18:59 -->
+<!-- 2021-01-12 Tue 19:07 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>自定义 Kubernetes 准入控制器</title>
@@ -243,6 +243,7 @@ for the JavaScript code in this tag.
 <li><a href="#orga1af1c9">3. 代码实现</a></li>
 <li><a href="#org0fdd67f">4. TLS 认证</a></li>
 <li><a href="#orgf2acda8">5. 服务部署</a></li>
+<li><a href="#org0398638">6. 参考</a></li>
 </ul>
 </div>
 </div>
@@ -675,6 +676,17 @@ spec:
 <p>
 至此，一个简单的自定义 admission webhook 流程全部完成，完整代码见 <a href="https://github.com/opskumu/admission-webhook-example">admission-webhook-example</a>
 </p>
+</div>
+</div>
+
+<div id="outline-container-org0398638" class="outline-2">
+<h2 id="org0398638"><span class="section-number-2">6</span> 参考</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li><a href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/dynamic_admission_controllers.html">Custom Admission Controllers</a></li>
+<li><a href="https://github.com/kubernetes-sigs/controller-runtime/tree/master/examples/builtins">controller-runtime/examples/builtins/</a></li>
+<li><a href="https://banzaicloud.com/blog/k8s-admission-webhooks/">In-depth introduction to Kubernetes admission webhooks</a></li>
+</ul>
 </div>
 </div>
 </div>
