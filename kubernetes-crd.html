@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-01-13 Wed 00:39 -->
+<!-- 2021-01-13 Wed 00:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>自定义 Kubernetes CRD</title>
@@ -372,22 +372,23 @@ apis/test/v1
 我们创建 ConfigMapHistory 类型的资源的目的是存放 ConfigMap 的历史记录，所以需要针对以上代码做一些修改：
 </p>
 
-<pre class="example">
-......
-// +genclient
-// +kubebuilder:object:root=true
+<div class="org-src-container">
+<pre class="src src-go">......
+<span class="org-comment-delimiter">// </span><span class="org-comment">+genclient</span>
+<span class="org-comment-delimiter">// </span><span class="org-comment">+kubebuilder:object:root=true</span>
 
-// ConfigMapHistory is the Schema for the configmaphistories API
-type ConfigMapHistory struct {
-    metav1.TypeMeta   `json:",inline"`
-    metav1.ObjectMeta `json:"metadata,omitempty"`
+<span class="org-comment-delimiter">// </span><span class="org-comment">ConfigMapHistory is the Schema for the configmaphistories API</span>
+<span class="org-keyword">type</span> <span class="org-type">ConfigMapHistory</span> <span class="org-keyword">struct</span> {
+    metav1.TypeMeta   <span class="org-string">`json:",inline"`</span>
+    metav1.ObjectMeta <span class="org-string">`json:"metadata,omitempty"`</span>
 
-    ConfigMap  string            `json:"configMap"`                // 关联 ConfigMap 名
-    Data       map[string]string `json:"data,omitempty"`           // 对应 ConfigMap 版本数据
-    BinaryData map[string]byte   `json:"binaryData,omitempty"`     // 对应 ConfigMap 版本二进制数据
+    ConfigMap  <span class="org-type">string</span>            <span class="org-string">`json:"configMap"`</span>                <span class="org-comment-delimiter">// </span><span class="org-comment">&#20851;&#32852; ConfigMap &#21517;</span>
+    Data       <span class="org-keyword">map</span>[<span class="org-type">string</span>]<span class="org-type">string</span> <span class="org-string">`json:"data,omitempty"`</span>           <span class="org-comment-delimiter">// </span><span class="org-comment">&#23545;&#24212; ConfigMap &#29256;&#26412;&#25968;&#25454;</span>
+    BinaryData <span class="org-keyword">map</span>[<span class="org-type">string</span>]<span class="org-type">byte</span>   <span class="org-string">`json:"binaryData,omitempty"`</span>     <span class="org-comment-delimiter">// </span><span class="org-comment">&#23545;&#24212; ConfigMap &#29256;&#26412;&#20108;&#36827;&#21046;&#25968;&#25454;</span>
 }
 ......
 </pre>
+</div>
 
 <p>
 注意 <code>// +genclient</code> 是额外添加的，为后续 <code>code-generator</code> 生成 client 代码打标签。types 文件修改之后，可以执行 <code>make manifests</code> 指令生成 CRD 文件：
@@ -547,7 +548,8 @@ bash <span class="org-string">"${CODEGEN_PKG}"</span>/generate-groups.sh <span c
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">K8SVERSION=v0.19.6                              // &#27880;&#24847;&#27492;&#22788;&#29256;&#26412;&#20197;&#19979;&#20960;&#20010;&#21253;&#35201;&#19968;&#33268;&#65292;&#21542;&#21017;&#21487;&#33021;&#20986;&#29616;&#19981;&#20860;&#23481;&#30340;&#24773;&#20917;</span>
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">&#27880;&#24847;&#27492;&#22788;&#29256;&#26412;&#20197;&#19979;&#20960;&#20010;&#21253;&#35201;&#19968;&#33268;&#65292;&#21542;&#21017;&#21487;&#33021;&#20986;&#29616;&#19981;&#20860;&#23481;&#30340;&#24773;&#20917;</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">K8SVERSION=v0.19.6</span>
 <span class="org-comment-delimiter"># </span><span class="org-comment">go get -v k8s.io/code-generator@${K8SVERSION}</span>
 <span class="org-comment-delimiter"># </span><span class="org-comment">go get -v k8s.io/client-go@${K8SVERSION}</span>
 <span class="org-comment-delimiter"># </span><span class="org-comment">go get -v k8s.io/apimachinery@${K8SVERSION}</span>
@@ -606,6 +608,10 @@ NAME   AGE
 test   27s
 </pre>
 </div>
+
+<p>
+完整示例代码参见 <a href="https://github.com/opskumu/crd-example">crd-example</a>
+</p>
 </div>
 </div>
 
