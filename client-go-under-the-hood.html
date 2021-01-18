@@ -6,7 +6,7 @@
 <!-- 2021-01-18 Mon 10:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kumu's Blog</title>
+<title>client-go 背后机制「译」</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
 <style type="text/css">
@@ -233,111 +233,65 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Kumu's Blog</h1>
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<h1 class="title">client-go 背后机制「译」</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgf33a4df">1. client-go 组件</a></li>
+<li><a href="#org47bdc3f">2. 自定义控制器组件</a></li>
+</ul>
+</div>
+</div>
+<p>
+本文为译文，原文链接见 <a href="https://github.com/kubernetes/sample-controller/blob/master/docs/controller-client-go.md">client-go under the hood</a> 。
+</p>
+
+<p>
+<a href="https://github.com/kubernetes/client-go/">client-go</a> 库囊括了各种机制，你可以在开发自定义控制器的时候使用它们。这些机制定义在 <a href="https://github.com/kubernetes/client-go/tree/master/tools/cache">tools/cache</a> 目录下。 下图展示了 client-go 库中各组件工作机制，以及和你编写的自定义控制器的交互点。
+</p>
 
 
-<colgroup>
-<col  class="org-left" />
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/client-go-controller-interaction.jpeg" alt="client-go-controller-interaction.jpeg" />
+</p>
+</div>
 
-<col  class="org-left" />
-
-<col  class="org-left" />
-
-<col  class="org-left" />
-
-<col  class="org-left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="org-left"><a href="https://opskumu.com">Index</a></td>
-<td class="org-left"><a href="https://blog.opskumu.com">Blog</a></td>
-<td class="org-left"><a href="https://wiki.opskumu.com">Wiki</a></td>
-<td class="org-left"><a href="https://github.com/opskumu/issues">Issues</a></td>
-<td class="org-left"><a href="https://github.com/opskumu">GitHub</a></td>
-</tr>
-</tbody>
-</table>
-
-<div id="outline-container-org9b8a015" class="outline-2">
-<h2 id="org9b8a015"># Archive</h2>
-<div class="outline-text-2" id="text-org9b8a015">
-<hr />
-
+<div id="outline-container-orgf33a4df" class="outline-2">
+<h2 id="orgf33a4df"><span class="section-number-2">1</span> client-go 组件</h2>
+<div class="outline-text-2" id="text-1">
 <ul class="org-ul">
-<li>2021-01-13 <a href="kubernetes-crd.html">自定义 Kubernetes CRD</a></li>
-<li>2021-01-12 <a href="kubernetes-mutating-webhook.html">自定义 Kubernetes 准入控制器</a></li>
-<li>2020-06-10 <a href="client-go-under-the-hood.html">client-go 背后机制</a></li>
-<li>2020-02-03 <a href="how-k8s-ingress-works.html">Nginx Ingress 控制器工作机制</a></li>
-<li>2020-01-20 <a href="kubernetes-ext-service.html">Kubernetes 外部服务映射</a></li>
-<li>2020-01-01 <a href="bye-2019.html">2019，小结</a></li>
-<li>2019-11-26 <a href="wacai-docker.html">挖财 Kubernetes 容器化之路</a></li>
-<li>2019-10-10 <a href="xinjiang-2019.html">北疆秋色</a></li>
-<li>2019-06-04 <a href="kubernetes-app.html">一个 HTTP 应用在 Kubernetes 的运行形式</a></li>
-<li>2019-02-11 <a href="nian.html">过年期间</a></li>
-<li>2019-01-06 <a href="just-for-fun.html">只是为了好玩</a></li>
-<li>2019-01-01 <a href="bye-2018.html">2018，小结</a></li>
-<li>2018-12-23 <a href="borg.html">Google 大规模集群管理器 Borg</a></li>
-<li>2018-11-18 <a href="k8s-pod-affinity-antiaffinity.html">Kubernetes Pod 亲和性和反亲和性</a></li>
-<li>2018-09-07 <a href="kubernetes-upgrade-notes.html">Kubernetes 版本升级标注</a></li>
-<li>2018-09-05 <a href="docker-overlayfs.html">Docker OverlayFS 驱动</a></li>
-<li>2018-08-28 <a href="2018-summer.html">夏日二三事</a></li>
-<li>2018-07-26 <a href="go-programming-language.html">The Go Programming Language 摘要</a></li>
-<li>2018-07-26 <a href="pets-vs-cattle.html">Pets vs Cattle 历史以及如何正确类比</a></li>
-<li>2018-05-01 <a href="about-30.html">三十岁的模样</a></li>
-<li>2018-04-01 <a href="cd-base.html">持续交付基础摘要</a></li>
-<li>2018-03-13 <a href="this-months-2018.html">三月琐事</a></li>
-<li>2018-01-01 <a href="bye-2017.html">2017，小结</a></li>
-<li>2017-11-12 <a href="graceful-shutdown-docker.html">如何优雅的关闭容器</a></li>
-<li>2017-09-17 <a href="slow-down.html">要不，慢点吧</a></li>
-<li>2017-09-09 <a href="persistence.html">坚持这件小事儿</a></li>
-<li>2017-08-05 <a href="young.html">一如少年模样</a></li>
-<li>2017-07-18 <a href="summer.html">夏天的记忆</a></li>
-<li>2017-07-16 <a href="docker-gpu.html">Docker 中玩转 GPU</a></li>
-<li>2017-07-08 <a href="about-hangzhou.html">关于杭州</a></li>
-<li>2017-07-02 <a href="about-drinking.html">关于喝酒</a></li>
-<li>2017-06-25 <a href="town-youth.html">小镇青年</a></li>
-<li>2017-06-18 <a href="kafka-on-the-shore.html">读《海边的卡夫卡》</a></li>
-<li>2017-06-14 <a href="huangshan.html">黄山行</a></li>
-<li>2017-02-25 <a href="calico.html">Calico 备忘</a></li>
-<li>2017-01-01 <a href="bye-2016.html">2016，小结</a></li>
-<li>2016-11-09 <a href="k8s-ingress.html">Kubernetes Ingress 服务负载均衡</a></li>
-<li>2016-04-20 <a href="go-pointers-defer-func.html">Go 指针、defer、匿名函数</a></li>
-<li>2016-03-27 <a href="docker-io-limit.html">Docker 磁盘 IO 资源限制</a></li>
-<li>2016-03-27 <a href="docker-cpu-limit.html">Docker CPU 资源限制</a></li>
-<li>2016-03-16 <a href="for-my-brother.html">马上毕业了，还能做些什么</a></li>
-<li>2016-03-08 <a href="docker-memory-limit.html">Docker 内存资源限制</a></li>
-<li>2016-02-17 <a href="rbd-docker-plugin.html">Docker 使用 Ceph RBD Volume</a></li>
-<li>2016-01-01 <a href="bye-2015.html">2015，小结</a></li>
-<li>2015-12-09 <a href="some-thoughts.html">我所能想到的一些事情</a></li>
-<li>2015-11-04 <a href="cadvisor.html">cAdvisor 容器数据采集</a></li>
-<li>2015-10-30 <a href="docker-storage-setup.html">Docker lvm device mapper</a></li>
-<li>2015-09-27 <a href="for-jerry.html">后会无期</a></li>
-<li>2015-08-14 <a href="revolution.html">革命，革谁的命</a></li>
-<li>2015-06-02 <a href="kvm-notes.html">KVM 学习笔记</a></li>
-<li>2015-05-03 <a href="kvm-ulimits.html">KVM 进程 ulimit 设置未生效</a></li>
-<li>2015-04-08 <a href="software-tips.html">软件开发者路线图摘要</a></li>
-<li>2015-01-26 <a href="bye-2014.html">2014，小结</a></li>
-<li>2015-01-14 <a href="mysql-blob.html">MySQL 大字段溢出数据回写失败</a></li>
-<li>2015-01-09 <a href="rsync.html">rsync 备份备忘</a></li>
-<li>2014-12-22 <a href="docker.html">Docker 学习笔记</a></li>
-<li>2014-12-19 <a href="sublime.html">Sublime Text2 tips</a></li>
-<li>2014-11-25 <a href="init-ssh.html">init 管理 ssh 服务</a></li>
-<li>2014-11-18 <a href="lvs-nat.html">One Network LVS-NAT</a></li>
-<li>2014-02-17 <a href="mysql-rep.html">MySQL 复制备忘</a></li>
-<li>2013-08-06 <a href="tmux.html">终端利器 Tmux</a></li>
-<li>2013-06-19 <a href="pdsh-pssh.html">批量主机管理 pdsh &amp; pssh</a></li>
-<li>2013-06-07 <a href="top.html">top command tips</a></li>
+<li>Reflector：reflector 定义在 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/reflector.go">type Reflector inside package cache</a> ，监视 Kubernetes API 中指定的资源类型（kind）。完成此功能的函数是 <code>ListAndWatch</code> 。可以监视内置的资源，也可以监视自定义资源。当 reflector 通过 watch API 接收到新资源存在的通知时，它将使用相应的 listing API 获取新创建的对象，并将其存放到 <code>watchHandler</code> 函数中的 Delta FIFO 队列中。</li>
+<li>Informer：informer 定义在 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/controller.go">base controller inside package cache </a> ，它会从 Delta FIFO 队列中弹出对象。完成此功能的函数是 <code>processLoop</code> 。该基础控制器的任务是保存对象以备检索，并调用我们的控制器传递该对象。</li>
+<li>Indexer：indexer 提供了资源索引功能。它定义在 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/controller.go">type Indexer inside package cache</a> 。一个典型的索引用例是基于对象的标签来创建索引。indexer 可以基于几个索引函数来维护索引。Indexer 使用了一个线程安全的数据存储来存放对象和它们的键。这里有一个名为 <code>MetaNamespaceKeyFunc</code> 的函数定义在 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/store.go">type Store inside package cache</a> ，它会为对象生成一个 <code>&lt;namespace&gt;/&lt;name&gt;</code> 组合键。</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org47bdc3f" class="outline-2">
+<h2 id="org47bdc3f"><span class="section-number-2">2</span> 自定义控制器组件</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Informer reference：这是对 Informer 实例的一个引用，该实例知道如何同你的自定义资源对象工作。你的自定义控制器代码需要创建合适的 Informer。</li>
+<li>Indexer reference：这是对 Indexer 实例的引用，该实例知道如何同自定义资源对象工作。你的自定义控制器代码需要创建这个。你会使用这个 reference 检索对象以备后用。</li>
 </ul>
 
-<hr />
+<p>
+client-go 中的基础控制器提供了 <code>NewIndexerInformer</code> 函数来创建 Informer 和 Indexer。在你的代码中，你可以直接调用 <a href="https://github.com/kubernetes/client-go/blob/master/examples/workqueue/main.go#L174">此函数</a> ，或者使用 <a href="https://github.com/kubernetes/sample-controller/blob/master/main.go#L61">工厂方法</a> 创建 informer。
+</p>
+
+<ul class="org-ul">
+<li>Resource Event Handlers：当需要传递一个对象给你的控制器时，Informer 会调用回调函数。典型的一个模式是编写这些函数获取调度对象的键并把键加入到工作队列以进一步处理。</li>
+<li>Work queue：这是你在控制器代码中创建的队列，用于将对象的交付和处理分离。编写 Resource event handler 函数是为了获取交付对象的键并将其添加到工作队列中。</li>
+<li>Process Item：这个函数是创建在你的代码中用来处理工作队列中的项目。这里可能有一个或多个其它函数来实际处理。这些函数通常使用 <a href="https://github.com/kubernetes/client-go/blob/master/examples/workqueue/main.go#L73">Indexer reference</a>，或者 Listing wrapper 来检索键对应的对象。</li>
+</ul>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2021-01-13 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.1.13)</span>
+         class="date">2020-06-10 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.1.13)</span>
 </div>
 </body>
 </html>
