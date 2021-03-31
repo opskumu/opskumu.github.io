@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2021-03-31 Wed 20:51 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kubernetes 访问控制</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Kumu" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/org.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Kubernetes 访问控制</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgb534afc">1. TLS 双向认证</a></li>
+<li><a href="#org58b4880">2. RBAC</a></li>
+<li><a href="#orge6d58f5">3. TLS bootstrapping</a></li>
+<li><a href="#orgb2230b8">4. Node Authorization</a></li>
+<li><a href="#org165d1b0">5. 参考</a></li>
+</ul>
+</div>
+</div>
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/components-of-kubernetes.png" alt="components-of-kubernetes.png" />
+</p>
+</div>
+
+<p>
+图摘自 <a href="https://kubernetes.io/docs/concepts/overview/components/">Kubernetes Components | Kubernetes</a>
+</p>
+
+<p>
+如上图，这是一个典型的 Kubernetes 集群组件图，通过上图我们可以看到 Kubernetes 各组件都是以 APIServer 作为网关通信的。为了安全，APIServer 一般通过 TLS 认证对外暴露，集群组件若要访问 APIServer 则需要相应的 TLS 证书。
+</p>
+
+<p>
+下图为 APIserver 的控制访问过程，完整的访问控制需要经过 <code>认证</code> 、 <code>授权</code> 以及 <code>准入控制</code> 三个模块，图中 4 表示 APIServer 访问 ETCD 集群，同样也是采用 TLS 认证的。
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/access-control-overview.png" alt="access-control-overview.png" />
+</p>
+</div>
+
+<p>
+图摘自 <a href="https://kubernetes.io/docs/concepts/security/controlling-access/">Controlling Access to the Kubernetes API | Kubernetes</a>
+</p>
+
+<p>
+这里要说明的是，APIServer 本身支持多种认证方式，并不只是 TLS 一种，默认我们使用 TLS 认证（可以启用多种认证方式）。目前 APIServer 支持以下认证方式：
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kubernetes-authentication.png" alt="kubernetes-authentication.png" />
+</p>
+</div>
+
+<p>
+这里我们会着重介绍 TLS 认证方式，准入控制可以参考之前写的文章<a href="https://blog.opskumu.com/kubernetes-mutating-webhook.html">自定义 Kubernetes 准入控制器</a>，其他认证方式详情可以参见 <a href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/">Authenticating | Kubernetes。</a>
+</p>
+
+<div id="outline-container-orgb534afc" class="outline-2">
+<h2 id="orgb534afc"><span class="section-number-2">1</span> TLS 双向认证</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+TLS 是安全传输层协议，包括两部分：TLS 记录协议和 TLS 握手协议。TLS 记录协议主要保证传输过程中信息传输的完整性和私密性，这一部分通过协商后的密钥来加密数据。TLS 握手协议主要是为了认证对方的身份、协商密钥。
+</p>
+
+<p>
+APIServer 和集群组件通信使用 TLS 双向认证，顾名思义，客户端和服务器端都需要验证对方的身份，相比单向认证，双向认证客户端除了需要从服务器端下载服务器的公钥证书进行验证外，还需要把客户端的公钥证书上传到服务器端给服务器端进行验证，等双方都认证通过了，才开始建立安全通信通道进行数据传输，具体流程如下：
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mutual-ssl.png" alt="mutual-ssl.png" />
+</p>
+</div>
+
+<p>
+图摘自 <a href="https://www.codeproject.com/Articles/326574/An-Introduction-to-Mutual-SSL-Authentication">An Introduction to Mutual SSL Authentication - CodeProject</a>
+</p>
+
+<p>
+kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书选项和说明：
+</p>
+
+<pre class="example">
+--etcd-cafile                        # etcd CA 证书
+--etcd-certfile                      # APIServer 访问 etcd client 公钥
+--etcd-keyfile                       # APIServer 访问 etcd client 密钥
+--client-ca-file                     # 验证访问 APIServer 的 client CA 证书
+--tls-cert-file                      # APIServer 服务的公钥
+--tls-private-key-file               # APIServer 服务的密钥
+--service-account-key-file           # 验证 ServiceAccount tokens 的公钥
+--service-account-signing-key-file   # ServiceAccount tokens 签名密钥
+--kubelet-client-certificate         # 访问 kubelet 的公钥
+--kubelet-client-key                 # 访问 kubelet 的密钥
+--requestheader-client-ca-file       # 用于签名 --proxy-client-cert-file 和--proxy-client-key-file 指定的证书，启用 aggregator 时使用
+--proxy-client-cert-file             # 用于请求 aggregator client 公钥
+--proxy-client-key-file              # 用于请求 aggregator client 密钥
+</pre>
+
+
+<p>
+值得注意的是，APIServer 在 TLS 认证的过程中是使用证书中的 <code>CN</code> 和 <code>O</code> 字段作为用户名和组名标识的，通过这两个字段来结合 ClusterRole/ClusterRoleBinding/Role/RoleBinding 达到关联授权的目的，而它本身并没有用户和组的管理机制。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org58b4880" class="outline-2">
+<h2 id="org58b4880"><span class="section-number-2">2</span> RBAC</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+以上主要介绍 TLS 认证，认证之后我们如何在认证基础上针对资源授权管理呢？这里就要介绍到 RBAC 机制。RBAC，字面意思就是基于角色的权限访问控制。Kubernetes 中的 RBAC 主要涉及到上面提到的 ClusterRole/ClusterRoleBinding/Role/RoleBinding 的资源，其中 ClusterRole/ClusterRolebinding 是全局的角色，Role/RoleBind 是针对 namespace 级别的角色。Role 是对用户拥有权限的抽象，RoleBinding 将角色绑定到用户（User）、组（Group）或者服务账户（Service Account）。下图更为形象的展示了对应关系：
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/role-binding.png" alt="role-binding.png" />
+</p>
+</div>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cluster-role-binding.png" alt="cluster-role-binding.png" />
+</p>
+</div>
+
+<p>
+图摘自 Kubernetes RBAC 101: authorization | Cloud Native Computing Foundation (cncf.io)
+</p>
+
+<p>
+我们看具体的资源配置，这里以 CoreDNS 为例：
+</p>
+
+<pre class="example">
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: coredns   # 如果你要绑定权限，这里的 name 需要对应 TLS 证书中的 CN 字段
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  - services
+  - pods
+  - namespaces
+  verbs:
+  - list
+  - watch
+</pre>
+
+<p>
+ClusterRole 定义了 CoreDNS apiGroups 范围，可以访问的资源以及权限。
+</p>
+
+<pre class="example">
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: coredns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: coredns
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: kube-system
+</pre>
+
+<p>
+ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空间（subjects 还可以是组或者 Service Account，其中组对应 TLS 证书中的 O 字段）。上文提过证书中的 CN 和 O 作为用户和组标识字段，ClusterRoleBinding/RoleBinding 关联 ClusterRole/Role 和 subjects，在只定义 ServiceAccount 的情况下，CN 要生效，可以加上 <code>system:serviceaccount:</code> 前缀，如 CoreDNS 的例子，如要 TLS 方式访问，可以配置 CN 为 <code>system:serviceaccount:coredns</code> ，详情可以参见 <a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/#referring-to-subjects">Using RBAC Authorization </a>。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge6d58f5" class="outline-2">
+<h2 id="orge6d58f5"><span class="section-number-2">3</span> TLS bootstrapping</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+前文已经提了，之所以使用 TLS 认证是为了集群间通信安全目的。正常情况下，我们在扩缩容节点的时候需要手动给对应的节点签发证书，这会增加一些额外的工作。Kubernetes 从 1.4 开始引入了证书请求和签名 API 简化了这一流程，也就是我们这里要说的 TLS bootstrapping。下图展示了 TLS bootstrapping 的工作流程：
+</p>
+
+
+<div class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/bootstrapping-workflow.png" alt="bootstrapping-workflow.png" />
+</p>
+</div>
+
+<p>
+图摘自 <a href="https://medium.com/@toddrosner/kubernetes-tls-bootstrapping-cf203776abc7">Kubernetes TLS bootstrapping</a>
+</p>
+
+<p>
+上图流程简单说就是，kubelet 启动时首先会去寻找 kubeconfig 文件，当 kubeconfig 文件存在，则且在启动的时候利用 kubeconfig 直接加入集群。如果 kubeconfig 不存在，kubelet 使用 bootstrap.kubeconfig 文件建立认证请求，通过 bootstrapping 机制签发证书然会自动创建 kubeconfig 文件，加入到集群。详细的流程参考 <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/#bootstrap-initialization">TLS bootstrapping | Kubernetes</a>，其中生成的证书会检查有效期，在有效期快到期的时候会重新签注证书。
+</p>
+
+<p>
+Kubelet 要启用 TLS bootstrapping，需要开启选项 &#x2013;bootstrap-kubeconfig ，我们可以看下 bootstrap.kubeconfig 的一个示例配置内容：
+</p>
+
+<pre class="example">
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority: /etc/kubernetes/pki/ca.pem      # CA 证书地址
+    server: https://&lt;APIServer&gt;:&lt;APIServerPort&gt;            # APIServer 地址
+  name: bootstrap
+contexts:
+- context:
+    cluster: bootstrap
+    user: kubelet-bootstrap
+  name: bootstrap
+current-context: bootstrap
+preferences: {}
+users:
+- name: kubelet-bootstrap
+  user:
+token: 50bc4305185c3c2d8e31cab9223a8107 # APIServer 定义的 bootstrap token
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgb2230b8" class="outline-2">
+<h2 id="orgb2230b8"><span class="section-number-2">4</span> Node Authorization</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+我们知道 TLS bootstrapping 主要针对的是 kubelet 的证书自动签注认证的，Node Authorization 是专门针对 kubelet API 请求授权的特殊授权。节点授权允许 Kubelet 有以下 API 操作权限：
+</p>
+
+<ul class="org-ul">
+<li>读操作
+<ul class="org-ul">
+<li>services</li>
+<li>endpoints</li>
+<li>nodes</li>
+<li>pods</li>
+<li>secrets, configmaps, pvc 以及绑定到该节点的 pv</li>
+</ul></li>
+<li>写操作
+<ul class="org-ul">
+<li>节点和节点状态（通过 NodeRestriction 准入控制插件限制 kubelet 修改自身的节点）</li>
+<li>pods 和 pods 状态（通过 NodeRestriction 准入控制插件限制 kubelet 修改自身调度的 pods）</li>
+<li>events</li>
+</ul></li>
+<li>认证操作
+<ul class="org-ul">
+<li>TLS bootstrapping 读写访问 certificationsigningrequests API</li>
+<li>检查和创建 tokenreviews and subjectaccessreviews 认证授权的能力</li>
+</ul></li>
+</ul>
+
+<p>
+在未来版本中，节点授权将支持添加或删除权限，以确保 kubelet 具有正确操作所需的最小权限集。
+</p>
+
+<p>
+APIServer 可以通过 <code>--authorization-mode=Node</code> 开启 Node 授权，正常情况下开启 Node 的同时也会开启 RBAC，如 <code>--authorization-mode=Node</code> ,RBAC 。APIServer 还有开启 <code>NodeRestriction</code> 限制 kubelet API 写操作， <code>--enable-admission-plugins=...,NodeRestriction,...</code> 。
+</p>
+</div>
+</div>
+
+<div id="outline-container-org165d1b0" class="outline-2">
+<h2 id="org165d1b0"><span class="section-number-2">5</span> 参考</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li><a href="https://developer.aliyun.com/article/726414">HTTPS 双向认证研究</a></li>
+<li><a href="https://www.infoq.cn/article/1mmhe2zxcikfil3mxp7d">API-server 安全机制详</a></li>
+<li><a href="https://www.jianshu.com/p/90a5d6aedee0">Kubernetes API 安全机制详解</a></li>
+<li><a href="https://www.cncf.io/blog/2020/08/28/kubernetes-rbac-101-authorization/">Kubernetes RBAC 101: authorization</a></li>
+<li><a href="https://medium.com/@toddrosner/kubernetes-tls-bootstrapping-cf203776abc7">Kubernetes TLS bootstrapping</a></li>
+<li><a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/">TLS bootstrapping | Kubernetes</a></li>
+<li><a href="https://kubernetes.io/docs/setup/best-practices/certificates/">PKI certificates and requirements | Kubernetes</a></li>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">Using RBAC Authorization | Kubernetes</a></li>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/authorization/">Authorization Overview | Kubernetes</a></li>
+<li><a href="https://kubernetes.io/docs/reference/access-authn-authz/node/">Using Node Authorization | Kubernetes</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<a class="author"
+         href="https://blog.opskumu.com">Kumu</a> / <span
+         class="date">2018-07-26 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.3)</span>
+</div>
+</body>
+</html>
