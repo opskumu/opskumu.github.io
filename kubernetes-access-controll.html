@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-01 Thu 10:29 -->
+<!-- 2021-04-06 Tue 14:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 访问控制</title>
@@ -236,7 +236,7 @@
 </div>
 </div>
 
-<div id="orga70954d" class="figure">
+<div id="org7892d30" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/components-of-kubernetes.png" alt="components-of-kubernetes.png" />
 </p>
 </div>
@@ -254,7 +254,7 @@
 </p>
 
 
-<div id="orgdb13d36" class="figure">
+<div id="orgb94c733" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/access-control-overview.png" alt="access-control-overview.png" />
 </p>
 </div>
@@ -268,7 +268,7 @@
 </p>
 
 
-<div id="orgaebb58a" class="figure">
+<div id="org30d7fb4" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kubernetes-authentication.png" alt="kubernetes-authentication.png" />
 </p>
 </div>
@@ -289,7 +289,7 @@ APIServer 和集群组件通信使用 TLS 双向认证，顾名思义，客户�
 </p>
 
 
-<div id="org09151aa" class="figure">
+<div id="org3f7425c" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mutual-ssl.png" alt="mutual-ssl.png" />
 </p>
 </div>
@@ -333,13 +333,13 @@ kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书�
 </p>
 
 
-<div id="org9943a1c" class="figure">
+<div id="org486fcbf" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/role-binding.png" alt="role-binding.png" />
 </p>
 </div>
 
 
-<div id="org60a5b3a" class="figure">
+<div id="orga0cd9ee" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cluster-role-binding.png" alt="cluster-role-binding.png" />
 </p>
 </div>
@@ -390,7 +390,7 @@ subjects:
 </pre>
 
 <p>
-ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空间（subjects 还可以是组或者 Service Account，其中组对应 TLS 证书中的 O 字段）。上文提过证书中的 CN 和 O 作为用户和组标识字段，ClusterRoleBinding/RoleBinding 关联 ClusterRole/Role 和 subjects，在只定义 ServiceAccount 的情况下，CN 要生效，可以加上 <code>system:serviceaccount:</code> 前缀，如 CoreDNS 的例子，如要 TLS 方式访问，可以配置 CN 为 <code>system:serviceaccount:coredns</code> ，详情可以参见 <a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/#referring-to-subjects">Using RBAC Authorization </a>。
+ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空间（subjects 还可以是组或者 Service Account，其中组对应 TLS 证书中的 O 字段）。上文提过证书中的 <code>CN</code> 和 <code>O</code> 作为用户和组标识字段，ClusterRoleBinding/RoleBinding 关联 ClusterRole/Role 和 subjects，在只定义 ServiceAccount 的情况下，CN 要生效，可以加上 <code>system:serviceaccount:</code> 前缀，如 CoreDNS 的例子，如要 TLS 方式访问，可以配置 CN 为 <code>system:serviceaccount:coredns</code> ，详情可以参见 <a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/#referring-to-subjects">Using RBAC Authorization </a>。
 </p>
 </div>
 </div>
@@ -403,7 +403,7 @@ ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空�
 </p>
 
 
-<div id="org290c9a7" class="figure">
+<div id="orgef950d3" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/bootstrapping-workflow.png" alt="bootstrapping-workflow.png" />
 </p>
 </div>
@@ -417,7 +417,7 @@ ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空�
 </p>
 
 <p>
-Kubelet 要启用 TLS bootstrapping，需要开启选项 &#x2013;bootstrap-kubeconfig ，我们可以看下 bootstrap.kubeconfig 的一个示例配置内容：
+Kubelet 要启用 TLS bootstrapping，需要开启选项 <code>--bootstrap-kubeconfig</code> ，我们可以看下 bootstrap.kubeconfig 的一个示例配置内容：
 </p>
 
 <pre class="example">
@@ -504,7 +504,7 @@ APIServer 可以通过 <code>--authorization-mode=Node</code> 开启 Node 授权
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2018-07-26 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4)</span>
+         class="date">2021-03-31 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4)</span>
 </div>
 </body>
 </html>
