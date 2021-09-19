@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-04-06 Tue 14:11 -->
+<!-- 2021-09-19 Sun 15:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 访问控制</title>
@@ -236,7 +236,7 @@
 </div>
 </div>
 
-<div id="org7892d30" class="figure">
+<div id="orgbccb3a7" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/components-of-kubernetes.png" alt="components-of-kubernetes.png" />
 </p>
 </div>
@@ -254,7 +254,7 @@
 </p>
 
 
-<div id="orgb94c733" class="figure">
+<div id="orgf14f8b5" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/access-control-overview.png" alt="access-control-overview.png" />
 </p>
 </div>
@@ -268,7 +268,7 @@
 </p>
 
 
-<div id="org30d7fb4" class="figure">
+<div id="org3e4bae5" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kubernetes-authentication.png" alt="kubernetes-authentication.png" />
 </p>
 </div>
@@ -289,7 +289,7 @@ APIServer 和集群组件通信使用 TLS 双向认证，顾名思义，客户�
 </p>
 
 
-<div id="org3f7425c" class="figure">
+<div id="org0b6e52f" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mutual-ssl.png" alt="mutual-ssl.png" />
 </p>
 </div>
@@ -333,13 +333,13 @@ kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书�
 </p>
 
 
-<div id="org486fcbf" class="figure">
+<div id="org2a273a6" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/role-binding.png" alt="role-binding.png" />
 </p>
 </div>
 
 
-<div id="orga0cd9ee" class="figure">
+<div id="orgaad8b1c" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cluster-role-binding.png" alt="cluster-role-binding.png" />
 </p>
 </div>
@@ -403,7 +403,7 @@ ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空�
 </p>
 
 
-<div id="orgef950d3" class="figure">
+<div id="org02e5718" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/bootstrapping-workflow.png" alt="bootstrapping-workflow.png" />
 </p>
 </div>
@@ -478,7 +478,7 @@ token: 50bc4305185c3c2d8e31cab9223a8107 # APIServer 定义的 bootstrap token
 </p>
 
 <p>
-APIServer 可以通过 <code>--authorization-mode=Node</code> 开启 Node 授权，正常情况下开启 Node 的同时也会开启 RBAC，如 <code>--authorization-mode=Node</code> ,RBAC 。APIServer 还有开启 <code>NodeRestriction</code> 限制 kubelet API 写操作， <code>--enable-admission-plugins=...,NodeRestriction,...</code> 。
+APIServer 可以通过 <code>--authorization-mode=Node</code> 开启 Node 授权，正常情况下开启 Node 的同时也会开启 RBAC，如 <code>--authorization-mode=Node,RBAC</code> 。APIServer 还有开启 <code>NodeRestriction</code> 限制 kubelet API 写操作， <code>--enable-admission-plugins=...,NodeRestriction,...</code> 。
 </p>
 </div>
 </div>
