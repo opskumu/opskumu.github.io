@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 外部服务映射</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,75 +191,28 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Kubernetes 外部服务映射</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd12fc37">1. 外部域名映射到内部 Service -&gt; <code>ExternalName</code></a></li>
-<li><a href="#org5e9735e">2. 外部 IP 映射到内部 Service</a>
+<li><a href="#org26dced5">1. 外部域名映射到内部 Service -&gt; <code>ExternalName</code></a></li>
+<li><a href="#org134ae7d">2. 外部 IP 映射到内部 Service</a>
 <ul>
-<li><a href="#orgaa4b4a7">2.1. IP 映射</a></li>
-<li><a href="#orgd60c794">2.2. IP + 端口映射</a></li>
+<li><a href="#orgfaa8b84">2.1. IP 映射</a></li>
+<li><a href="#org4ef407f">2.2. IP + 端口映射</a></li>
 </ul>
 </li>
-<li><a href="#org740265d">3. 小结</a></li>
+<li><a href="#org67f6990">3. 小结</a></li>
 </ul>
 </div>
 </div>
@@ -254,7 +221,7 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="org1b63f15" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/external-service.png" alt="external-service.png" />
 </p>
 </div>
@@ -263,8 +230,8 @@ for the JavaScript code in this tag.
 另外，还可以保证最小化变更，如果外部数据库 IP 之类的变动，只需要修改 Service 对应映射即可，服务本身配置无需变动。具体场景如下：
 </p>
 
-<div id="outline-container-orgd12fc37" class="outline-2">
-<h2 id="orgd12fc37"><span class="section-number-2">1</span> 外部域名映射到内部 Service -&gt; <code>ExternalName</code></h2>
+<div id="outline-container-org26dced5" class="outline-2">
+<h2 id="org26dced5"><span class="section-number-2">1.</span> 外部域名映射到内部 Service -&gt; <code>ExternalName</code></h2>
 <div class="outline-text-2" id="text-1">
 <pre class="example">
 apiVersion: v1
@@ -286,12 +253,12 @@ spec:
 </div>
 </div>
 
-<div id="outline-container-org5e9735e" class="outline-2">
-<h2 id="org5e9735e"><span class="section-number-2">2</span> 外部 IP 映射到内部 Service</h2>
+<div id="outline-container-org134ae7d" class="outline-2">
+<h2 id="org134ae7d"><span class="section-number-2">2.</span> 外部 IP 映射到内部 Service</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgaa4b4a7" class="outline-3">
-<h3 id="orgaa4b4a7"><span class="section-number-3">2.1</span> IP 映射</h3>
+<div id="outline-container-orgfaa8b84" class="outline-3">
+<h3 id="orgfaa8b84"><span class="section-number-3">2.1.</span> IP 映射</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 前文提过，虽然 externalName 字段可以配置为 IP 地址，但是 Ingress 和 CoreDNS 并不会解析，如果外部服务为 IP 提供，那么可以使用 Headless Service 实现映射。
@@ -323,8 +290,8 @@ service 不指定 selector，手动维护创建 endpoint，创建之后就可以
 </div>
 </div>
 
-<div id="outline-container-orgd60c794" class="outline-3">
-<h3 id="orgd60c794"><span class="section-number-3">2.2</span> IP + 端口映射</h3>
+<div id="outline-container-org4ef407f" class="outline-3">
+<h3 id="org4ef407f"><span class="section-number-3">2.2.</span> IP + 端口映射</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 如果外部的端口不是标准的端口，想通过 Service 访问时候使用标准端口，如外部 MySQL 提供端口为 3307，内部想通过 Service 3306 访问，这个时候则可以通过如下方式实现：
@@ -365,8 +332,8 @@ service 不指定 selector，手动维护创建 endpoint，创建之后就可以
 </div>
 </div>
 
-<div id="outline-container-org740265d" class="outline-2">
-<h2 id="org740265d"><span class="section-number-2">3</span> 小结</h2>
+<div id="outline-container-org67f6990" class="outline-2">
+<h2 id="org67f6990"><span class="section-number-2">3.</span> 小结</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 我们可以看出以上外部服务映射，externalName 和 Headless Service 方式映射外部服务是没有经过中间层代理的，都是通过 DNS 劫持实现。而有端口变更需求的时候，则要经过内部 kube-proxy 层转发。正常情况下，能尽可能少的引入中间层就少引用，特别是数据库类的应用，因为引入中间层虽然带来了便利，但也意味着可能会带来性能损耗，特别是那些对延迟比较敏感的服务。
@@ -377,7 +344,7 @@ service 不指定 selector，手动维护创建 endpoint，创建之后就可以
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2020-01-20 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2020-01-20 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

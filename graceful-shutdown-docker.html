@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>如何优雅的关闭容器</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,73 +191,26 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">如何优雅的关闭容器</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org6ee247c">1. 信号</a></li>
-<li><a href="#org18443f8">2. <code>ENTRYPOINT</code> 、 <code>CMD</code></a></li>
-<li><a href="#org1635196">3. 实例</a>
+<li><a href="#orge9e7c75">1. 信号</a></li>
+<li><a href="#orgbeb6f14">2. <code>ENTRYPOINT</code> 、 <code>CMD</code></a></li>
+<li><a href="#orgb34a023">3. 实例</a>
 <ul>
-<li><a href="#orgb8c27ff">3.1. 实例 1</a></li>
-<li><a href="#org7b9c7ef">3.2. 实例 2</a></li>
+<li><a href="#org9110c52">3.1. 实例 1</a></li>
+<li><a href="#org32a78ae">3.2. 实例 2</a></li>
 </ul>
 </li>
 </ul>
@@ -257,8 +224,8 @@ for the JavaScript code in this tag.
 要说如何优雅的关闭容器，那就不得不提到信号（Signal）的理念，以及 <code>Dockerfile</code> 中 <code>ENTRYPOINT</code> 和 <code>CMD</code> 指令了。在具体说优雅关闭之前，先了解一下信号这个 Linux 中的基础概念。
 </p>
 
-<div id="outline-container-org6ee247c" class="outline-2">
-<h2 id="org6ee247c"><span class="section-number-2">1</span> 信号</h2>
+<div id="outline-container-orge9e7c75" class="outline-2">
+<h2 id="orge9e7c75"><span class="section-number-2">1.</span> 信号</h2>
 <div class="outline-text-2" id="text-1">
 <blockquote>
 <p>
@@ -303,7 +270,7 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="orgbe5c8af" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/signal.png" alt="signal.png" />
 </p>
 </div>
@@ -316,8 +283,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org18443f8" class="outline-2">
-<h2 id="org18443f8"><span class="section-number-2">2</span> <code>ENTRYPOINT</code> 、 <code>CMD</code></h2>
+<div id="outline-container-orgbeb6f14" class="outline-2">
+<h2 id="orgbeb6f14"><span class="section-number-2">2.</span> <code>ENTRYPOINT</code> 、 <code>CMD</code></h2>
 <div class="outline-text-2" id="text-2">
 <p>
 可能有人会问，说了半天，那信号和优雅的关闭容器有半毛钱的关系啊？话说，这和钱确实没关系，但是和如何优雅关闭容器却关系密切。接着说 <code>Dockerfile</code> 中的 <code>ENTRYPOINT</code> 和 <code>CMD</code> 指令，它们的主要功能是指定容器启动时执行的程序。
@@ -384,47 +351,47 @@ Options:
 </div>
 </div>
 
-<div id="outline-container-org1635196" class="outline-2">
-<h2 id="org1635196"><span class="section-number-2">3</span> 实例</h2>
+<div id="outline-container-orgb34a023" class="outline-2">
+<h2 id="orgb34a023"><span class="section-number-2">3.</span> 实例</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 通过 Go 写一个简单的信号处理器：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">&#10140;  ~ cat <span class="org-type">signals.go</span>
-<span class="org-keyword">package</span> main
+<pre class="src src-go">➜  ~ cat signals.go
+package main
 
-<span class="org-keyword">import</span> (
-    <span class="org-string">"fmt"</span>
-    <span class="org-string">"os"</span>
-    <span class="org-string">"os/signal"</span>
-    <span class="org-string">"syscall"</span>
+import (
+    "fmt"
+    "os"
+    "os/signal"
+    "syscall"
 )
 
-<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
-    <span class="org-variable-name">sigs</span> := <span class="org-builtin">make</span>(<span class="org-keyword">chan</span> <span class="org-type">os.Signal</span>, 1)
-    <span class="org-variable-name">done</span> := <span class="org-builtin">make</span>(<span class="org-keyword">chan</span> <span class="org-type">bool</span>, 1)
+func main() {
+    sigs := make(chan os.Signal, 1)
+    done := make(chan bool, 1)
 
-    signal.<span class="org-function-name">Notify</span>(sigs, syscall.SIGINT, syscall.SIGTERM)
+    signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
-    <span class="org-keyword">go</span> <span class="org-keyword">func</span>() {
-        <span class="org-variable-name">sig</span> := &lt;-sigs
-        fmt.<span class="org-function-name">Println</span>()
-        fmt.<span class="org-function-name">Println</span>(sig)
-        done &lt;- <span class="org-constant">true</span>
+    go func() {
+        sig := &lt;-sigs
+        fmt.Println()
+        fmt.Println(sig)
+        done &lt;- true
     }()
 
-    fmt.<span class="org-function-name">Println</span>(<span class="org-string">"awaiting signal"</span>)
+    fmt.Println("awaiting signal")
     &lt;-done
-    fmt.<span class="org-function-name">Println</span>(<span class="org-string">"exiting"</span>)
+    fmt.Println("exiting")
 }
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgb8c27ff" class="outline-3">
-<h3 id="orgb8c27ff"><span class="section-number-3">3.1</span> 实例 1</h3>
+<div id="outline-container-org9110c52" class="outline-3">
+<h3 id="org9110c52"><span class="section-number-3">3.1.</span> 实例 1</h3>
 <div class="outline-text-3" id="text-3-1">
 <pre class="example">
 ➜  ~ GOOS=linux GOARCH=amd64 go build signals.go
@@ -498,8 +465,8 @@ docker stop signals  0.01s user 0.01s system 0% cpu 10.719 total
 </div>
 </div>
 
-<div id="outline-container-org7b9c7ef" class="outline-3">
-<h3 id="org7b9c7ef"><span class="section-number-3">3.2</span> 实例 2</h3>
+<div id="outline-container-org32a78ae" class="outline-3">
+<h3 id="org32a78ae"><span class="section-number-3">3.2.</span> 实例 2</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 通过实例 1 我们都会在 <code>Dockerfile</code> 中都会通过 <b>exec</b> 这种格式来执行程序了，那如果执行的程序本身也是一个 shell 脚本呢？ 
@@ -576,7 +543,7 @@ docker stop signals  0.02s user 0.02s system 4% cpu 0.744 total
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2017-11-12 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2017-11-12 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

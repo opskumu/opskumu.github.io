@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Calico 备忘</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,84 +191,37 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Calico 备忘</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgcf95c55">1. calicoctl</a>
+<li><a href="#orgee670ee">1. calicoctl</a>
 <ul>
-<li><a href="#orgf3a3ed3">1.1. Command Reference</a>
+<li><a href="#orgde6bf70">1.1. Command Reference</a>
 <ul>
-<li><a href="#org8417bd6">1.1.1. Overview</a></li>
-<li><a href="#org9f753d0">1.1.2. <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></a></li>
-<li><a href="#org348d0f4">1.1.3. <code>get</code></a></li>
-<li><a href="#orgaa48b61">1.1.4. <code>config</code></a></li>
-<li><a href="#orgd849ba6">1.1.5. <code>ipam</code></a></li>
-<li><a href="#org644361a">1.1.6. <code>node</code></a></li>
+<li><a href="#org714a1be">1.1.1. Overview</a></li>
+<li><a href="#org80cce8e">1.1.2. <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></a></li>
+<li><a href="#orgad999ad">1.1.3. <code>get</code></a></li>
+<li><a href="#orgab5b45c">1.1.4. <code>config</code></a></li>
+<li><a href="#orgbf60c7f">1.1.5. <code>ipam</code></a></li>
+<li><a href="#org3d78017">1.1.6. <code>node</code></a></li>
 </ul>
 </li>
-<li><a href="#org896e141">1.2. 资源类型</a></li>
+<li><a href="#orgd1c4117">1.2. 资源类型</a></li>
 </ul>
 </li>
-<li><a href="#org4992abc">2. Calico CNI Plugins</a></li>
-<li><a href="#org39b6da5">3. BGP Peering</a></li>
+<li><a href="#orgf7e4530">2. Calico CNI Plugins</a></li>
+<li><a href="#orgd49cd49">3. BGP Peering</a></li>
 </ul>
 </div>
 </div>
@@ -278,16 +245,16 @@ Calico v2.0 版本支持以下平台：
 <li>Openstack Mitaka, Liberty, Kilo, Juno and icehouse</li>
 </ul>
 
-<div id="outline-container-orgcf95c55" class="outline-2">
-<h2 id="orgcf95c55"><span class="section-number-2">1</span> calicoctl</h2>
+<div id="outline-container-orgee670ee" class="outline-2">
+<h2 id="orgee670ee"><span class="section-number-2">1.</span> calicoctl</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgf3a3ed3" class="outline-3">
-<h3 id="orgf3a3ed3"><span class="section-number-3">1.1</span> Command Reference</h3>
+<div id="outline-container-orgde6bf70" class="outline-3">
+<h3 id="orgde6bf70"><span class="section-number-3">1.1.</span> Command Reference</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-org8417bd6" class="outline-4">
-<h4 id="org8417bd6"><span class="section-number-4">1.1.1</span> Overview</h4>
+<div id="outline-container-org714a1be" class="outline-4">
+<h4 id="org714a1be"><span class="section-number-4">1.1.1.</span> Overview</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <pre class="example">
 # calicoctl --help
@@ -332,8 +299,8 @@ Description:
 </div>
 </div>
 
-<div id="outline-container-org9f753d0" class="outline-4">
-<h4 id="org9f753d0"><span class="section-number-4">1.1.2</span> <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></h4>
+<div id="outline-container-org80cce8e" class="outline-4">
+<h4 id="org80cce8e"><span class="section-number-4">1.1.2.</span> <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></h4>
 <div class="outline-text-4" id="text-1-1-2">
 <pre class="example">
 # Create a policy using the data in policy.yaml.
@@ -372,8 +339,8 @@ calicoctl delete policy foo
 </div>
 </div>
 
-<div id="outline-container-org348d0f4" class="outline-4">
-<h4 id="org348d0f4"><span class="section-number-4">1.1.3</span> <code>get</code></h4>
+<div id="outline-container-orgad999ad" class="outline-4">
+<h4 id="orgad999ad"><span class="section-number-4">1.1.3.</span> <code>get</code></h4>
 <div class="outline-text-4" id="text-1-1-3">
 <pre class="example">
 # List all policy in default output format.
@@ -462,8 +429,8 @@ ETCD_ENDPOINTS=http://172.16.0.10:2379 calicoctl get bgppeers
 </div>
 </div>
 
-<div id="outline-container-orgaa48b61" class="outline-4">
-<h4 id="orgaa48b61"><span class="section-number-4">1.1.4</span> <code>config</code></h4>
+<div id="outline-container-orgab5b45c" class="outline-4">
+<h4 id="orgab5b45c"><span class="section-number-4">1.1.4.</span> <code>config</code></h4>
 <div class="outline-text-4" id="text-1-1-4">
 <pre class="example">
 # calicoctl config --help
@@ -542,8 +509,8 @@ The table below details the valid config options.
 </div>
 </div>
 
-<div id="outline-container-orgd849ba6" class="outline-4">
-<h4 id="orgd849ba6"><span class="section-number-4">1.1.5</span> <code>ipam</code></h4>
+<div id="outline-container-orgbf60c7f" class="outline-4">
+<h4 id="orgbf60c7f"><span class="section-number-4">1.1.5.</span> <code>ipam</code></h4>
 <div class="outline-text-4" id="text-1-1-5">
 <pre class="example">
 Usage:
@@ -590,8 +557,8 @@ No attributes defined for 192.168.1.1
 </div>
 </div>
 
-<div id="outline-container-org644361a" class="outline-4">
-<h4 id="org644361a"><span class="section-number-4">1.1.6</span> <code>node</code></h4>
+<div id="outline-container-org3d78017" class="outline-4">
+<h4 id="org3d78017"><span class="section-number-4">1.1.6.</span> <code>node</code></h4>
 <div class="outline-text-4" id="text-1-1-6">
 <pre class="example">
 Usage:
@@ -724,8 +691,8 @@ Description:
 </div>
 </div>
 
-<div id="outline-container-org896e141" class="outline-3">
-<h3 id="org896e141"><span class="section-number-3">1.2</span> 资源类型</h3>
+<div id="outline-container-orgd1c4117" class="outline-3">
+<h3 id="orgd1c4117"><span class="section-number-3">1.2.</span> 资源类型</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 资源结构概览：
@@ -954,18 +921,18 @@ k8snode-64-10-hzifc    64513   172.16.64.10
 </div>
 </div>
 
-<div id="outline-container-org4992abc" class="outline-2">
-<h2 id="org4992abc"><span class="section-number-2">2</span> <a href="http://docs.projectcalico.org/v2.0/reference/cni-plugin/configuration">Calico CNI Plugins</a></h2>
+<div id="outline-container-orgf7e4530" class="outline-2">
+<h2 id="orgf7e4530"><span class="section-number-2">2.</span> <a href="http://docs.projectcalico.org/v2.0/reference/cni-plugin/configuration">Calico CNI Plugins</a></h2>
 </div>
 
-<div id="outline-container-org39b6da5" class="outline-2">
-<h2 id="org39b6da5"><span class="section-number-2">3</span> <a href="http://docs.projectcalico.org/v2.0/usage/configuration/bgp">BGP Peering</a></h2>
+<div id="outline-container-orgd49cd49" class="outline-2">
+<h2 id="orgd49cd49"><span class="section-number-2">3.</span> <a href="http://docs.projectcalico.org/v2.0/usage/configuration/bgp">BGP Peering</a></h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2017-02-25 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2017-02-25 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

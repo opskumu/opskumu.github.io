@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>持续交付基础摘要</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,86 +191,39 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">持续交付基础摘要</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge2bbb75">1. 软件交付的问题</a>
+<li><a href="#org39cc7ab">1. 软件交付的问题</a>
 <ul>
-<li><a href="#orge7f5d82">1.1. 发布反模式</a></li>
-<li><a href="#org5ee8b92">1.2. 候选发布版本</a></li>
-<li><a href="#orgd2bd027">1.3. 软件交付原则</a></li>
+<li><a href="#org0e64b58">1.1. 发布反模式</a></li>
+<li><a href="#org945480c">1.2. 候选发布版本</a></li>
+<li><a href="#orged51b90">1.3. 软件交付原则</a></li>
 </ul>
 </li>
-<li><a href="#org099f4bf">2. 配置管理</a>
+<li><a href="#org91820a0">2. 配置管理</a>
 <ul>
-<li><a href="#org77c0082">2.1. 使用版本控制</a></li>
-<li><a href="#orga3d0bce">2.2. 软件配置管理</a></li>
-<li><a href="#orgd2125b0">2.3. 环境管理</a></li>
+<li><a href="#orgd3ce010">2.1. 使用版本控制</a></li>
+<li><a href="#org54b5d67">2.2. 软件配置管理</a></li>
+<li><a href="#orgf1c83e6">2.3. 环境管理</a></li>
 </ul>
 </li>
-<li><a href="#orgf9cbea6">3. 持续集成</a>
+<li><a href="#orgfd5f646">3. 持续集成</a>
 <ul>
-<li><a href="#org260f150">3.1. 实现持续集成</a></li>
-<li><a href="#org8eee62c">3.2. 持续集成的前提条件</a></li>
-<li><a href="#orgd6bfe34">3.3. 必不可少的实践</a></li>
+<li><a href="#org3d40b0b">3.1. 实现持续集成</a></li>
+<li><a href="#org89e15f7">3.2. 持续集成的前提条件</a></li>
+<li><a href="#orge5a38f0">3.3. 必不可少的实践</a></li>
 </ul>
 </li>
 </ul>
@@ -266,22 +233,22 @@ for the JavaScript code in this tag.
 本文是阅读《持续交付-发布可靠软件的系统方法》一书基础篇笔记摘要
 </p>
 
-<div id="outline-container-orge2bbb75" class="outline-2">
-<h2 id="orge2bbb75"><span class="section-number-2">1</span> 软件交付的问题</h2>
+<div id="outline-container-org39cc7ab" class="outline-2">
+<h2 id="org39cc7ab"><span class="section-number-2">1.</span> 软件交付的问题</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 一个简单的部署流水线：
 </p>
 
 
-<div class="figure">
+<div id="org2aef960" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cd-base.png" alt="cd-base.png" />
 </p>
 </div>
 </div>
 
-<div id="outline-container-orge7f5d82" class="outline-3">
-<h3 id="orge7f5d82"><span class="section-number-3">1.1</span> 发布反模式</h3>
+<div id="outline-container-org0e64b58" class="outline-3">
+<h3 id="org0e64b58"><span class="section-number-3">1.1.</span> 发布反模式</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>手工部署软件</li>
@@ -291,8 +258,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org5ee8b92" class="outline-3">
-<h3 id="org5ee8b92"><span class="section-number-3">1.2</span> 候选发布版本</h3>
+<div id="outline-container-org945480c" class="outline-3">
+<h3 id="org945480c"><span class="section-number-3">1.2.</span> 候选发布版本</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>每次提交代码都可能产生一个可发布的版本</li>
@@ -300,8 +267,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd2bd027" class="outline-3">
-<h3 id="orgd2bd027"><span class="section-number-3">1.3</span> 软件交付原则</h3>
+<div id="outline-container-orged51b90" class="outline-3">
+<h3 id="orged51b90"><span class="section-number-3">1.3.</span> 软件交付原则</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>为软件的发布创建一个可重复且可靠的发布流程</li>
@@ -332,16 +299,16 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org099f4bf" class="outline-2">
-<h2 id="org099f4bf"><span class="section-number-2">2</span> 配置管理</h2>
+<div id="outline-container-org91820a0" class="outline-2">
+<h2 id="org91820a0"><span class="section-number-2">2.</span> 配置管理</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 配置管理是指一个过程，通过该过程，所有与项目相关的产物，以及它们之间的关系都被唯一定义、修改、存储和检索。
 </p>
 </div>
 
-<div id="outline-container-org77c0082" class="outline-3">
-<h3 id="org77c0082"><span class="section-number-3">2.1</span> 使用版本控制</h3>
+<div id="outline-container-orgd3ce010" class="outline-3">
+<h3 id="orgd3ce010"><span class="section-number-3">2.1.</span> 使用版本控制</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>对所有内容进行版本控制</li>
@@ -356,8 +323,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orga3d0bce" class="outline-3">
-<h3 id="orga3d0bce"><span class="section-number-3">2.2</span> 软件配置管理</h3>
+<div id="outline-container-org54b5d67" class="outline-3">
+<h3 id="org54b5d67"><span class="section-number-3">2.2.</span> 软件配置管理</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 一般来说，我们并不赞同在构建或打包时就将配置信息植入的做法，而是应使用相同二进制安装包向所有的环境中部署，以确保这个发布的软件就是那个被测试过的软件。
@@ -365,8 +332,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd2125b0" class="outline-3">
-<h3 id="orgd2125b0"><span class="section-number-3">2.3</span> 环境管理</h3>
+<div id="outline-container-orgf1c83e6" class="outline-3">
+<h3 id="orgf1c83e6"><span class="section-number-3">2.3.</span> 环境管理</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 高效管理的两个基本原则：
@@ -401,16 +368,16 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf9cbea6" class="outline-2">
-<h2 id="orgf9cbea6"><span class="section-number-2">3</span> 持续集成</h2>
+<div id="outline-container-orgfd5f646" class="outline-2">
+<h2 id="orgfd5f646"><span class="section-number-2">3.</span> 持续集成</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 持续集成的目标是让正在开发的软件一直处于可工作状态。
 </p>
 </div>
 
-<div id="outline-container-org260f150" class="outline-3">
-<h3 id="org260f150"><span class="section-number-3">3.1</span> 实现持续集成</h3>
+<div id="outline-container-org3d40b0b" class="outline-3">
+<h3 id="org3d40b0b"><span class="section-number-3">3.1.</span> 实现持续集成</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>准备工作
@@ -427,8 +394,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org8eee62c" class="outline-3">
-<h3 id="org8eee62c"><span class="section-number-3">3.2</span> 持续集成的前提条件</h3>
+<div id="outline-container-org89e15f7" class="outline-3">
+<h3 id="org89e15f7"><span class="section-number-3">3.2.</span> 持续集成的前提条件</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li>频繁提交</li>
@@ -438,8 +405,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd6bfe34" class="outline-3">
-<h3 id="orgd6bfe34"><span class="section-number-3">3.3</span> 必不可少的实践</h3>
+<div id="outline-container-orge5a38f0" class="outline-3">
+<h3 id="orge5a38f0"><span class="section-number-3">3.3.</span> 必不可少的实践</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
 <li>构建失败之后不要提交新代码</li>
@@ -459,7 +426,7 @@ for the JavaScript code in this tag.
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2018-04-01 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2018-04-01 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>批量主机管理 pdsh &amp; pssh</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,90 +191,43 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">批量主机管理 pdsh &amp; pssh</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf6e622a">1. pssh</a>
+<li><a href="#org77a2db9">1. pssh</a>
 <ul>
-<li><a href="#org7b1ecf7">1.1. 安装</a></li>
-<li><a href="#org3050222">1.2. pssh相关参数</a></li>
-<li><a href="#org5bb69f0">1.3. 附加工具</a></li>
-<li><a href="#orga922d7f">1.4. 使用实例</a></li>
-<li><a href="#org5c79c7e">1.5. 参考文档</a></li>
+<li><a href="#org9b608e0">1.1. 安装</a></li>
+<li><a href="#org043ead5">1.2. pssh相关参数</a></li>
+<li><a href="#org0db57ab">1.3. 附加工具</a></li>
+<li><a href="#orgbc8c405">1.4. 使用实例</a></li>
+<li><a href="#orgaa6f21e">1.5. 参考文档</a></li>
 </ul>
 </li>
-<li><a href="#orgd644252">2. pdsh</a>
+<li><a href="#orgaf6bdba">2. pdsh</a>
 <ul>
-<li><a href="#org84b1ca7">2.1. pdsh 基本用法</a></li>
-<li><a href="#org92dd053">2.2. 使用实例</a>
+<li><a href="#orgec1e91d">2.1. pdsh 基本用法</a></li>
+<li><a href="#org6f1166d">2.2. 使用实例</a>
 <ul>
-<li><a href="#org66a38d6">2.2.1. 单个主机测试</a></li>
-<li><a href="#org0eb3ddf">2.2.2. 多个主机测试</a></li>
-<li><a href="#orgb443506">2.2.3. 逗号分隔主机</a></li>
-<li><a href="#orgc3db65e">2.2.4. <code>-x</code> 排除某个主机</a></li>
-<li><a href="#orgbf5e2a4">2.2.5. 主机组</a></li>
-<li><a href="#orga853f6f">2.2.6. <code>dshbak</code> 格式化输出</a></li>
+<li><a href="#org33ee4b8">2.2.1. 单个主机测试</a></li>
+<li><a href="#org82ee4de">2.2.2. 多个主机测试</a></li>
+<li><a href="#org65f9b7e">2.2.3. 逗号分隔主机</a></li>
+<li><a href="#org5cb99c4">2.2.4. <code>-x</code> 排除某个主机</a></li>
+<li><a href="#org86f7b7d">2.2.5. 主机组</a></li>
+<li><a href="#orgb4586b4">2.2.6. <code>dshbak</code> 格式化输出</a></li>
 </ul>
 </li>
-<li><a href="#orge9a8219">2.3. 参考文档</a></li>
+<li><a href="#org0f799e1">2.3. 参考文档</a></li>
 </ul>
 </li>
 </ul>
@@ -270,16 +237,16 @@ for the JavaScript code in this tag.
 写这篇文章的时候，pdsh、pssh 还是运维管理人员的利器。而几年过去了，这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 了。
 </p>
 
-<div id="outline-container-orgf6e622a" class="outline-2">
-<h2 id="orgf6e622a"><span class="section-number-2">1</span> pssh</h2>
+<div id="outline-container-org77a2db9" class="outline-2">
+<h2 id="org77a2db9"><span class="section-number-2">1.</span> pssh</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>pssh</code> 是一个 python 编写可以在多台服务器上执行命令的工具，同时支持拷贝文件，是同类工具中很出色的，类似 <code>pdsh</code> 。为方便操作，使用前请在各个服务器上配置好密钥认证访问。项目地址: <a href="https://code.google.com/p/parallel-ssh">parallel-ssh</a>
 </p>
 </div>
 
-<div id="outline-container-org7b1ecf7" class="outline-3">
-<h3 id="org7b1ecf7"><span class="section-number-3">1.1</span> 安装</h3>
+<div id="outline-container-org9b608e0" class="outline-3">
+<h3 id="org9b608e0"><span class="section-number-3">1.1.</span> 安装</h3>
 <div class="outline-text-3" id="text-1-1">
 <pre class="example">
 wget http://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz
@@ -290,8 +257,8 @@ python setup.py install
 </div>
 </div>
 
-<div id="outline-container-org3050222" class="outline-3">
-<h3 id="org3050222"><span class="section-number-3">1.2</span> pssh相关参数</h3>
+<div id="outline-container-org043ead5" class="outline-3">
+<h3 id="org043ead5"><span class="section-number-3">1.2.</span> pssh相关参数</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li><code>pssh</code> 在多个主机上并行地运行命令
@@ -317,8 +284,8 @@ python setup.py install
 </div>
 </div>
 
-<div id="outline-container-org5bb69f0" class="outline-3">
-<h3 id="org5bb69f0"><span class="section-number-3">1.3</span> 附加工具</h3>
+<div id="outline-container-org0db57ab" class="outline-3">
+<h3 id="org0db57ab"><span class="section-number-3">1.3.</span> 附加工具</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li><code>pscp</code> 传输文件到多个 hosts，类似 <code>scp</code>
@@ -338,8 +305,8 @@ python setup.py install
 </div>
 </div>
 
-<div id="outline-container-orga922d7f" class="outline-3">
-<h3 id="orga922d7f"><span class="section-number-3">1.4</span> 使用实例</h3>
+<div id="outline-container-orgbc8c405" class="outline-3">
+<h3 id="orgbc8c405"><span class="section-number-3">1.4.</span> 使用实例</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 写入主机到文件中，语法为 <code>用户名@主机ip</code>
@@ -393,8 +360,8 @@ Stderr: Connection to 10.0.0.8 closed.
 </div>
 </div>
 
-<div id="outline-container-org5c79c7e" class="outline-3">
-<h3 id="org5c79c7e"><span class="section-number-3">1.5</span> 参考文档</h3>
+<div id="outline-container-orgaa6f21e" class="outline-3">
+<h3 id="orgaa6f21e"><span class="section-number-3">1.5.</span> 参考文档</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li><a href="http://linux.die.net/man/1/pssh">pssh</a></li>
@@ -404,16 +371,16 @@ Stderr: Connection to 10.0.0.8 closed.
 </div>
 </div>
 
-<div id="outline-container-orgd644252" class="outline-2">
-<h2 id="orgd644252"><span class="section-number-2">2</span> pdsh</h2>
+<div id="outline-container-orgaf6bdba" class="outline-2">
+<h2 id="orgaf6bdba"><span class="section-number-2">2.</span> pdsh</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>pdsh</code> (Parallel Distributed Shell) 可并行的执行对目标主机的操作，对于批量执行命令和分发任务有很大的帮助，在使用前需要配置 ssh 无密码登录，<a href="http://sourceforge.net/projects/pdsh/">点击下载</a>
 </p>
 </div>
 
-<div id="outline-container-org84b1ca7" class="outline-3">
-<h3 id="org84b1ca7"><span class="section-number-3">2.1</span> pdsh 基本用法</h3>
+<div id="outline-container-orgec1e91d" class="outline-3">
+<h3 id="orgec1e91d"><span class="section-number-3">2.1.</span> pdsh 基本用法</h3>
 <div class="outline-text-3" id="text-2-1">
 <pre class="example">
 $ pdsh -h
@@ -441,12 +408,12 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </div>
 </div>
 
-<div id="outline-container-org92dd053" class="outline-3">
-<h3 id="org92dd053"><span class="section-number-3">2.2</span> 使用实例</h3>
+<div id="outline-container-org6f1166d" class="outline-3">
+<h3 id="org6f1166d"><span class="section-number-3">2.2.</span> 使用实例</h3>
 <div class="outline-text-3" id="text-2-2">
 </div>
-<div id="outline-container-org66a38d6" class="outline-4">
-<h4 id="org66a38d6"><span class="section-number-4">2.2.1</span> 单个主机测试</h4>
+<div id="outline-container-org33ee4b8" class="outline-4">
+<h4 id="org33ee4b8"><span class="section-number-4">2.2.1.</span> 单个主机测试</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <pre class="example">
 $ pdsh -w 192.168.0.231 -l root uptime
@@ -455,8 +422,8 @@ $ pdsh -w 192.168.0.231 -l root uptime
 </div>
 </div>
 
-<div id="outline-container-org0eb3ddf" class="outline-4">
-<h4 id="org0eb3ddf"><span class="section-number-4">2.2.2</span> 多个主机测试</h4>
+<div id="outline-container-org82ee4de" class="outline-4">
+<h4 id="org82ee4de"><span class="section-number-4">2.2.2.</span> 多个主机测试</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <pre class="example">
 $ pdsh -w 192.168.0.[231-233] -l root uptime
@@ -467,8 +434,8 @@ $ pdsh -w 192.168.0.[231-233] -l root uptime
 </div>
 </div>
 
-<div id="outline-container-orgb443506" class="outline-4">
-<h4 id="orgb443506"><span class="section-number-4">2.2.3</span> 逗号分隔主机</h4>
+<div id="outline-container-org65f9b7e" class="outline-4">
+<h4 id="org65f9b7e"><span class="section-number-4">2.2.3.</span> 逗号分隔主机</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <pre class="example">
 $ pdsh -w 192.168.0.231,192.168.0.234 -l root uptime
@@ -478,8 +445,8 @@ $ pdsh -w 192.168.0.231,192.168.0.234 -l root uptime
 </div>
 </div>
 
-<div id="outline-container-orgc3db65e" class="outline-4">
-<h4 id="orgc3db65e"><span class="section-number-4">2.2.4</span> <code>-x</code> 排除某个主机</h4>
+<div id="outline-container-org5cb99c4" class="outline-4">
+<h4 id="org5cb99c4"><span class="section-number-4">2.2.4.</span> <code>-x</code> 排除某个主机</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <pre class="example">
 $ pdsh -w 192.168.0.[231-233] -x 192.168.0.232 -l root uptime
@@ -489,8 +456,8 @@ $ pdsh -w 192.168.0.[231-233] -x 192.168.0.232 -l root uptime
 </div>
 </div>
 
-<div id="outline-container-orgbf5e2a4" class="outline-4">
-<h4 id="orgbf5e2a4"><span class="section-number-4">2.2.5</span> 主机组</h4>
+<div id="outline-container-org86f7b7d" class="outline-4">
+<h4 id="org86f7b7d"><span class="section-number-4">2.2.5.</span> 主机组</h4>
 <div class="outline-text-4" id="text-2-2-5">
 <p>
 对于 <code>-g</code> 组，把对应的主机写入到 <code>/etc/dsh/group/</code> 或 <code>~/.dsh/group/</code> 目录下的文件中即可，文件名就是对应组名
@@ -514,8 +481,8 @@ $ pdsh -g dsh-test -l root uptime
 </div>
 </div>
 
-<div id="outline-container-orga853f6f" class="outline-4">
-<h4 id="orga853f6f"><span class="section-number-4">2.2.6</span> <code>dshbak</code> 格式化输出</h4>
+<div id="outline-container-orgb4586b4" class="outline-4">
+<h4 id="orgb4586b4"><span class="section-number-4">2.2.6.</span> <code>dshbak</code> 格式化输出</h4>
 <div class="outline-text-4" id="text-2-2-6">
 <p>
 <code>pdsh</code> 的缺省输出格式为主机名加该主机的输出，在主机或输出多时会比较混乱，可以采用 <code>dshbak</code> 做一些格式化，让输出更清晰。
@@ -548,8 +515,8 @@ Wed Jun 19 16:24:19 CST 2013
 </div>
 </div>
 
-<div id="outline-container-orge9a8219" class="outline-3">
-<h3 id="orge9a8219"><span class="section-number-3">2.3</span> 参考文档</h3>
+<div id="outline-container-org0f799e1" class="outline-3">
+<h3 id="org0f799e1"><span class="section-number-3">2.3.</span> 参考文档</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li><a href="https://code.google.com/p/pdsh/wiki/UsingPDSH">Using PDSH</a></li>
@@ -561,7 +528,7 @@ Wed Jun 19 16:24:19 CST 2013
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2013-06-19 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2013-06-19 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

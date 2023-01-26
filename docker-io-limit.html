@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 磁盘 IO 资源限制</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,83 +191,36 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Docker 磁盘 IO 资源限制</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org61da8a2">1. 压测工具</a></li>
-<li><a href="#org296d69f">2. IO 测试</a>
+<li><a href="#org1afdcd4">1. 压测工具</a></li>
+<li><a href="#org5dc7119">2. IO 测试</a>
 <ul>
-<li><a href="#orge19577a">2.1. <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></a></li>
-<li><a href="#org8ff18bb">2.2. <code>--device-read-bps</code> 、 <code>--device-write-bps</code></a></li>
-<li><a href="#org8e832fb">2.3. <code>--device-read-iops</code> 、 <code>--device-write-iops</code></a></li>
+<li><a href="#org2dcd7cd">2.1. <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></a></li>
+<li><a href="#org7c9a942">2.2. <code>--device-read-bps</code> 、 <code>--device-write-bps</code></a></li>
+<li><a href="#org6e51e83">2.3. <code>--device-read-iops</code> 、 <code>--device-write-iops</code></a></li>
 </ul>
 </li>
-<li><a href="#org30fafd8">3. 源码解析</a></li>
-<li><a href="#org7004d06">4. 拓展</a></li>
+<li><a href="#org08c20d1">3. 源码解析</a></li>
+<li><a href="#org9a9a767">4. 拓展</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org61da8a2" class="outline-2">
-<h2 id="org61da8a2"><span class="section-number-2">1</span> 压测工具</h2>
+<div id="outline-container-org1afdcd4" class="outline-2">
+<h2 id="org1afdcd4"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 通过 Linux <code>dd</code> 命令测试
@@ -261,8 +228,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org296d69f" class="outline-2">
-<h2 id="org296d69f"><span class="section-number-2">2</span> IO 测试</h2>
+<div id="outline-container-org5dc7119" class="outline-2">
+<h2 id="org5dc7119"><span class="section-number-2">2.</span> IO 测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime
@@ -315,8 +282,8 @@ Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 </pre>
 </div>
 
-<div id="outline-container-orge19577a" class="outline-3">
-<h3 id="orge19577a"><span class="section-number-3">2.1</span> <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></h3>
+<div id="outline-container-org2dcd7cd" class="outline-3">
+<h3 id="org2dcd7cd"><span class="section-number-3">2.1.</span> <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><code>--blkio-weight</code></li>
@@ -407,8 +374,8 @@ You'll find that the proportion of time is the same as the proportion of blkio w
 </div>
 </div>
 
-<div id="outline-container-org8ff18bb" class="outline-3">
-<h3 id="org8ff18bb"><span class="section-number-3">2.2</span> <code>--device-read-bps</code> 、 <code>--device-write-bps</code></h3>
+<div id="outline-container-org7c9a942" class="outline-3">
+<h3 id="org7c9a942"><span class="section-number-3">2.2.</span> <code>--device-read-bps</code> 、 <code>--device-write-bps</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 限制容器的写入速度是 1mb「 <code>&lt;device-path&gt;:&lt;limit&gt;[unit]</code> ，单位可以是 kb、mb、gb 正整数」:
@@ -427,7 +394,7 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 </p>
 
 
-<div class="figure">
+<div id="orgdeeea07" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/io-write-bps.png" alt="io-write-bps.png" />
 </p>
 </div>
@@ -442,8 +409,8 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 </div>
 </div>
 
-<div id="outline-container-org8e832fb" class="outline-3">
-<h3 id="org8e832fb"><span class="section-number-3">2.3</span> <code>--device-read-iops</code> 、 <code>--device-write-iops</code></h3>
+<div id="outline-container-org6e51e83" class="outline-3">
+<h3 id="org6e51e83"><span class="section-number-3">2.3.</span> <code>--device-read-iops</code> 、 <code>--device-write-iops</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 限制容器 write iops 为 5「 <code>&lt;device-path&gt;:&lt;limit&gt;</code> ，必须为正整数」：
@@ -487,8 +454,8 @@ sda              10.00         0.00      2610.00          0       5220
 </div>
 </div>
 
-<div id="outline-container-org30fafd8" class="outline-2">
-<h2 id="org30fafd8"><span class="section-number-2">3</span> 源码解析</h2>
+<div id="outline-container-org08c20d1" class="outline-2">
+<h2 id="org08c20d1"><span class="section-number-2">3.</span> 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><a href="https://github.com/opencontainers/runc/tree/master/libcontainer/cgroups/fs">github.com/opencontainers/runc/libcontainer/cgroups/fs</a>
@@ -503,8 +470,8 @@ libcontainer 主要操作是对 cgroup 下相关文件根据选项写操作，�
 </div>
 </div>
 
-<div id="outline-container-org7004d06" class="outline-2">
-<h2 id="org7004d06"><span class="section-number-2">4</span> 拓展</h2>
+<div id="outline-container-org9a9a767" class="outline-2">
+<h2 id="org9a9a767"><span class="section-number-2">4.</span> 拓展</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><a href="http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation">Docker背后的内核知识 - cgroups资源限制</a></li>
@@ -516,7 +483,7 @@ libcontainer 主要操作是对 cgroup 下相关文件根据选项写操作，�
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2016-03-27 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2016-03-27 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

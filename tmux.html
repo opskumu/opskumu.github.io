@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>终端利器 Tmux</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,81 +191,34 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">终端利器 Tmux</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org827c7b5">1. 安装</a></li>
-<li><a href="#org9c259e6">2. 使用实例</a>
+<li><a href="#orgfbae993">1. 安装</a></li>
+<li><a href="#orge473093">2. 使用实例</a>
 <ul>
-<li><a href="#orgc55c3aa">2.1. 几个名词</a></li>
-<li><a href="#org52d00f7">2.2. 绑定快捷键</a></li>
-<li><a href="#org12f0d09">2.3. 基本操作</a></li>
-<li><a href="#orge35a8bc">2.4. 窗口操作</a></li>
-<li><a href="#orgff9c4f1">2.5. 面板操作</a></li>
+<li><a href="#orgf1bb4cc">2.1. 几个名词</a></li>
+<li><a href="#org491991d">2.2. 绑定快捷键</a></li>
+<li><a href="#org5c5d880">2.3. 基本操作</a></li>
+<li><a href="#orgcdaf38f">2.4. 窗口操作</a></li>
+<li><a href="#org76524f3">2.5. 面板操作</a></li>
 </ul>
 </li>
-<li><a href="#org8b6630e">3. <code>~/.tmux.conf</code> 基本配置</a></li>
-<li><a href="#org13ecdaf">4. 开启批量执行</a></li>
-<li><a href="#org9388545">5. 脚本化启动</a></li>
-<li><a href="#orge167bdd">6. 参考文档</a></li>
+<li><a href="#orgf9b7ab7">3. <code>~/.tmux.conf</code> 基本配置</a></li>
+<li><a href="#org51d42f6">4. 开启批量执行</a></li>
+<li><a href="#org573df4f">5. 脚本化启动</a></li>
+<li><a href="#org6541c8c">6. 参考文档</a></li>
 </ul>
 </div>
 </div>
@@ -259,8 +226,8 @@ for the JavaScript code in this tag.
 对于终端复用工具这里推荐使用 tmux，当然此类工具比较好的还有 screen，不过相对 <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-screen/">screen</a> 这里我更倾向于推荐 tmux （强悍的分屏等）。如果仅仅只是多标签的功能，那么 putty 结合一些工具也可以做到，或者干脆使用 xshell，当然 tmux 此类工具不仅仅是那么简单。另外一个选择使用 tmux/screen 工具的原因是，有时我们会经常需要 SSH 或者 telent 远程登录到 Linux 服务器，有一些任务需要长时间运行，比如系统备份、数据传输等。通常情况下我们都是开一个远程终端窗口，因为执行时间比较长，一般需要等待它执行完毕，在此过程中不能关闭窗口或者网络原因断开连接，断开之后就 Game Over 了。这个功能就有点类似 <code>nohup</code> 和 <code>setsid</code> 命令的实现了，而 <code>tmux/screen</code> 则集 <code>nohup/setsid</code> 和多标签于一身。
 </p>
 
-<div id="outline-container-org827c7b5" class="outline-2">
-<h2 id="org827c7b5"><span class="section-number-2">1</span> 安装</h2>
+<div id="outline-container-orgfbae993" class="outline-2">
+<h2 id="orgfbae993"><span class="section-number-2">1.</span> 安装</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 安装的话这里就不过说明了，不同的 Linux 发行版相应的包管理机制不同，安装 tmux 包即可。
@@ -268,12 +235,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org9c259e6" class="outline-2">
-<h2 id="org9c259e6"><span class="section-number-2">2</span> 使用实例</h2>
+<div id="outline-container-orge473093" class="outline-2">
+<h2 id="orge473093"><span class="section-number-2">2.</span> 使用实例</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgc55c3aa" class="outline-3">
-<h3 id="orgc55c3aa"><span class="section-number-3">2.1</span> 几个名词</h3>
+<div id="outline-container-orgf1bb4cc" class="outline-3">
+<h3 id="orgf1bb4cc"><span class="section-number-3">2.1.</span> 几个名词</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 tmux 主要包括以下几个模块：
@@ -296,8 +263,8 @@ tmux 主要包括以下几个模块：
 </div>
 </div>
 
-<div id="outline-container-org52d00f7" class="outline-3">
-<h3 id="org52d00f7"><span class="section-number-3">2.2</span> 绑定快捷键</h3>
+<div id="outline-container-org491991d" class="outline-3">
+<h3 id="org491991d"><span class="section-number-3">2.2.</span> 绑定快捷键</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 列出了 tmux 的几个基本模块之后，就要来点实实在在的干货了，和 <code>screen</code> 默认激活控制台的 <code>Ctrl+a</code> 不同，tmux 默认的是 <code>Ctrl+b</code> ，使用快捷键之后就可以执行一些相应的指令了。当然如果你不习惯使用 <code>Ctrl+b</code> ，也可以在 <code>~/.tmux</code> 文件中加入以下内容把快捷键变为 <code>Ctrl+a</code> ：
@@ -315,8 +282,8 @@ set-option -g prefix C-a
 </div>
 </div>
 
-<div id="outline-container-org12f0d09" class="outline-3">
-<h3 id="org12f0d09"><span class="section-number-3">2.3</span> 基本操作</h3>
+<div id="outline-container-org5c5d880" class="outline-3">
+<h3 id="org5c5d880"><span class="section-number-3">2.3.</span> 基本操作</h3>
 <div class="outline-text-3" id="text-2-3">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -387,8 +354,8 @@ set-option -g prefix C-a
 </div>
 </div>
 
-<div id="outline-container-orge35a8bc" class="outline-3">
-<h3 id="orge35a8bc"><span class="section-number-3">2.4</span> 窗口操作</h3>
+<div id="outline-container-orgcdaf38f" class="outline-3">
+<h3 id="orgcdaf38f"><span class="section-number-3">2.4.</span> 窗口操作</h3>
 <div class="outline-text-3" id="text-2-4">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -459,8 +426,8 @@ set-option -g prefix C-a
 </div>
 </div>
 
-<div id="outline-container-orgff9c4f1" class="outline-3">
-<h3 id="orgff9c4f1"><span class="section-number-3">2.5</span> 面板操作</h3>
+<div id="outline-container-org76524f3" class="outline-3">
+<h3 id="org76524f3"><span class="section-number-3">2.5.</span> 面板操作</h3>
 <div class="outline-text-3" id="text-2-5">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -557,8 +524,8 @@ set-option -g prefix C-a
 </div>
 </div>
 
-<div id="outline-container-org8b6630e" class="outline-2">
-<h2 id="org8b6630e"><span class="section-number-2">3</span> <code>~/.tmux.conf</code> 基本配置</h2>
+<div id="outline-container-orgf9b7ab7" class="outline-2">
+<h2 id="orgf9b7ab7"><span class="section-number-2">3.</span> <code>~/.tmux.conf</code> 基本配置</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 tmux 通过 <code>~/.tmux.conf</code> 配置文件自定义配置，个人配置文件见 <a href="https://github.com/opskumu/Day/blob/master/conf/.tmux.conf">tmux.conf</a>
@@ -566,8 +533,8 @@ tmux 通过 <code>~/.tmux.conf</code> 配置文件自定义配置，个人配置
 </div>
 </div>
 
-<div id="outline-container-org13ecdaf" class="outline-2">
-<h2 id="org13ecdaf"><span class="section-number-2">4</span> 开启批量执行</h2>
+<div id="outline-container-org51d42f6" class="outline-2">
+<h2 id="org51d42f6"><span class="section-number-2">4.</span> 开启批量执行</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 如果已经修改 prefix 键位 <code>Ctrl+a</code> ，则 <code>Ctrl+a</code> （默认 Ctrl+b） 后输入 <code>:set synchronize-panes</code> ，输入 <code>:set sync [TAB]</code> 键可自动补齐
@@ -579,34 +546,34 @@ tmux 通过 <code>~/.tmux.conf</code> 配置文件自定义配置，个人配置
 </div>
 </div>
 
-<div id="outline-container-org9388545" class="outline-2">
-<h2 id="org9388545"><span class="section-number-2">5</span> 脚本化启动</h2>
+<div id="outline-container-org573df4f" class="outline-2">
+<h2 id="org573df4f"><span class="section-number-2">5.</span> 脚本化启动</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 把以下脚本内容加入到 <code>~/.bashrc</code> ，即可每次登录进入到 tmux
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span class="org-function-name">tmux_init</span>()
+<pre class="src src-bash">tmux_init()
 {
-    tmux new-session -s <span class="org-string">"kumu"</span> -d -n <span class="org-string">"local"</span>   <span class="org-comment-delimiter"># </span><span class="org-comment">&#24320;&#21551;&#19968;&#20010;&#20250;&#35805;</span>
-    tmux new-window -n <span class="org-string">"other"</span>                 <span class="org-comment-delimiter"># </span><span class="org-comment">&#24320;&#21551;&#19968;&#20010;&#31383;&#21475;</span>
-    tmux split-window -h                       <span class="org-comment-delimiter"># </span><span class="org-comment">&#24320;&#21551;&#19968;&#20010;&#31446;&#23631;</span>
-    tmux split-window -v <span class="org-string">"top"</span>                 <span class="org-comment-delimiter"># </span><span class="org-comment">&#24320;&#21551;&#19968;&#20010;&#27178;&#23631;,&#24182;&#25191;&#34892; top &#21629;&#20196;</span>
-    tmux -2 attach-session -d                  <span class="org-comment-delimiter"># </span><span class="org-comment">tmux -2 &#24378;&#21046;&#21551;&#29992; 256color&#65292;&#36830;&#25509;&#24050;&#24320;&#21551;&#30340; tmux</span>
+    tmux new-session -s "kumu" -d -n "local"   # 开启一个会话
+    tmux new-window -n "other"                 # 开启一个窗口
+    tmux split-window -h                       # 开启一个竖屏
+    tmux split-window -v "top"                 # 开启一个横屏,并执行 top 命令
+    tmux -2 attach-session -d                  # tmux -2 强制启用 256color，连接已开启的 tmux
 }
 
-<span class="org-comment-delimiter"># </span><span class="org-comment">&#21028;&#26029;&#26159;&#21542;&#24050;&#26377;&#24320;&#21551;&#30340; tmux &#20250;&#35805;&#65292;&#27809;&#26377;&#21017;&#24320;&#21551;</span>
-<span class="org-keyword">if </span><span class="org-builtin">which</span> tmux 2&gt;&amp;1 &gt;/dev/null; <span class="org-keyword">then</span>
-    test -z <span class="org-string">"$TMUX"</span> &amp;&amp; (tmux attach || tmux_init)
-<span class="org-keyword">fi</span>
+# 判断是否已有开启的 tmux 会话，没有则开启
+if which tmux 2&gt;&amp;1 &gt;/dev/null; then
+    test -z "$TMUX" &amp;&amp; (tmux attach || tmux_init)
+fi
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge167bdd" class="outline-2">
-<h2 id="orge167bdd"><span class="section-number-2">6</span> 参考文档</h2>
+<div id="outline-container-org6541c8c" class="outline-2">
+<h2 id="org6541c8c"><span class="section-number-2">6.</span> 参考文档</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li><a href="https://wiki.freebsdchina.org/software/t/tmux">使用 tmux</a></li>
@@ -621,7 +588,7 @@ tmux 通过 <code>~/.tmux.conf</code> 配置文件自定义配置，个人配置
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2013-08-06 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2013-08-06 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

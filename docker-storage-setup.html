@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker lvm device mapper</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,80 +191,33 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Docker lvm device mapper</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd87eb61">1. Device Mapper: loop-lvm</a></li>
-<li><a href="#org36e0162">2. Device Mapper: direct-lvm</a>
+<li><a href="#orge87bf94">1. Device Mapper: loop-lvm</a></li>
+<li><a href="#orgef903f7">2. Device Mapper: direct-lvm</a>
 <ul>
-<li><a href="#org2ec7fc8">2.1. 示例</a></li>
+<li><a href="#orgae42f1c">2.1. 示例</a></li>
 </ul>
 </li>
-<li><a href="#org6754a4d">3. 参考</a></li>
+<li><a href="#org69515dc">3. 参考</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd87eb61" class="outline-2">
-<h2 id="orgd87eb61"><span class="section-number-2">1</span> Device Mapper: loop-lvm</h2>
+<div id="outline-container-orge87bf94" class="outline-2">
+<h2 id="orge87bf94"><span class="section-number-2">1.</span> Device Mapper: loop-lvm</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 默认 CentOS7 下 Docker 使用的 Device Mapper 设备默认使用 loopback 设备，后端为自动生成的稀疏文件，如下:
@@ -306,8 +273,8 @@ loop1                                                                           
 </div>
 </div>
 
-<div id="outline-container-org36e0162" class="outline-2">
-<h2 id="org36e0162"><span class="section-number-2">2</span> Device Mapper: direct-lvm</h2>
+<div id="outline-container-orgef903f7" class="outline-2">
+<h2 id="orgef903f7"><span class="section-number-2">2.</span> Device Mapper: direct-lvm</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 direct-lvm 也是使用 LVM， device mapper the dm-thinp 内核模块，使用 direct-lvm 不再使用 loopback 设备，直接使用 raw 分区(no filesystem)，在中等负载和高密度环境下会有更好的性能优势，另外官方也是不建议生产环境系统使用默认的 LVM thin pool，至于两种类型具体的性能对比可以参考 <a href="https://developerblog。redhat。com/2014/09/30/overview-storage-scalability-docker/">Comprehensive Overview of Storage Scalability in Docker</a> 这篇文章。
@@ -369,8 +336,8 @@ activation {
 </p>
 </div>
 
-<div id="outline-container-org2ec7fc8" class="outline-3">
-<h3 id="org2ec7fc8"><span class="section-number-3">2.1</span> 示例</h3>
+<div id="outline-container-orgae42f1c" class="outline-3">
+<h3 id="orgae42f1c"><span class="section-number-3">2.1.</span> 示例</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 主机先添加一块设备，本例设备名为 <code>/dev/vdc</code> ，添加 <code>docker-storage-setup</code> 配置文件：
@@ -434,8 +401,8 @@ Storage Driver: devicemapper
 </div>
 </div>
 
-<div id="outline-container-org6754a4d" class="outline-2">
-<h2 id="org6754a4d"><span class="section-number-2">3</span> 参考</h2>
+<div id="outline-container-org69515dc" class="outline-2">
+<h2 id="org69515dc"><span class="section-number-2">3.</span> 参考</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Docker 官方文档：
@@ -465,7 +432,7 @@ Storage Driver: devicemapper
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2015-10-30 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2015-10-30 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

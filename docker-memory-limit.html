@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 内存资源限制</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,84 +191,37 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Docker 内存资源限制</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8878030">1. 压测工具</a></li>
-<li><a href="#org693f809">2. 内存测试</a>
+<li><a href="#org704ba2c">1. 压测工具</a></li>
+<li><a href="#org43f17b9">2. 内存测试</a>
 <ul>
-<li><a href="#org52c297c">2.1. <code>-m ... --memory-swap ...</code></a></li>
-<li><a href="#orgb30a025">2.2. <code>-m ... --memory-swappiness ...</code></a></li>
-<li><a href="#org2e10fe9">2.3. <code>--memory-reservation ...</code></a></li>
-<li><a href="#org73b3151">2.4. <code>--oom-kill-disable</code></a></li>
-<li><a href="#org912ca88">2.5. <code>--kernel-memory</code></a></li>
+<li><a href="#org7ac7c22">2.1. <code>-m ... --memory-swap ...</code></a></li>
+<li><a href="#org82a0bac">2.2. <code>-m ... --memory-swappiness ...</code></a></li>
+<li><a href="#org9ba0a98">2.3. <code>--memory-reservation ...</code></a></li>
+<li><a href="#orga5253d5">2.4. <code>--oom-kill-disable</code></a></li>
+<li><a href="#org90a079a">2.5. <code>--kernel-memory</code></a></li>
 </ul>
 </li>
-<li><a href="#org91d00fb">3. 内存资源限制 Docker 源码解析</a></li>
+<li><a href="#orgf525352">3. 内存资源限制 Docker 源码解析</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org8878030" class="outline-2">
-<h2 id="org8878030"><span class="section-number-2">1</span> 压测工具</h2>
+<div id="outline-container-org704ba2c" class="outline-2">
+<h2 id="org704ba2c"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="http://people.seas.harvard.edu/~apw/stress/">stress</a></li>
@@ -275,8 +242,8 @@ RUN apt-get update &amp;&amp; \
 </div>
 </div>
 
-<div id="outline-container-org693f809" class="outline-2">
-<h2 id="org693f809"><span class="section-number-2">2</span> 内存测试</h2>
+<div id="outline-container-org43f17b9" class="outline-2">
+<h2 id="org43f17b9"><span class="section-number-2">2.</span> 内存测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime constraints on resources</a></li>
@@ -330,8 +297,8 @@ RUN apt-get update &amp;&amp; \
 </pre>
 </div>
 
-<div id="outline-container-org52c297c" class="outline-3">
-<h3 id="org52c297c"><span class="section-number-3">2.1</span> <code>-m ... --memory-swap ...</code></h3>
+<div id="outline-container-org7ac7c22" class="outline-3">
+<h3 id="org7ac7c22"><span class="section-number-3">2.1.</span> <code>-m ... --memory-swap ...</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 指定限制内存大小并且设置 memory-swap 值为 -1，表示容器程序使用内存受限，而 swap 空间使用不受限制（宿主 swap 支持使用多少则容器即可使用多少。如果 <code>--memory-swap</code> 设置小于 <code>--memory</code> 则设置不生效，使用默认设置）。
@@ -412,7 +379,7 @@ WARNING: Your kernel does not support swap limit capabilities, memory limited wi
 <ul class="org-ul">
 <li>Log into Ubuntu as a user with sudo privileges.</li>
 <li>Edit the /etc/default/grub file.</li>
-<li>Set the GRUB<sub>CMDLINE</sub><sub>LINUX</sub> value as follows:
+<li>Set the GRUB_CMDLINE_LINUX value as follows:
 <ul class="org-ul">
 <li><code>GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"</code></li>
 </ul></li>
@@ -495,8 +462,8 @@ KiB Swap: 15625212 total,   366160 used, 15259052 free.  4102076 cached Mem
 </div>
 </div>
 
-<div id="outline-container-orgb30a025" class="outline-3">
-<h3 id="orgb30a025"><span class="section-number-3">2.2</span> <code>-m ... --memory-swappiness ...</code></h3>
+<div id="outline-container-org82a0bac" class="outline-3">
+<h3 id="org82a0bac"><span class="section-number-3">2.2.</span> <code>-m ... --memory-swappiness ...</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 swappiness 可以认为是宿主 <code>/proc/sys/vm/swappiness</code> 设定：
@@ -524,8 +491,8 @@ root@e3fd6cc73849:/#
 </div>
 </div>
 
-<div id="outline-container-org2e10fe9" class="outline-3">
-<h3 id="org2e10fe9"><span class="section-number-3">2.3</span> <code>--memory-reservation ...</code></h3>
+<div id="outline-container-org9ba0a98" class="outline-3">
+<h3 id="org9ba0a98"><span class="section-number-3">2.3.</span> <code>--memory-reservation ...</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 <code>--memory-reservation ...</code> 选项可以理解为内存的软限制。如果不设置 <code>-m</code> 选项，那么容器使用内存可以理解为是不受限的。按照官方的说法，memory reservation 设置可以确保容器不会长时间占用大量内存。
@@ -533,8 +500,8 @@ root@e3fd6cc73849:/#
 </div>
 </div>
 
-<div id="outline-container-org73b3151" class="outline-3">
-<h3 id="org73b3151"><span class="section-number-3">2.4</span> <code>--oom-kill-disable</code></h3>
+<div id="outline-container-orga5253d5" class="outline-3">
+<h3 id="orga5253d5"><span class="section-number-3">2.4.</span> <code>--oom-kill-disable</code></h3>
 <div class="outline-text-3" id="text-2-4">
 <pre class="example">
 ➜  ~ docker run -it --rm -m 100M --memory-swappiness=0 --oom-kill-disable ubuntu-stress:latest /bin/bash
@@ -556,8 +523,8 @@ $ docker run -it --oom-kill-disable ubuntu:14.04 /bin/bash
 </div>
 </div>
 
-<div id="outline-container-org912ca88" class="outline-3">
-<h3 id="org912ca88"><span class="section-number-3">2.5</span> <code>--kernel-memory</code></h3>
+<div id="outline-container-org90a079a" class="outline-3">
+<h3 id="org90a079a"><span class="section-number-3">2.5.</span> <code>--kernel-memory</code></h3>
 <div class="outline-text-3" id="text-2-5">
 <blockquote>
 <p>
@@ -578,8 +545,8 @@ Kernel memory is fundamentally different than user memory as kernel memory can't
 </div>
 </div>
 
-<div id="outline-container-org91d00fb" class="outline-2">
-<h2 id="org91d00fb"><span class="section-number-2">3</span> 内存资源限制 Docker 源码解析</h2>
+<div id="outline-container-orgf525352" class="outline-2">
+<h2 id="orgf525352"><span class="section-number-2">3.</span> 内存资源限制 Docker 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 关于 Docker 资源限制主要是依赖 Linux cgroups 去实现的，关于 cgroups 资源限制实现可以参考：<a href="http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation/">Docker背后的内核知识-cgroups资源限制</a>, libcontainer 配置相关的选项：
@@ -652,7 +619,7 @@ root@fbe9b0abf665:/#
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2016-03-08 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2016-03-08 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

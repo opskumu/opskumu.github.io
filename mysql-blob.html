@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL 大字段溢出导致数据回写失败</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,90 +191,43 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">MySQL 大字段溢出导致数据回写失败</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org968921a">1. 问题描述</a></li>
-<li><a href="#org7c4b61b">2. 问题解决</a>
+<li><a href="#org4065542">1. 问题描述</a></li>
+<li><a href="#orgf058b3c">2. 问题解决</a>
 <ul>
-<li><a href="#org243b0c6">2.1. 修复 Slave</a></li>
+<li><a href="#org1efaa0a">2.1. 修复 Slave</a></li>
 </ul>
 </li>
-<li><a href="#org5c2602f">3. 问题分析</a>
+<li><a href="#org45851cd">3. 问题分析</a>
 <ul>
-<li><a href="#orgafb9b1f">3.1. Antelope 和 Barracuda 文件格式</a>
+<li><a href="#org47de624">3.1. Antelope 和 Barracuda 文件格式</a>
 <ul>
-<li><a href="#org77f5f48">3.1.1. Antelope</a></li>
-<li><a href="#org1401739">3.1.2. Barracuda</a></li>
+<li><a href="#org0939c0e">3.1.1. Antelope</a></li>
+<li><a href="#orge686b2f">3.1.2. Barracuda</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgfeefed2">4. 参考延伸</a></li>
+<li><a href="#org9adcc83">4. 参考延伸</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org968921a" class="outline-2">
-<h2 id="org968921a"><span class="section-number-2">1</span> 问题描述</h2>
+<div id="outline-container-org4065542" class="outline-2">
+<h2 id="org4065542"><span class="section-number-2">1.</span> 问题描述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 2015-01-12 18:10 左右公司某游戏日志监控报警，查看日志显示如下错误：
@@ -268,7 +235,7 @@ for the JavaScript code in this tag.
 
 <blockquote>
 <p>
-Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using ROW<sub>FORMAT</sub>=DYNAMIC or ROW<sub>FORMAT</sub>=COMPRESSED may help. In current row format, BLOB prefix of 768 bytes is stored inline.
+Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using ROW_FORMAT=DYNAMIC or ROW_FORMAT=COMPRESSED may help. In current row format, BLOB prefix of 768 bytes is stored inline.
 </p>
 </blockquote>
 
@@ -278,8 +245,8 @@ Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using R
 </div>
 </div>
 
-<div id="outline-container-org7c4b61b" class="outline-2">
-<h2 id="org7c4b61b"><span class="section-number-2">2</span> 问题解决</h2>
+<div id="outline-container-orgf058b3c" class="outline-2">
+<h2 id="orgf058b3c"><span class="section-number-2">2.</span> 问题解决</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 因为对 MySQL 行写入到页的原理性不清楚，导致问题的解决花费了一定的时间。Google 对应的错误建议修改 MySQL <code>innodb_file_format</code> 值，并修改对应表的 <code>row_format</code> 。
@@ -374,8 +341,8 @@ mysql&gt;
 </p>
 </div>
 
-<div id="outline-container-org243b0c6" class="outline-3">
-<h3 id="org243b0c6"><span class="section-number-3">2.1</span> 修复 Slave</h3>
+<div id="outline-container-org1efaa0a" class="outline-3">
+<h3 id="org1efaa0a"><span class="section-number-3">2.1.</span> 修复 Slave</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 因为主修改了环境变量和表的 <code>row_format</code> ，修复了 Master 的数据回写问题，但是 Slave 这边没有更改，导致 Slave 同步出错，卡在了插入语句的地方，导致主从同步失败，修复如下：
@@ -384,7 +351,7 @@ mysql&gt;
 <ol class="org-ol">
 <li>msyql&gt; stop slave;</li>
 <li>修改 slave <code>innodb_file_format=BARRACUDA</code> 「并添加该值到 my.cnf」和表 <code>row_format=dynamic</code></li>
-<li>mysql&gt; SET GLOBAL SQL<sub>SLAVE</sub><sub>SKIP</sub><sub>COUNTER</sub> = 1; # 1 表示跳过 1 个 events</li>
+<li>mysql&gt; SET GLOBAL SQL_SLAVE_SKIP_COUNTER = 1; # 1 表示跳过 1 个 events</li>
 <li>mysql&gt; start slave;</li>
 </ol>
 
@@ -395,26 +362,26 @@ mysql&gt;
 </div>
 </div>
 
-<div id="outline-container-org5c2602f" class="outline-2">
-<h2 id="org5c2602f"><span class="section-number-2">3</span> 问题分析</h2>
+<div id="outline-container-org45851cd" class="outline-2">
+<h2 id="org45851cd"><span class="section-number-2">3.</span> 问题分析</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 问题虽然解决了，但是有时候需要追根溯源，特别对于数据安全性相关的，原理性的东西弄明白就会好解释一些问题了。13 号继续跟踪这个问题，在网上找到了这篇文章 <a href="http://hidba.org/?p=551">innodb使用大字段text，blob的一些优化建议</a>，看了一遍，继续查看了相应的资料之后彻底弄明白了。
 </p>
 </div>
 
-<div id="outline-container-orgafb9b1f" class="outline-3">
-<h3 id="orgafb9b1f"><span class="section-number-3">3.1</span> Antelope 和 Barracuda 文件格式</h3>
+<div id="outline-container-org47de624" class="outline-3">
+<h3 id="org47de624"><span class="section-number-3">3.1.</span> Antelope 和 Barracuda 文件格式</h3>
 <div class="outline-text-3" id="text-3-1">
 
-<div class="figure">
+<div id="org24635df" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mysql-innodb-file-format.png" alt="mysql-innodb-file-format.png" />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org77f5f48" class="outline-4">
-<h4 id="org77f5f48"><span class="section-number-4">3.1.1</span> Antelope</h4>
+<div id="outline-container-org0939c0e" class="outline-4">
+<h4 id="org0939c0e"><span class="section-number-4">3.1.1.</span> Antelope</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 InnoDB 存储引擎和大多数数据库一样（如 Oracle 和 Microsoft SQL Server 数据库），记录是以行的形式存储的。这意味着页中保存着表中一行行的数据。在InnoDB 1.0.x版本之前，InnoDB 存储引擎提供了 Compact 和 Redundant 两种格式来存放行记录数据，这也是目前使用最多的一种格式。Redundant格式是为兼容之前版本而保留的。在 MySQL 5.6 版本中，默认设置为 Compact 行格式。用户可以通过命令 <code>SHOW TABLE STATUS LIKE'table_name'</code> 来查看当前表使用的行格式，其中 <code>row_format</code> 属性表示当前所使用的行记录结构类型。
@@ -425,7 +392,7 @@ Compact 行记录是在 MySQL 5.0 中引入的，其设计目标是高效地存�
 </p>
 
 
-<div class="figure">
+<div id="org5c8d0da" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/Compact.png" alt="Compact.png" />
 </p>
 </div>
@@ -444,7 +411,7 @@ Compact 行记录格式的首部是一个非 NULL 变长字段长度列表，并
 </p>
 
 
-<div class="figure">
+<div id="org3f7118f" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/Compact-record.png" alt="Compact-record.png" />
 </p>
 </div>
@@ -454,7 +421,7 @@ Compact 行记录格式的首部是一个非 NULL 变长字段长度列表，并
 </p>
 
 
-<div class="figure">
+<div id="org82ece18" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/Compact-blob.png" alt="Compact-blob.png" />
 </p>
 </div>
@@ -469,8 +436,8 @@ innoDB 存储引擎表是索引组织的，即 B+Tree 的结构，这样每个�
 </div>
 </div>
 
-<div id="outline-container-org1401739" class="outline-4">
-<h4 id="org1401739"><span class="section-number-4">3.1.2</span> Barracuda</h4>
+<div id="outline-container-orge686b2f" class="outline-4">
+<h4 id="orge686b2f"><span class="section-number-4">3.1.2.</span> Barracuda</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <p>
 InnoDB 1. 0.x 版本开始引入了新的文件格式（file format，用户可以理解为新的页格式），以前支持的 Compact 和 Redundant 格式称为 Antelope 文件格式，新的文件格式称为 Barracuda 文件格式。Barracuda 文件格式下拥有两种新的行记录格式：Compressed 和 Dynamic。
@@ -481,7 +448,7 @@ InnoDB 1. 0.x 版本开始引入了新的文件格式（file format，用户可�
 </p>
 
 
-<div class="figure">
+<div id="org5481351" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/Compressed-blob.png" alt="Compressed-blob.png" />
 </p>
 </div>
@@ -524,8 +491,8 @@ mysql&gt;
 </div>
 </div>
 
-<div id="outline-container-orgfeefed2" class="outline-2">
-<h2 id="orgfeefed2"><span class="section-number-2">4</span> 参考延伸</h2>
+<div id="outline-container-org9adcc83" class="outline-2">
+<h2 id="org9adcc83"><span class="section-number-2">4.</span> 参考延伸</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><a href="http://book.douban.com/subject/24708143/">《MySQL 技术内幕: InnoDB 存储引擎》</a> 第4章 表</li>
@@ -544,7 +511,7 @@ mysql&gt;
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2015-01-14 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2015-01-14 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

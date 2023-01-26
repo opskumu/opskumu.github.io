@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sublime Text2 tips</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,99 +191,52 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Sublime Text2 tips</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org789da3a">1. 设置 tab 为 4 个空格</a>
+<li><a href="#org473ae04">1. 设置 tab 为 4 个空格</a>
 <ul>
-<li><a href="#orge7e1c0e">1.1. Reference</a></li>
+<li><a href="#org71e6779">1.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#org04a32b5">2. 设置 vim 模式</a>
+<li><a href="#orgf5457b1">2. 设置 vim 模式</a>
 <ul>
-<li><a href="#org14f2dec">2.1. Reference</a></li>
+<li><a href="#orgf040062">2.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#orge732459">3. 列编辑模式</a>
+<li><a href="#org1671490">3. 列编辑模式</a>
 <ul>
-<li><a href="#org4e0e6a0">3.1. Reference</a></li>
+<li><a href="#org9265a17">3.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#org14dbcdf">4. Package Control</a></li>
-<li><a href="#org2c98cbb">5. Markdown Preview 插件</a>
+<li><a href="#org8d21683">4. Package Control</a></li>
+<li><a href="#orgd3a66d1">5. Markdown Preview 插件</a>
 <ul>
-<li><a href="#orgbaed82a">5.1. Reference</a></li>
+<li><a href="#orgefd9ff9">5.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#orgd73cbb2">6. 撤销恢复</a></li>
-<li><a href="#org03a4a04">7. 查找替换</a></li>
-<li><a href="#org0088bf5">8. Ctrl+P</a></li>
-<li><a href="#org97c96ca">9. 命令调用</a></li>
-<li><a href="#org56c9f37">10. Console</a></li>
+<li><a href="#org725c28d">6. 撤销恢复</a></li>
+<li><a href="#org21ce3ae">7. 查找替换</a></li>
+<li><a href="#org5b5eaee">8. Ctrl+P</a></li>
+<li><a href="#orgb8b3f76">9. 命令调用</a></li>
+<li><a href="#orgea81810">10. Console</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org789da3a" class="outline-2">
-<h2 id="org789da3a"><span class="section-number-2">1</span> 设置 tab 为 4 个空格</h2>
+<div id="outline-container-org473ae04" class="outline-2">
+<h2 id="org473ae04"><span class="section-number-2">1.</span> 设置 tab 为 4 个空格</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Preferences/Settings - Default</li>
@@ -284,8 +251,8 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
-<div id="outline-container-orge7e1c0e" class="outline-3">
-<h3 id="orge7e1c0e"><span class="section-number-3">1.1</span> Reference</h3>
+<div id="outline-container-org71e6779" class="outline-3">
+<h3 id="org71e6779"><span class="section-number-3">1.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/settings.html">Settings</a></li>
@@ -294,8 +261,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org04a32b5" class="outline-2">
-<h2 id="org04a32b5"><span class="section-number-2">2</span> 设置 vim 模式</h2>
+<div id="outline-container-orgf5457b1" class="outline-2">
+<h2 id="orgf5457b1"><span class="section-number-2">2.</span> 设置 vim 模式</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Preferences/Settings - Default</li>
@@ -330,8 +297,8 @@ add:
 </pre>
 </div>
 
-<div id="outline-container-org14f2dec" class="outline-3">
-<h3 id="org14f2dec"><span class="section-number-3">2.1</span> Reference</h3>
+<div id="outline-container-orgf040062" class="outline-3">
+<h3 id="orgf040062"><span class="section-number-3">2.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/vintage.html">Vintage Mode</a></li>
@@ -340,8 +307,8 @@ add:
 </div>
 </div>
 
-<div id="outline-container-orge732459" class="outline-2">
-<h2 id="orge732459"><span class="section-number-2">3</span> 列编辑模式</h2>
+<div id="outline-container-org1671490" class="outline-2">
+<h2 id="org1671490"><span class="section-number-2">3.</span> 列编辑模式</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>鼠标右键 + Shift OR 鼠标中键</li>
@@ -349,8 +316,8 @@ add:
 </ul>
 </div>
 
-<div id="outline-container-org4e0e6a0" class="outline-3">
-<h3 id="org4e0e6a0"><span class="section-number-3">3.1</span> Reference</h3>
+<div id="outline-container-org9265a17" class="outline-3">
+<h3 id="org9265a17"><span class="section-number-3">3.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/column_selection.html">Column Selection</a></li>
@@ -359,15 +326,15 @@ add:
 </div>
 </div>
 
-<div id="outline-container-org14dbcdf" class="outline-2">
-<h2 id="org14dbcdf"><span class="section-number-2">4</span> Package Control</h2>
+<div id="outline-container-org8d21683" class="outline-2">
+<h2 id="org8d21683"><span class="section-number-2">4.</span> Package Control</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Ctrl+`</li>
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">import</span> urllib2,os; <span class="org-variable-name">pf</span>=<span class="org-string">'Package Control.sublime-package'</span>; <span class="org-variable-name">ipp</span> = sublime.installed_packages_path(); os.makedirs( ipp ) <span class="org-keyword">if</span> <span class="org-keyword">not</span> os.path.exists(ipp) <span class="org-keyword">else</span> <span class="org-constant">None</span>; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); <span class="org-builtin">open</span>( os.path.join( ipp, pf), <span class="org-string">'wb'</span> ).write( urllib2.urlopen( <span class="org-string">'http://sublime.wbond.net/'</span> +pf.replace( <span class="org-string">' '</span>,<span class="org-string">'%20'</span> )).read()); <span class="org-keyword">print</span>( <span class="org-string">'Please restart Sublime Text to finish installation'</span>)
+<pre class="src src-python">import urllib2,os; pf='Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); open( os.path.join( ipp, pf), 'wb' ).write( urllib2.urlopen( 'http://sublime.wbond.net/' +pf.replace( ' ','%20' )).read()); print( 'Please restart Sublime Text to finish installation')
 </pre>
 </div>
 
@@ -377,8 +344,8 @@ add:
 </div>
 </div>
 
-<div id="outline-container-org2c98cbb" class="outline-2">
-<h2 id="org2c98cbb"><span class="section-number-2">5</span> Markdown Preview 插件</h2>
+<div id="outline-container-orgd3a66d1" class="outline-2">
+<h2 id="orgd3a66d1"><span class="section-number-2">5.</span> Markdown Preview 插件</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Use Ctrl+Shift+P then Package Control: Install Package</li>
@@ -386,8 +353,8 @@ add:
 </ul>
 </div>
 
-<div id="outline-container-orgbaed82a" class="outline-3">
-<h3 id="orgbaed82a"><span class="section-number-3">5.1</span> Reference</h3>
+<div id="outline-container-orgefd9ff9" class="outline-3">
+<h3 id="orgefd9ff9"><span class="section-number-3">5.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li><a href="https://github.com/revolunet/sublimetext-markdown-preview">Markdown Preview</a></li>
@@ -396,8 +363,8 @@ add:
 </div>
 </div>
 
-<div id="outline-container-orgd73cbb2" class="outline-2">
-<h2 id="orgd73cbb2"><span class="section-number-2">6</span> 撤销恢复</h2>
+<div id="outline-container-org725c28d" class="outline-2">
+<h2 id="org725c28d"><span class="section-number-2">6.</span> 撤销恢复</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>Ctrl+Z 撤销</li>
@@ -406,8 +373,8 @@ add:
 </div>
 </div>
 
-<div id="outline-container-org03a4a04" class="outline-2">
-<h2 id="org03a4a04"><span class="section-number-2">7</span> 查找替换</h2>
+<div id="outline-container-org21ce3ae" class="outline-2">
+<h2 id="org21ce3ae"><span class="section-number-2">7.</span> 查找替换</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>Ctrl+F 查找</li>
@@ -416,8 +383,8 @@ add:
 </div>
 </div>
 
-<div id="outline-container-org0088bf5" class="outline-2">
-<h2 id="org0088bf5"><span class="section-number-2">8</span> Ctrl+P</h2>
+<div id="outline-container-org5b5eaee" class="outline-2">
+<h2 id="org5b5eaee"><span class="section-number-2">8.</span> Ctrl+P</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>Ctrl+P 快速跳转当前项目中的任意文件</li>
@@ -428,8 +395,8 @@ add:
 </div>
 </div>
 
-<div id="outline-container-org97c96ca" class="outline-2">
-<h2 id="org97c96ca"><span class="section-number-2">9</span> 命令调用</h2>
+<div id="outline-container-orgb8b3f76" class="outline-2">
+<h2 id="orgb8b3f76"><span class="section-number-2">9.</span> 命令调用</h2>
 <div class="outline-text-2" id="text-9">
 <ul class="org-ul">
 <li>Ctrl+Shift+P
@@ -440,8 +407,8 @@ add:
 </div>
 </div>
 
-<div id="outline-container-org56c9f37" class="outline-2">
-<h2 id="org56c9f37"><span class="section-number-2">10</span> Console</h2>
+<div id="outline-container-orgea81810" class="outline-2">
+<h2 id="orgea81810"><span class="section-number-2">10.</span> Console</h2>
 <div class="outline-text-2" id="text-10">
 <ul class="org-ul">
 <li>Ctrl+`</li>
@@ -452,7 +419,7 @@ add:
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2014-12-19 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2014-12-19 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

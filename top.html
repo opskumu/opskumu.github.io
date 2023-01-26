@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>top command tips</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,70 +191,23 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">top command tips</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org853d6e6">1. top 理论</a></li>
-<li><a href="#org23f6586">2. top 技巧</a></li>
-<li><a href="#orgb53ea6a">3. 参考</a></li>
+<li><a href="#org3fd47e2">1. top 理论</a></li>
+<li><a href="#org9594c2d">2. top 技巧</a></li>
+<li><a href="#org2f1cfd4">3. 参考</a></li>
 </ul>
 </div>
 </div>
@@ -248,14 +215,14 @@ for the JavaScript code in this tag.
 <code>top</code> 命令是 Linux 下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于 Windows 的任务管理器。
 </p>
 
-<div id="outline-container-org853d6e6" class="outline-2">
-<h2 id="org853d6e6"><span class="section-number-2">1</span> top 理论</h2>
+<div id="outline-container-org3fd47e2" class="outline-2">
+<h2 id="org3fd47e2"><span class="section-number-2">1.</span> top 理论</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
-<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">top</span>
+<pre class="src src-bash"># top
 top - 10:52:40 up 3 days, 52 min,  1 user,  load average: 57.28, 112.40, 123.60
 Tasks:  99 total,   1 running,  98 sleeping,   0 stopped,   0 zombie
-<span class="org-function-name">Cpu</span>(s): 19.5%us, 11.4%sy,  0.0%ni,  0.0%id, 65.7%wa,  0.0%hi,  3.4%si,  0.0%st
+Cpu(s): 19.5%us, 11.4%sy,  0.0%ni,  0.0%id, 65.7%wa,  0.0%hi,  3.4%si,  0.0%st
 Mem:  16435896k total, 16232468k used,   203428k free,    58004k buffers
 Swap:  1044476k total,   713552k used,   330924k free, 10052032k cached
 
@@ -451,8 +418,8 @@ In addition to cache memory, RAM itself is a cache memory for hard disk storage 
 </div>
 </div>
 
-<div id="outline-container-org23f6586" class="outline-2">
-<h2 id="org23f6586"><span class="section-number-2">2</span> top 技巧</h2>
+<div id="outline-container-org9594c2d" class="outline-2">
+<h2 id="org9594c2d"><span class="section-number-2">2.</span> top 技巧</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 终端执行 top 命令之后（也可后接一些选项，比如 <code>top -p 1</code>  只监控 init 进程， <code>top -u root</code> 只显示 root 运行进程等等），可以通过以下按键，实现不同功能：
@@ -487,8 +454,8 @@ In addition to cache memory, RAM itself is a cache memory for hard disk storage 
 </div>
 </div>
 
-<div id="outline-container-orgb53ea6a" class="outline-2">
-<h2 id="orgb53ea6a"><span class="section-number-2">3</span> 参考</h2>
+<div id="outline-container-org2f1cfd4" class="outline-2">
+<h2 id="org2f1cfd4"><span class="section-number-2">3.</span> 参考</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><a href="http://linux.vbird.org/">鸟哥的 Linux 私房菜</a></li>
@@ -501,7 +468,7 @@ In addition to cache memory, RAM itself is a cache memory for hard disk storage 
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2013-06-07 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2013-06-07 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

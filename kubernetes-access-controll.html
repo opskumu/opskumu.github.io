@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-09-19 Sun 15:11 -->
+<!-- 2023-01-27 Fri 00:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 访问控制</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -41,21 +42,21 @@
   pre.src {
     position: relative;
     overflow: auto;
-    padding-top: 1.2em;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
   pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -190,42 +191,19 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Kubernetes 访问控制</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
 <li><a href="#orgb534afc">1. TLS 双向认证</a></li>
 <li><a href="#org58b4880">2. RBAC</a></li>
@@ -236,7 +214,7 @@
 </div>
 </div>
 
-<div id="orgbccb3a7" class="figure">
+<div id="org070429f" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/components-of-kubernetes.png" alt="components-of-kubernetes.png" />
 </p>
 </div>
@@ -254,7 +232,7 @@
 </p>
 
 
-<div id="orgf14f8b5" class="figure">
+<div id="org72ebdd8" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/access-control-overview.png" alt="access-control-overview.png" />
 </p>
 </div>
@@ -268,7 +246,7 @@
 </p>
 
 
-<div id="org3e4bae5" class="figure">
+<div id="org21e9002" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kubernetes-authentication.png" alt="kubernetes-authentication.png" />
 </p>
 </div>
@@ -278,7 +256,7 @@
 </p>
 
 <div id="outline-container-orgb534afc" class="outline-2">
-<h2 id="orgb534afc"><span class="section-number-2">1</span> TLS 双向认证</h2>
+<h2 id="orgb534afc"><span class="section-number-2">1.</span> TLS 双向认证</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 TLS 是安全传输层协议，包括两部分：TLS 记录协议和 TLS 握手协议。TLS 记录协议主要保证传输过程中信息传输的完整性和私密性，这一部分通过协商后的密钥来加密数据。TLS 握手协议主要是为了认证对方的身份、协商密钥。
@@ -289,7 +267,7 @@ APIServer 和集群组件通信使用 TLS 双向认证，顾名思义，客户�
 </p>
 
 
-<div id="org0b6e52f" class="figure">
+<div id="org4864da0" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mutual-ssl.png" alt="mutual-ssl.png" />
 </p>
 </div>
@@ -326,20 +304,20 @@ kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书�
 </div>
 
 <div id="outline-container-org58b4880" class="outline-2">
-<h2 id="org58b4880"><span class="section-number-2">2</span> RBAC</h2>
+<h2 id="org58b4880"><span class="section-number-2">2.</span> RBAC</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 以上主要介绍 TLS 认证，认证之后我们如何在认证基础上针对资源授权管理呢？这里就要介绍到 RBAC 机制。RBAC，字面意思就是基于角色的权限访问控制。Kubernetes 中的 RBAC 主要涉及到上面提到的 ClusterRole/ClusterRoleBinding/Role/RoleBinding 的资源，其中 ClusterRole/ClusterRolebinding 是全局的角色，Role/RoleBind 是针对 namespace 级别的角色。Role 是对用户拥有权限的抽象，RoleBinding 将角色绑定到用户（User）、组（Group）或者服务账户（Service Account）。下图更为形象的展示了对应关系：
 </p>
 
 
-<div id="org2a273a6" class="figure">
+<div id="org5be2701" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/role-binding.png" alt="role-binding.png" />
 </p>
 </div>
 
 
-<div id="orgaad8b1c" class="figure">
+<div id="org2cd3842" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cluster-role-binding.png" alt="cluster-role-binding.png" />
 </p>
 </div>
@@ -396,14 +374,14 @@ ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空�
 </div>
 
 <div id="outline-container-orge6d58f5" class="outline-2">
-<h2 id="orge6d58f5"><span class="section-number-2">3</span> TLS bootstrapping</h2>
+<h2 id="orge6d58f5"><span class="section-number-2">3.</span> TLS bootstrapping</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 前文已经提了，之所以使用 TLS 认证是为了集群间通信安全目的。正常情况下，我们在扩缩容节点的时候需要手动给对应的节点签发证书，这会增加一些额外的工作。Kubernetes 从 1.4 开始引入了证书请求和签名 API 简化了这一流程，也就是我们这里要说的 TLS bootstrapping。下图展示了 TLS bootstrapping 的工作流程：
 </p>
 
 
-<div id="org02e5718" class="figure">
+<div id="orge4dbbf8" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/bootstrapping-workflow.png" alt="bootstrapping-workflow.png" />
 </p>
 </div>
@@ -445,7 +423,7 @@ token: 50bc4305185c3c2d8e31cab9223a8107 # APIServer 定义的 bootstrap token
 
 
 <div id="outline-container-orgb2230b8" class="outline-2">
-<h2 id="orgb2230b8"><span class="section-number-2">4</span> Node Authorization</h2>
+<h2 id="orgb2230b8"><span class="section-number-2">4.</span> Node Authorization</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 我们知道 TLS bootstrapping 主要针对的是 kubelet 的证书自动签注认证的，Node Authorization 是专门针对 kubelet API 请求授权的特殊授权。节点授权允许 Kubelet 有以下 API 操作权限：
@@ -484,7 +462,7 @@ APIServer 可以通过 <code>--authorization-mode=Node</code> 开启 Node 授权
 </div>
 
 <div id="outline-container-org165d1b0" class="outline-2">
-<h2 id="org165d1b0"><span class="section-number-2">5</span> 参考</h2>
+<h2 id="org165d1b0"><span class="section-number-2">5.</span> 参考</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><a href="https://developer.aliyun.com/article/726414">HTTPS 双向认证研究</a></li>
@@ -504,7 +482,7 @@ APIServer 可以通过 <code>--authorization-mode=Node</code> 开启 Node 授权
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2021-03-31 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.2 (<a href="https://orgmode.org">Org</a> mode 9.4.4)</span>
+         class="date">2021-03-31 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

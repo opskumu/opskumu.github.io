@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker CPU 资源限制</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,87 +191,40 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Docker CPU 资源限制</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3d687bd">1. 压测工具</a></li>
-<li><a href="#orgfa7cd7f">2. CPU 测试</a>
+<li><a href="#orgd4ac426">1. 压测工具</a></li>
+<li><a href="#org62b71ef">2. CPU 测试</a>
 <ul>
-<li><a href="#org36e6d86">2.1. CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></a></li>
-<li><a href="#orgd71a1aa">2.2. CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></a></li>
-<li><a href="#org44dd3fe">2.3. Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></a>
+<li><a href="#org71842cf">2.1. CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></a></li>
+<li><a href="#orgab2d6e7">2.2. CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></a></li>
+<li><a href="#orgb42d0c4">2.3. Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></a>
 <ul>
-<li><a href="#org6a5acbc">2.3.1. <code>--cpuset-cpus</code></a></li>
-<li><a href="#orgd7e697c">2.3.2. <code>--cpuset-mems</code></a></li>
+<li><a href="#org69b1462">2.3.1. <code>--cpuset-cpus</code></a></li>
+<li><a href="#org8ebf61b">2.3.2. <code>--cpuset-mems</code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgeb340e6">3. 源码解析</a></li>
+<li><a href="#org9970226">3. 源码解析</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3d687bd" class="outline-2">
-<h2 id="org3d687bd"><span class="section-number-2">1</span> 压测工具</h2>
+<div id="outline-container-orgd4ac426" class="outline-2">
+<h2 id="orgd4ac426"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 同上文 <a href="docker-memory-limit.html">Docker 内存资源限制</a> 使用 stress 测试。
@@ -265,8 +232,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgfa7cd7f" class="outline-2">
-<h2 id="orgfa7cd7f"><span class="section-number-2">2</span> CPU 测试</h2>
+<div id="outline-container-org62b71ef" class="outline-2">
+<h2 id="org62b71ef"><span class="section-number-2">2.</span> CPU 测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime constraints on resources</a></li>
@@ -307,8 +274,8 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
-<div id="outline-container-org36e6d86" class="outline-3">
-<h3 id="org36e6d86"><span class="section-number-3">2.1</span> CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></h3>
+<div id="outline-container-org71842cf" class="outline-3">
+<h3 id="org71842cf"><span class="section-number-3">2.1.</span> CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 默认所有的容器对于 CPU 的利用占比都是一样的， <code>-c</code> 或者 <code>--cpu-shares</code> 可以设置 CPU 利用率权重，默认为 1024，可以设置权重为 2 或者更高(单个 CPU 为 1024，两个为 2048，以此类推)。如果设置选项为 0，则系统会忽略该选项并且使用默认值 1024。通过以上设置，只会在 CPU 密集(繁忙)型运行进程时体现出来。当一个 container 空闲时，其它容器都是可以占用 CPU 的。cpu-shares 值为一个相对值，实际 CPU 利用率则取决于系统上运行容器的数量。
@@ -336,15 +303,15 @@ CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %             
 </p>
 
 
-<div class="figure">
+<div id="org1aa3782" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cpu-test.png" alt="cpu-test.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgd71a1aa" class="outline-3">
-<h3 id="orgd71a1aa"><span class="section-number-3">2.2</span> CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></h3>
+<div id="outline-container-orgab2d6e7" class="outline-3">
+<h3 id="orgab2d6e7"><span class="section-number-3">2.2.</span> CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 默认的 CPU CFS「Completely Fair Scheduler」period 是 100ms。我们可以通过 <code>--cpu-period</code> 值限制容器的 CPU 使用。一般 <code>--cpu-period</code> 配合 <code>--cpu-quota</code> 一起使用。
@@ -373,12 +340,12 @@ CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %             
 </div>
 </div>
 
-<div id="outline-container-org44dd3fe" class="outline-3">
-<h3 id="org44dd3fe"><span class="section-number-3">2.3</span> Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></h3>
+<div id="outline-container-orgb42d0c4" class="outline-3">
+<h3 id="orgb42d0c4"><span class="section-number-3">2.3.</span> Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></h3>
 <div class="outline-text-3" id="text-2-3">
 </div>
-<div id="outline-container-org6a5acbc" class="outline-4">
-<h4 id="org6a5acbc"><span class="section-number-4">2.3.1</span> <code>--cpuset-cpus</code></h4>
+<div id="outline-container-org69b1462" class="outline-4">
+<h4 id="org69b1462"><span class="section-number-4">2.3.1.</span> <code>--cpuset-cpus</code></h4>
 <div class="outline-text-4" id="text-2-3-1">
 <p>
 通过 <code>--cpuset-cpus</code> 可以绑定指定容器使用指定 CPU：
@@ -415,8 +382,8 @@ Tasks: 211 total,   3 running, 207 sleeping,   1 stopped,   0 zombie
 </div>
 </div>
 
-<div id="outline-container-orgd7e697c" class="outline-4">
-<h4 id="orgd7e697c"><span class="section-number-4">2.3.2</span> <code>--cpuset-mems</code></h4>
+<div id="outline-container-org8ebf61b" class="outline-4">
+<h4 id="org8ebf61b"><span class="section-number-4">2.3.2.</span> <code>--cpuset-mems</code></h4>
 <div class="outline-text-4" id="text-2-3-2">
 <p>
 <code>--cpuset-mems</code> 只应用于 NUMA 架构的 CPU 生效，这个选项这里不过多介绍。关于 NUMA 架构可以参考这篇文章 <a href="http://cenalulu.github.io/linux/numa/">NUMA架构的CPU &#x2013; 你真的用好了么？</a>。
@@ -426,8 +393,8 @@ Tasks: 211 total,   3 running, 207 sleeping,   1 stopped,   0 zombie
 </div>
 </div>
 
-<div id="outline-container-orgeb340e6" class="outline-2">
-<h2 id="orgeb340e6"><span class="section-number-2">3</span> 源码解析</h2>
+<div id="outline-container-org9970226" class="outline-2">
+<h2 id="org9970226"><span class="section-number-2">3.</span> 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><a href="https://github.com/opencontainers/runc/tree/master/libcontainer/cgroups/fs">github.com/opencontainers/runc/libcontainer/cgroups/fs</a>
@@ -447,7 +414,7 @@ libcontainer 只是根据设定值写 cgroup 文件，这部分没有什么逻�
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2016-03-27 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2016-03-27 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

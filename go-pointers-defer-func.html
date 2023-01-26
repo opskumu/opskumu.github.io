@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Go 指针、defer、匿名函数</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,77 +191,30 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Go 指针、defer、匿名函数</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgdb55e84">1. Go 指针</a></li>
-<li><a href="#org6e37f6f">2. Go defer 表达式</a></li>
-<li><a href="#org7e320d6">3. 匿名函数</a></li>
-<li><a href="#orgd5b37f5">4. 实例</a></li>
+<li><a href="#org9598dc2">1. Go 指针</a></li>
+<li><a href="#org6893caa">2. Go defer 表达式</a></li>
+<li><a href="#orgc91c17a">3. 匿名函数</a></li>
+<li><a href="#orga03963d">4. 实例</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgdb55e84" class="outline-2">
-<h2 id="orgdb55e84"><span class="section-number-2">1</span> Go 指针</h2>
+<div id="outline-container-org9598dc2" class="outline-2">
+<h2 id="org9598dc2"><span class="section-number-2">1.</span> Go 指针</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <a href="https://www.golang-book.com/books/intro/8">Go Pointers</a>
@@ -262,22 +229,22 @@ for the JavaScript code in this tag.
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-keyword">package</span> main
+<pre class="src src-go">package main
 
-<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
+import "fmt"
 
-<span class="org-keyword">type</span> <span class="org-type">number</span> <span class="org-type">int</span>
+type number int
 
-<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
-    <span class="org-keyword">var</span> <span class="org-variable-name">m</span> <span class="org-type">number</span>
-    <span class="org-keyword">var</span> <span class="org-variable-name">n</span> *<span class="org-type">number</span>   <span class="org-comment-delimiter">// </span><span class="org-comment">&#23450;&#20041; n &#20026;&#25351;&#38024;&#31867;&#22411;</span>
+func main() {
+    var m number
+    var n *number   // 定义 n 为指针类型
 
     m = 1
-    n = &amp;m          <span class="org-comment-delimiter">// </span><span class="org-comment">&#25351;&#38024; n &#36171;&#20540;</span>
+    n = &amp;m          // 指针 n 赋值
 
-    fmt.<span class="org-function-name">Println</span>(m)
-    fmt.<span class="org-function-name">Println</span>(n)  <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#22320;&#22336;</span>
-    fmt.<span class="org-function-name">Println</span>(*n) <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#20026; 1</span>
+    fmt.Println(m)
+    fmt.Println(n)  // 输出地址
+    fmt.Println(*n) // 输出为 1
 }
 </pre>
 </div>
@@ -288,8 +255,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org6e37f6f" class="outline-2">
-<h2 id="org6e37f6f"><span class="section-number-2">2</span> Go defer 表达式</h2>
+<div id="outline-container-org6893caa" class="outline-2">
+<h2 id="org6893caa"><span class="section-number-2">2.</span> Go defer 表达式</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <a href="https://blog.golang.org/defer-panic-and-recover">Defer, Panic, and Recover</a>
@@ -321,87 +288,87 @@ defer 语句的执行顺序类似栈的概念， <b>后进先出</b> 。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-keyword">package</span> main
+<pre class="src src-go">package main
 
-<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
+import "fmt"
 
-<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
-    fmt.<span class="org-function-name">Println</span>(<span class="org-string">"counting"</span>)
+func main() {
+    fmt.Println("counting")
 
-    <span class="org-keyword">for</span> <span class="org-variable-name">i</span> := 0; i &lt; 10; i++ {
-        <span class="org-keyword">defer</span> fmt.<span class="org-function-name">Println</span>(i)  <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#32467;&#26524;&#26159; 9&#65292; 8&#65292; 7, ..., 0</span>
+    for i := 0; i &lt; 10; i++ {
+        defer fmt.Println(i)  // 输出结果是 9， 8， 7, ..., 0
     }
 
-    fmt.<span class="org-function-name">Println</span>(<span class="org-string">"done"</span>)
+    fmt.Println("done")
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org7e320d6" class="outline-2">
-<h2 id="org7e320d6"><span class="section-number-2">3</span> 匿名函数</h2>
+<div id="outline-container-orgc91c17a" class="outline-2">
+<h2 id="orgc91c17a"><span class="section-number-2">3.</span> 匿名函数</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Go 不能在函数内部显式嵌套定义函数，但是可以定义一个匿名函数，Go 通过匿名函数实现闭包（闭包，通过"捕获"自由变量的绑定对函数文本执行的"闭合"操作）。
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-keyword">package</span> main
+<pre class="src src-go">package main
 
-<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
+import "fmt"
 
-<span class="org-keyword">func</span> <span class="org-function-name">f</span>(<span class="org-variable-name">i</span> <span class="org-type">int</span>) <span class="org-keyword">func</span>() <span class="org-type">int</span> {
-    <span class="org-keyword">return</span> <span class="org-keyword">func</span>() <span class="org-type">int</span> {
+func f(i int) func() int {
+    return func() int {
         i++
-        <span class="org-keyword">return</span> i
+        return i
     }
 }
 
-<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
-    <span class="org-variable-name">m1</span> := <span class="org-function-name">f</span>(2)
-    fmt.<span class="org-function-name">Println</span>(<span class="org-function-name">m1</span>())    <span class="org-comment-delimiter">// </span><span class="org-comment">&#25351;&#38024;&#25351;&#21521; i, i = 2, &#36755;&#20986; 3</span>
-    fmt.<span class="org-function-name">Println</span>(<span class="org-function-name">m1</span>())    <span class="org-comment-delimiter">// </span><span class="org-comment">&#25351;&#38024;&#25351;&#21521; i, i = 3, &#36755;&#20986; 4</span>
+func main() {
+    m1 := f(2)
+    fmt.Println(m1())    // 指针指向 i, i = 2, 输出 3
+    fmt.Println(m1())    // 指针指向 i, i = 3, 输出 4
 
-    <span class="org-variable-name">m2</span> := <span class="org-function-name">f</span>(2)
-    fmt.<span class="org-function-name">Println</span>(<span class="org-function-name">m2</span>())    <span class="org-comment-delimiter">// </span><span class="org-comment">&#25351;&#38024;&#25351;&#21521; &#21478;&#22806;&#19968;&#20010; i&#65292;i = 2&#65292;&#36755;&#20986; 3</span>
+    m2 := f(2)
+    fmt.Println(m2())    // 指针指向 另外一个 i，i = 2，输出 3
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgd5b37f5" class="outline-2">
-<h2 id="orgd5b37f5"><span class="section-number-2">4</span> 实例</h2>
+<div id="outline-container-orga03963d" class="outline-2">
+<h2 id="orga03963d"><span class="section-number-2">4.</span> 实例</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 前段时间在 twitter 看到一个例子，问以下代码应该输出什么，后来分析之后才知道结果，代码如下：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-keyword">package</span> main
+<pre class="src src-go">package main
 
-<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
+import "fmt"
 
-<span class="org-keyword">type</span> <span class="org-type">number</span> <span class="org-type">int</span>
+type number int
 
-<span class="org-keyword">func</span> (<span class="org-variable-name">n</span> <span class="org-type">number</span>) <span class="org-builtin">print</span>() {
-    fmt.<span class="org-function-name">Printf</span>(<span class="org-string">"&#36755;&#20986; number &#20540; print: %v\n"</span>, n)
+func (n number) print() {
+    fmt.Printf("输出 number 值 print: %v\n", n)
 }
-<span class="org-keyword">func</span> (<span class="org-variable-name">n</span> *<span class="org-type">number</span>) <span class="org-function-name">pprint</span>() {
-    fmt.<span class="org-function-name">Printf</span>(<span class="org-string">"&#36755;&#20986; number &#20540; pprint: %v\n"</span>, *n)
+func (n *number) pprint() {
+    fmt.Printf("输出 number 值 pprint: %v\n", *n)
 }
 
-<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
-    <span class="org-keyword">var</span> <span class="org-variable-name">n</span> <span class="org-type">number</span>
+func main() {
+    var n number
 
-    <span class="org-keyword">defer</span> n.<span class="org-builtin">print</span>()
-    <span class="org-keyword">defer</span> n.<span class="org-function-name">pprint</span>()
-    <span class="org-keyword">defer</span> <span class="org-keyword">func</span>() {
-        n.<span class="org-builtin">print</span>()
+    defer n.print()
+    defer n.pprint()
+    defer func() {
+        n.print()
     }()
-    <span class="org-keyword">defer</span> <span class="org-keyword">func</span>() {
-        n.<span class="org-function-name">pprint</span>()
+    defer func() {
+        n.pprint()
     }()
 
     n = 3
@@ -430,7 +397,7 @@ Go 不能在函数内部显式嵌套定义函数，但是可以定义一个匿�
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2019-04-20 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2019-04-20 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

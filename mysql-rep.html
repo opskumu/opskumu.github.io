@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL 复制备忘</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,86 +191,39 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">MySQL 复制备忘</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org11c3b45">1. 环境说明</a></li>
-<li><a href="#org85ab2c2">2. 复制的用途</a></li>
-<li><a href="#org1b3f787">3. 复制工作过程</a></li>
-<li><a href="#orgb6a250c">4. 复制配置</a>
+<li><a href="#orgfb9395e">1. 环境说明</a></li>
+<li><a href="#org7539e2e">2. 复制的用途</a></li>
+<li><a href="#org55df7c3">3. 复制工作过程</a></li>
+<li><a href="#org31d7307">4. 复制配置</a>
 <ul>
-<li><a href="#orgd5ae911">4.1. 创建复制账号</a></li>
-<li><a href="#org988ec5f">4.2. 配置主库和备库</a></li>
-<li><a href="#orgf6ea957">4.3. 启动复制</a></li>
+<li><a href="#orgab4d820">4.1. 创建复制账号</a></li>
+<li><a href="#org9ef0773">4.2. 配置主库和备库</a></li>
+<li><a href="#org88a18ea">4.3. 启动复制</a></li>
 </ul>
 </li>
-<li><a href="#orgf32003b">5. 线上服务器配置主从</a></li>
-<li><a href="#orgb7d9cf9">6. 一些重要的选项</a></li>
-<li><a href="#org05fe8e5">7. 参考</a></li>
+<li><a href="#orgea0c41f">5. 线上服务器配置主从</a></li>
+<li><a href="#org5ccc1d8">6. 一些重要的选项</a></li>
+<li><a href="#orgcabafbe">7. 参考</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org11c3b45" class="outline-2">
-<h2 id="org11c3b45"><span class="section-number-2">1</span> 环境说明</h2>
+<div id="outline-container-orgfb9395e" class="outline-2">
+<h2 id="orgfb9395e"><span class="section-number-2">1.</span> 环境说明</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 MySQL 支持两种复制方式：基于行的复制和基于语句的复制，两种方式都是通过在主库上记录二进制日志，在被库重复日志的方式来实现异步的数据复制。
@@ -264,8 +231,8 @@ MySQL 支持两种复制方式：基于行的复制和基于语句的复制，�
 </div>
 </div>
 
-<div id="outline-container-org85ab2c2" class="outline-2">
-<h2 id="org85ab2c2"><span class="section-number-2">2</span> 复制的用途</h2>
+<div id="outline-container-org7539e2e" class="outline-2">
+<h2 id="org7539e2e"><span class="section-number-2">2.</span> 复制的用途</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>数据分布</li>
@@ -283,8 +250,8 @@ MySQL 支持两种复制方式：基于行的复制和基于语句的复制，�
 </div>
 </div>
 
-<div id="outline-container-org1b3f787" class="outline-2">
-<h2 id="org1b3f787"><span class="section-number-2">3</span> 复制工作过程</h2>
+<div id="outline-container-org55df7c3" class="outline-2">
+<h2 id="org55df7c3"><span class="section-number-2">3.</span> 复制工作过程</h2>
 <div class="outline-text-2" id="text-3">
 <ol class="org-ol">
 <li>主库把数据更改记录到二进制日志（Binary Log）中</li>
@@ -293,7 +260,7 @@ MySQL 支持两种复制方式：基于行的复制和基于语句的复制，�
 </ol>
 
 
-<div class="figure">
+<div id="orga390088" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mysql_rep/mysql_rep1.jpg" alt="mysql_rep1.jpg" />
 </p>
 </div>
@@ -304,8 +271,8 @@ MySQL 支持两种复制方式：基于行的复制和基于语句的复制，�
 </div>
 </div>
 
-<div id="outline-container-orgb6a250c" class="outline-2">
-<h2 id="orgb6a250c"><span class="section-number-2">4</span> 复制配置</h2>
+<div id="outline-container-org31d7307" class="outline-2">
+<h2 id="org31d7307"><span class="section-number-2">4.</span> 复制配置</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 要求：主备拥有同样的数据
@@ -322,8 +289,8 @@ MySQL 支持两种复制方式：基于行的复制和基于语句的复制，�
 </ol>
 </div>
 
-<div id="outline-container-orgd5ae911" class="outline-3">
-<h3 id="orgd5ae911"><span class="section-number-3">4.1</span> 创建复制账号</h3>
+<div id="outline-container-orgab4d820" class="outline-3">
+<h3 id="orgab4d820"><span class="section-number-3">4.1.</span> 创建复制账号</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 主从推荐都加，其实主只需要 <code>REPLICATION SLAVE</code> 权限就可以了，主要目的是:
@@ -342,8 +309,8 @@ mysql&gt; GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.*
 </div>
 </div>
 
-<div id="outline-container-org988ec5f" class="outline-3">
-<h3 id="org988ec5f"><span class="section-number-3">4.2</span> 配置主库和备库</h3>
+<div id="outline-container-org9ef0773" class="outline-3">
+<h3 id="org9ef0773"><span class="section-number-3">4.2.</span> 配置主库和备库</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 主库：打开二进制日志选项，指定唯一的 <code>server id</code> ，在配置文件 <code>my.cnf</code> 修改如下
@@ -388,15 +355,15 @@ read_only=1     # 防止从库被修改
 </p>
 
 
-<div class="figure">
+<div id="orgc791d4d" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mysql_rep/mysql_rep2.jpg" alt="mysql_rep2.jpg" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgf6ea957" class="outline-3">
-<h3 id="orgf6ea957"><span class="section-number-3">4.3</span> 启动复制</h3>
+<div id="outline-container-org88a18ea" class="outline-3">
+<h3 id="org88a18ea"><span class="section-number-3">4.3.</span> 启动复制</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 从库启动复制配置
@@ -462,8 +429,8 @@ mysql&gt; SHOW SLAVE STATUS\G
 </div>
 </div>
 
-<div id="outline-container-orgf32003b" class="outline-2">
-<h2 id="orgf32003b"><span class="section-number-2">5</span> 线上服务器配置主从</h2>
+<div id="outline-container-orgea0c41f" class="outline-2">
+<h2 id="orgea0c41f"><span class="section-number-2">5.</span> 线上服务器配置主从</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 很多情况下，一些主库已经运行很长时间了，需要做主从同步，这时从库还没有数据，那么就要把主的数据导入到从。
@@ -508,8 +475,8 @@ mysqldump -hmaster_ip --single-transaction --all-databases \
 </div>
 </div>
 
-<div id="outline-container-orgb7d9cf9" class="outline-2">
-<h2 id="orgb7d9cf9"><span class="section-number-2">6</span> 一些重要的选项</h2>
+<div id="outline-container-org5ccc1d8" class="outline-2">
+<h2 id="org5ccc1d8"><span class="section-number-2">6.</span> 一些重要的选项</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>「主」 主库上二进制日志最重要的选项: <code>sync_binlog</code> ，推荐设置成 1，保证在服务器崩溃时不丢失事件，虽然会降低性能</li>
@@ -526,8 +493,8 @@ mysqldump -hmaster_ip --single-transaction --all-databases \
 </div>
 </div>
 
-<div id="outline-container-org05fe8e5" class="outline-2">
-<h2 id="org05fe8e5"><span class="section-number-2">7</span> 参考</h2>
+<div id="outline-container-orgcabafbe" class="outline-2">
+<h2 id="orgcabafbe"><span class="section-number-2">7.</span> 参考</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li><a href="http://dev.mysql.com/doc/refman/5.6/en/index.html">MySQL 5.6 Reference Manual</a></li>
@@ -538,7 +505,7 @@ mysqldump -hmaster_ip --single-transaction --all-databases \
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2014-02-17 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2014-02-17 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes Pod 亲和性和反亲和性</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,77 +191,30 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Kubernetes Pod 亲和性和反亲和性</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org95a3ff5">1. nodeSelector</a></li>
-<li><a href="#org8f17732">2. 亲和性和反亲和性（Affinity and anti-affinity）</a>
+<li><a href="#orga26b92a">1. nodeSelector</a></li>
+<li><a href="#orgf3163f2">2. 亲和性和反亲和性（Affinity and anti-affinity）</a>
 <ul>
-<li><a href="#org4dd0a96">2.1. Node affinity</a></li>
-<li><a href="#orgdee18d5">2.2. Pod affinity and anti-affinity</a></li>
+<li><a href="#org3c251b1">2.1. Node affinity</a></li>
+<li><a href="#orgc48c9e4">2.2. Pod affinity and anti-affinity</a></li>
 </ul>
 </li>
-<li><a href="#org1cde046">3. 实践案例</a>
+<li><a href="#orgba1e969">3. 实践案例</a>
 <ul>
-<li><a href="#orgc491722">3.1. 始终调度在同一个节点</a></li>
+<li><a href="#org73b974f">3.1. 始终调度在同一个节点</a></li>
 </ul>
 </li>
 </ul>
@@ -267,8 +234,8 @@ for the JavaScript code in this tag.
 <code>labels</code> 在 K8s 中是一个很重要的概念，作为一个标识，Service、Deployments 和 Pods 之间的关联都是通过 <code>label</code> 来实现的。而每个节点也都拥有 <code>label</code> ，通过设置 <code>label</code> 相关的策略可以使得 pods 关联到对应 <code>label</code> 的节点上。
 </p>
 
-<div id="outline-container-org95a3ff5" class="outline-2">
-<h2 id="org95a3ff5"><span class="section-number-2">1</span> nodeSelector</h2>
+<div id="outline-container-orga26b92a" class="outline-2">
+<h2 id="orga26b92a"><span class="section-number-2">1.</span> nodeSelector</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>nodeSelector</code> 是最简单的约束方式。 <code>nodeSelector</code> 是 PodSpec 的一个字段。
@@ -350,8 +317,8 @@ nginx     1/1       Running   0          1m        172.18.0.4   minikube
 </div>
 </div>
 
-<div id="outline-container-org8f17732" class="outline-2">
-<h2 id="org8f17732"><span class="section-number-2">2</span> 亲和性和反亲和性（Affinity and anti-affinity）</h2>
+<div id="outline-container-orgf3163f2" class="outline-2">
+<h2 id="orgf3163f2"><span class="section-number-2">2.</span> 亲和性和反亲和性（Affinity and anti-affinity）</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 affinity/anti-affinity 特性还处于 beta 状态，相比 <code>nodeSelector</code> 来说有几点优势：
@@ -368,8 +335,8 @@ affinity 特性拥有两种类型，一种是 node affinity，一种是 pod affi
 </p>
 </div>
 
-<div id="outline-container-org4dd0a96" class="outline-3">
-<h3 id="org4dd0a96"><span class="section-number-3">2.1</span> Node affinity</h3>
+<div id="outline-container-org3c251b1" class="outline-3">
+<h3 id="org3c251b1"><span class="section-number-3">2.1.</span> Node affinity</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 K8s 在 1.2 的时候以 alpha 的特性引入 node affinity。node affinity 通过 node <code>labels</code> 约束 pod 调度节点。Node affinity 有两种类型：
@@ -433,8 +400,8 @@ spec:
 </div>
 </div>
 
-<div id="outline-container-orgdee18d5" class="outline-3">
-<h3 id="orgdee18d5"><span class="section-number-3">2.2</span> Pod affinity and anti-affinity</h3>
+<div id="outline-container-orgc48c9e4" class="outline-3">
+<h3 id="orgc48c9e4"><span class="section-number-3">2.2.</span> Pod affinity and anti-affinity</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 pod 亲和性和反亲和性在 K8s 1.4 版本引入，它基于运行在 node 上的 pod 标签来限制 pod 调度在哪个节点上，而不是节点的标签。
@@ -523,12 +490,12 @@ spec:
 </div>
 </div>
 
-<div id="outline-container-org1cde046" class="outline-2">
-<h2 id="org1cde046"><span class="section-number-2">3</span> 实践案例</h2>
+<div id="outline-container-orgba1e969" class="outline-2">
+<h2 id="orgba1e969"><span class="section-number-2">3.</span> 实践案例</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgc491722" class="outline-3">
-<h3 id="orgc491722"><span class="section-number-3">3.1</span> 始终调度在同一个节点</h3>
+<div id="outline-container-org73b974f" class="outline-3">
+<h3 id="org73b974f"><span class="section-number-3">3.1.</span> 始终调度在同一个节点</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 在一个三个节点的集群中，一个 web 应用程序依赖内存存储，如 redis，我们想 web 程序尽可能的和缓存调度在同一个节点上。redis 的 Deployment 配置如下：
@@ -619,7 +586,7 @@ spec:
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2018-11-18 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2018-11-18 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

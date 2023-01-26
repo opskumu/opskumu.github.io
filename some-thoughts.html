@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>我所能想到的一些事情</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,74 +191,27 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">我所能想到的一些事情</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd1dea1c">1. 说说工作</a></li>
-<li><a href="#orgd18d827">2. 说起生活</a></li>
+<li><a href="#orgd416759">1. 说说工作</a></li>
+<li><a href="#org8cac1a7">2. 说起生活</a></li>
 </ul>
 </div>
 </div>
 
-<div class="figure">
+<div id="org1bb6b8c" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/zhuanshan.jpg" alt="zhuanshan.jpg" />
 </p>
 </div>
@@ -259,8 +226,8 @@ for the JavaScript code in this tag.
 前段日子，自己有几天长期处于一个非常反常的状态，就是一种绝望，绝望到感觉任何事情都没有什么意义。直到某一天早晨，一觉醒来想到之前的那种状态，自己都觉得可笑但不得不说又有一种后怕。回想之前的生活，对于自己来说严格意义上是很不负责任的，这点我在前篇文章《深夜杂谈》也有说过一些。后来，我花了一点时间反思了下自己的问题所在，毕竟我不能担保那种状态不会再找到自己，我也需要尝试改变和解决那些已经存在的问题。
 </p>
 
-<div id="outline-container-orgd1dea1c" class="outline-2">
-<h2 id="orgd1dea1c"><span class="section-number-2">1</span> 说说工作</h2>
+<div id="outline-container-orgd416759" class="outline-2">
+<h2 id="orgd416759"><span class="section-number-2">1.</span> 说说工作</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 12 年毕业，算上长沙的那份工作，现在刚好工作 4 年，而目前这份工作是第四份工作，4 年换了三座城市四份工作「说实话，确实挺折腾的」。换工作的原因有很多种，说来无非就是个人发展、工资水平、家庭地域这几个因素，这些因素中有些不得不说确实是很难避免的。但是，抛开一些不可避免的因素，我是强烈不建议频繁换工作的，特别是刚毕业的同学。在作出换工作的决定之前，从我个人的经验来说，我建议多花一些时间去审视一下自己和现在的工作，千万不要因为仅仅只是几千块钱的差值去换工作，否则最后的得失就不是几千块的差值问题了。在找工作的时候也是，一定要给自己预留一些时间，多和一些人聊一聊，多听一听他人的建议，这样才会彻底的了解自己的优缺点是什么，自己真正想要的又是什么。找工作钱固然是一个很重要的点，但是个人发展、团队氛围这些也都是非常关键的因素。这些因素一方面可以通过面试沟通的过程中了解，另外一方面可以去类似知乎或者微博这些社交网站搜索相关公司的一个整体情况，如果有熟人的话可以问问他们的一个直观看法。
@@ -280,8 +247,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd18d827" class="outline-2">
-<h2 id="orgd18d827"><span class="section-number-2">2</span> 说起生活</h2>
+<div id="outline-container-org8cac1a7" class="outline-2">
+<h2 id="org8cac1a7"><span class="section-number-2">2.</span> 说起生活</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 工作以来，个人的生活和工作分的并不是很清楚，大部分的时间都是在公司度过的。而节假日，基本上都是一个人对着电脑在宿舍度过一整天的。这样的日子时间长了，无论是对自己的身体还是身心都是一种摧残，工作和生活还是要适当的平衡比较好，不然对我这样的真的会抓狂的。
@@ -314,7 +281,7 @@ for the JavaScript code in this tag.
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2015-12-09 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2015-12-09 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

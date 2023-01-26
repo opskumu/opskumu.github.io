@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>北疆秋色</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,78 +191,31 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">北疆秋色</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgad3ce8f">1. Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></a></li>
-<li><a href="#orgf479b65">2. Day 2 北屯 -&gt; 布尔津 -&gt; 布尔津五彩滩 -&gt; 白哈巴 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-28 Sat&gt;</span></span></a></li>
-<li><a href="#orga240ec1">3. Day 3 白哈巴 -&gt; 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-29 Sun&gt;</span></span></a></li>
-<li><a href="#orgde2bf21">4. Day 4 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-30 Mon&gt;</span></span></a></li>
-<li><a href="#orge1921a5">5. Day 5 喀纳斯 -&gt; 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-01 Tue&gt;</span></span></a></li>
-<li><a href="#org746e549">6. Day 6 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-02 Wed&gt;</span></span></a></li>
-<li><a href="#org0657562">7. Day 7 禾木 -&gt; 阿勒泰 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-03 Thu&gt;</span></span></a></li>
-<li><a href="#org715efdb">8. Day 8 阿勒泰 -&gt; 可可托海 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-04 Fri&gt;</span></span></a></li>
-<li><a href="#orgd21fc2f">9. Day 9 可可托海 -&gt; 古海温泉 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-05 Sat&gt;</span></span></a></li>
-<li><a href="#orgeb5368c">10. Day 10 古海温泉 -&gt; 乌鲁木齐 -&gt; 杭州 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-06 Sun&gt;</span></span></a></li>
-<li><a href="#org1741919">11. 小结</a></li>
+<li><a href="#org7f30c4f">1. Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></a></li>
+<li><a href="#org92d3e25">2. Day 2 北屯 -&gt; 布尔津 -&gt; 布尔津五彩滩 -&gt; 白哈巴 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-28 Sat&gt;</span></span></a></li>
+<li><a href="#org16e2b9b">3. Day 3 白哈巴 -&gt; 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-29 Sun&gt;</span></span></a></li>
+<li><a href="#org211549e">4. Day 4 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-30 Mon&gt;</span></span></a></li>
+<li><a href="#orgd7e5606">5. Day 5 喀纳斯 -&gt; 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-01 Tue&gt;</span></span></a></li>
+<li><a href="#orgfac66f4">6. Day 6 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-02 Wed&gt;</span></span></a></li>
+<li><a href="#org7ec6812">7. Day 7 禾木 -&gt; 阿勒泰 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-03 Thu&gt;</span></span></a></li>
+<li><a href="#org88b35c1">8. Day 8 阿勒泰 -&gt; 可可托海 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-04 Fri&gt;</span></span></a></li>
+<li><a href="#orgf138d8e">9. Day 9 可可托海 -&gt; 古海温泉 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-05 Sat&gt;</span></span></a></li>
+<li><a href="#org4b288fc">10. Day 10 古海温泉 -&gt; 乌鲁木齐 -&gt; 杭州 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-06 Sun&gt;</span></span></a></li>
+<li><a href="#org5e29c0c">11. 小结</a></li>
 </ul>
 </div>
 </div>
@@ -256,11 +223,11 @@ for the JavaScript code in this tag.
 去年六月新疆的行程还历历在目，没想到时隔一年又去新疆玩了一趟。不得不感慨，新疆实在是太大了，两次共约 20 天的旅途也只是玩了新疆一小片。去年去新疆主要是看夏日的草原，此次则是奔着喀纳斯的秋色去的。与去年不同的除了季节外，另外一个不同则是去年跟着游侠客的团走的，而今年的行程则是自由行，女友和她几个同事一早就把行程规划好了。
 </p>
 
-<div id="outline-container-orgad3ce8f" class="outline-2">
-<h2 id="orgad3ce8f"><span class="section-number-2">1</span> Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></h2>
+<div id="outline-container-org7f30c4f" class="outline-2">
+<h2 id="org7f30c4f"><span class="section-number-2">1.</span> Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-1">
 
-<div class="figure">
+<div id="org089f16c" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-1.jpg" alt="xinjiang-2019-1.jpg" />
 </p>
 </div>
@@ -271,15 +238,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf479b65" class="outline-2">
-<h2 id="orgf479b65"><span class="section-number-2">2</span> Day 2 北屯 -&gt; 布尔津 -&gt; 布尔津五彩滩 -&gt; 白哈巴 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-28 Sat&gt;</span></span></h2>
+<div id="outline-container-org92d3e25" class="outline-2">
+<h2 id="org92d3e25"><span class="section-number-2">2.</span> Day 2 北屯 -&gt; 布尔津 -&gt; 布尔津五彩滩 -&gt; 白哈巴 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-28 Sat&gt;</span></span></h2>
 <div class="outline-text-2" id="text-2">
 <p>
 火车虽然晚点一小时出发，但是却提前到达了北屯。火车卧铺一晚睡的居然还不错，下了火车大家合影留念。
 </p>
 
 
-<div class="figure">
+<div id="org8d3f61e" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-2.jpg" alt="xinjiang-2019-2.jpg" />
 </p>
 </div>
@@ -295,7 +262,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="org4428ebf" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-3.jpg" alt="xinjiang-2019-3.jpg" />
 </p>
 </div>
@@ -305,7 +272,7 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="orgfeca545" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-4.jpg" alt="xinjiang-2019-4.jpg" />
 </p>
 </div>
@@ -315,7 +282,7 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="orgc5ca99d" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-5.jpg" alt="xinjiang-2019-5.jpg" />
 </p>
 </div>
@@ -327,7 +294,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="org7778bcf" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-6.jpg" alt="xinjiang-2019-6.jpg" />
 </p>
 </div>
@@ -343,7 +310,7 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="org34a01be" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-7.jpg" alt="xinjiang-2019-7.jpg" />
 </p>
 </div>
@@ -354,15 +321,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orga240ec1" class="outline-2">
-<h2 id="orga240ec1"><span class="section-number-2">3</span> Day 3 白哈巴 -&gt; 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-29 Sun&gt;</span></span></h2>
+<div id="outline-container-org16e2b9b" class="outline-2">
+<h2 id="org16e2b9b"><span class="section-number-2">3.</span> Day 3 白哈巴 -&gt; 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-29 Sun&gt;</span></span></h2>
 <div class="outline-text-2" id="text-3">
 <p>
 早上 8 点起床，本来打算是早点起来的，但是 7 点多的时候天气不太好，好像还下了会雨，天也没亮。出门的时候天还没有完全亮，幸运的是雨已经停了，早餐吃了几口馕，迫不及待的往晨雾观景点赶。天上云层很厚，不过在观景台看到整个村庄上层笼罩着一层淡淡的雾的时候还是美的。
 </p>
 
 
-<div class="figure">
+<div id="orgb62dd8f" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-8.jpg" alt="xinjiang-2019-8.jpg" />
 </p>
 </div>
@@ -372,19 +339,19 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="org51c5851" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-9.jpg" alt="xinjiang-2019-9.jpg" />
 </p>
 </div>
 
 
-<div class="figure">
+<div id="org53599ae" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-10.jpg" alt="xinjiang-2019-10.jpg" />
 </p>
 </div>
 
 
-<div class="figure">
+<div id="org0108b7b" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-11.jpg" alt="xinjiang-2019-11.jpg" />
 </p>
 </div>
@@ -394,13 +361,13 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="org3e4b986" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-12.jpg" alt="xinjiang-2019-12.jpg" />
 </p>
 </div>
 
 
-<div class="figure">
+<div id="orgf4b636b" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-13.jpg" alt="xinjiang-2019-13.jpg" />
 </p>
 </div>
@@ -410,7 +377,7 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="org0876032" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-14.jpg" alt="xinjiang-2019-14.jpg" />
 </p>
 </div>
@@ -423,15 +390,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgde2bf21" class="outline-2">
-<h2 id="orgde2bf21"><span class="section-number-2">4</span> Day 4 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-30 Mon&gt;</span></span></h2>
+<div id="outline-container-org211549e" class="outline-2">
+<h2 id="org211549e"><span class="section-number-2">4.</span> Day 4 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-30 Mon&gt;</span></span></h2>
 <div class="outline-text-2" id="text-4">
 <p>
 运气实在不佳，天气预报说今天早上会有雪，最低温度也到零度了。之前还盼着天气好，赶早徒步去看晨雾的，现在来看彻底泡汤了。早上起来雪倒是没看见，就一直在下雨，好在 9 点多的时候天就放晴了。住的地方早餐 20 元一份，馒头加稀饭，景区来说价格还算良心，好歹是热食。我们先坐景交抵达神仙湾，看完神仙湾之后，坐车直达卧龙湾，然后卧龙湾开始全称徒步。
 </p>
 
 
-<div class="figure">
+<div id="org791a55d" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-15.jpg" alt="xinjiang-2019-15.jpg" />
 </p>
 </div>
@@ -443,7 +410,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="org672eff0" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-16.jpg" alt="xinjiang-2019-16.jpg" />
 </p>
 </div>
@@ -455,7 +422,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="orga4e4bcb" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-17.jpg" alt="xinjiang-2019-17.jpg" />
 </p>
 </div>
@@ -467,7 +434,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="org6252d7a" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-18.jpg" alt="xinjiang-2019-18.jpg" />
 </p>
 </div>
@@ -479,7 +446,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="org3f6827f" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-19.jpg" alt="xinjiang-2019-19.jpg" />
 </p>
 </div>
@@ -491,7 +458,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="org4c89458" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-20.jpg" alt="xinjiang-2019-20.jpg" />
 </p>
 </div>
@@ -504,15 +471,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge1921a5" class="outline-2">
-<h2 id="orge1921a5"><span class="section-number-2">5</span> Day 5 喀纳斯 -&gt; 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-01 Tue&gt;</span></span></h2>
+<div id="outline-container-orgd7e5606" class="outline-2">
+<h2 id="orgd7e5606"><span class="section-number-2">5.</span> Day 5 喀纳斯 -&gt; 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-01 Tue&gt;</span></span></h2>
 <div class="outline-text-2" id="text-5">
 <p>
 昨晚和其他小伙伴说早起徒步去看三湾的晨雾，大家兴致都不高，还有几个想看阅兵的直播。因为之前看攻略说晨雾很美，想着自己还是要去看，运气不错的还遇到一个小哥也准备去看，刚好可以结伴而行。早上 5 点多就爬起来了，外面很黑，温度也挺低，洗漱了一下带了个馕就出发了。6 点多的时候，天空还是满天星辰，比昨晚还要更壮观。我们俩找小道找了半天，最后到打算放弃的时候幸运的找到了路。走到大路的时候，路上开始能陆陆续续看到人了，大家应该都是起早去看风景的。
 </p>
 
 
-<div class="figure">
+<div id="org829b7ea" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-21.jpg" alt="xinjiang-2019-21.jpg" />
 </p>
 </div>
@@ -524,7 +491,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="org13634b4" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-22.jpg" alt="xinjiang-2019-22.jpg" />
 </p>
 </div>
@@ -536,7 +503,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="org56cd8f1" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-23.jpg" alt="xinjiang-2019-23.jpg" />
 </p>
 </div>
@@ -548,7 +515,7 @@ for the JavaScript code in this tag.
 </blockquote>
 
 
-<div class="figure">
+<div id="orgae4fe7b" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-24.jpg" alt="xinjiang-2019-24.jpg" />
 </p>
 </div>
@@ -564,13 +531,13 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="org7d884e2" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-25.jpg" alt="xinjiang-2019-25.jpg" />
 </p>
 </div>
 
 
-<div class="figure">
+<div id="org9d5c08a" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-26.jpg" alt="xinjiang-2019-26.jpg" />
 </p>
 </div>
@@ -586,13 +553,13 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="org8970ad5" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-28.jpg" alt="xinjiang-2019-28.jpg" />
 </p>
 </div>
 
 
-<div class="figure">
+<div id="org62d364c" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-27.jpg" alt="xinjiang-2019-27.jpg" />
 </p>
 </div>
@@ -602,7 +569,7 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div class="figure">
+<div id="org069df1e" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-29.jpg" alt="xinjiang-2019-29.jpg" />
 </p>
 </div>
@@ -613,8 +580,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org746e549" class="outline-2">
-<h2 id="org746e549"><span class="section-number-2">6</span> Day 6 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-02 Wed&gt;</span></span></h2>
+<div id="outline-container-orgfac66f4" class="outline-2">
+<h2 id="orgfac66f4"><span class="section-number-2">6.</span> Day 6 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-02 Wed&gt;</span></span></h2>
 <div class="outline-text-2" id="text-6">
 <p>
 可能对禾木的期望有点高，实际到了禾木之后多少有些让人失望的，喀纳斯几个行程里面，我觉得禾木是最差的。整个村子和其它江南的古镇感觉是一个调调的，千篇一律，并没有觉得有什么特色，相反比起禾木来说我更喜欢白哈巴。禾木这一天，就在村里溜达溜达。顺便还骑了马走了一趟美丽峰，来回 280 的价格着实也不便宜。
@@ -622,15 +589,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org0657562" class="outline-2">
-<h2 id="org0657562"><span class="section-number-2">7</span> Day 7 禾木 -&gt; 阿勒泰 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-03 Thu&gt;</span></span></h2>
+<div id="outline-container-org7ec6812" class="outline-2">
+<h2 id="org7ec6812"><span class="section-number-2">7.</span> Day 7 禾木 -&gt; 阿勒泰 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-03 Thu&gt;</span></span></h2>
 <div class="outline-text-2" id="text-7">
 <p>
 当然，禾木最出名的还是晨雾笼罩的村庄，这次大家意见很一致，早起爬山看晨雾。早上 7 点开始爬，因为观景台离的比较近，30 多分钟就爬到山上了。不过不凑巧，今天没有晨雾，大家只能守着日出看一看风景了。
 </p>
 
 
-<div class="figure">
+<div id="orgad07cf6" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-30.jpg" alt="xinjiang-2019-30.jpg" />
 </p>
 </div>
@@ -641,15 +608,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org715efdb" class="outline-2">
-<h2 id="org715efdb"><span class="section-number-2">8</span> Day 8 阿勒泰 -&gt; 可可托海 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-04 Fri&gt;</span></span></h2>
+<div id="outline-container-org88b35c1" class="outline-2">
+<h2 id="org88b35c1"><span class="section-number-2">8.</span> Day 8 阿勒泰 -&gt; 可可托海 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-04 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-8">
 <p>
 阿勒泰算是小住一晚，以后如果有时间觉得还是可以过来逛一逛的。印象最深的是这天早上吃的哈萨克早餐了，是整个新疆行程吃的最好的早餐了，丰盛美味（光顾着吃了，没有拍照）。吃完早餐开始往可可托海赶路，大概 5 个小时的行程到达可可托海。可可托海多少有些让人失望的，大概是看过了喀纳斯的美景了，对有点想象的可可托海多少是提不起什么兴趣的。景色没有提起兴趣，倒是景区卖的玉石把几个妹子的注意力都吸引过去了，于是就是买买买&#x2026;&#x2026;
 </p>
 
 
-<div class="figure">
+<div id="org2cdd79a" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-31.jpg" alt="xinjiang-2019-31.jpg" />
 </p>
 </div>
@@ -662,15 +629,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd21fc2f" class="outline-2">
-<h2 id="orgd21fc2f"><span class="section-number-2">9</span> Day 9 可可托海 -&gt; 古海温泉 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-05 Sat&gt;</span></span></h2>
+<div id="outline-container-orgf138d8e" class="outline-2">
+<h2 id="orgf138d8e"><span class="section-number-2">9.</span> Day 9 可可托海 -&gt; 古海温泉 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-05 Sat&gt;</span></span></h2>
 <div class="outline-text-2" id="text-9">
 <p>
 安排古海温泉住一晚，是想着不要太累，可以泡下温泉好好休息一下。不过实际到了之后大家貌似都不太感冒，温泉也就没有泡。这边的温泉想必是真的，因为住的酒店默认是不提供冷水的，打电话询问之后酒店才把冷水打开的。
 </p>
 
 
-<div class="figure">
+<div id="org8d0b8f4" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-32.jpg" alt="xinjiang-2019-32.jpg" />
 </p>
 </div>
@@ -683,15 +650,15 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgeb5368c" class="outline-2">
-<h2 id="orgeb5368c"><span class="section-number-2">10</span> Day 10 古海温泉 -&gt; 乌鲁木齐 -&gt; 杭州 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-06 Sun&gt;</span></span></h2>
+<div id="outline-container-org4b288fc" class="outline-2">
+<h2 id="org4b288fc"><span class="section-number-2">10.</span> Day 10 古海温泉 -&gt; 乌鲁木齐 -&gt; 杭州 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-06 Sun&gt;</span></span></h2>
 <div class="outline-text-2" id="text-10">
 <p>
 第一天的时候本来要安排大巴扎的，但是因为时间因素没有去成。这次觉得时间还算充裕，所以临时决定去了乌鲁木齐先去大巴扎逛，逛完再去机场。
 </p>
 
 
-<div class="figure">
+<div id="orgee7abc4" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-33.jpg" alt="xinjiang-2019-33.jpg" />
 </p>
 </div>
@@ -703,8 +670,8 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org1741919" class="outline-2">
-<h2 id="org1741919"><span class="section-number-2">11</span> 小结</h2>
+<div id="outline-container-org5e29c0c" class="outline-2">
+<h2 id="org5e29c0c"><span class="section-number-2">11.</span> 小结</h2>
 <div class="outline-text-2" id="text-11">
 <p>
 整个行程，因为时间问题并没有做够充足的准备，实际下来，觉得可以改进的点有几点：
@@ -723,7 +690,7 @@ for the JavaScript code in this tag.
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2019-10-10 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2019-10-10 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

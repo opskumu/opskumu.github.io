@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Google 大规模集群管理器 Borg</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,109 +191,62 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Google 大规模集群管理器 Borg</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org397c6ec">1. Abstract</a></li>
-<li><a href="#org7e826a9">2. Introduction</a></li>
-<li><a href="#orgbea70cd">3. The user persoective</a>
+<li><a href="#org9e00d15">1. Abstract</a></li>
+<li><a href="#org61db5b6">2. Introduction</a></li>
+<li><a href="#org4c2e628">3. The user persoective</a>
 <ul>
-<li><a href="#orgdf8f327">3.1. The workload</a></li>
-<li><a href="#org0dc29ad">3.2. Clusters and cells</a></li>
-<li><a href="#org0013f4c">3.3. Jobs and tasks</a></li>
-<li><a href="#org3fb7671">3.4. Allocs（allocation）</a></li>
-<li><a href="#orgd6c8225">3.5. Priority, quota, and adminssion control</a></li>
-<li><a href="#org3ff5278">3.6. Naming and monitoring</a></li>
+<li><a href="#org886a962">3.1. The workload</a></li>
+<li><a href="#orgc37621a">3.2. Clusters and cells</a></li>
+<li><a href="#orgcd59561">3.3. Jobs and tasks</a></li>
+<li><a href="#orgae74577">3.4. Allocs（allocation）</a></li>
+<li><a href="#org24ddaf1">3.5. Priority, quota, and adminssion control</a></li>
+<li><a href="#org0202341">3.6. Naming and monitoring</a></li>
 </ul>
 </li>
-<li><a href="#org64937c9">4. Borg architecture</a>
+<li><a href="#orgb3b520f">4. Borg architecture</a>
 <ul>
-<li><a href="#org3fd657a">4.1. Borgmaster</a></li>
-<li><a href="#org4628436">4.2. Scheduling</a></li>
-<li><a href="#orgcd69f60">4.3. Borglet</a></li>
-<li><a href="#org6bfbb86">4.4. Scalability</a></li>
+<li><a href="#orgc56f8f5">4.1. Borgmaster</a></li>
+<li><a href="#org66c5c8c">4.2. Scheduling</a></li>
+<li><a href="#org1351f7b">4.3. Borglet</a></li>
+<li><a href="#orgbf8a6e0">4.4. Scalability</a></li>
 </ul>
 </li>
-<li><a href="#orgdf03901">5. Availability</a></li>
-<li><a href="#org493d379">6. Utilization</a>
+<li><a href="#org6d15790">5. Availability</a></li>
+<li><a href="#orgf251584">6. Utilization</a>
 <ul>
-<li><a href="#orgf4c4395">6.1. Evaluation methodology</a></li>
-<li><a href="#orgdcdb76f">6.2. Cell sharing</a></li>
-<li><a href="#org90c236a">6.3. Large cells</a></li>
-<li><a href="#org94f64f1">6.4. Fine-grained resource requests</a></li>
-<li><a href="#orgdbca4ea">6.5. Resource reclamation</a></li>
+<li><a href="#org4e46f48">6.1. Evaluation methodology</a></li>
+<li><a href="#orgff26ab7">6.2. Cell sharing</a></li>
+<li><a href="#orgd5d7278">6.3. Large cells</a></li>
+<li><a href="#org44b5721">6.4. Fine-grained resource requests</a></li>
+<li><a href="#org2cb0d6b">6.5. Resource reclamation</a></li>
 </ul>
 </li>
-<li><a href="#org142bf56">7. Isolation</a>
+<li><a href="#orgf2176ba">7. Isolation</a>
 <ul>
-<li><a href="#org13d574f">7.1. Security isolation</a></li>
-<li><a href="#orgbb99693">7.2. Performance isolation</a></li>
+<li><a href="#org8e88017">7.1. Security isolation</a></li>
+<li><a href="#org41215ef">7.2. Performance isolation</a></li>
 </ul>
 </li>
-<li><a href="#orgb4daa6d">8. Related work</a></li>
-<li><a href="#org0853419">9. Lessons and future work</a>
+<li><a href="#orgca73aad">8. Related work</a></li>
+<li><a href="#org382195e">9. Lessons and future work</a>
 <ul>
-<li><a href="#org524b0ca">9.1. Lessons learned: the bad</a></li>
-<li><a href="#org545755f">9.2. Lessons learned: the good</a></li>
-<li><a href="#org1038671">9.3. Conclusion</a></li>
+<li><a href="#org6cc76f6">9.1. Lessons learned: the bad</a></li>
+<li><a href="#orga667665">9.2. Lessons learned: the good</a></li>
+<li><a href="#orged4a2fd">9.3. Conclusion</a></li>
 </ul>
 </li>
 </ul>
@@ -297,8 +264,8 @@ for the JavaScript code in this tag.
 </p>
 </blockquote>
 
-<div id="outline-container-org397c6ec" class="outline-2">
-<h2 id="org397c6ec"><span class="section-number-2">1</span> Abstract</h2>
+<div id="outline-container-org9e00d15" class="outline-2">
+<h2 id="org9e00d15"><span class="section-number-2">1.</span> Abstract</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Google Borg 系统是一个集群管理器，运行着数千个应用程序的数以十万计的作业，跨多个由数万台机器组成的集群。
@@ -310,8 +277,8 @@ Borg 通过超配、进程级别资源隔离等，实现高效的资源利用率
 </div>
 </div>
 
-<div id="outline-container-org7e826a9" class="outline-2">
-<h2 id="org7e826a9"><span class="section-number-2">2</span> Introduction</h2>
+<div id="outline-container-org61db5b6" class="outline-2">
+<h2 id="org61db5b6"><span class="section-number-2">2.</span> Introduction</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 集群管理系统的内部代号是 Borg，它全程管理、调度、启动、重启以及监控 Google 运行的应用程序。
@@ -328,23 +295,23 @@ Borg 提供三个好处：
 </ol>
 
 
-<div class="figure">
+<div id="orgaef4095" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-arch.png" alt="borg-arch.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgbea70cd" class="outline-2">
-<h2 id="orgbea70cd"><span class="section-number-2">3</span> The user persoective</h2>
+<div id="outline-container-org4c2e628" class="outline-2">
+<h2 id="org4c2e628"><span class="section-number-2">3.</span> The user persoective</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Borg 的面向用户为运行 Google 应用程序和服务的 Google 开发者和系统管理员（Google 内部称为网站高可用工程师或者简写 SRE）。用户向 Borg 以作业（ <code>jobs</code> ）的方式提交工作，每个 job 由包含着相同程序的一个或多个任务（ <code>tasks</code> ）组成。每个 job 运行在一个 Borg <code>cell</code> (一组机器集合管理单元) 上。
 </p>
 </div>
 
-<div id="outline-container-orgdf8f327" class="outline-3">
-<h3 id="orgdf8f327"><span class="section-number-3">3.1</span> The workload</h3>
+<div id="outline-container-org886a962" class="outline-3">
+<h3 id="org886a962"><span class="section-number-3">3.1.</span> The workload</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Borg cells 包括两种类型的 workload。第一种是那些长时间运行的服务，并且对请求延迟敏感（几微秒到几百毫秒之间）。这类服务一般是直接面向终端用户的产品，如 Gmail、Google Docs 和 Web 搜索以及内部基础设施服务（如 BigTable）。另外一种是那些运行几秒或者几天即可完成的批处理作业，这类服务对短期性能波动不敏感。
@@ -356,8 +323,8 @@ Borg cells 包括两种类型的 workload。第一种是那些长时间运行的
 </div>
 </div>
 
-<div id="outline-container-org0dc29ad" class="outline-3">
-<h3 id="org0dc29ad"><span class="section-number-3">3.2</span> Clusters and cells</h3>
+<div id="outline-container-orgc37621a" class="outline-3">
+<h3 id="orgc37621a"><span class="section-number-3">3.2.</span> Clusters and cells</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 一个 cell 的机器都归属于单个集群，通过高性能的数据中心级别的光纤网络连接。一个集群部署在一个独立的数据中心建筑中，多个数据中心建筑构成一个 <code>site</code> 。一个集群通常包括一个大规模的 cell 和许多小规模的测试或者特殊目的的 cells。尽量避免单点故障。
@@ -369,8 +336,8 @@ Borg cells 包括两种类型的 workload。第一种是那些长时间运行的
 </div>
 </div>
 
-<div id="outline-container-org0013f4c" class="outline-3">
-<h3 id="org0013f4c"><span class="section-number-3">3.3</span> Jobs and tasks</h3>
+<div id="outline-container-orgcd59561" class="outline-3">
+<h3 id="orgcd59561"><span class="section-number-3">3.3.</span> Jobs and tasks</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 一个 Borg job 的属性包括名字、属主以及 tasks 数量。通过一些约束，可以强制 Job 的 tasks 在具有特定属性的机器上运行，例如处理器架构、操作系统版本，或者额外的 IP 地址。约束是分软限制和强限制。可以指定 job 运行顺序，如一个 job 在另外一个 job 运行之后再启动。一个 job 只能运行在一个 cell 上。
@@ -381,7 +348,7 @@ Borg cells 包括两种类型的 workload。第一种是那些长时间运行的
 </p>
 
 
-<div class="figure">
+<div id="org65cd697" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-job-task-state.png" alt="borg-job-task-state.png" />
 </p>
 </div>
@@ -396,8 +363,8 @@ tasks 需要能够处理 Unix <code>SIGTERM</code> 信号， 以便在被强制�
 </div>
 </div>
 
-<div id="outline-container-org3fb7671" class="outline-3">
-<h3 id="org3fb7671"><span class="section-number-3">3.4</span> Allocs（allocation）</h3>
+<div id="outline-container-orgae74577" class="outline-3">
+<h3 id="orgae74577"><span class="section-number-3">3.4.</span> Allocs（allocation）</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 Borg <code>alloc</code> 是可以运行在一个或多个 tasks 的机器上的一组预留资源。无论资源是否使用，资源仍分配。Allocs 可以被用于将来的 tasks 资源使用，在停止和启动 task 之间保留资源，并且可以将不同 jobs 的 tasks 聚集到同一台机器上。一个 alloc 的资源和机器上资源类似的方式处理，多个 tasks 运行在 alloc 上是共享资源的，如果一个 alloc 必须重新分配到另外一台主机，它的 tasks 也会同它一起重新被调度。
@@ -409,8 +376,8 @@ Borg <code>alloc</code> 是可以运行在一个或多个 tasks 的机器上的�
 </div>
 </div>
 
-<div id="outline-container-orgd6c8225" class="outline-3">
-<h3 id="orgd6c8225"><span class="section-number-3">3.5</span> Priority, quota, and adminssion control</h3>
+<div id="outline-container-org24ddaf1" class="outline-3">
+<h3 id="org24ddaf1"><span class="section-number-3">3.5.</span> Priority, quota, and adminssion control</h3>
 <div class="outline-text-3" id="text-3-5">
 <p>
 优先级和配额用于防止运行的比实际能容纳多的这种负载情况。每个 job 都有一个 <code>priority</code> 优先级，一个小的正整数。高优先级的 task 可以在牺牲较低优先级的 task 来获取资源，甚至是以抢占方式。 Borg 为不同用途定义不同的优先级：监控、生产、批处理和 best effort。
@@ -430,8 +397,8 @@ Borg <code>alloc</code> 是可以运行在一个或多个 tasks 的机器上的�
 </div>
 </div>
 
-<div id="outline-container-org3ff5278" class="outline-3">
-<h3 id="org3ff5278"><span class="section-number-3">3.6</span> Naming and monitoring</h3>
+<div id="outline-container-org0202341" class="outline-3">
+<h3 id="org0202341"><span class="section-number-3">3.6.</span> Naming and monitoring</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 只是提供创建和运行是不够的，服务客户端和相关系统需要能够访问到对应的服务，即使被重新调度到新的机器上。因此，Borg 针对每个 task 创建一个稳定的 "Borg name service" (BNS)，包括 cell 名，job 名和 task 数量。Borg 用这个名字将 task 的主机名和端口写入到 Chubby 一致且高可用的文件中，该文件用于 RPC 系统查找 task 端。BNS 名也用于 task DNS 名构成基础，如用户 ubar 在 cell cc 上执行的 job jfoo 第 50 个 task，可以通过 50.jfoo.ubar.cc.borg.google.com 访问。Borg 还会在发生变化的时候把 job 大小和 task 健康信息写入到 Chubby，以使得负载均衡器可以获取到请求路由指向。
@@ -456,16 +423,16 @@ Borg 记录所有 job 提交和 task 事件，详细到每个 task 资源使用�
 </div>
 </div>
 
-<div id="outline-container-org64937c9" class="outline-2">
-<h2 id="org64937c9"><span class="section-number-2">4</span> Borg architecture</h2>
+<div id="outline-container-orgb3b520f" class="outline-2">
+<h2 id="orgb3b520f"><span class="section-number-2">4.</span> Borg architecture</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 一个 Borg cell 由一组主机组成，一个名为 Borgmaster 的逻辑集中控制器，和一个名为 Borglet 的代理进程组成，Borglet 运行在 cell 中的每个主机上。所有的 Borg 组件都是通过 C++ 编写的。
 </p>
 </div>
 
-<div id="outline-container-org3fd657a" class="outline-3">
-<h3 id="org3fd657a"><span class="section-number-3">4.1</span> Borgmaster</h3>
+<div id="outline-container-orgc56f8f5" class="outline-3">
+<h3 id="orgc56f8f5"><span class="section-number-3">4.1.</span> Borgmaster</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 每个 cell 的 Borgmaster 包含两个进程：主 Borgmaster 进程和一个独立的调度器。主 Borgmaster 进程处理客户端 RPCs 请求，状态变化（如创建 job）或者提供数据的只读访问（如查找 job）。它还管理系统中所有对象的状态（如主机，tasks，allocs 等），和 Borglets 通信，并提供一个 Web UI 作为 Sigma 的备份。
@@ -485,8 +452,8 @@ Borgmaster 在某个时间点的状态称为 checkpoint，采用定期快照以�
 </div>
 </div>
 
-<div id="outline-container-org4628436" class="outline-3">
-<h3 id="org4628436"><span class="section-number-3">4.2</span> Scheduling</h3>
+<div id="outline-container-org66c5c8c" class="outline-3">
+<h3 id="org66c5c8c"><span class="section-number-3">4.2.</span> Scheduling</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 当提交一个 job 后，Borgmaster 会将它永久记录在 Paxos 存储中并将 job 的 tasks 加入到待处理队列。调度器异步遍历，如果有足够的可用资源满足 job 的需求，则分配 tasks 到主机。(调度器主要针对 tasks 操作，而不是 jobs。)遍历优先级从高到低，在优先级内通过轮询方案进行调制，确保用户之间的公平性，避免在阻塞大型 job 后。调度算法有两部分组成：可行性检查，通过选择一个可行性机器评分寻找 task 可运行的主机。在可行性检查中，调度器找到一组满足 task 需求的主机以及足够的可用资源 &#x2013; 其中包括分配给可以驱逐的优先级较低的任务资源。在评分中，调度器确保每个可行性主机的"良好性"。评分综合了用户指定的首选项，但主要由内置条件驱动，例如最小化抢占 tasks 的数量和优先级，挑选已拥有 task 副本包的主机，在 power 和故障域之间传播 task 以及 packing 质量，包括将高优先级和低优先级任务混布到一台机器，以允许高优先级任务在负载峰值扩展。
@@ -518,8 +485,8 @@ Task 启动延迟（时间从 job 提交到 task 运行）是已经接收并继�
 </div>
 </div>
 
-<div id="outline-container-orgcd69f60" class="outline-3">
-<h3 id="orgcd69f60"><span class="section-number-3">4.3</span> Borglet</h3>
+<div id="outline-container-org1351f7b" class="outline-3">
+<h3 id="org1351f7b"><span class="section-number-3">4.3.</span> Borglet</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 Borglet 是 cell 中每个主机上运行的本地 Borg agent。它负责启动和停止 tasks；如果失败了就重启它们；通过操作系统内核设置来管理本地资源；滚动调试日志；并且汇报所在主机状态给 Borgmaster 和其它监控系统。Borgmaster 每隔几秒轮询 Borglet 以检索主机的当前状态并向其发送未完成的请求。这使得 Borgmaster 可以控制通信速率，避免需要明确的流控机制，并防止恢复风暴。
@@ -535,8 +502,8 @@ Borglet 是 cell 中每个主机上运行的本地 Borg agent。它负责启动�
 </div>
 </div>
 
-<div id="outline-container-org6bfbb86" class="outline-3">
-<h3 id="org6bfbb86"><span class="section-number-3">4.4</span> Scalability</h3>
+<div id="outline-container-orgbf8a6e0" class="outline-3">
+<h3 id="orgbf8a6e0"><span class="section-number-3">4.4.</span> Scalability</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 我们很难确认 Borg 集中式架构可扩展性的限制在哪里；到目前为止，每次到瓶颈时，我们都设法消除它。一个 Borgmaster 可以在一个 cell 中管理数千台主机，并且几个 cells 每分钟可以处理 1000 个 tasks。一个繁忙的 Borgmaster 使用 10-14 个 CPU 和 50GiB 内存。我们使用多种技术来实现这种规模。
@@ -570,11 +537,11 @@ Borglet 是 cell 中每个主机上运行的本地 Borg agent。它负责启动�
 </div>
 </div>
 
-<div id="outline-container-orgdf03901" class="outline-2">
-<h2 id="orgdf03901"><span class="section-number-2">5</span> Availability</h2>
+<div id="outline-container-org6d15790" class="outline-2">
+<h2 id="org6d15790"><span class="section-number-2">5.</span> Availability</h2>
 <div class="outline-text-2" id="text-5">
 
-<div class="figure">
+<div id="org022af7f" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-evictions-per-task-week.png" alt="borg-evictions-per-task-week.png" />
 </p>
 </div>
@@ -603,16 +570,16 @@ Borgmaster 使用多种技术组合，使其在实践中实现 99.99% 的可用�
 </div>
 </div>
 
-<div id="outline-container-org493d379" class="outline-2">
-<h2 id="org493d379"><span class="section-number-2">6</span> Utilization</h2>
+<div id="outline-container-orgf251584" class="outline-2">
+<h2 id="orgf251584"><span class="section-number-2">6.</span> Utilization</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Borg 的主要目标之一是有效利用 Google 的主机，这是一笔巨大的金融投资：提高几个百分点的利用率可以节省数百万美元。本节讨论并评估 Borg 用于执行此操作的一些策略和技术。
 </p>
 </div>
 
-<div id="outline-container-orgf4c4395" class="outline-3">
-<h3 id="orgf4c4395"><span class="section-number-3">6.1</span> Evaluation methodology</h3>
+<div id="outline-container-org4e46f48" class="outline-3">
+<h3 id="org4e46f48"><span class="section-number-3">6.1.</span> Evaluation methodology</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 我们的 jobs 有存放限制，需要处理罕见的工作负载峰值，我们的主机是异构的，我们在从回收服务 jobs 的资源中运行批处理作业。因此，为了评估我们的策略选择，我们需要一个比 "平均利用率" 更精密的指标。经过大量的实验，我们选择了 cell 压实：给定一个工作负载，通过移除 cell 中的主机直到不能满足工作负载运行为止，在 scratch 上反复重新打包工作负载，以确保我们没有挂起不幸的配置。这提供了清理终结的条件以及促进了自动比较而没有合成工作负载生成和建模的缺陷。
@@ -639,15 +606,15 @@ Borg 的主要目标之一是有效利用 Google 的主机，这是一笔巨大�
 </p>
 
 
-<div class="figure">
+<div id="org5ab5e0f" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-compacted-size.png" alt="borg-compacted-size.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgdcdb76f" class="outline-3">
-<h3 id="orgdcdb76f"><span class="section-number-3">6.2</span> Cell sharing</h3>
+<div id="outline-container-orgff26ab7" class="outline-3">
+<h3 id="orgff26ab7"><span class="section-number-3">6.2.</span> Cell sharing</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 我们几乎所有的机器同时运行生产和非生产的 tasks：98% 的主机在共享 Borg cells 中，在 Borg 管理的整套机器中占 83%。（我们有一些特殊用途的专用 cells）
@@ -658,7 +625,7 @@ Borg 的主要目标之一是有效利用 Google 的主机，这是一笔巨大�
 </p>
 
 
-<div class="figure">
+<div id="orgc2049c9" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-prod-noprod-different-cells.png" alt="borg-prod-noprod-different-cells.png" />
 </p>
 </div>
@@ -668,7 +635,7 @@ Borg 的主要目标之一是有效利用 Google 的主机，这是一笔巨大�
 </p>
 
 
-<div class="figure">
+<div id="orgded3281" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-user-different-cells.png" alt="borg-user-different-cells.png" />
 </p>
 </div>
@@ -695,30 +662,30 @@ Borg 的主要目标之一是有效利用 Google 的主机，这是一笔巨大�
 </div>
 </div>
 
-<div id="outline-container-org90c236a" class="outline-3">
-<h3 id="org90c236a"><span class="section-number-3">6.3</span> Large cells</h3>
+<div id="outline-container-orgd5d7278" class="outline-3">
+<h3 id="orgd5d7278"><span class="section-number-3">6.3.</span> Large cells</h3>
 <div class="outline-text-3" id="text-6-3">
 <p>
 Google 构建了大型 cells，既允许运行大型计算，又可以减少资源碎片。我们通过在多个较小的 cells 中划分 cell 的工作负载来测试后者的影响 - 首先随机置换 jobs 并在分区间以循环方式分配它们。图 7 证实使用较小的 cells 需要更多的机器。
 </p>
 
 
-<div class="figure">
+<div id="orgf923559" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-small-cells-more-machines.png" alt="borg-small-cells-more-machines.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org94f64f1" class="outline-3">
-<h3 id="org94f64f1"><span class="section-number-3">6.4</span> Fine-grained resource requests</h3>
+<div id="outline-container-org44b5721" class="outline-3">
+<h3 id="org44b5721"><span class="section-number-3">6.4.</span> Fine-grained resource requests</h3>
 <div class="outline-text-3" id="text-6-4">
 <p>
 Borg 用户以 ms（毫秒）为单位请求 CPU，以 bytes（字节）为单位请求内存和磁盘空间。（核心是处理器超线程，针对机器类型的性能进行了标准化）图 8 显示了它们利用了这种粒度：请求的内存或 CPU 内核数量中几乎没有明显的 "甜点"，并且在这些资源间几乎没有明显的相关性。这些分布与[68] 中的分布非常相似，除了我们看到 90% ile 以及以上的内存请求略大。
 </p>
 
 
-<div class="figure">
+<div id="org9b4edd0" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-cpu-memory.png" alt="borg-cdf-cpu-memory.png" />
 </p>
 </div>
@@ -728,15 +695,15 @@ Borg 用户以 ms（毫秒）为单位请求 CPU，以 bytes（字节）为单�
 </p>
 
 
-<div class="figure">
+<div id="org4c66a33" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-add-overheads.png" alt="borg-cdf-add-overheads.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgdbca4ea" class="outline-3">
-<h3 id="orgdbca4ea"><span class="section-number-3">6.5</span> Resource reclamation</h3>
+<div id="outline-container-org2cb0d6b" class="outline-3">
+<h3 id="org2cb0d6b"><span class="section-number-3">6.5.</span> Resource reclamation</h3>
 <div class="outline-text-3" id="text-6-5">
 <p>
 一个 job 可以指定资源限制 - 应该配置每个 tasks 的资源上限。Borg 使用这个限制来确定用户是否有足够的配额来接纳这个 job，并确定特定主机是否有足够的可用资源来调度这个 task。正如有些用户购买超过他们需要的配额一样，有些用户请求的资源比他们的 tasks 要多，因为 Borg 通常会尝试杀死比其请求更多的内存或者磁盘空间任务，或使用的 CPU 限制在请求值以内。此外，某些 tasks 偶尔需要使用其所有的资源（例如，在一天的高峰时段或在应对拒绝式服务攻击时），但大多数情况下不会。
@@ -759,7 +726,7 @@ Borg 调度程序使用限制来计算生产 tasks 可行性，因此它们从�
 </p>
 
 
-<div class="figure">
+<div id="org37a19c2" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-additional-machines.png" alt="borg-cdf-additional-machines.png" />
 </p>
 </div>
@@ -769,7 +736,7 @@ Borg 调度程序使用限制来计算生产 tasks 可行性，因此它们从�
 </p>
 
 
-<div class="figure">
+<div id="orga5575ef" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-ratio-cpu-mem.png" alt="borg-cdf-ratio-cpu-mem.png" />
 </p>
 </div>
@@ -779,7 +746,7 @@ Borg 调度程序使用限制来计算生产 tasks 可行性，因此它们从�
 </p>
 
 
-<div class="figure">
+<div id="org7931953" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-oom-events.png" alt="borg-oom-events.png" />
 </p>
 </div>
@@ -787,16 +754,16 @@ Borg 调度程序使用限制来计算生产 tasks 可行性，因此它们从�
 </div>
 </div>
 
-<div id="outline-container-org142bf56" class="outline-2">
-<h2 id="org142bf56"><span class="section-number-2">7</span> Isolation</h2>
+<div id="outline-container-orgf2176ba" class="outline-2">
+<h2 id="orgf2176ba"><span class="section-number-2">7.</span> Isolation</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 我们 50% 的机器运行 9 个或更多 tasks；90%ile 机器大约运行 25 个 tasks 并将运行 4500 个线程 [83]。尽管在应用程序之间共享机器可以提高利用率，但它还需要良好的机制来防止 tasks 之间互相干扰。这适用于安全性和性能。
 </p>
 </div>
 
-<div id="outline-container-org13d574f" class="outline-3">
-<h3 id="org13d574f"><span class="section-number-3">7.1</span> Security isolation</h3>
+<div id="outline-container-org8e88017" class="outline-3">
+<h3 id="org8e88017"><span class="section-number-3">7.1.</span> Security isolation</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 我们使用 Linux chroot jail 作为同一台机器上多个 tasks 之间的主要安全隔离机制。为了允许远程调试，我们习惯于自动分发（和撤销）ssh 密钥，以便用户只有在未用户运行 tasks 才能访问机器。这已被 borgssh 命令所取代，该命令与 Borglet 合作构建一个 ssh 连接，该 shell 连接在 tasks 相同的 chroot 和 cgroup 中运行，更严格的锁定访问。
@@ -808,8 +775,8 @@ VM 和安全沙箱技术用于运行 Google 的 AppEngine（GAE）[38] 和 Googl
 </div>
 </div>
 
-<div id="outline-container-orgbb99693" class="outline-3">
-<h3 id="orgbb99693"><span class="section-number-3">7.2</span> Performance isolation</h3>
+<div id="outline-container-org41215ef" class="outline-3">
+<h3 id="org41215ef"><span class="section-number-3">7.2.</span> Performance isolation</h3>
 <div class="outline-text-3" id="text-7-2">
 <p>
 Borglet 的早期版本具有原始的资源隔离：对内存、磁盘空间和 CPU 周期性进行事后检查，结合终止使用过多内存或磁盘的 tasks 以及积极应用 Linux 的优先级来控制使用 CPU 太多的 tasks。但是，流氓 tasks 太容易影响机器上其它 tasks 的性能，因此一些用户夸大他们的资源请求，以减少 Borg 可以与他们共同调度的 tasks 数量，从而降低利用率。由于所涉及的安全边际，资源回收可能会收回部分盈余，但不是全部。在最极端的情况下，用户请求使用专用机器或 cell。
@@ -841,7 +808,7 @@ Borglet 中的用户空间控制循环将内存分配给容器根据预测的未
 </p>
 
 
-<div class="figure">
+<div id="org26edaa8" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cpu-util.png" alt="borg-cpu-util.png" />
 </p>
 </div>
@@ -853,8 +820,8 @@ Borglet 中的用户空间控制循环将内存分配给容器根据预测的未
 </div>
 </div>
 
-<div id="outline-container-orgb4daa6d" class="outline-2">
-<h2 id="orgb4daa6d"><span class="section-number-2">8</span> Related work</h2>
+<div id="outline-container-orgca73aad" class="outline-2">
+<h2 id="orgca73aad"><span class="section-number-2">8.</span> Related work</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 资源调度已经研究了数十年，其中包括广域 HPC 超级计算网格，工作站网格和大规模服务器集群等各种环境。我们只关注大规模服务器集群环境中最相关的工作。
@@ -919,16 +886,16 @@ VMware [77] 等虚拟化提供商和数据中心解决方案公司如 HP 和 IBM
 </div>
 </div>
 
-<div id="outline-container-org0853419" class="outline-2">
-<h2 id="org0853419"><span class="section-number-2">9</span> Lessons and future work</h2>
+<div id="outline-container-org382195e" class="outline-2">
+<h2 id="org382195e"><span class="section-number-2">9.</span> Lessons and future work</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 在本节中，我们将重述 Borg 运行在生产环境十多年来的一些经验教训，并描述这些观察结果如何在设计 Kubernetes 时得到应用。
 </p>
 </div>
 
-<div id="outline-container-org524b0ca" class="outline-3">
-<h3 id="org524b0ca"><span class="section-number-3">9.1</span> Lessons learned: the bad</h3>
+<div id="outline-container-org6cc76f6" class="outline-3">
+<h3 id="org6cc76f6"><span class="section-number-3">9.1.</span> Lessons learned: the bad</h3>
 <div class="outline-text-3" id="text-9-1">
 <p>
 我们从 Borg 的一些特征开始，作为警示故事，并在 Kubernetes 中提供有根据的替代设计。
@@ -952,8 +919,8 @@ VMware [77] 等虚拟化提供商和数据中心解决方案公司如 HP 和 IBM
 </div>
 </div>
 
-<div id="outline-container-org545755f" class="outline-3">
-<h3 id="org545755f"><span class="section-number-3">9.2</span> Lessons learned: the good</h3>
+<div id="outline-container-orga667665" class="outline-3">
+<h3 id="orga667665"><span class="section-number-3">9.2.</span> Lessons learned: the good</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 另外一方面，Borg 的一些设计异常优越，并经过了时间的考验。
@@ -985,8 +952,8 @@ Kubernetes 架构的未来走向：它的核心拥有一个 API server，它负�
 </div>
 </div>
 
-<div id="outline-container-org1038671" class="outline-3">
-<h3 id="org1038671"><span class="section-number-3">9.3</span> Conclusion</h3>
+<div id="outline-container-orged4a2fd" class="outline-3">
+<h3 id="orged4a2fd"><span class="section-number-3">9.3.</span> Conclusion</h3>
 <div class="outline-text-3" id="text-9-3">
 <p>
 实际上，Google 的所有集群工作负载在过去十年中都转向使用 Borg。我们会继续发展它，并将我们从中学到的经验应用到 Kubernetes。
@@ -998,7 +965,7 @@ Kubernetes 架构的未来走向：它的核心拥有一个 API server，它负�
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2018-12-23 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2018-12-23 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

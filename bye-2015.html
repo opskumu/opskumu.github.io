@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>2015，小结</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,70 +191,23 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">2015，小结</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgcf3ba5d">1. 关于读书</a></li>
-<li><a href="#org9120709">2. 关于夯实基础</a></li>
-<li><a href="#org866db44">3. 关于规范化</a></li>
+<li><a href="#org4a37939">1. 关于读书</a></li>
+<li><a href="#org3534d5b">2. 关于夯实基础</a></li>
+<li><a href="#orgece33d2">3. 关于规范化</a></li>
 </ul>
 </div>
 </div>
@@ -258,8 +225,8 @@ for the JavaScript code in this tag.
 <li>规范化「工作、文档」</li>
 </ul>
 
-<div id="outline-container-orgcf3ba5d" class="outline-2">
-<h2 id="orgcf3ba5d"><span class="section-number-2">1</span> 关于读书</h2>
+<div id="outline-container-org4a37939" class="outline-2">
+<h2 id="org4a37939"><span class="section-number-2">1.</span> 关于读书</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 其实个人的阅读量并不是很大。大学之前除了教科书之外，基本上接触不到什么书，高中的时候 <code>《读者》</code> 、 <code>《青年文摘》</code> 之类的杂志都是禁书，就更别提小说之流了。而大学虽然能接触大把的书籍，但是当时根本就没有意识到阅读的重要性，以至于蹉跎了大把的好时光。真正开始养成看书的习惯，应该要追溯到北京的那段时光。为了打发上下班来回两个小时的地铁时间，买了 Kindle 开始看起了书，看的多了也就开始意识到了读书的重要性。
@@ -275,8 +242,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org9120709" class="outline-2">
-<h2 id="org9120709"><span class="section-number-2">2</span> 关于夯实基础</h2>
+<div id="outline-container-org3534d5b" class="outline-2">
+<h2 id="org3534d5b"><span class="section-number-2">2.</span> 关于夯实基础</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 接触的东西越多，就会发现基础就越重要。今年刚好又换了工作，从运维转型开始做点开发的活，深切的感受到基础薄弱的短板之痛。这一环节，现在看来还是处于不太理想的状态。这一块的知识，只能利用有限的时间去恶补了「多写代码，多看书」。
@@ -284,8 +251,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org866db44" class="outline-2">
-<h2 id="org866db44"><span class="section-number-2">3</span> 关于规范化</h2>
+<div id="outline-container-orgece33d2" class="outline-2">
+<h2 id="orgece33d2"><span class="section-number-2">3.</span> 关于规范化</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 一直以来都认为规范化是很重要的一个点，无论是对团队或者个人都是值得花时间去做的。代码、文档以及流程的规范化，可以最大限度的提高效率「当然，这里局限于好的规范化，坏的规范只会让一切变的更坏」。而对于这个环节，今年有点像赶鸭子上架的感觉，很多东西对于我来说都是新的，对于技术本身来说，我还在摸索阶段，很多东西得慢慢学会用起来，才能站在更高的层面去看待规范化的问题。
@@ -308,7 +275,7 @@ for the JavaScript code in this tag.
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2015-12-31 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2015-12-31 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

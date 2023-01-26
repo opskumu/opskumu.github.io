@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 中玩转 GPU</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,82 +191,35 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Docker 中玩转 GPU</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7f786dc">1. GPU 驱动安装</a>
+<li><a href="#org3ca9347">1. GPU 驱动安装</a>
 <ul>
-<li><a href="#org1f35a51">1.1. 下载 CUDA Toolkit 并安装</a></li>
-<li><a href="#orga014163">1.2. NVIDIA cuDNN Install</a></li>
+<li><a href="#orga527b52">1.1. 下载 CUDA Toolkit 并安装</a></li>
+<li><a href="#org5893810">1.2. NVIDIA cuDNN Install</a></li>
 </ul>
 </li>
-<li><a href="#org0b8d926">2. Docker 中访问 GPU</a></li>
-<li><a href="#org9a35da1">3. 通过 K8s 调度 GPU 资源</a></li>
+<li><a href="#org3013c4e">2. Docker 中访问 GPU</a></li>
+<li><a href="#org1269d98">3. 通过 K8s 调度 GPU 资源</a></li>
 </ul>
 </div>
 </div>
 
 
-<div id="outline-container-org7f786dc" class="outline-2">
-<h2 id="org7f786dc"><span class="section-number-2">1</span> GPU 驱动安装</h2>
+<div id="outline-container-org3ca9347" class="outline-2">
+<h2 id="org3ca9347"><span class="section-number-2">1.</span> GPU 驱动安装</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 在讲解 Docker 中使用 GPU 之前，需要先在当前宿主上安装好 CUDA，本文介绍的是基于 CentOS7 的安装，关于更多 Linux 的安装方法，可以参考官方文档 <a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux">NVIDIA CUDA Installation Guide for Linux</a>。
@@ -270,15 +237,15 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 
-<div id="outline-container-org1f35a51" class="outline-3">
-<h3 id="org1f35a51"><span class="section-number-3">1.1</span> 下载 CUDA Toolkit 并安装</h3>
+<div id="outline-container-orga527b52" class="outline-3">
+<h3 id="orga527b52"><span class="section-number-3">1.1.</span> 下载 CUDA Toolkit 并安装</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 <a href="https://developer.nvidia.com/cuda-downloads">CUDA Toolkit Download</a> 官网下载，选择所对应的版本
 </p>
 
 
-<div class="figure">
+<div id="org27746a6" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cuda-download.png" alt="cuda-download.png" />
 </p>
 </div>
@@ -308,12 +275,12 @@ export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:/usr/local/cuda-8.0/extras/CUPT
 </div>
 </div>
 
-<div id="outline-container-orga014163" class="outline-3">
-<h3 id="orga014163"><span class="section-number-3">1.2</span> NVIDIA cuDNN Install</h3>
+<div id="outline-container-org5893810" class="outline-3">
+<h3 id="org5893810"><span class="section-number-3">1.2.</span> NVIDIA cuDNN Install</h3>
 <div class="outline-text-3" id="text-1-2">
 <blockquote>
 <p>
-cuDNN 是专门针对深度框架设计的一套 GPU 计算加速方案，支持的框架包括 Caffe、TensorFlow 等，<a href="https://developer.nvidia.com/cuDNN%EF%BC%88%E5%AE%98%E7%BD%91%E7%8E%B0%E5%9C%A8%E4%B8%8B%E8%BD%BD%E9%9C%80%E8%A6%81%E6%B3%A8%E5%86%8C%E8%B4%A6%E6%88%B7%E6%89%8D%E8%83%BD%E4%B8%8B%E8%BD%BD">https://developer.nvidia.com/cuDNN（官网现在下载需要注册账户才能下载</a>）
+cuDNN 是专门针对深度框架设计的一套 GPU 计算加速方案，支持的框架包括 Caffe、TensorFlow 等，<a href="https://developer.nvidia.com/cuDNN%EF%BC%88%E5%AE%98%E7%BD%91%E7%8E%B0%E5%9C%A8%E4%B8%8B%E8%BD%BD%E9%9C%80%E8%A6%81%E6%B3%A8%E5%86%8C%E8%B4%A6%E6%88%B7%E6%89%8D%E8%83%BD%E4%B8%8B%E8%BD%BD">https://developer.nvidia.com/cuDNN%EF%BC%88%E5%AE%98%E7%BD%91%E7%8E%B0%E5%9C%A8%E4%B8%8B%E8%BD%BD%E9%9C%80%E8%A6%81%E6%B3%A8%E5%86%8C%E8%B4%A6%E6%88%B7%E6%89%8D%E8%83%BD%E4%B8%8B%E8%BD%BD</a>）
 </p>
 </blockquote>
 
@@ -357,8 +324,8 @@ Fri Jul 14 23:19:38 2017
 </div>
 </div>
 
-<div id="outline-container-org0b8d926" class="outline-2">
-<h2 id="org0b8d926"><span class="section-number-2">2</span> Docker 中访问 GPU</h2>
+<div id="outline-container-org3013c4e" class="outline-2">
+<h2 id="org3013c4e"><span class="section-number-2">2.</span> Docker 中访问 GPU</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 nvidia 官方提供了 nvidia-docker 可以直接驱动 GPU 设备，具体文档可以参考 <a href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a>，本文介绍原生的 Docker 方式。
@@ -405,8 +372,8 @@ Device mapping:
 </div>
 </div>
 
-<div id="outline-container-org9a35da1" class="outline-2">
-<h2 id="org9a35da1"><span class="section-number-2">3</span> 通过 K8s 调度 GPU 资源</h2>
+<div id="outline-container-org1269d98" class="outline-2">
+<h2 id="org1269d98"><span class="section-number-2">3.</span> 通过 K8s 调度 GPU 资源</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 K8s 现在已经支持 GPU 的资源调度了，具体可以看官方的介绍 <a href="https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/">Schedule GPUs</a>，这里介绍一个简单的实例。
@@ -478,7 +445,7 @@ spec:
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2017-07-16 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2017-07-16 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

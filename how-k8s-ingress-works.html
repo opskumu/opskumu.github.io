@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-10-22 Thu 15:21 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Nginx Ingress 控制器工作机制</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,75 +191,28 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2018 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Nginx Ingress 控制器工作机制</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf366345">1. NGINX 配置</a></li>
-<li><a href="#orga2f4be3">2. NGINX 模型</a></li>
-<li><a href="#org5c508d3">3. 构建 NGINX 模型</a></li>
-<li><a href="#orgdc39bc8">4. 什么时候重新加载是必须的</a></li>
-<li><a href="#org451be0e">5. 避免重新加载</a>
+<li><a href="#org5450027">1. NGINX 配置</a></li>
+<li><a href="#org2a46d46">2. NGINX 模型</a></li>
+<li><a href="#orgee229d5">3. 构建 NGINX 模型</a></li>
+<li><a href="#org9792097">4. 什么时候重新加载是必须的</a></li>
+<li><a href="#org6640ed3">5. 避免重新加载</a>
 <ul>
-<li><a href="#orgd7975e4">5.1. 避免 Endpoints 变更时重新加载</a></li>
-<li><a href="#orgc56beb7">5.2. 避免因错误的配置而中断</a></li>
+<li><a href="#orgae5cf77">5.1. 避免 Endpoints 变更时重新加载</a></li>
+<li><a href="#org3896225">5.2. 避免因错误的配置而中断</a></li>
 </ul>
 </li>
 </ul>
@@ -262,8 +229,8 @@ for the JavaScript code in this tag.
 </p>
 
 
-<div id="outline-container-orgf366345" class="outline-2">
-<h2 id="orgf366345"><span class="section-number-2">1</span> NGINX 配置</h2>
+<div id="outline-container-org5450027" class="outline-2">
+<h2 id="org5450027"><span class="section-number-2">1.</span> NGINX 配置</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求的主要含义是在配置文件有任何变更后都需要重新加载 NGINX。不过需要特别注意的是，在只有 <code>upstream</code> 配置变更的时候我们不需要重新加载 Nginx（即当你部署你的应用时 Endpoints 变更）。我们使用 <a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a> 达到这个目的。请通过<a href="https://kubernetes.github.io/ingress-nginx/how-it-works/#avoiding-reloads-on-endpoints-changes"> 下面的内容</a> 来学习我们如何做到这一点。
@@ -271,8 +238,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </div>
 </div>
 
-<div id="outline-container-orga2f4be3" class="outline-2">
-<h2 id="orga2f4be3"><span class="section-number-2">2</span> NGINX 模型</h2>
+<div id="outline-container-org2a46d46" class="outline-2">
+<h2 id="org2a46d46"><span class="section-number-2">2.</span> NGINX 模型</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 通常，一个 Kubernetes 控制器采用 <a href="https://coreos.com/kubernetes/docs/latest/replication-controller.html#the-reconciliation-loop-in-detail">synchronization loop pattern</a> 来检查控制器中所需的状态是否已更新或者需要变更。为了达到这个目的，我们需要使用集群的不同对象来构建模型，特别是（无特殊顺序）Ingresses，Services，Endpoints，Secrets，以及 Configmaps 来生成反映集群状态的时间点配置文件。
@@ -292,8 +259,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </div>
 </div>
 
-<div id="outline-container-org5c508d3" class="outline-2">
-<h2 id="org5c508d3"><span class="section-number-2">3</span> 构建 NGINX 模型</h2>
+<div id="outline-container-orgee229d5" class="outline-2">
+<h2 id="orgee229d5"><span class="section-number-2">3.</span> 构建 NGINX 模型</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 建立模型是一项成本比较高的操作，基于这个原因，使用同步循环是必须的。通过使用 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/internal/task/queue.go#L38">work queue</a>，可以不丢失变更并通过 <a href="https://golang.org/pkg/sync/#Mutex">sync.Mutex</a> 移除来强制执行一次同步循环，此外还可以在同步循环的开始和结束之间创建一个时间窗口，从而允许我们摒弃不必要的更新。重要的是要理解，集群中的任何变更都会生成事件，然后 informer 会发送给控制器，这也是使用 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/internal/task/queue.go#L38">work queue</a> 的原因之一。
@@ -317,8 +284,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </div>
 </div>
 
-<div id="outline-container-orgdc39bc8" class="outline-2">
-<h2 id="orgdc39bc8"><span class="section-number-2">4</span> 什么时候重新加载是必须的</h2>
+<div id="outline-container-org9792097" class="outline-2">
+<h2 id="org9792097"><span class="section-number-2">4.</span> 什么时候重新加载是必须的</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 接下来的场景描述什么时候需要重新加载：
@@ -336,16 +303,16 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </div>
 </div>
 
-<div id="outline-container-org451be0e" class="outline-2">
-<h2 id="org451be0e"><span class="section-number-2">5</span> 避免重新加载</h2>
+<div id="outline-container-org6640ed3" class="outline-2">
+<h2 id="org6640ed3"><span class="section-number-2">5.</span> 避免重新加载</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 在某些情况下，有可能避免重新加载，尤其是在 endpoints 发送变化的时候，如 pod 启动或者被替换时。完全移除重新加载这超过了 Ingress 控制器的范围。这将需要大量的工作，并且有时没有任何意义。仅当 NGINX 变更了读取新配置的方式时，这才可以变更，基本上，新的变更不会替代工作进程。
 </p>
 </div>
 
-<div id="outline-container-orgd7975e4" class="outline-3">
-<h3 id="orgd7975e4"><span class="section-number-3">5.1</span> 避免 Endpoints 变更时重新加载</h3>
+<div id="outline-container-orgae5cf77" class="outline-3">
+<h3 id="orgae5cf77"><span class="section-number-3">5.1.</span> 避免 Endpoints 变更时重新加载</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 在每个 endpoint 变更上，控制器从所有能看到的服务上获取 endpoints 并生成相应的后端对象。然后将这些对象发送给运行在 Nginx 内部的 Lua 处理程序。Lua 程序将这些后端存储在共享内存区域。然后对于在 <code>balancer_by_lua</code> 上下文运行的每个请求，Lua 代码检测 endpoints 选择对应 upstream 并应用已经配置的负载均衡算法。Nginx 负责其余的工作。这样，我们避免在 endpoint 变更时重新加载 Nginx。注意，这包括 annotation 的变更，不过也只是影响 Nginx <code>upstream</code> 的配置。
@@ -357,8 +324,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </div>
 </div>
 
-<div id="outline-container-orgc56beb7" class="outline-3">
-<h3 id="orgc56beb7"><span class="section-number-3">5.2</span> 避免因错误的配置而中断</h3>
+<div id="outline-container-org3896225" class="outline-3">
+<h3 id="org3896225"><span class="section-number-3">5.2.</span> 避免因错误的配置而中断</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 因为 ingress 控制器使用 <a href="https://coreos.com/kubernetes/docs/latest/replication-controller.html#the-reconciliation-loop-in-detail">synchronization loop pattern</a>，它对所有匹配到的对象应用配置。如果某些 ingress 对象配置损坏，如 <code>nginx.ingress.kubernetes.io/configuration-snippet</code> annotation 语法错误，生成的配置变得不可用，将不会重新加载并不再考虑其它入口。
@@ -374,7 +341,7 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2020-02-03 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="https://orgmode.org">Org</a> mode 9.1.13)</span>
+         class="date">2020-02-03 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

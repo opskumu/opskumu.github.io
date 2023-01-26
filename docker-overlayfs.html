@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker OverlayFS 驱动</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,96 +191,49 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Docker OverlayFS 驱动</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8500cd4">1. 先决条件</a></li>
-<li><a href="#org1405bd4">2. 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</a></li>
-<li><a href="#orgf01cd80">3. <code>overlay2</code> 驱动是如何工作的</a>
+<li><a href="#org1ed13a8">1. 先决条件</a></li>
+<li><a href="#org3f165fc">2. 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</a></li>
+<li><a href="#org8514b4d">3. <code>overlay2</code> 驱动是如何工作的</a>
 <ul>
-<li><a href="#org77759fd">3.1. 磁盘上的镜像和容器层</a></li>
+<li><a href="#orgf90e4b1">3.1. 磁盘上的镜像和容器层</a></li>
 </ul>
 </li>
-<li><a href="#orgfe63991">4. <code>overlay</code> 驱动是如何工作的</a>
+<li><a href="#org107b163">4. <code>overlay</code> 驱动是如何工作的</a>
 <ul>
-<li><a href="#org0c99933">4.1. 磁盘上的镜像和容器层</a>
+<li><a href="#org6f75999">4.1. 磁盘上的镜像和容器层</a>
 <ul>
-<li><a href="#org5422a7f">4.1.1. 镜像层</a></li>
-<li><a href="#org10fa145">4.1.2. 容器层</a></li>
+<li><a href="#orgfb5d1ca">4.1.1. 镜像层</a></li>
+<li><a href="#org979e393">4.1.2. 容器层</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org952f4aa">5. 容器是如何通过 <code>overlay</code> 或 <code>overlay2</code> 读写的</a>
+<li><a href="#orgcba838e">5. 容器是如何通过 <code>overlay</code> 或 <code>overlay2</code> 读写的</a>
 <ul>
-<li><a href="#orga1e8525">5.1. 读取文件</a></li>
-<li><a href="#org6da853a">5.2. 修改文件或目录</a></li>
+<li><a href="#org70243d8">5.1. 读取文件</a></li>
+<li><a href="#org4f3fe88">5.2. 修改文件或目录</a></li>
 </ul>
 </li>
-<li><a href="#orgb3e9c79">6. OverlayFS 和 Docker 性能</a>
+<li><a href="#org43d92b1">6. OverlayFS 和 Docker 性能</a>
 <ul>
-<li><a href="#org4c623a9">6.1. 性能最佳实践</a></li>
+<li><a href="#orgfe7bd10">6.1. 性能最佳实践</a></li>
 </ul>
 </li>
-<li><a href="#org5dc86a0">7. OverlayFS 兼容性限制</a></li>
+<li><a href="#orgc7dfceb">7. OverlayFS 兼容性限制</a></li>
 </ul>
 </div>
 </div>
@@ -286,8 +253,8 @@ Note：如果你使用 OverlayFS，使用 <code>overlay2</code> 而不是 <code>
 </p>
 </blockquote>
 
-<div id="outline-container-org8500cd4" class="outline-2">
-<h2 id="org8500cd4"><span class="section-number-2">1</span> 先决条件</h2>
+<div id="outline-container-org1ed13a8" class="outline-2">
+<h2 id="org1ed13a8"><span class="section-number-2">1.</span> 先决条件</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 除了上述的系统内核版本，使用 OverlayFS 还需要以下条件：
@@ -310,8 +277,8 @@ xfs_info /PATH/TO/DEVICE | grep ftype   # 验证是否已支持
 </div>
 </div>
 
-<div id="outline-container-org1405bd4" class="outline-2">
-<h2 id="org1405bd4"><span class="section-number-2">2</span> 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</h2>
+<div id="outline-container-org3f165fc" class="outline-2">
+<h2 id="org3f165fc"><span class="section-number-2">2.</span> 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 满足使用 OverlayFS 的条件后，通过 <code>/etc/docker/daemon.json</code> 加入 <code>overlay2</code> 存储配置项，重启 docker daemon 即可生效。
@@ -325,8 +292,8 @@ xfs_info /PATH/TO/DEVICE | grep ftype   # 验证是否已支持
 </div>
 </div>
 
-<div id="outline-container-orgf01cd80" class="outline-2">
-<h2 id="orgf01cd80"><span class="section-number-2">3</span> <code>overlay2</code> 驱动是如何工作的</h2>
+<div id="outline-container-org8514b4d" class="outline-2">
+<h2 id="org8514b4d"><span class="section-number-2">3.</span> <code>overlay2</code> 驱动是如何工作的</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且将它们呈现为单个目录。这些目录统称为层（layers），统一过程称为联合挂载（union mount）。OverlayFS 把下层目录称为 <code>lowerdir</code> ，上层目录称为 <code>upperdir</code> ，统一视图通过称为 <code>merged</code> 自身目录暴露。
@@ -337,8 +304,8 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 </div>
 
-<div id="outline-container-org77759fd" class="outline-3">
-<h3 id="org77759fd"><span class="section-number-3">3.1</span> 磁盘上的镜像和容器层</h3>
+<div id="outline-container-orgf90e4b1" class="outline-3">
+<h3 id="orgf90e4b1"><span class="section-number-3">3.1.</span> 磁盘上的镜像和容器层</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 当通过 <code>docker pull ubuntu</code> 下载一个五层镜像后，你可以在 <code>/var/lib/docker/overlay2</code> 目录下看到 6 个目录。
@@ -417,8 +384,8 @@ workdir=9186877cdf386d0a3b016149cf30c208f326dca307529e646afce5b3f83f5304/work)
 </div>
 </div>
 
-<div id="outline-container-orgfe63991" class="outline-2">
-<h2 id="orgfe63991"><span class="section-number-2">4</span> <code>overlay</code> 驱动是如何工作的</h2>
+<div id="outline-container-org107b163" class="outline-2">
+<h2 id="org107b163"><span class="section-number-2">4.</span> <code>overlay</code> 驱动是如何工作的</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且将它们呈现为单个目录。这些目录统称为层（layers），统一过程称为联合挂载（union mount）。OverlayFS 把下层目录称为 <code>lowerdir</code> ，上层目录称为 <code>upperdir</code> ，统一视图通过称为 <code>merged</code> 自身目录暴露。
@@ -429,7 +396,7 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 
 
-<div class="figure">
+<div id="orged8d94d" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/overlay_constructs.jpg" alt="overlay_constructs.jpg" />
 </p>
 </div>
@@ -447,8 +414,8 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 </div>
 
-<div id="outline-container-org0c99933" class="outline-3">
-<h3 id="org0c99933"><span class="section-number-3">4.1</span> 磁盘上的镜像和容器层</h3>
+<div id="outline-container-org6f75999" class="outline-3">
+<h3 id="org6f75999"><span class="section-number-3">4.1.</span> 磁盘上的镜像和容器层</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 <code>docker pull</code> 命令暂时了一个 Docker 主机下载一个包含五层的 Docker 镜像。
@@ -470,8 +437,8 @@ Status: Downloaded newer image for ubuntu:latest
 </pre>
 </div>
 
-<div id="outline-container-org5422a7f" class="outline-4">
-<h4 id="org5422a7f"><span class="section-number-4">4.1.1</span> 镜像层</h4>
+<div id="outline-container-orgfb5d1ca" class="outline-4">
+<h4 id="orgfb5d1ca"><span class="section-number-4">4.1.1.</span> 镜像层</h4>
 <div class="outline-text-4" id="text-4-1-1">
 <p>
 每个镜像层都在 <code>/var/lib/docker/overlay/</code> 目录下有自己的目录。
@@ -501,8 +468,8 @@ $ ls -i /var/lib/docker/overlay/55f1e14c361b90570df46371b20ce6d480c434981cbda5fd
 </div>
 </div>
 
-<div id="outline-container-org10fa145" class="outline-4">
-<h4 id="org10fa145"><span class="section-number-4">4.1.2</span> 容器层</h4>
+<div id="outline-container-org979e393" class="outline-4">
+<h4 id="org979e393"><span class="section-number-4">4.1.2.</span> 容器层</h4>
 <div class="outline-text-4" id="text-4-1-2">
 <p>
 容器层也是在 <code>/var/lib/docker/overlay/</code> 目录下。如果你使用 <code>ls -l</code> 命令列出运行容器的子目录，可以看到三个目录和一个文件存在： 
@@ -560,12 +527,12 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 </div>
 </div>
 
-<div id="outline-container-org952f4aa" class="outline-2">
-<h2 id="org952f4aa"><span class="section-number-2">5</span> 容器是如何通过 <code>overlay</code> 或 <code>overlay2</code> 读写的</h2>
+<div id="outline-container-orgcba838e" class="outline-2">
+<h2 id="orgcba838e"><span class="section-number-2">5.</span> 容器是如何通过 <code>overlay</code> 或 <code>overlay2</code> 读写的</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-orga1e8525" class="outline-3">
-<h3 id="orga1e8525"><span class="section-number-3">5.1</span> 读取文件</h3>
+<div id="outline-container-org70243d8" class="outline-3">
+<h3 id="org70243d8"><span class="section-number-3">5.1.</span> 读取文件</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 考虑三个容器通过 <code>overlay</code> 打开文件读取的场景。
@@ -579,8 +546,8 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 </div>
 </div>
 
-<div id="outline-container-org6da853a" class="outline-3">
-<h3 id="org6da853a"><span class="section-number-3">5.2</span> 修改文件或目录</h3>
+<div id="outline-container-org4f3fe88" class="outline-3">
+<h3 id="org4f3fe88"><span class="section-number-3">5.2.</span> 修改文件或目录</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 同样分三个场景来介绍修改。
@@ -600,8 +567,8 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 </div>
 </div>
 
-<div id="outline-container-orgb3e9c79" class="outline-2">
-<h2 id="orgb3e9c79"><span class="section-number-2">6</span> OverlayFS 和 Docker 性能</h2>
+<div id="outline-container-org43d92b1" class="outline-2">
+<h2 id="org43d92b1"><span class="section-number-2">6.</span> OverlayFS 和 Docker 性能</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 <code>overlay2</code> 和 <code>overlay</code> 驱动比 <code>aufs</code> 和 <code>devicemapper</code> 拥有更好的性能。在某些情况下， <code>overlay2</code> 的性能表现可能比 <code>btrfs</code> 还要好。不过要注意以下几点：
@@ -609,13 +576,13 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 
 <ul class="org-ul">
 <li><b>Page Caching</b> ： OverlayFS 支持页级别的缓存共享。多个容器访问同样的文件共享此文件的同一个页缓存。这个特性使得 <code>overlay</code> 和 <code>overlay2</code> 驱动高效利用内存以及高密度使用案例的优先选择如 PaaS。</li>
-<li><b>copy<sub>up</sub></b> ： 同 AUFS 一样，容器第一次写入文件时，OverlayFS 会有一个 copy-up 的操作。这会增加写入操作的延迟，特别是大文件操作。不过，一旦文件已经被复制，后续文件的写操作都是发生在上层的，不再会有 copy-up 的操作。OverlayFS 的 <code>copy_up</code> 比 AUFS 同样的操作要更快，因为 AUFS 比 OverlayFS 拥有更多的层级，如果在多个 AUFS 层级搜索可能会造成大的延迟。 <code>overlay2</code> 也支持多层，但通过缓存减轻了性能损失。</li>
+<li><b>copy_up</b> ： 同 AUFS 一样，容器第一次写入文件时，OverlayFS 会有一个 copy-up 的操作。这会增加写入操作的延迟，特别是大文件操作。不过，一旦文件已经被复制，后续文件的写操作都是发生在上层的，不再会有 copy-up 的操作。OverlayFS 的 <code>copy_up</code> 比 AUFS 同样的操作要更快，因为 AUFS 比 OverlayFS 拥有更多的层级，如果在多个 AUFS 层级搜索可能会造成大的延迟。 <code>overlay2</code> 也支持多层，但通过缓存减轻了性能损失。</li>
 <li><b>Inode limits</b> ：使用 <code>overlay</code> 存储驱动会导致过多的 inode 损耗。特别是 Docker 主机上存在大量的镜像和容器时尤为明显。格式化文件系统增加可用的 inode 数量是唯一的解决方式。为了避免这个问题，因此建议尽可能的使用 <code>overlay2</code> 。</li>
 </ul>
 </div>
 
-<div id="outline-container-org4c623a9" class="outline-3">
-<h3 id="org4c623a9"><span class="section-number-3">6.1</span> 性能最佳实践</h3>
+<div id="outline-container-orgfe7bd10" class="outline-3">
+<h3 id="orgfe7bd10"><span class="section-number-3">6.1.</span> 性能最佳实践</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 以下通用性能最佳实践也适用于 OverlayFS。
@@ -629,8 +596,8 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 </div>
 </div>
 
-<div id="outline-container-org5dc86a0" class="outline-2">
-<h2 id="org5dc86a0"><span class="section-number-2">7</span> OverlayFS 兼容性限制</h2>
+<div id="outline-container-orgc7dfceb" class="outline-2">
+<h2 id="orgc7dfceb"><span class="section-number-2">7.</span> OverlayFS 兼容性限制</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li><b>open(2)</b> ：OverlayFS 只实现了 POSIX 标准的子集。这可能导致某些 OverlayFS 操作破坏了 POSIX 标准。其中一个操作就是 copy-up 操作。假设你的应用调用 <code>fd1=open("foo", O_RDONLY)</code> 和 <code>fd2=open("foo", O_RDWR)</code> 。在这个案例中，你的应用期望 <code>fd1</code> 和 <code>fd2</code> 引用同一个文件。但是，因为发生了 copy-up 操作导致第二次调用 <code>open(2)</code> ，文件描述符指向的是不同的文件。 <code>fd1</code> 继续引用镜像层（ <code>lowerdir</code> ）而 <code>fd2</code> 引用的文件在容器层（ <code>upperdir</code> ）。解决方式是 <code>touch</code> 这些文件，引发 copy-up 操作发生。所有的后续 <code>open(2)</code> 操作无论是读写访问模式都引用容器层( <code>upperdir</code> )的文件。
@@ -645,7 +612,7 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2018-09-05 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2018-09-05 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>2014，小结</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,78 +191,31 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">2014，小结</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0a70fb4">1. 写在前面</a></li>
-<li><a href="#org78c0272">2. 读书不多，想得太多</a></li>
-<li><a href="#orgf4743cf">3. 夯实基础，步步为营</a></li>
-<li><a href="#orgebf3732">4. 无规矩，不成方圆</a></li>
-<li><a href="#org8c7d416">5. 无关公司，关乎个人</a></li>
+<li><a href="#org530fcdb">1. 写在前面</a></li>
+<li><a href="#org03a7b66">2. 读书不多，想得太多</a></li>
+<li><a href="#org2961966">3. 夯实基础，步步为营</a></li>
+<li><a href="#org400e839">4. 无规矩，不成方圆</a></li>
+<li><a href="#org0c8161f">5. 无关公司，关乎个人</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org0a70fb4" class="outline-2">
-<h2 id="org0a70fb4"><span class="section-number-2">1</span> 写在前面</h2>
+<div id="outline-container-org530fcdb" class="outline-2">
+<h2 id="org530fcdb"><span class="section-number-2">1.</span> 写在前面</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 2015 年的 1 月份还有几天就过去了，想想还是有必要对这一年有个小小的展望。这个博客自从使用以来基本上就用作技术的一个记录（甚至技术 Blog 也停滞过一段很长的时间），自己也很久没有记录对生活工作的一些看法（之前记录也只是写在更为私人的地方，现在基本也不再写了）。对于技术人来说，技术固然重要，但是真正推动自己去成长的还是不断改变完善的想法和对事的固有执念，所以记录下每个时刻的想法还是异常不错的，因为每一次的记录都相当于是对自己的一次洗礼。
@@ -256,8 +223,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org78c0272" class="outline-2">
-<h2 id="org78c0272"><span class="section-number-2">2</span> 读书不多，想得太多</h2>
+<div id="outline-container-org03a7b66" class="outline-2">
+<h2 id="org03a7b66"><span class="section-number-2">2.</span> 读书不多，想得太多</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <b>"你的问题主要是读书不多而想得太多"</b> 前几天在微博看到这样一句话，突然发现这句话套在自己身上再合适不过了。细想我每天花费大量的时间瞎想，想着不切实际的东西，然后自我懊恼，如此恶性循环。与其浪费大量的时间去对着天花板或者电脑屏幕发呆，倒不如坚持去多读点书，人丑就要多读书，人蠢就要多读书，说明读书还是有所是处的。所以 2015 年，一定要给自己制定一个阅读清单（可以借鉴豆瓣上评分较高或者亚马逊比较畅销的书，以及知乎上推荐的一些书，这样所阅读的清单会相对靠谱一点）。
@@ -265,8 +232,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf4743cf" class="outline-2">
-<h2 id="orgf4743cf"><span class="section-number-2">3</span> 夯实基础，步步为营</h2>
+<div id="outline-container-org2961966" class="outline-2">
+<h2 id="org2961966"><span class="section-number-2">3.</span> 夯实基础，步步为营</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 <b>"步子迈得大了，容易扯着蛋"</b> 技术的东西，接触的面越广，就越觉得基础的重要性。以前学的东西太零散了，今年主要的一个任务就是整合知识，把不明白的基础点弄清楚，完善不擅长的地方，查漏补缺，然后再把以前自己想做的东西，用代码去实现。另外还有一个重要的点，对于一个技术来说，也许能在很短的时间了解并应用去解决问题，但是如果要完全去弄明白它，那么可能需要常年累月的去坚持学习和实践，对于你认为值得的技术来说坚持尤为重要（如果以后基本不可能会用的技术，只是临时用来解决问题，当然大可不必花过多的时间去弄明白）。
@@ -278,8 +245,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgebf3732" class="outline-2">
-<h2 id="orgebf3732"><span class="section-number-2">4</span> 无规矩，不成方圆</h2>
+<div id="outline-container-org400e839" class="outline-2">
+<h2 id="org400e839"><span class="section-number-2">4.</span> 无规矩，不成方圆</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 <b>"无规矩，不成方圆"</b> 在技术上来说，规矩应该说是规范，技术的基础是重要的，而规范的重要性并不亚于基础。对于规范，包括文档的规范性，代码的规范性，处理问题的规范性，同事之间跨部门沟通的规范性，这些都属于规范的范围。只有规范化做好了，流程化才能顺理成章的铺开。规范化做好之后才不至于走太多的弯路，之前对这块关注的太少，2015 年规范是我一个很重要的工作点，制定合理的规范化文档并不断完善。
@@ -287,8 +254,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org8c7d416" class="outline-2">
-<h2 id="org8c7d416"><span class="section-number-2">5</span> 无关公司，关乎个人</h2>
+<div id="outline-container-org0c8161f" class="outline-2">
+<h2 id="org0c8161f"><span class="section-number-2">5.</span> 无关公司，关乎个人</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 <b>"关于公司，事实是无关公司，只关乎你个人"</b> 其实每家公司都有或大或小的问题，关键在于你个人怎么去看待这些问题，个人认为频繁换工作是不利于发展的，也许能收获一些短期的利益，但是这或许并不是长久之计。如果在一家公司你把自己所做的事情都做到极致，而这家公司从各个方面已经不能满足你了，另外去的那家公司你也考察很久并满足自己的期许，那么此时就可以坦然的选择离开。但是，如果你连现在所做的事情都不能做到很好，只是因为另外一家公司某个方面满足你的需求就选择离开，自己不但可能一无所获，反而会浪费大量的时间和精力。每一个选择，都要好好的静下心去思量权衡，静下来做事，静下心来选择。
@@ -299,7 +266,7 @@ for the JavaScript code in this tag.
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2015-01-26 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2015-01-26 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

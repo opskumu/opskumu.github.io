@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 使用 Ceph RBD Volume</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,78 +191,31 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Docker 使用 Ceph RBD Volume</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3c74400">1. 环境说明</a></li>
-<li><a href="#org1214595">2. 环境构建</a></li>
-<li><a href="#orgd4dc10c">3. 运行 rbd docker plugin</a></li>
-<li><a href="#org3939055">4. docker 挂载 rbd volume 测试</a></li>
-<li><a href="#orgc11bb7b">5. 参考文档</a></li>
+<li><a href="#org825d25d">1. 环境说明</a></li>
+<li><a href="#orgbefbcf5">2. 环境构建</a></li>
+<li><a href="#org973ef76">3. 运行 rbd docker plugin</a></li>
+<li><a href="#org37966df">4. docker 挂载 rbd volume 测试</a></li>
+<li><a href="#org7a30bc7">5. 参考文档</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3c74400" class="outline-2">
-<h2 id="org3c74400"><span class="section-number-2">1</span> 环境说明</h2>
+<div id="outline-container-org825d25d" class="outline-2">
+<h2 id="org825d25d"><span class="section-number-2">1.</span> 环境说明</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>OS: CentOS 7.1
@@ -268,8 +235,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org1214595" class="outline-2">
-<h2 id="org1214595"><span class="section-number-2">2</span> 环境构建</h2>
+<div id="outline-container-orgbefbcf5" class="outline-2">
+<h2 id="orgbefbcf5"><span class="section-number-2">2.</span> 环境构建</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说明。
@@ -307,8 +274,8 @@ docker run -d --net=host -e MON_IP=当前主机IP -e CEPH_NETWORK=当前主机�
 </div>
 </div>
 
-<div id="outline-container-orgd4dc10c" class="outline-2">
-<h2 id="orgd4dc10c"><span class="section-number-2">3</span> 运行 rbd docker plugin</h2>
+<div id="outline-container-org973ef76" class="outline-2">
+<h2 id="org973ef76"><span class="section-number-2">3.</span> 运行 rbd docker plugin</h2>
 <div class="outline-text-2" id="text-3">
 <pre class="example">
 # ceph osd pool create docker 128
@@ -335,8 +302,8 @@ rbd-volume-plugin: 2016/02/17 10:58:00 main.go:86: INFO: Opening Socket for Dock
 </div>
 </div>
 
-<div id="outline-container-org3939055" class="outline-2">
-<h2 id="org3939055"><span class="section-number-2">4</span> docker 挂载 rbd volume 测试</h2>
+<div id="outline-container-org37966df" class="outline-2">
+<h2 id="org37966df"><span class="section-number-2">4.</span> docker 挂载 rbd volume 测试</h2>
 <div class="outline-text-2" id="text-4">
 <pre class="example">
 # docker run --volume-driver=rbd --volume foo:/mnt/foo -it busybox sh
@@ -366,8 +333,8 @@ rbd docker plugin driver 会做如下操作（前提是当前镜像不存在）�
 </div>
 </div>
 
-<div id="outline-container-orgc11bb7b" class="outline-2">
-<h2 id="orgc11bb7b"><span class="section-number-2">5</span> 参考文档</h2>
+<div id="outline-container-org7a30bc7" class="outline-2">
+<h2 id="org7a30bc7"><span class="section-number-2">5.</span> 参考文档</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><a href="http://www.sebastien-han.fr/blog/2015/08/17/getting-started-with-the-docker-rbd-volume-plugin/">Getting Started With the Docker RBD Volume Plugin</a></li>
@@ -379,7 +346,7 @@ rbd docker plugin driver 会做如下操作（前提是当前镜像不存在）�
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2016-02-17 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2016-02-17 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

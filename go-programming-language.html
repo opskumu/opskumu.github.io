@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>The Go Programming Language 摘要</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,99 +191,52 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">The Go Programming Language 摘要</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc5e0c8c">1. 程序结构</a>
+<li><a href="#org84d7625">1. 程序结构</a>
 <ul>
-<li><a href="#org9f1fa2f">1.1. 命名</a></li>
-<li><a href="#org46afad6">1.2. 声明</a></li>
+<li><a href="#org7666d22">1.1. 命名</a></li>
+<li><a href="#org9bcae8b">1.2. 声明</a></li>
 </ul>
 </li>
-<li><a href="#orgf6a2e45">2. 基础数据类型</a>
+<li><a href="#orgb44893e">2. 基础数据类型</a>
 <ul>
-<li><a href="#orgcb3d537">2.1. 字符串</a></li>
+<li><a href="#org2633d19">2.1. 字符串</a></li>
 </ul>
 </li>
-<li><a href="#org6c57a1b">3. 复合数据类型</a>
+<li><a href="#org2820d20">3. 复合数据类型</a>
 <ul>
-<li><a href="#orga00c957">3.1. 数组</a></li>
-<li><a href="#org82b4fac">3.2. 切片</a></li>
-<li><a href="#orga3c6997">3.3. Map</a></li>
-<li><a href="#org5fd20c8">3.4. 结构体</a></li>
+<li><a href="#orgb743875">3.1. 数组</a></li>
+<li><a href="#org025e826">3.2. 切片</a></li>
+<li><a href="#orgdbc7c92">3.3. Map</a></li>
+<li><a href="#org6e8f0ca">3.4. 结构体</a></li>
 </ul>
 </li>
-<li><a href="#orgc335a89">4. 函数</a>
+<li><a href="#org8bd2394">4. 函数</a>
 <ul>
-<li><a href="#orgfb50e00">4.1. 可变函数</a></li>
+<li><a href="#org7e27e07">4.1. 可变函数</a></li>
 </ul>
 </li>
-<li><a href="#orgf5612ee">5. 方法</a>
+<li><a href="#orgfef2b26">5. 方法</a>
 <ul>
-<li><a href="#orgfb4db91">5.1. 封装</a></li>
+<li><a href="#org5418f28">5.1. 封装</a></li>
 </ul>
 </li>
-<li><a href="#orgf4de2e7">6. 接口</a></li>
-<li><a href="#org8e295bc">7. Goroutines 和 Channel</a></li>
-<li><a href="#orgc564470">8. 包和工具</a></li>
+<li><a href="#orgefa84bb">6. 接口</a></li>
+<li><a href="#org6a196bd">7. Goroutines 和 Channel</a></li>
+<li><a href="#orgf88f07d">8. 包和工具</a></li>
 </ul>
 </div>
 </div>
@@ -277,12 +244,12 @@ for the JavaScript code in this tag.
 本文为阅读 <a href="https://book.douban.com/subject/26337545/">The Go Programming Language</a> 一书的笔记摘要。
 </p>
 
-<div id="outline-container-orgc5e0c8c" class="outline-2">
-<h2 id="orgc5e0c8c"><span class="section-number-2">1</span> 程序结构</h2>
+<div id="outline-container-org84d7625" class="outline-2">
+<h2 id="org84d7625"><span class="section-number-2">1.</span> 程序结构</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org9f1fa2f" class="outline-3">
-<h3 id="org9f1fa2f"><span class="section-number-3">1.1</span> 命名</h3>
+<div id="outline-container-org7666d22" class="outline-3">
+<h3 id="org7666d22"><span class="section-number-3">1.1.</span> 命名</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>包名 <code>小写</code></li>
@@ -295,8 +262,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org46afad6" class="outline-3">
-<h3 id="org46afad6"><span class="section-number-3">1.2</span> 声明</h3>
+<div id="outline-container-org9bcae8b" class="outline-3">
+<h3 id="org9bcae8b"><span class="section-number-3">1.2.</span> 声明</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Go 语言主要有四种类型的声明语句： <code>var</code> 、 <code>const</code> 、 <code>type</code> 、 <code>func</code></li>
@@ -306,16 +273,16 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf6a2e45" class="outline-2">
-<h2 id="orgf6a2e45"><span class="section-number-2">2</span> 基础数据类型</h2>
+<div id="outline-container-orgb44893e" class="outline-2">
+<h2 id="orgb44893e"><span class="section-number-2">2.</span> 基础数据类型</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Go 语言将数据类型分为四类： <code>基础类型</code> 、 <code>复合类型</code> 、 <code>引用类型</code> 和 <code>接口类型</code></li>
 </ul>
 </div>
 
-<div id="outline-container-orgcb3d537" class="outline-3">
-<h3 id="orgcb3d537"><span class="section-number-3">2.1</span> <a href="https://blog.golang.org/strings">字符串</a></h3>
+<div id="outline-container-org2633d19" class="outline-3">
+<h3 id="org2633d19"><span class="section-number-3">2.1.</span> <a href="https://blog.golang.org/strings">字符串</a></h3>
 <div class="outline-text-3" id="text-2-1">
 <blockquote>
 <p>
@@ -324,16 +291,16 @@ In Go, a string is in effect a read-only slice of bytes.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-keyword">const</span> <span class="org-constant">s</span> = <span class="org-string">"&#19990;&#30028;"</span>
-fmt.<span class="org-function-name">Println</span>(<span class="org-builtin">len</span>(s))            <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#32467;&#26524;&#20026; 6 &#34920;&#31034;&#23383;&#31526;&#20018; s &#21344;&#29992; 6 &#20010;&#23383;&#33410;&#65292;&#19968;&#20010;&#20013;&#25991;&#21344;&#29992; 3 &#20010;&#23383;&#33410;</span>
-fmt.<span class="org-function-name">Println</span>(<span class="org-builtin">len</span>([]<span class="org-function-name">rune</span>(s)))    <span class="org-comment-delimiter">// </span><span class="org-comment">&#36755;&#20986;&#32467;&#26524;&#20026; 2 &#34920;&#31034;&#23383;&#31526;&#20018; s &#36716;&#25442;&#25104; rune &#20043;&#21518;&#21344;&#29992; 2 &#20010; rune &#23383;&#31526;&#30721;</span>
+<pre class="src src-go">const s = "世界"
+fmt.Println(len(s))            // 输出结果为 6 表示字符串 s 占用 6 个字节，一个中文占用 3 个字节
+fmt.Println(len([]rune(s)))    // 输出结果为 2 表示字符串 s 转换成 rune 之后占用 2 个 rune 字符码
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-keyword">const</span> <span class="org-constant">s</span> = <span class="org-string">"&#19990;&#30028;"</span>
-<span class="org-keyword">for</span> <span class="org-variable-name">i</span>, <span class="org-variable-name">v</span> := <span class="org-keyword">range</span> s {
-    fmt.<span class="org-function-name">Printf</span>(<span class="org-string">"%#U starts at byte position %d\n"</span>, v, i)
+<pre class="src src-go">const s = "世界"
+for i, v := range s {
+    fmt.Printf("%#U starts at byte position %d\n", v, i)
 }
 </pre>
 </div>
@@ -349,8 +316,8 @@ fmt.<span class="org-function-name">Println</span>(<span class="org-builtin">len
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">U+4E16 <span class="org-string">'&#19990;'</span> starts <span class="org-type">at</span> byte <span class="org-type">position</span> 0
-U+754C <span class="org-string">'&#30028;'</span> starts <span class="org-type">at</span> byte <span class="org-type">position</span> 3
+<pre class="src src-go">U+4E16 '世' starts at byte position 0
+U+754C '界' starts at byte position 3
 </pre>
 </div>
 
@@ -369,12 +336,12 @@ U+754C <span class="org-string">'&#30028;'</span> starts <span class="org-type">
 </div>
 </div>
 
-<div id="outline-container-org6c57a1b" class="outline-2">
-<h2 id="org6c57a1b"><span class="section-number-2">3</span> 复合数据类型</h2>
+<div id="outline-container-org2820d20" class="outline-2">
+<h2 id="org2820d20"><span class="section-number-2">3.</span> 复合数据类型</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orga00c957" class="outline-3">
-<h3 id="orga00c957"><span class="section-number-3">3.1</span> 数组</h3>
+<div id="outline-container-orgb743875" class="outline-3">
+<h3 id="orgb743875"><span class="section-number-3">3.1.</span> 数组</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>因为数组的长度是固定的，因此在 Go 中很少直接使用数组</li>
@@ -382,7 +349,7 @@ U+754C <span class="org-string">'&#30028;'</span> starts <span class="org-type">
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-variable-name">q</span> := [...]<span class="org-type">int</span>{1, 2, 3}
+<pre class="src src-go">q := [...]int{1, 2, 3}
 </pre>
 </div>
 
@@ -391,14 +358,14 @@ U+754C <span class="org-string">'&#30028;'</span> starts <span class="org-type">
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-variable-name">symbol</span> := [...]<span class="org-type">string</span>{0: <span class="org-string">"$"</span>, 3: <span class="org-string">"&#165;"</span>}    <span class="org-comment-delimiter">// </span><span class="org-comment">&#25968;&#32452;&#20013;&#25351;&#23450;&#20102;&#31532;&#19968;&#20010;&#21644;&#31532;&#22235;&#20010;&#32034;&#24341;&#20540;&#65292;&#26410;&#25351;&#23450;&#30340;&#33258;&#21160;&#21462;&#31354;&#23383;&#31526;&#20018;</span>
+<pre class="src src-go">symbol := [...]string{0: "$", 3: "¥"}    // 数组中指定了第一个和第四个索引值，未指定的自动取空字符串
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org82b4fac" class="outline-3">
-<h3 id="org82b4fac"><span class="section-number-3">3.2</span> 切片</h3>
+<div id="outline-container-org025e826" class="outline-3">
+<h3 id="org025e826"><span class="section-number-3">3.2.</span> 切片</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li>一个 slice 由三个 部分构成:=指针= 、 <code>长度</code> 和 <code>容量</code> 。指针指向第一个 slice 元素对应的底层数组元素的地址，要注意的是 slice 的第一个元素并不一定就是数组的第一个元素。长度对应 slice 中元素的数目; 长度不能超过容量，容量一般是从 slice 的开始位置到底层数据的结尾位置。内置的 <code>len</code> 和 <code>cap</code> 函数分别返回 slice 的长度和容量</li>
@@ -406,28 +373,28 @@ U+754C <span class="org-string">'&#30028;'</span> starts <span class="org-type">
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-keyword">package</span> main
+<pre class="src src-go">package main
 
-<span class="org-keyword">import</span> <span class="org-string">"fmt"</span>
+import "fmt"
 
-<span class="org-keyword">func</span> <span class="org-function-name">array</span>(<span class="org-variable-name">a</span> [4]<span class="org-type">string</span>) [4]<span class="org-type">string</span> {
-    a[0] = <span class="org-string">"That"</span>
-    <span class="org-keyword">return</span> a
+func array(a [4]string) [4]string {
+    a[0] = "That"
+    return a
 }
 
-<span class="org-keyword">func</span> <span class="org-function-name">slice</span>(<span class="org-variable-name">s</span> []<span class="org-type">string</span>) []<span class="org-type">string</span> {
-    s[0] = <span class="org-string">"That"</span>
-    <span class="org-keyword">return</span> s
+func slice(s []string) []string {
+    s[0] = "That"
+    return s
 }
 
-<span class="org-keyword">func</span> <span class="org-function-name">main</span>() {
-    <span class="org-variable-name">a</span> := [4]<span class="org-type">string</span>{<span class="org-string">"This"</span>, <span class="org-string">"is"</span>, <span class="org-string">"a"</span>, <span class="org-string">"test"</span>}
-    <span class="org-variable-name">s</span> := []<span class="org-type">string</span>{<span class="org-string">"This"</span>, <span class="org-string">"is"</span>, <span class="org-string">"a"</span>, <span class="org-string">"test"</span>}
+func main() {
+    a := [4]string{"This", "is", "a", "test"}
+    s := []string{"This", "is", "a", "test"}
 
-    <span class="org-function-name">array</span>(a)
-    <span class="org-function-name">slice</span>(s)
-    fmt.<span class="org-function-name">Println</span>(a) <span class="org-comment-delimiter">// </span><span class="org-comment">&#20316;&#29992;&#22495;&#38382;&#39064;&#65292;&#27492;&#22788;&#25968;&#32452;&#19981;&#20250;&#25913;&#21464;</span>
-    fmt.<span class="org-function-name">Println</span>(s) <span class="org-comment-delimiter">// </span><span class="org-comment">&#22240;&#20026; slice &#20013;&#20803;&#32032;&#26412;&#36523;&#26159;&#25351;&#38024;&#65292;&#25152;&#20197;&#27492;&#22788; "This" &#20250;&#34987;&#26367;&#25442;&#25104; "That"</span>
+    array(a)
+    slice(s)
+    fmt.Println(a) // 作用域问题，此处数组不会改变
+    fmt.Println(s) // 因为 slice 中元素本身是指针，所以此处 "This" 会被替换成 "That"
 }
 </pre>
 </div>
@@ -443,8 +410,8 @@ U+754C <span class="org-string">'&#30028;'</span> starts <span class="org-type">
 </div>
 </div>
 
-<div id="outline-container-orga3c6997" class="outline-3">
-<h3 id="orga3c6997"><span class="section-number-3">3.3</span> Map</h3>
+<div id="outline-container-orgdbc7c92" class="outline-3">
+<h3 id="orgdbc7c92"><span class="section-number-3">3.3.</span> Map</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
 <li>哈希表是一种巧妙并且实用的数据结构，它是一个 <code>无序</code> 的 <code>key/value</code> 对的集合，在 Go 中，一个 map 就是一个哈希表的引用</li>
@@ -454,22 +421,22 @@ U+754C <span class="org-string">'&#30028;'</span> starts <span class="org-type">
 </div>
 </div>
 
-<div id="outline-container-org5fd20c8" class="outline-3">
-<h3 id="org5fd20c8"><span class="section-number-3">3.4</span> 结构体</h3>
+<div id="outline-container-org6e8f0ca" class="outline-3">
+<h3 id="org6e8f0ca"><span class="section-number-3">3.4.</span> 结构体</h3>
 <div class="outline-text-3" id="text-3-4">
 <ul class="org-ul">
 <li>Go 语言有一个特性让我们只声明一个成员对应的数据类型而不指名成员的名字;这类成员就叫匿名成员。匿名成员的数据类型必须是命名的类型或指向一个命名的类型的指针。</li>
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-keyword">type</span> <span class="org-type">Circle</span> <span class="org-keyword">struct</span> {
+<pre class="src src-go">type Circle struct {
     Point
-    Radius <span class="org-type">int</span>
+    Radius int
 }
 
-<span class="org-keyword">type</span> <span class="org-type">Wheel</span> <span class="org-keyword">struct</span> {
+type Wheel struct {
     Circle
-    Spokes <span class="org-type">int</span>
+    Spokes int
 }
 </pre>
 </div>
@@ -491,29 +458,29 @@ w.Y = 8 w.Radius = 5 w.Spokes = 20
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go">w = <span class="org-type">Wheel</span>{<span class="org-type">Circle</span>{<span class="org-type">Point</span>{8, 8}, 5}, 20}
+<pre class="src src-go">w = Wheel{Circle{Point{8, 8}, 5}, 20}
 
-w = <span class="org-type">Wheel</span>{
-    <span class="org-constant">Circle</span>: <span class="org-type">Circle</span>{
-        <span class="org-constant">Point</span>:  <span class="org-type">Point</span>{X: 8, Y: 8},
-        <span class="org-constant">Radius</span>: 5,
+w = Wheel{
+    Circle: Circle{
+        Point:  Point{X: 8, Y: 8},
+        Radius: 5,
     },
-    <span class="org-constant">Spokes</span>: 20, <span class="org-comment-delimiter">// </span><span class="org-comment">NOTE: trailing comma necessary here (and at Radius) }</span>
-fmt.<span class="org-function-name">Printf</span>(<span class="org-string">"%#v\n"</span>, w)
-<span class="org-comment-delimiter">// </span><span class="org-comment">Output:</span>
-<span class="org-comment-delimiter">// </span><span class="org-comment">Wheel{Circle:Circle{Point:Point{X:8, Y:8}, Radius:5}, Spokes:20}</span>
+    Spokes: 20, // NOTE: trailing comma necessary here (and at Radius) }
+fmt.Printf("%#v\n", w)
+// Output:
+// Wheel{Circle:Circle{Point:Point{X:8, Y:8}, Radius:5}, Spokes:20}
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgc335a89" class="outline-2">
-<h2 id="orgc335a89"><span class="section-number-2">4</span> 函数</h2>
+<div id="outline-container-org8bd2394" class="outline-2">
+<h2 id="org8bd2394"><span class="section-number-2">4.</span> 函数</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgfb50e00" class="outline-3">
-<h3 id="orgfb50e00"><span class="section-number-3">4.1</span> 可变函数</h3>
+<div id="outline-container-org7e27e07" class="outline-3">
+<h3 id="org7e27e07"><span class="section-number-3">4.1.</span> 可变函数</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>参数数量可变的函数称为为可变参数函数</li>
@@ -534,8 +501,8 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </div>
 </div>
 
-<div id="outline-container-orgf5612ee" class="outline-2">
-<h2 id="orgf5612ee"><span class="section-number-2">5</span> 方法</h2>
+<div id="outline-container-orgfef2b26" class="outline-2">
+<h2 id="orgfef2b26"><span class="section-number-2">5.</span> 方法</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>在函数声明时，在其名字之前放上一个变量，即是一个方法。这个附加的参数会将该函数附加到这种类型上，即相当于为这种类型定义了一个独占的方法</li>
@@ -543,8 +510,8 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </ul>
 </div>
 
-<div id="outline-container-orgfb4db91" class="outline-3">
-<h3 id="orgfb4db91"><span class="section-number-3">5.1</span> 封装</h3>
+<div id="outline-container-org5418f28" class="outline-3">
+<h3 id="org5418f28"><span class="section-number-3">5.1.</span> 封装</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>一个对象的变量或者方法如果对调用方是不可见的话，一般就被称为封装。封装有时候也被叫做信息隐藏，同时也是面向对象编程中很关键的一个方面</li>
@@ -554,8 +521,8 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </div>
 </div>
 
-<div id="outline-container-orgf4de2e7" class="outline-2">
-<h2 id="orgf4de2e7"><span class="section-number-2">6</span> 接口</h2>
+<div id="outline-container-orgefa84bb" class="outline-2">
+<h2 id="orgefa84bb"><span class="section-number-2">6.</span> 接口</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>一个类型如果拥有一个接口需要的所有方法，那么这个类型就实现了这个接口</li>
@@ -564,8 +531,8 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </div>
 </div>
 
-<div id="outline-container-org8e295bc" class="outline-2">
-<h2 id="org8e295bc"><span class="section-number-2">7</span> Goroutines 和 Channel</h2>
+<div id="outline-container-org6a196bd" class="outline-2">
+<h2 id="org6a196bd"><span class="section-number-2">7.</span> Goroutines 和 Channel</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>如果说 goroutine 是 Go 语言程序的并发体的话，那么 channel 则是它们之间的通信机制。一个 channel 是一个通信机制，它可以让一个 goroutine 通过它给另一个 goroutine 发送值信息</li>
@@ -576,7 +543,7 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-variable-name">ch</span> := <span class="org-builtin">make</span>(<span class="org-keyword">chan</span> <span class="org-type">int</span>) <span class="org-comment-delimiter">// </span><span class="org-comment">ch has type 'chan int'</span>
+<pre class="src src-go">ch := make(chan int) // ch has type 'chan int'
 </pre>
 </div>
 
@@ -589,15 +556,15 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </div>
 </div>
 
-<div id="outline-container-orgc564470" class="outline-2">
-<h2 id="orgc564470"><span class="section-number-2">8</span> 包和工具</h2>
+<div id="outline-container-orgf88f07d" class="outline-2">
+<h2 id="orgf88f07d"><span class="section-number-2">8.</span> 包和工具</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>如果只是导入一个包而并不使用导入的包将会导致一个编译错误。但是有时候我们只是想利 用导入包而产生的副作用:它会计算包级变量的初始化表达式和执行导入包的 init 初始化函数。这时候我们需要抑制 "unused import" 编译错误，我们可以用下划线 <code>_</code> 来重命名导入的包。像往常一样，下划线 <code>_</code> 为空白标识符，并不能被访问</li>
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go"><span class="org-keyword">import</span> _ <span class="org-string">"image/png"</span> <span class="org-comment-delimiter">// </span><span class="org-comment">register PNG decoder</span>
+<pre class="src src-go">import _ "image/png" // register PNG decoder
 </pre>
 </div>
 </div>
@@ -606,7 +573,7 @@ fmt.Printf("%T\n", g) // "func([]int)"
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2018-07-26 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2018-07-26 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>

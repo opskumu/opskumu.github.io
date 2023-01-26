@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-27 Fri 12:11 -->
+<!-- 2023-01-27 Fri 00:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>cAdvisor 容器数据采集</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Kumu" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -40,22 +41,22 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
-    padding-top: 1.2em;
+    overflow: auto;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -161,6 +162,19 @@
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
   .inlinetask {
     padding: 10px;
     border: 2px solid gray;
@@ -177,88 +191,41 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-  /*]]>*/-->
+  .org-svg { }
 </style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
-<script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
-<!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">cAdvisor 容器数据采集</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd2b1bf8">1. 入口</a></li>
-<li><a href="#orge51a8b2">2. machine info</a></li>
-<li><a href="#org754079e">3. docker info</a>
+<li><a href="#org9712166">1. 入口</a></li>
+<li><a href="#org9fd6e2a">2. machine info</a></li>
+<li><a href="#orga7dfdde">3. docker info</a>
 <ul>
-<li><a href="#org32e3dc3">3.1. Getprocesslist</a></li>
-<li><a href="#orgb38a1f6">3.2. ContainerInfo</a></li>
+<li><a href="#org8e115b7">3.1. Getprocesslist</a></li>
+<li><a href="#orgc821019">3.2. ContainerInfo</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div class="figure">
+<div id="org5c101ba" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cAdvisor.png" alt="cAdvisor.png" />
 </p>
 </div>
 
 <hr />
 
-<div id="outline-container-orgd2b1bf8" class="outline-2">
-<h2 id="orgd2b1bf8"><span class="section-number-2">1</span> 入口</h2>
+<div id="outline-container-org9712166" class="outline-2">
+<h2 id="org9712166"><span class="section-number-2">1.</span> 入口</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <a href="https://github.com/google/cadvisor">cAdvisor 代码托管地址</a>
@@ -322,8 +289,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge51a8b2" class="outline-2">
-<h2 id="orge51a8b2"><span class="section-number-2">2</span> machine info</h2>
+<div id="outline-container-org9fd6e2a" class="outline-2">
+<h2 id="org9fd6e2a"><span class="section-number-2">2.</span> machine info</h2>
 <div class="outline-text-2" id="text-2">
 <pre class="example">
 # github.com/google/cadvisor/manager/manager.go
@@ -419,8 +386,8 @@ MachineInfo 数据结构：
 </pre>
 
 <ul class="org-ul">
-<li>machine<sub>id</sub> <code>/var/lib/dbus/machine-id</code></li>
-<li>boot<sub>id</sub> <code>/proc/sys/kernel/random/boot_id</code></li>
+<li>machine_id <code>/var/lib/dbus/machine-id</code></li>
+<li>boot_id <code>/proc/sys/kernel/random/boot_id</code></li>
 <li>system UUID <code>/sys/class/dmi/id/product_uuid</code></li>
 </ul>
 
@@ -513,8 +480,8 @@ f0:76:1c:6d:26:d6
 </div>
 </div>
 
-<div id="outline-container-org754079e" class="outline-2">
-<h2 id="org754079e"><span class="section-number-2">3</span> docker info</h2>
+<div id="outline-container-orga7dfdde" class="outline-2">
+<h2 id="orga7dfdde"><span class="section-number-2">3.</span> docker info</h2>
 <div class="outline-text-2" id="text-3">
 <pre class="example">
 # github.com/google/cadvisor/manager/manager.go
@@ -533,8 +500,8 @@ cAdvisor 启动 container manager，通过调用 Linux 系统 inotify 监测 cgr
 </p>
 </div>
 
-<div id="outline-container-org32e3dc3" class="outline-3">
-<h3 id="org32e3dc3"><span class="section-number-3">3.1</span> Getprocesslist</h3>
+<div id="outline-container-org8e115b7" class="outline-3">
+<h3 id="org8e115b7"><span class="section-number-3">3.1.</span> Getprocesslist</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>chroot /rootfs</code> （cAdvisor 在 container 中运行会通过 volume 方式把系统 / mount 到 /rootfs 下）再执行 <code>ps -e -o user,pid,ppid,stime,pcpu,pmem,rss,vsz,stat,time,comm,cgrou</code> ，否则直接执行获取。(github.com/google/cadvisor/manager/container.go GetProcessList() 函数实现)
@@ -573,8 +540,8 @@ cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>ch
 </div>
 </div>
 
-<div id="outline-container-orgb38a1f6" class="outline-3">
-<h3 id="orgb38a1f6"><span class="section-number-3">3.2</span> ContainerInfo</h3>
+<div id="outline-container-orgc821019" class="outline-3">
+<h3 id="orgc821019"><span class="section-number-3">3.2.</span> ContainerInfo</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 获取指定 container 的 info 数据：
@@ -753,7 +720,7 @@ cgroup status 包含信息如下（cAdvisor 调用 licontainer/cgroups 获取 co
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2015-11-04 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</span>
+         class="date">2015-11-04 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
 </div>
 </body>
 </html>
