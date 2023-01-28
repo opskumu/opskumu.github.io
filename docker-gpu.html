@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-01-27 Fri 00:51 -->
+<!-- 2023-01-28 Sat 21:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 中玩转 GPU</title>
@@ -245,7 +245,7 @@
 </p>
 
 
-<div id="org27746a6" class="figure">
+<div id="org9e6a63c" class="figure">
 <p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cuda-download.png" alt="cuda-download.png" />
 </p>
 </div>
@@ -280,7 +280,7 @@ export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:/usr/local/cuda-8.0/extras/CUPT
 <div class="outline-text-3" id="text-1-2">
 <blockquote>
 <p>
-cuDNN 是专门针对深度框架设计的一套 GPU 计算加速方案，支持的框架包括 Caffe、TensorFlow 等，<a href="https://developer.nvidia.com/cuDNN%EF%BC%88%E5%AE%98%E7%BD%91%E7%8E%B0%E5%9C%A8%E4%B8%8B%E8%BD%BD%E9%9C%80%E8%A6%81%E6%B3%A8%E5%86%8C%E8%B4%A6%E6%88%B7%E6%89%8D%E8%83%BD%E4%B8%8B%E8%BD%BD">https://developer.nvidia.com/cuDNN%EF%BC%88%E5%AE%98%E7%BD%91%E7%8E%B0%E5%9C%A8%E4%B8%8B%E8%BD%BD%E9%9C%80%E8%A6%81%E6%B3%A8%E5%86%8C%E8%B4%A6%E6%88%B7%E6%89%8D%E8%83%BD%E4%B8%8B%E8%BD%BD</a>）
+cuDNN 是专门针对深度框架设计的一套 GPU 计算加速方案，支持的框架包括 Caffe、TensorFlow 等，<a href="https://developer.nvidia.com/cuDNN">https://developer.nvidia.com/cuDNN</a> （官网现在下载需要注册账户才能下载）
 </p>
 </blockquote>
 
@@ -331,9 +331,11 @@ Fri Jul 14 23:19:38 2017
 nvidia 官方提供了 nvidia-docker 可以直接驱动 GPU 设备，具体文档可以参考 <a href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a>，本文介绍原生的 Docker 方式。
 </p>
 
-<p>
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker-gpu.png" alt="docker-gpu.png" /> &gt; Example of how CUDA integrates with Docker
+
+<div id="orgb85bf51" class="figure">
+<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker-gpu.png" alt="docker-gpu.png" />
 </p>
+</div>
 
 <p>
 本文以 <code>tensorflow/tensorflow:latest-gpu</code> 测试：
