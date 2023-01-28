@@ -1,198 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<!-- 2023-01-27 Fri 00:51 -->
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<!-- 2023-01-28 Sat 22:42 -->
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KVM 学习笔记</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
-</style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -200,8 +14,9 @@
 </head>
 <body>
 <div id="content" class="content">
+<header>
 <h1 class="title">KVM 学习笔记</h1>
-<div id="table-of-contents" role="doc-toc">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
@@ -255,7 +70,7 @@
 <li><a href="#orgab49839">5. 参考文档</a></li>
 </ul>
 </div>
-</div>
+</nav>
 
 <div id="outline-container-org3b3e052" class="outline-2">
 <h2 id="org3b3e052"><span class="section-number-2">1.</span> KVM 原理</h2>
@@ -265,10 +80,10 @@ KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/A
 </p>
 
 
-<div id="orgdd9a9be" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm.png" alt="kvm.png" />
-</p>
-</div>
+<figure id="org354e842">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm.png" alt="kvm.png">
+
+</figure>
 
 <p>
 KVM 本身不执行任何模拟，需要用户空间应用程序 <code>QEMU</code> 通过 <code>/dev/kvm</code> 接口设置一个客户机虚拟服务器的地址空间，向它提供模拟的 I/O，KVM 模块实现处理器的虚拟化和内存虚拟化。在硬件虚拟化技术的支持下，内核的 KVM 模块与 QEMU 的设备模拟协同工作，构成一套和物理计算机系统完全一致的虚拟化计算机软硬件系统。
@@ -320,10 +135,10 @@ KVM 本身不执行任何模拟，需要用户空间应用程序 <code>QEMU</cod
 </ul>
 
 
-<div id="org95ff287" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-vcpu.png" alt="kvm-vcpu.png" />
-</p>
-</div>
+<figure id="orge4ffa1e">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-vcpu.png" alt="kvm-vcpu.png">
+
+</figure>
 </div>
 </div>
 
@@ -401,10 +216,10 @@ cache 不同模式工作原理图：
 </p>
 
 
-<div id="org3b28166" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-cache.png" alt="kvm-cache.png" />
-</p>
-</div>
+<figure id="orgb829ab4">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-cache.png" alt="kvm-cache.png">
+
+</figure>
 
 <ul class="org-ul">
 <li><code>writethrough</code> 即直写模式，KVM cache 默认使用 <code>writethrough</code> ，它是在调用 write 写入数据的同时将数据写入磁盘缓存和后端块设备才返回，缺点是写入性能较低，但是安全性高。 <code>qcow2</code> 格式在使用 <code>writethrough</code> 时性能很差</li>
@@ -720,10 +535,10 @@ KVM 是必须使用硬件虚拟化辅助技术（如 Intel VT-x、AMD-V）的 hy
 </p>
 
 
-<div id="org8be2045" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-emulated-io.jpg" alt="qemu-emulated-io.jpg" />
-</p>
-</div>
+<figure id="orgfc1f255">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-emulated-io.jpg" alt="qemu-emulated-io.jpg">
+
+</figure>
 
 <p>
 使用 QEMU 模拟 I/O 的情况下，当客户机中的设备驱动程序（device driver）发起 I/O 操作请求之时，KVM 模块中的 I/O 操作捕获代码会拦截这次 I/O 请求，然后经过处理后将本次 I/O 请求的信息存放到 I/O 共享页，并通知用户控件的 QEMU 程序。QEMU 模拟程序获得 I/O 操作的具体信息之后，交由硬件模拟代码来模拟出本次的 I/O 操作，完成之后，将结果放回到 I/O 共享页，并通知 KVM 模块中的 I/O 操作捕获代码。最后，由 KVM 模块中的捕获代码读取 I/O 共享页中的操作结果，并把结果返回到客户机中。当然，这个操作过程中客户机作为一个 QEMU 进程在等待I/O时也可能被阻塞。另外，当客户机通过 DMA（Direct Memory Access）访问大块 I/O 之时，QEMU 模拟程序将不会把操作结果放到 I/O 共享页中，而是通过内存映射的方式将结果直接写到客户机的内存中去，然后通过 KVM 模块告诉客户机 DMA 操作已经完成。
@@ -738,10 +553,10 @@ QEMU 模拟 I/O 设备的方式，其优点是可以通过软件模拟出各种�
 </p>
 
 
-<div id="org8d4acc7" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-kvm-virtio.jpg" alt="qemu-kvm-virtio.jpg" />
-</p>
-</div>
+<figure id="org3f663f3">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-kvm-virtio.jpg" alt="qemu-kvm-virtio.jpg">
+
+</figure>
 
 <p>
 virtio 是一个在 hypervisor 之上的抽象 API 接口，让客户机知道自己运行在虚拟化环境中，从而与 hypervisor 根据 virtio 标准协作，从而在客户机中达到更好的性能（特别是 I/O 性能）。其中前端驱动（frondend，如 virtio-blk、virtio-net 等）是在客户机中存在的驱动程序模块，而后端处理程序（backend）是在 QEMU 中实现的。在这前后端驱动之间，还定义了两层来支持客户机与 QEMU 之间的通信。其中，virtio 这一层是虚拟队列接口，它在概念上将前端驱动程序附加到后端处理程序。一个前端驱动程序可以使用 0 个或多个队列，具体数量取决于需求。例如，virtio-net 网络驱动程序使用两个虚拟队列（一个用于接收，另一个用于发送），而 virtio-blk 块驱动程序仅使用一个虚拟队列。虚拟队列实际上被实现为跨越客户机操作系统和 hypervisor 的衔接点，但它可以通过任意方式实现，前提是客户机操作系统和 virtio 后端程序都遵循一定的标准，以相互匹配的方式实现它。而 virtio-ring 实现了环形缓冲区（ring buffer），用于保存前端驱动和后端处理程序执行的信息，并且它可以一次性保存前端驱动的多次 I/O 请求，并且交由后端去动去批量处理，最后实际调用宿主机中设备驱动实现物理上的 I/O 操作，这样做就可以根据约定实现批量处理而不是客户机中每次 I/O 请求都需要处理一次，从而提高客户机与 hypervisor 信息交换的效率。
@@ -756,10 +571,10 @@ virtio 半虚拟化驱动的方式，可以获得很好的 I/O 性能，其性�
 </p>
 
 
-<div id="orgbe8c3d8" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/virtio-vhostnet.png" alt="virtio-vhostnet.png" />
-</p>
-</div>
+<figure id="orgbb96c73">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/virtio-vhostnet.png" alt="virtio-vhostnet.png">
+
+</figure>
 
 <p>
 使用 virtio_net 半虚拟化驱动，可以提高网络吞吐量和降低网络延迟。vhost_net 能够把网络 IO 请求的后端处理在内核空间完成，则效率更高，会提高网络吞吐量和减少网络延迟。
@@ -778,10 +593,10 @@ virtio_blk 驱动使用 virtio API 为客户机提供了一个高效访问块设
 </p>
 
 
-<div id="orgb6f9a83" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/devassign-sriov.png" alt="devassign-sriov.png" />
-</p>
-</div>
+<figure id="org381b05c">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/devassign-sriov.png" alt="devassign-sriov.png">
+
+</figure>
 </div>
 </div>
 </div>
@@ -825,10 +640,10 @@ KVM 热插拔的操作可以参考 KVM 官方文档：
 <h2 id="orge546376"><span class="section-number-2">4.</span> KVM 管理工具</h2>
 <div class="outline-text-2" id="text-4">
 
-<div id="org02b606c" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-support.png" alt="libvirt-support.png" />
-</p>
-</div>
+<figure id="org1a87df6">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-support.png" alt="libvirt-support.png">
+
+</figure>
 </div>
 
 <div id="outline-container-orgca6804e" class="outline-3">
@@ -848,10 +663,10 @@ libvirt 作为中间适配层，让底层 Hypervisor 对上层用户空间的管
 </p>
 
 
-<div id="org0e6bfc3" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-manage-hypervisors.jpg" alt="libvirt-manage-hypervisors.jpg" />
-</p>
-</div>
+<figure id="orgdd8082e">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-manage-hypervisors.jpg" alt="libvirt-manage-hypervisors.jpg">
+
+</figure>
 
 <p>
 libvirt 的管理功能主要包含如下五个部分：

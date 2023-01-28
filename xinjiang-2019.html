@@ -1,198 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<!-- 2023-01-27 Fri 00:51 -->
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<!-- 2023-01-28 Sat 22:42 -->
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>北疆秋色</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
-</style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -200,8 +14,9 @@
 </head>
 <body>
 <div id="content" class="content">
+<header>
 <h1 class="title">北疆秋色</h1>
-<div id="table-of-contents" role="doc-toc">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
@@ -218,7 +33,7 @@
 <li><a href="#org5e29c0c">11. 小结</a></li>
 </ul>
 </div>
-</div>
+</nav>
 <p>
 去年六月新疆的行程还历历在目，没想到时隔一年又去新疆玩了一趟。不得不感慨，新疆实在是太大了，两次共约 20 天的旅途也只是玩了新疆一小片。去年去新疆主要是看夏日的草原，此次则是奔着喀纳斯的秋色去的。与去年不同的除了季节外，另外一个不同则是去年跟着游侠客的团走的，而今年的行程则是自由行，女友和她几个同事一早就把行程规划好了。
 </p>
@@ -227,10 +42,10 @@
 <h2 id="org7f30c4f"><span class="section-number-2">1.</span> Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-1">
 
-<div id="org089f16c" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-1.jpg" alt="xinjiang-2019-1.jpg" />
-</p>
-</div>
+<figure id="orgce58af8">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-1.jpg" alt="xinjiang-2019-1.jpg">
+
+</figure>
 
 <p>
 此行是 7 人的小队，女友算是领队，负责整个行程的吃住行。除了其他两人，我们 5 人的航班是一样的，也是最早出发的。早晨 7 点直飞乌鲁木齐的航班，到达乌鲁木齐已经是中午 12 点多了。下了飞机后，坐机场大巴到乌鲁木齐火车站，在火车站把行李寄存妥当。这次没有选择在乌鲁木齐停留一天，而是选择火车卧铺一夜到北屯。买的是当天晚上 11 点的火车票，这样可以预留多一些时间逛乌市。点评上找了家排名第一的手抓饭，吃完饭后开始了乌市的旅程。第一站去的是北园春干果批发市场，选定一家之后就开始买买买模式了，购买力惊人，最终大家一共买了 6000+ 的干果邮寄，老板乐呵的忙活了 2 个多小时。第二站去的是乌鲁木齐人民公园，之前做攻略的时候说这边有少数民族跳民族舞，但是并没有看到，大家就坐在公园吹着风，聊了会天。18 点多的时候其他两个小伙伴到达，于是大家就集合去吃饭了，找了家新疆特色的饭馆吃了晚饭。本来打算晚上去逛下大巴扎的，但是吃完饭后发现时间可能来不及，于是就放弃了去大巴扎直接奔去火车站。火车晚点了将近一个小时才出发，期待明天正式的行程。
@@ -246,10 +61,10 @@
 </p>
 
 
-<div id="org8d3f61e" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-2.jpg" alt="xinjiang-2019-2.jpg" />
-</p>
-</div>
+<figure id="org4d1b2af">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-2.jpg" alt="xinjiang-2019-2.jpg">
+
+</figure>
 
 <p>
 今天的目的地是西北第一村白哈巴，此行我们包了辆中巴（19 座，我们 7 人还是相当宽松的），师傅昨天从乌鲁木齐空车开到北屯与我们会合。包车的事情后面再说，其实此行完全可以不包车的，早期攻略没有做好。在北屯一家面馆吃了早餐，开车去往布尔津。在布尔津停留是为了取票，这是为了防止景区取票排队。我们买的是喀纳斯的全域通票（包括白哈巴、喀纳斯、禾木），有效期 5 天，一共 375 元（包含门票和景交）。要强调的是布尔津是一个非常美丽的小县城，街道干净，建筑满满的俄罗斯风。
@@ -262,30 +77,30 @@
 </blockquote>
 
 
-<div id="org4428ebf" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-3.jpg" alt="xinjiang-2019-3.jpg" />
-</p>
-</div>
+<figure id="org058bba1">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-3.jpg" alt="xinjiang-2019-3.jpg">
+
+</figure>
 
 <p>
 取完票，继续赶往白哈巴，途径五彩滩景点，门票 45 元。因为之前去过张掖看过五彩丹霞，对五彩滩并没有多少期待。不过虽然景区并不大，但是总体风景是超过预期的。这还是在天气不太好的情况下觉得风景还不错，要是傍晚有晚霞的天气应该会更美。
 </p>
 
 
-<div id="orgfeca545" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-4.jpg" alt="xinjiang-2019-4.jpg" />
-</p>
-</div>
+<figure id="org2220b38">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-4.jpg" alt="xinjiang-2019-4.jpg">
+
+</figure>
 
 <p>
 去白哈巴是需要办理边防证的，我们在哈巴河办理的，顺便吃了个晚餐，特色菜是农家的大盆土鸡。农家老板一直让我多带点馕去景区，说是景区吃的比较贵，于是我又去买了五个馕随身带着。沿途的风景也不错，在经过铁热克提乡的时候还看到了牧民转场。
 </p>
 
 
-<div id="orgc5ca99d" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-5.jpg" alt="xinjiang-2019-5.jpg" />
-</p>
-</div>
+<figure id="org2198863">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-5.jpg" alt="xinjiang-2019-5.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -294,10 +109,10 @@
 </blockquote>
 
 
-<div id="org7778bcf" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-6.jpg" alt="xinjiang-2019-6.jpg" />
-</p>
-</div>
+<figure id="org36305d2">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-6.jpg" alt="xinjiang-2019-6.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -310,10 +125,10 @@
 </p>
 
 
-<div id="org34a01be" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-7.jpg" alt="xinjiang-2019-7.jpg" />
-</p>
-</div>
+<figure id="org0d27e7e">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-7.jpg" alt="xinjiang-2019-7.jpg">
+
+</figure>
 
 <p>
 景区巴士直接把我们送到酒店门口，说是酒店，其实就是小木屋。因为天气原因，加之天黑，我们就没有出去闲逛了。早早的洗漱睡下，准备明天早起看白哈巴村的晨雾。
@@ -329,58 +144,58 @@
 </p>
 
 
-<div id="orgb62dd8f" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-8.jpg" alt="xinjiang-2019-8.jpg" />
-</p>
-</div>
+<figure id="orgebea513">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-8.jpg" alt="xinjiang-2019-8.jpg">
+
+</figure>
 
 <p>
 看完晨雾之后，还去附近的白桦林看了一下，说不上为什么，对白桦树有种莫名的喜欢。9 点半的时候，回酒店和小伙伴们集合，讨论接下来的行程。最后决定村里逛一逛，然后下午去喀纳斯。逛的过程中还看到一些徒步去喀纳斯的驴友，多少有些羡慕。其实本来我们的行程是今天徒步去喀纳斯的，因为天气等原因最终还是放弃了徒步。闲逛的时候还是有些惊喜的，当走进树林里面，看到黄绿相间的树木，感觉整个秋色就在这里了。我们还爬了个山，山上视野很宽阔，可以俯瞰整个白哈巴。
 </p>
 
 
-<div id="org51c5851" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-9.jpg" alt="xinjiang-2019-9.jpg" />
-</p>
-</div>
+<figure id="orgf53e77b">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-9.jpg" alt="xinjiang-2019-9.jpg">
+
+</figure>
 
 
-<div id="org53599ae" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-10.jpg" alt="xinjiang-2019-10.jpg" />
-</p>
-</div>
+<figure id="org1839103">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-10.jpg" alt="xinjiang-2019-10.jpg">
+
+</figure>
 
 
-<div id="org0108b7b" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-11.jpg" alt="xinjiang-2019-11.jpg" />
-</p>
-</div>
+<figure id="org00d733e">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-11.jpg" alt="xinjiang-2019-11.jpg">
+
+</figure>
 
 <p>
 从山下下来之后在酒店点了几个菜，主食吃的是泡面。吃完饭之后，大概 15 点多，我们开始去景区巴士到喀纳斯。到喀纳斯换乘一个小时，因为我们住新村，先换乘新村的景交存放行李，大概 10 分钟不到就到了。放完行李之后，因为时间的因素我们选择先去喀纳斯湖看一看。初次看到碧绿的喀纳斯湖还是很震撼的，就像玉一样。
 </p>
 
 
-<div id="org3e4b986" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-12.jpg" alt="xinjiang-2019-12.jpg" />
-</p>
-</div>
+<figure id="org434940e">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-12.jpg" alt="xinjiang-2019-12.jpg">
+
+</figure>
 
 
-<div id="orgf4b636b" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-13.jpg" alt="xinjiang-2019-13.jpg" />
-</p>
-</div>
+<figure id="org2252701">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-13.jpg" alt="xinjiang-2019-13.jpg">
+
+</figure>
 
 <p>
 我们沿湖走到了游船码头，这个时候天开始下起了小雨，小伙伴们决定先返程，明天再走到一道湾。回来之后，住处闲逛了一会。因为下午吃饭吃的比较晚，晚饭也就没有特意去点餐了，吃点自备的干粮算是晚餐了。看天气预报说明天会有雨，心里多少还是有点担忧的，因为特别想去看早晨的喀纳斯三湾景色。其实本来是有晨景车可以坐的，始发车是 7 点，不过最近因为天气的原因关闭好几天了，最早的晨车是 8:30。
 </p>
 
 
-<div id="org0876032" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-14.jpg" alt="xinjiang-2019-14.jpg" />
-</p>
-</div>
+<figure id="org8490cc3">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-14.jpg" alt="xinjiang-2019-14.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -398,10 +213,10 @@
 </p>
 
 
-<div id="org791a55d" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-15.jpg" alt="xinjiang-2019-15.jpg" />
-</p>
-</div>
+<figure id="org2947035">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-15.jpg" alt="xinjiang-2019-15.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -410,10 +225,10 @@
 </blockquote>
 
 
-<div id="org672eff0" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-16.jpg" alt="xinjiang-2019-16.jpg" />
-</p>
-</div>
+<figure id="org688ca68">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-16.jpg" alt="xinjiang-2019-16.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -422,10 +237,10 @@
 </blockquote>
 
 
-<div id="orga4e4bcb" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-17.jpg" alt="xinjiang-2019-17.jpg" />
-</p>
-</div>
+<figure id="orgf21b5f8">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-17.jpg" alt="xinjiang-2019-17.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -434,10 +249,10 @@
 </blockquote>
 
 
-<div id="org6252d7a" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-18.jpg" alt="xinjiang-2019-18.jpg" />
-</p>
-</div>
+<figure id="org28e9216">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-18.jpg" alt="xinjiang-2019-18.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -446,10 +261,10 @@
 </blockquote>
 
 
-<div id="org3f6827f" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-19.jpg" alt="xinjiang-2019-19.jpg" />
-</p>
-</div>
+<figure id="org978f011">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-19.jpg" alt="xinjiang-2019-19.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -458,10 +273,10 @@
 </blockquote>
 
 
-<div id="org4c89458" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-20.jpg" alt="xinjiang-2019-20.jpg" />
-</p>
-</div>
+<figure id="org633287c">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-20.jpg" alt="xinjiang-2019-20.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -479,10 +294,10 @@
 </p>
 
 
-<div id="org829b7ea" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-21.jpg" alt="xinjiang-2019-21.jpg" />
-</p>
-</div>
+<figure id="org0dee5fe">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-21.jpg" alt="xinjiang-2019-21.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -491,10 +306,10 @@
 </blockquote>
 
 
-<div id="org13634b4" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-22.jpg" alt="xinjiang-2019-22.jpg" />
-</p>
-</div>
+<figure id="orgfd89137">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-22.jpg" alt="xinjiang-2019-22.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -503,10 +318,10 @@
 </blockquote>
 
 
-<div id="org56cd8f1" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-23.jpg" alt="xinjiang-2019-23.jpg" />
-</p>
-</div>
+<figure id="orgf8b0ba3">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-23.jpg" alt="xinjiang-2019-23.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -515,10 +330,10 @@
 </blockquote>
 
 
-<div id="orgae4fe7b" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-24.jpg" alt="xinjiang-2019-24.jpg" />
-</p>
-</div>
+<figure id="org82952f6">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-24.jpg" alt="xinjiang-2019-24.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -531,16 +346,16 @@
 </p>
 
 
-<div id="org7d884e2" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-25.jpg" alt="xinjiang-2019-25.jpg" />
-</p>
-</div>
+<figure id="orgda97289">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-25.jpg" alt="xinjiang-2019-25.jpg">
+
+</figure>
 
 
-<div id="org9d5c08a" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-26.jpg" alt="xinjiang-2019-26.jpg" />
-</p>
-</div>
+<figure id="org236d366">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-26.jpg" alt="xinjiang-2019-26.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -553,26 +368,26 @@
 </p>
 
 
-<div id="org8970ad5" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-28.jpg" alt="xinjiang-2019-28.jpg" />
-</p>
-</div>
+<figure id="org859d5e0">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-28.jpg" alt="xinjiang-2019-28.jpg">
+
+</figure>
 
 
-<div id="org62d364c" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-27.jpg" alt="xinjiang-2019-27.jpg" />
-</p>
-</div>
+<figure id="orgcdbe323">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-27.jpg" alt="xinjiang-2019-27.jpg">
+
+</figure>
 
 <p>
 走完一道湾回来，差点误了去贾登峪的班车。万幸赶上了末班车，还看了一眼今天的晚霞，时间实在有限，只拍了下面这一张。
 </p>
 
 
-<div id="org069df1e" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-29.jpg" alt="xinjiang-2019-29.jpg" />
-</p>
-</div>
+<figure id="orgf5a9b2d">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-29.jpg" alt="xinjiang-2019-29.jpg">
+
+</figure>
 
 <p>
 今天晚上住贾登峪，话说贾登峪的居住体验是很差的，物价奇贵，比景区里面还贵，而且体验也不好。奉劝想着省钱住景区外的，还是老老实实住景区吧，实在是省不了几个钱的。
@@ -597,10 +412,10 @@
 </p>
 
 
-<div id="orgad07cf6" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-30.jpg" alt="xinjiang-2019-30.jpg" />
-</p>
-</div>
+<figure id="org42819db">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-30.jpg" alt="xinjiang-2019-30.jpg">
+
+</figure>
 
 <p>
 看完日出算是结束喀纳斯的行程了，今天基本都在车上，目的地是阿勒泰。到达阿勒泰 18 点多左右，我们还逛了一下桦林公园。桦林公园算是一个比较大的公园，走马观花一圈也差不多一个半小时才能走完。桦林公园的白桦树很多，喀纳斯的白桦树叶都掉落的差不多了，而这边的白桦叶还带着绿意。
@@ -616,10 +431,10 @@
 </p>
 
 
-<div id="org2cdd79a" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-31.jpg" alt="xinjiang-2019-31.jpg" />
-</p>
-</div>
+<figure id="orgf724c83">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-31.jpg" alt="xinjiang-2019-31.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -637,10 +452,10 @@
 </p>
 
 
-<div id="org8d0b8f4" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-32.jpg" alt="xinjiang-2019-32.jpg" />
-</p>
-</div>
+<figure id="orga0bf0c9">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-32.jpg" alt="xinjiang-2019-32.jpg">
+
+</figure>
 
 <blockquote>
 <p>
@@ -658,10 +473,10 @@
 </p>
 
 
-<div id="orgee7abc4" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-33.jpg" alt="xinjiang-2019-33.jpg" />
-</p>
-</div>
+<figure id="org6de2891">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-33.jpg" alt="xinjiang-2019-33.jpg">
+
+</figure>
 
 <p>
 大巴扎貌似也只是个普通的集市，并没有觉得有多特别，卖的东西价格也不便宜，不过体验一下并不坏。逛完大巴扎，16 点不到到达机场，正式结束这次的新疆行。

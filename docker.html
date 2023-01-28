@@ -1,198 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<!-- 2023-01-27 Fri 00:50 -->
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<!-- 2023-01-28 Sat 22:42 -->
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 学习笔记</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
-</style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -200,8 +14,9 @@
 </head>
 <body>
 <div id="content" class="content">
+<header>
 <h1 class="title">Docker 学习笔记</h1>
-<div id="table-of-contents" role="doc-toc">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
@@ -349,10 +164,10 @@
 <li><a href="#orgf2d66ac">8.4. 删除 Volumes</a></li>
 </ul>
 </li>
-<li><a href="#org8552a44">9. 链接容器</a>
+<li><a href="#org8d1ed93">9. 链接容器</a>
 <ul>
 <li><a href="#orgc235c7b">9.1. 容器命名</a></li>
-<li><a href="#org2f7d273">9.2. 链接容器</a>
+<li><a href="#org0b8a041">9.2. 链接容器</a>
 <ul>
 <li><a href="#org9c12e1d">9.2.1. 环境变量</a></li>
 <li><a href="#org34307ab">9.2.2. 更新 <code>/etc/hosts</code> 文件</a></li>
@@ -376,7 +191,7 @@
 </li>
 </ul>
 </div>
-</div>
+</nav>
 
 <div id="outline-container-org56cc039" class="outline-2">
 <h2 id="org56cc039"><span class="section-number-2">1.</span> Docker 简介</h2>
@@ -395,10 +210,10 @@ Docker 使用客户端-服务器 (C/S) 架构模式。Docker 客户端会与 Doc
 </p>
 
 
-<div id="orgdc17470" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_arch.png" alt="docker_arch.png" />
-</p>
-</div>
+<figure id="orgfebf2b7">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_arch.png" alt="docker_arch.png">
+
+</figure>
 </div>
 
 <div id="outline-container-org5f0aa7b" class="outline-3">
@@ -470,10 +285,10 @@ Docker 从 0.9 版本开始使用 libcontainer 替代 lxc，libcontainer 和 Lin
 </p>
 
 
-<div id="org228ea3a" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libcontainer-linux.png" alt="libcontainer-linux.png" />
-</p>
-</div>
+<figure id="orgfbddeb6">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libcontainer-linux.png" alt="libcontainer-linux.png">
+
+</figure>
 
 <ul class="org-ul">
 <li>图片来源: <a href="http://blog.docker.com/2014/03/docker-0-9-introducing-execution-drivers-and-libcontainer/">Docker 0.9: introducing execution drivers and libcontainer</a></li>
@@ -1300,10 +1115,10 @@ $ sudo docker run -p 127.0.0.1:53:5353/udp &lt;image&gt; &lt;cmd&gt;
 <h2 id="org0fc1271"><span class="section-number-2">6.</span> Docker 网络配置</h2>
 <div class="outline-text-2" id="text-6">
 
-<div id="org88ed6e4" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_networking.png" alt="docker_networking.png" />
-</p>
-</div>
+<figure id="orgf220a0b">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_networking.png" alt="docker_networking.png">
+
+</figure>
 
 <p>
 图: <a href="http://www.slideshare.net/janghoonsim/docker-container-and-lightweight-virtualization">Docker - container and lightweight virtualization</a>
@@ -1387,10 +1202,10 @@ docker run 创建 Docker 容器时，可以用 <code>--net</code> 选项指定�
 <h4 id="org752043d"><span class="section-number-4">6.1.4.</span> bridge模式</h4>
 <div class="outline-text-4" id="text-6-1-4">
 
-<div id="org157f32b" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/vethbridge.png" alt="vethbridge.png" />
-</p>
-</div>
+<figure id="org9157158">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/vethbridge.png" alt="vethbridge.png">
+
+</figure>
 
 <p>
 图：<a href="http://www.wickedawesometech.us/2014/07/the-container-world-part-2-networking.html">The Container World Part 2 Networking</a>
@@ -1580,10 +1395,10 @@ $ sudo systemctl start docker
 <h4 id="org08e0ed1"><span class="section-number-4">6.5.3.</span> pipework</h4>
 <div class="outline-text-4" id="text-6-5-3">
 
-<div id="org775fdc2" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_bridge.png" alt="docker_bridge.png" />
-</p>
-</div>
+<figure id="org8268f6e">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_bridge.png" alt="docker_bridge.png">
+
+</figure>
 
 <p>
 不同容器之间的通信可以借助于 pipework 这个工具给 docker 容器新建虚拟网卡并绑定 IP 桥接到 br0
@@ -2437,10 +2252,10 @@ $ sudo docker run -t -i -d --volumes-from test1 --name test3 ubuntu:14.04 /bin/b
 </pre>
 
 
-<div id="orgd4da227" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_data.png" alt="docker_data.png" />
-</p>
-</div>
+<figure id="orgf6a3667">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_data.png" alt="docker_data.png">
+
+</figure>
 </div>
 </div>
 
@@ -2522,8 +2337,8 @@ Volume 只有在下列情况下才能被删除：
 </div>
 </div>
 
-<div id="outline-container-org8552a44" class="outline-2">
-<h2 id="org8552a44"><span class="section-number-2">9.</span> 链接容器</h2>
+<div id="outline-container-org8d1ed93" class="outline-2">
+<h2 id="org8d1ed93"><span class="section-number-2">9.</span> 链接容器</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 docker 允许把多个容器连接在一起，相互交互信息。docker 链接会创建一种容器父子级别的关系，其中父容器可以看到其子容器提供的信息。
@@ -2560,8 +2375,8 @@ $ sudo docker  inspect --format="{% raw %}{{ .Nmae }}{% endraw %}" test
 </div>
 </div>
 
-<div id="outline-container-org2f7d273" class="outline-3">
-<h3 id="org2f7d273"><span class="section-number-3">9.2.</span> 链接容器</h3>
+<div id="outline-container-org0b8a041" class="outline-3">
+<h3 id="org0b8a041"><span class="section-number-3">9.2.</span> 链接容器</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 链接允许容器间安全通信，使用 <code>--link</code> 选项创建链接。

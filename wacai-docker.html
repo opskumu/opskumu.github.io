@@ -1,198 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<!-- 2023-01-27 Fri 00:51 -->
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<!-- 2023-01-28 Sat 22:42 -->
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>挖财 Kubernetes 容器化之路</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
-</style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -200,8 +14,9 @@
 </head>
 <body>
 <div id="content" class="content">
+<header>
 <h1 class="title">挖财 Kubernetes 容器化之路</h1>
-<div id="table-of-contents" role="doc-toc">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
@@ -220,7 +35,7 @@
 <li><a href="#org747b2bb">3.4. 日志</a></li>
 <li><a href="#orgb00bc41">3.5. 监控告警</a></li>
 <li><a href="#org62d2a74">3.6. 用户行为分析和统计</a></li>
-<li><a href="#org8452cab">3.7. 其它</a></li>
+<li><a href="#org7ece6d4">3.7. 其它</a></li>
 </ul>
 </li>
 <li><a href="#org984198d">4. 趟过的坑</a>
@@ -234,7 +49,7 @@
 <li><a href="#org24f1883">4.7. 容器内自定义时间的问题</a></li>
 </ul>
 </li>
-<li><a href="#org28cfee8">5. 其它</a>
+<li><a href="#org6b5b0c3">5. 其它</a>
 <ul>
 <li><a href="#orgcfb987e">5.1. 技术之外，产品本身</a></li>
 <li><a href="#org1fc039f">5.2. 基于容器的云原生应用设计原则</a></li>
@@ -242,7 +57,7 @@
 </li>
 </ul>
 </div>
-</div>
+</nav>
 <p>
 其实年初的时候就有想过写这篇文章了，不过一拖就拖到了现在，再拖下去就有点说不过去了。
 </p>
@@ -259,10 +74,10 @@
 </p>
 
 
-<div id="orgba236c4" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-first-commit.png" alt="k2-first-commit.png" />
-</p>
-</div>
+<figure id="org154f585">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-first-commit.png" alt="k2-first-commit.png">
+
+</figure>
 
 <ul class="org-ul">
 <li>2016 年 11 月初开启</li>
@@ -304,7 +119,7 @@
 线上环境有三个集群，一个机器学习集群（K8s 1.7.x），一个私有云集群（K8s 1.13.x），有个主体业务集群（K8s 1.13.x），粗率统计了一下，空间数 50+，应用数 500+，实例数 1000+。
 </p>
 
-<hr />
+<hr>
 
 <p>
 测试环境 + 线上环境总体运行有 5000+ 的 Pod 数，这个数量已经持续了很长一段时间。大概 2018 年底的时候就是这个数据，之后因为业务的调整等等原因，数量级没有一个大的增幅。
@@ -325,54 +140,54 @@
 </p>
 
 
-<div id="orgf0f642b" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-kubernetes.png" alt="k2-kubernetes.png" />
-</p>
-</div>
+<figure id="org5380791">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-kubernetes.png" alt="k2-kubernetes.png">
+
+</figure>
 
 <p>
 底层 K8s，中间层为 K2，对外暴露则是 Dashboard 和 K2 API。对于大部分用户使用 Dashboard 即可满足需求，如果有 API 的需求也提供相关渠道。K2 使用 Go 编写，针对 Namespace、Service、Deployment、StatefulSet、Ingress、Job、ConfigMap 有自身的封装抽象，屏蔽这些原生理念给用户带来的困惑，尽可能的降低用户理解难度。K2 Dashboard 则使用 <a href="https://github.com/ant-design/ant-design-pro">Ant Design Pro</a> 编写，好吧，不自觉的想到了之前 Ant Design 的圣诞彩蛋事件，当然这并不妨碍它的易用性。以下为平台的部分截图：
 </p>
 
 
-<div id="org0e11631" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-ns-dashboard.png" alt="k2-ns-dashboard.png" />
-</p>
-</div>
+<figure id="orgba45cca">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-ns-dashboard.png" alt="k2-ns-dashboard.png">
+
+</figure>
 
 
-<div id="org21c8fe8" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-dashboard.png" alt="k2-app-dashboard.png" />
-</p>
-</div>
+<figure id="orgb069fcf">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-dashboard.png" alt="k2-app-dashboard.png">
+
+</figure>
 
 
-<div id="org6b74a42" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-view-dashboard.png" alt="k2-app-view-dashboard.png" />
-</p>
-</div>
+<figure id="org406a1d5">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-view-dashboard.png" alt="k2-app-view-dashboard.png">
+
+</figure>
 
 <p>
 我们内部最开始使用的 K8s 版本为 1.3.x，早期 K8s 这块的用户和权限管理并不完善（后续的 RBAC 机制个人认为也很繁琐）。我们自行在 K2 上实现了一套用户和权限管理机制，权限只在空间层，应用层权限受限于空间角色（在某些场景空间层权限并不能满足需求，我们内部的另外一个版本是细化到应用层的）。测试环境和生产环境功能性是有细微差别的，比如测试环境所有的资源都是自助式的，而生产环境保持尽可能的自助化条件下，引入了一些资源申请机制（如生产环境空间需要走 <code>审批流程</code> ）。测试环境的空间还引入了 <code>生命周期机制</code> ，在有效期内用户可以续期（续期有上限），如果过期则会自动销毁（提醒续期的同时会备份编排文件，即使销毁了也可以轻易的恢复）。空间生命周期一定程度上提升了资源利用率，而生产环境的空间则没有有效期一说。因为业务的特殊性，CPU 资源利用率是非常低的，因此我们测试环境节点和生产环境节点 CPU 都是超配的（limits 和 requests 控制）。为了稳定性生产环境内存是没有超配的，但测试环境内存则是 2 倍超配的。测试环境提供了 Web 终端工具，方便用户登录容器，而生产环境一是为了安全和审计并没有提供 Web 终端工具。我们在堡垒机上提供了 <code>k2ctl</code> 命令行工具方便用户登录线上容器， <code>k2ctl</code> 集成了 K2 的权限控制，原理也很简单，底层封装 <code>kubectl</code> 。等等，以上只是列举了一部分测试环境和生产环境功能区别，简单来说在实际场景下，测试环境的自由度要更高，功能性也更多，而生产环境则是安全和稳定性排在首位，其它的细节这里就不过多介绍了。
 </p>
 
 
-<div id="org7b3f907" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-clone.png" alt="k2-app-clone.png" />
-</p>
-</div>
+<figure id="org3ee393a">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-clone.png" alt="k2-app-clone.png">
+
+</figure>
 
 
-<div id="org7ad1177" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-statefulset.png" alt="k2-app-statefulset.png" />
-</p>
-</div>
+<figure id="org835afda">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-statefulset.png" alt="k2-app-statefulset.png">
+
+</figure>
 
 
-<div id="org32c59c1" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-canary.png" alt="k2-app-canary.png" />
-</p>
-</div>
+<figure id="org905f727">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-canary.png" alt="k2-app-canary.png">
+
+</figure>
 </div>
 </div>
 
@@ -413,16 +228,16 @@
 </p>
 
 
-<div id="org5128183" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-1.png" alt="calico-network-test-1.png" />
-</p>
-</div>
+<figure id="org55aab8f">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-1.png" alt="calico-network-test-1.png">
+
+</figure>
 
 
-<div id="orgd655289" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-2.png" alt="calico-network-test-2.png" />
-</p>
-</div>
+<figure id="org23ed70e">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-2.png" alt="calico-network-test-2.png">
+
+</figure>
 
 <p>
 当然，实际使用什么网络方案还要看你自己的应用场景，我们机器学习平台（当前主要运行分布式 Jupyter）使用的网络方案则是基于 <a href="https://github.com/coreos/flannel">Flannel</a> VXLAN 来做的，原因是没有测试环境描述的这些需求，<a href="https://github.com/coreos/flannel">Flannel</a> 方案本身够简单。
@@ -442,10 +257,10 @@
 </p>
 
 
-<div id="org08d3d3a" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-log-volume.png" alt="k2-log-volume.png" />
-</p>
-</div>
+<figure id="org9bd9119">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-log-volume.png" alt="k2-log-volume.png">
+
+</figure>
 
 <p>
 如图所示，定义宿主目录 <code>/log-dir/k2-logs/&lt;namespace&gt;/&lt;appName&gt;</code> ， <code>/log-dir/k2-logs/</code> 是自定义存储容器日志的根目录，实际挂载的时候以空间名和应用名隔离目录。其中本地卷挂载到容器的目录为 <code>/log-dir/k2-logs</code> ，和宿主相同，服务在启动的时候脚本自动创建 <code>/log-dir/k2-logs/&lt;podHash&gt;</code> 目录并软链接到应用实际输出日志的目录 <code>/log-dir/logs</code> ，这样即使多个副本在同一个宿主也不会出现占用同一个目录日志文件的问题（坏处是需要修改启动脚本映射日志目录，但是因为 CI 标准化，这块成本基本没有）。如此，Filebeat 只要设置对应的规则收集日志即可，和传统虚拟机方式基本无差。如果日志输出标准化做的不好，日志目录不统一，也可以让用户自定义容器挂载目录，但为了避免滥用，内部这块是没有暴露这个功能的。
@@ -456,10 +271,10 @@
 </p>
 
 
-<div id="org4a53edc" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-stdout-log.png" alt="k2-stdout-log.png" />
-</p>
-</div>
+<figure id="orgfa587c8">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-stdout-log.png" alt="k2-stdout-log.png">
+
+</figure>
 
 <p>
 针对标准输出收集我们的方案如上图所示，利用 Filebeat 配置动态加载的功能，生成和分发 Filebeat 配置，达到标准输出日志收集的目的。默认标准输出日志收集是关闭的，用户可以在应用界面自主开启收集。
@@ -494,25 +309,25 @@
 </p>
 
 
-<div id="org728bedd" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-datastat.png" alt="k2-app-datastat.png" />
-</p>
-</div>
+<figure id="org38ab003">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-datastat.png" alt="k2-app-datastat.png">
+
+</figure>
 </div>
 </div>
 
-<div id="outline-container-org8452cab" class="outline-3">
-<h3 id="org8452cab"><span class="section-number-3">3.7.</span> 其它</h3>
+<div id="outline-container-org7ece6d4" class="outline-3">
+<h3 id="org7ece6d4"><span class="section-number-3">3.7.</span> 其它</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 针对完整的组件和架构方案，可以具体看下图：
 </p>
 
 
-<div id="org7ce62fb" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-Kubernetes-arch.png" alt="k2-Kubernetes-arch.png" />
-</p>
-</div>
+<figure id="org555ae15">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-Kubernetes-arch.png" alt="k2-Kubernetes-arch.png">
+
+</figure>
 
 <p>
 为了安全性，K8s 集群启用了 TLS 和 RBAC 部署，使用 Nginx 和 Keepalived 作为 kube-apiserver 的 HA 组件，ingress-nginx controller 也是使用类似的方案做了高可用。关于 K8s 集群部署业界也提供了诸如 <a href="https://github.com/kubernetes/kubeadm">kubeadm</a> 和 <a href="https://github.com/kubernetes-sigs/kubespray">kubespray</a> 的部署方案，我们内部则是定制了一套 K8s Ansible Playbook，集群组件使用的是二进制安装，Systemd 管理，最大化保持可控。
@@ -546,20 +361,20 @@
 </p>
 
 
-<div id="orgae78cc3" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-dns-cache.png" alt="nodelocal-dns-cache.png" /> 
-</p>
-</div>
+<figure id="org598620b">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-dns-cache.png" alt="nodelocal-dns-cache.png"> 
+
+</figure>
 
 <p>
 关于 Nodelocal DNS Cache <a href="https://github.com/kubernetes/enhancements/blob/master/keps/sig-network/20190424-NodeLocalDNS-beta-proposal.md">Graduate NodeLocal DNSCache to beta</a> 更好的解决方案，在现有的基础上无需改动即可生效，而且可以规避 DNS Cache 组件更新所在节点 DNS 请求中断的问题，不过到目前还没有实现。
 </p>
 
 
-<div id="org57718e5" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-HA.png" alt="nodelocal-HA.png" />
-</p>
-</div>
+<figure id="org3b71bc9">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-HA.png" alt="nodelocal-HA.png">
+
+</figure>
 
 <p>
 关于这个问题，腾讯云容器团队也作了详细的说明 <a href="https://tencentcloudcontainerteam.github.io/2018/10/26/DNS-5-seconds-delay/">kubernetes集群中夺命的5秒DNS延迟</a> ，大家也可以参考。
@@ -671,7 +486,7 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </p>
 </blockquote>
 
-<hr />
+<hr>
 
 <p>
 还有很多其它的一些问题，包括 K8s 本身的 Bug，相关组件如 KubeDNS/CoreDNS 的 Bug 等等，这里不一一列举了，有些问题后续如果想到了也会再补充。
@@ -680,8 +495,8 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </div>
 </div>
 
-<div id="outline-container-org28cfee8" class="outline-2">
-<h2 id="org28cfee8"><span class="section-number-2">5.</span> 其它</h2>
+<div id="outline-container-org6b5b0c3" class="outline-2">
+<h2 id="org6b5b0c3"><span class="section-number-2">5.</span> 其它</h2>
 <div class="outline-text-2" id="text-5">
 </div>
 <div id="outline-container-orgcfb987e" class="outline-3">
@@ -706,10 +521,10 @@ The better metric is container_memory_working_set_bytes as this is what the OOM 
 </ul>
 
 
-<div id="orge453df9" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cloud-native-container-design-principles.png" alt="cloud-native-container-design-principles.png" />
-</p>
-</div>
+<figure id="orgd399104">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cloud-native-container-design-principles.png" alt="cloud-native-container-design-principles.png">
+
+</figure>
 
 <ul class="org-ul">
 <li>构建时（Build time）

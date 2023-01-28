@@ -1,198 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<!-- 2023-01-27 Fri 00:50 -->
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<!-- 2023-01-28 Sat 22:42 -->
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Google 大规模集群管理器 Borg</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
-</style>
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
@@ -200,8 +14,9 @@
 </head>
 <body>
 <div id="content" class="content">
+<header>
 <h1 class="title">Google 大规模集群管理器 Borg</h1>
-<div id="table-of-contents" role="doc-toc">
+</header><nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
@@ -251,8 +66,8 @@
 </li>
 </ul>
 </div>
-</div>
-<hr />
+</nav>
+<hr>
 
 <ul class="org-ul">
 <li>原文地址：<a href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/43438.pdf">Large-scale cluster management at Google with Borg</a></li>
@@ -295,10 +110,10 @@ Borg 提供三个好处：
 </ol>
 
 
-<div id="orgaef4095" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-arch.png" alt="borg-arch.png" />
-</p>
-</div>
+<figure id="org44f2d34">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-arch.png" alt="borg-arch.png">
+
+</figure>
 </div>
 </div>
 
@@ -348,10 +163,10 @@ Borg cells 包括两种类型的 workload。第一种是那些长时间运行的
 </p>
 
 
-<div id="org65cd697" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-job-task-state.png" alt="borg-job-task-state.png" />
-</p>
-</div>
+<figure id="org19c25e2">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-job-task-state.png" alt="borg-job-task-state.png">
+
+</figure>
 
 <p>
 用户可以修改一个运行中的 job 属性值并发布到 Borg，然后 Borg 按照新的 job 配置来更新 tasks。更新通常是以滚动方式完成，并且可以对更新导致的任务中断（重新调度或者抢占）的数量进行限制，任何导致更多中断的更改都会被跳过。
@@ -541,10 +356,10 @@ Borglet 是 cell 中每个主机上运行的本地 Borg agent。它负责启动�
 <h2 id="org6d15790"><span class="section-number-2">5.</span> Availability</h2>
 <div class="outline-text-2" id="text-5">
 
-<div id="org022af7f" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-evictions-per-task-week.png" alt="borg-evictions-per-task-week.png" />
-</p>
-</div>
+<figure id="org0d670a7">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-evictions-per-task-week.png" alt="borg-evictions-per-task-week.png">
+
+</figure>
 
 <p>
 失败是大规模系统的常态：上图提供了 15 个样本 cells 中任务驱逐原因的细分。运行在 Borg 上的任务使用诸如复制、存储持久化状态在分布式文件系统中，以及（如果适用）偶尔检查点等技术来处理此类事件。即便如此，我们仍试图减轻这些事件的影响。例如，Borg：
@@ -606,10 +421,10 @@ Borg 的主要目标之一是有效利用 Google 的主机，这是一笔巨大�
 </p>
 
 
-<div id="org5ab5e0f" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-compacted-size.png" alt="borg-compacted-size.png" />
-</p>
-</div>
+<figure id="org8eb9bf4">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-compacted-size.png" alt="borg-compacted-size.png">
+
+</figure>
 </div>
 </div>
 
@@ -625,20 +440,20 @@ Borg 的主要目标之一是有效利用 Google 的主机，这是一笔巨大�
 </p>
 
 
-<div id="orgc2049c9" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-prod-noprod-different-cells.png" alt="borg-prod-noprod-different-cells.png" />
-</p>
-</div>
+<figure id="org518418a">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-prod-noprod-different-cells.png" alt="borg-prod-noprod-different-cells.png">
+
+</figure>
 
 <p>
 大多数 Borg cells 由数千个用户共享。图 6 展示了原因。对于这些测试，针对需要至少 10TiB 的内存（或 100TiB）的用户，我们将用户的工作负载分成新的 cell。我们现有的政策看起来很好：即使门槛较大，我们也需要 2-16 倍的 cells，以及 20-150% 的额外机器。再次强调，汇集资源可以显著降低成本。
 </p>
 
 
-<div id="orgded3281" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-user-different-cells.png" alt="borg-user-different-cells.png" />
-</p>
-</div>
+<figure id="orgfc78632">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-user-different-cells.png" alt="borg-user-different-cells.png">
+
+</figure>
 
 <p>
 但是，将不相关的用户和 job 类型打包到同一台主机会导致 CPU 竞争，因此我们需要更多的机器来补偿？为了评估这一点，我们研究了在具有相同时钟速度的相同机器类型下运行不同环境中的 CPI（每条指令的周期）如何变化。在这些条件下，CPI 值具有可比性，可用作性能干扰的一个代理，因为 CPI 加倍会使 CPU 绑定程序的运行时间加倍。数据是一周内从大约 12000 个随机选择的生产 tasks 中收集的，使用 [83] 中描述的硬件配置基础设施计算 5 分钟间隔内的周期和指令，并对样本进行加权，以便每秒计算 CPU 时间。结果并不明确。
@@ -670,10 +485,10 @@ Google 构建了大型 cells，既允许运行大型计算，又可以减少资�
 </p>
 
 
-<div id="orgf923559" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-small-cells-more-machines.png" alt="borg-small-cells-more-machines.png" />
-</p>
-</div>
+<figure id="org882e7e7">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-small-cells-more-machines.png" alt="borg-small-cells-more-machines.png">
+
+</figure>
 </div>
 </div>
 
@@ -685,20 +500,20 @@ Borg 用户以 ms（毫秒）为单位请求 CPU，以 bytes（字节）为单�
 </p>
 
 
-<div id="org9b4edd0" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-cpu-memory.png" alt="borg-cdf-cpu-memory.png" />
-</p>
-</div>
+<figure id="orgdf37257">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-cpu-memory.png" alt="borg-cdf-cpu-memory.png">
+
+</figure>
 
 <p>
 提供一组固定大小的容器或者虚拟机，虽然在 IaaS（基础设施即服务）提供商中很常见，但并不能很好的满足我们的需求。为了证明这一点，我们通过将它们四舍五入到每个资源维度中的下一个最接近 2 的幂来 "分配" 生产作业和分配的 CPU 和内存资源限制，从 CPU 的 0.5core 到内存的 1GiB 开始。图 9 显示，这样做在中位数情况下需要额外 30%~50% 的资源。上限来自在将原始 cell 翻两番之后压缩开始之前将整个机器分配给大型 tasks 并不适合；允许这些 tasks 进入 pending 的下限。（这比 [37] 报告的要少大约 100%，因为我们支持 4 buckets 并允许 CPU 和内存容量独立扩展）
 </p>
 
 
-<div id="org4c66a33" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-add-overheads.png" alt="borg-cdf-add-overheads.png" />
-</p>
-</div>
+<figure id="orgc10d0b3">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-add-overheads.png" alt="borg-cdf-add-overheads.png">
+
+</figure>
 </div>
 </div>
 
@@ -726,30 +541,30 @@ Borg 调度程序使用限制来计算生产 tasks 可行性，因此它们从�
 </p>
 
 
-<div id="org37a19c2" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-additional-machines.png" alt="borg-cdf-additional-machines.png" />
-</p>
-</div>
+<figure id="org97d8d69">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-additional-machines.png" alt="borg-cdf-additional-machines.png">
+
+</figure>
 
 <p>
 我们可以从图 11 中看到更多的细节，其中显示了预留和使用与限制的比率。超出其内存限制的 task 将是第一个在需要资源时被抢占的 task，无论其优先级如何，因此在 tasks 超出其内存资源限制的情况下比较少见。另一方面，CPU 可以很容易地被限制，因此短期峰值可以相当无害地推动使用超出预留。
 </p>
 
 
-<div id="orga5575ef" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-ratio-cpu-mem.png" alt="borg-cdf-ratio-cpu-mem.png" />
-</p>
-</div>
+<figure id="orgdc65f2e">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cdf-ratio-cpu-mem.png" alt="borg-cdf-ratio-cpu-mem.png">
+
+</figure>
 
 <p>
 图 12 显示了发生的事情。预留显然更接近于第二周的使用情况，而在第三周则有所不同，基线周（第 1 周和第 4 周）显示最大差距。正如预期的那样，内存 OOM 事件的发生率在第 2 周和第 3 周略有增加。在审查这些结果后，我们认为净增益超过了下行趋势，并将中等资源回收参数部署到其它 cells。
 </p>
 
 
-<div id="org7931953" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-oom-events.png" alt="borg-oom-events.png" />
-</p>
-</div>
+<figure id="org8304b25">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-oom-events.png" alt="borg-oom-events.png">
+
+</figure>
 </div>
 </div>
 </div>
@@ -808,10 +623,10 @@ Borglet 中的用户空间控制循环将内存分配给容器根据预测的未
 </p>
 
 
-<div id="org26edaa8" class="figure">
-<p><img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cpu-util.png" alt="borg-cpu-util.png" />
-</p>
-</div>
+<figure id="org55057c5">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/borg-cpu-util.png" alt="borg-cpu-util.png">
+
+</figure>
 
 <p>
 允许 tasks 消耗资源达到其限制。它们中的大多数被允许超出 CPU 等可压缩资源的范围，以利用未使用的（slack）资源。只有 5% 的 LS tasks 会禁用此功能，可能是为了获得更好的可预测性；不到 1% 的批处理 tasks 这样做。默认情况下禁用使用 slack 内存，因为它会增加 tasks 被杀的可能性，但即便如此，10% 的 LS tasks 会这样做，79% 的批处理 tasks 会这样做，因为它是 MapReduce 框架的默认设置。这补充了 reclaimed 资源的结果。批处理 tasks 愿意机会性的利用未使用的以及 reclaimed 的内存：大多数时候这是有效的，尽管当 LS tasks 急需资源时偶尔会牺牲批处理 tasks。
