@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:18 -->
+<!-- 2026-03-08 Sun 15:55 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 访问控制</title>
@@ -12,11 +12,7 @@
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.7; color: #333; }
 .navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
 .navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
 .navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
@@ -71,7 +67,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </div>
 </nav>
 
-<figure id="orgd4ce23b">
+<figure id="orgad3c670">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/components-of-kubernetes.png" alt="components-of-kubernetes.png">
 
 </figure>
@@ -89,7 +85,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org121d80b">
+<figure id="org8dbf124">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/access-control-overview.png" alt="access-control-overview.png">
 
 </figure>
@@ -103,7 +99,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgfd98bd1">
+<figure id="orgced5672">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kubernetes-authentication.png" alt="kubernetes-authentication.png">
 
 </figure>
@@ -123,7 +119,7 @@ APIServer 和集群组件通信使用 TLS 双向认证，顾名思义，客户�
 </p>
 
 
-<figure id="orgc756992">
+<figure id="org69f414c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mutual-ssl.png" alt="mutual-ssl.png">
 
 </figure>
@@ -167,13 +163,13 @@ kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书�
 </p>
 
 
-<figure id="org9300f93">
+<figure id="org9d5870f">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/role-binding.png" alt="role-binding.png">
 
 </figure>
 
 
-<figure id="org3595185">
+<figure id="org0787807">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cluster-role-binding.png" alt="cluster-role-binding.png">
 
 </figure>
@@ -238,7 +234,7 @@ ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空�
 </p>
 
 
-<figure id="org976e9bc">
+<figure id="org51fac94">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/bootstrapping-workflow.png" alt="bootstrapping-workflow.png">
 
 </figure>

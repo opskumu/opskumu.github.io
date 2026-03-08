@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:18 -->
+<!-- 2026-03-08 Sun 15:55 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>挖财 Kubernetes 容器化之路</title>
@@ -12,11 +12,7 @@
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.7; color: #333; }
 .navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
 .navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
 .navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
@@ -77,7 +73,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 <li><a href="#orgbd4b05a">3.4. 日志</a></li>
 <li><a href="#orgda797fb">3.5. 监控告警</a></li>
 <li><a href="#org90dda85">3.6. 用户行为分析和统计</a></li>
-<li><a href="#orgfda9a44">3.7. 其它</a></li>
+<li><a href="#orgad12a35">3.7. 其它</a></li>
 </ul>
 </li>
 <li><a href="#org539ef1b">4. 趟过的坑</a>
@@ -91,7 +87,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 <li><a href="#org13d3e17">4.7. 容器内自定义时间的问题</a></li>
 </ul>
 </li>
-<li><a href="#orgad12a35">5. 其它</a>
+<li><a href="#org9eb5003">5. 其它</a>
 <ul>
 <li><a href="#org127399b">5.1. 技术之外，产品本身</a></li>
 <li><a href="#org15c3f67">5.2. 基于容器的云原生应用设计原则</a></li>
@@ -115,7 +111,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org28d6c8e">
+<figure id="orgf5acaa3">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-first-commit.png" alt="k2-first-commit.png">
 
 </figure>
@@ -178,7 +174,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org6a486a6">
+<figure id="org1d2687c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-kubernetes.png" alt="k2-kubernetes.png">
 
 </figure>
@@ -188,19 +184,19 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgd6b3500">
+<figure id="orgd70d58c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-ns-dashboard.png" alt="k2-ns-dashboard.png">
 
 </figure>
 
 
-<figure id="org3831958">
+<figure id="org59f6072">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-dashboard.png" alt="k2-app-dashboard.png">
 
 </figure>
 
 
-<figure id="org2092396">
+<figure id="org7ec5643">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-view-dashboard.png" alt="k2-app-view-dashboard.png">
 
 </figure>
@@ -210,19 +206,19 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orge661ed6">
+<figure id="org95ee342">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-clone.png" alt="k2-app-clone.png">
 
 </figure>
 
 
-<figure id="org616cc64">
+<figure id="org1c01638">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-statefulset.png" alt="k2-app-statefulset.png">
 
 </figure>
 
 
-<figure id="org10d6ebf">
+<figure id="org93212a0">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-canary.png" alt="k2-app-canary.png">
 
 </figure>
@@ -264,13 +260,13 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgc6c2256">
+<figure id="org08cf991">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-1.png" alt="calico-network-test-1.png">
 
 </figure>
 
 
-<figure id="org68a9b4d">
+<figure id="orgac2e522">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-2.png" alt="calico-network-test-2.png">
 
 </figure>
@@ -292,7 +288,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org2a53b20">
+<figure id="orgf2fbdca">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-log-volume.png" alt="k2-log-volume.png">
 
 </figure>
@@ -306,7 +302,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgad7c60b">
+<figure id="org86a43cc">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-stdout-log.png" alt="k2-stdout-log.png">
 
 </figure>
@@ -342,21 +338,21 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org0281b8b">
+<figure id="orga038d34">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-datastat.png" alt="k2-app-datastat.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-orgfda9a44" class="outline-3">
-<h3 id="orgfda9a44"><span class="section-number-3">3.7.</span> 其它</h3>
+<div id="outline-container-orgad12a35" class="outline-3">
+<h3 id="orgad12a35"><span class="section-number-3">3.7.</span> 其它</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 针对完整的组件和架构方案，可以具体看下图：
 </p>
 
 
-<figure id="org98e43aa">
+<figure id="orgd39d32d">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-Kubernetes-arch.png" alt="k2-Kubernetes-arch.png">
 
 </figure>
@@ -391,7 +387,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org8a5fec1">
+<figure id="orgf9d043d">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-dns-cache.png" alt="nodelocal-dns-cache.png"> 
 
 </figure>
@@ -401,7 +397,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org87cbd9e">
+<figure id="org1f3eb74">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-HA.png" alt="nodelocal-HA.png">
 
 </figure>
@@ -521,8 +517,8 @@ CMD ["/my/script", "--with", "--args"]
 </div>
 </div>
 </div>
-<div id="outline-container-orgad12a35" class="outline-2">
-<h2 id="orgad12a35"><span class="section-number-2">5.</span> 其它</h2>
+<div id="outline-container-org9eb5003" class="outline-2">
+<h2 id="org9eb5003"><span class="section-number-2">5.</span> 其它</h2>
 <div class="outline-text-2" id="text-5">
 </div>
 <div id="outline-container-org127399b" class="outline-3">
@@ -546,7 +542,7 @@ CMD ["/my/script", "--with", "--args"]
 </ul>
 
 
-<figure id="org295836e">
+<figure id="org459aecb">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cloud-native-container-design-principles.png" alt="cloud-native-container-design-principles.png">
 
 </figure>

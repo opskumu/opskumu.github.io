@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:18 -->
+<!-- 2026-03-08 Sun 15:55 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KVM 学习笔记</title>
@@ -12,11 +12,7 @@
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.7; color: #333; }
 .navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
 .navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
 .navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
@@ -121,7 +117,7 @@ KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/A
 </p>
 
 
-<figure id="org0c675dc">
+<figure id="org293761f">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm.png" alt="kvm.png">
 
 </figure>
@@ -175,7 +171,7 @@ KVM 本身不执行任何模拟，需要用户空间应用程序 <code>QEMU</cod
 </ul>
 
 
-<figure id="org5cc1eae">
+<figure id="orgead8f52">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-vcpu.png" alt="kvm-vcpu.png">
 
 </figure>
@@ -255,7 +251,7 @@ cache 不同模式工作原理图：
 </p>
 
 
-<figure id="org9ca8b89">
+<figure id="org3e7f026">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-cache.png" alt="kvm-cache.png">
 
 </figure>
@@ -578,7 +574,7 @@ KVM 是必须使用硬件虚拟化辅助技术（如 Intel VT-x、AMD-V）的 hy
 </p>
 
 
-<figure id="org1fbc8bf">
+<figure id="orgcd15ac2">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-emulated-io.jpg" alt="qemu-emulated-io.jpg">
 
 </figure>
@@ -596,7 +592,7 @@ QEMU 模拟 I/O 设备的方式，其优点是可以通过软件模拟出各种�
 </p>
 
 
-<figure id="orgf6e8be4">
+<figure id="org7ef6964">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-kvm-virtio.jpg" alt="qemu-kvm-virtio.jpg">
 
 </figure>
@@ -614,7 +610,7 @@ virtio 半虚拟化驱动的方式，可以获得很好的 I/O 性能，其性�
 </p>
 
 
-<figure id="orgeb39f6a">
+<figure id="org8cae81f">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/virtio-vhostnet.png" alt="virtio-vhostnet.png">
 
 </figure>
@@ -636,7 +632,7 @@ virtio_blk 驱动使用 virtio API 为客户机提供了一个高效访问块设
 </p>
 
 
-<figure id="org8074cf2">
+<figure id="orgd4f1d3a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/devassign-sriov.png" alt="devassign-sriov.png">
 
 </figure>
@@ -680,7 +676,7 @@ KVM 热插拔的操作可以参考 KVM 官方文档：
 <h2 id="org2ec54b0"><span class="section-number-2">4.</span> KVM 管理工具</h2>
 <div class="outline-text-2" id="text-4">
 
-<figure id="org7737afb">
+<figure id="orgdb9aebe">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-support.png" alt="libvirt-support.png">
 
 </figure>
@@ -702,7 +698,7 @@ libvirt 作为中间适配层，让底层 Hypervisor 对上层用户空间的管
 </p>
 
 
-<figure id="org4c4d9fc">
+<figure id="org40065fc">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-manage-hypervisors.jpg" alt="libvirt-manage-hypervisors.jpg">
 
 </figure>
