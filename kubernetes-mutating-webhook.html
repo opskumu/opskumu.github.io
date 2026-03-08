@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 23:03 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>自定义 Kubernetes 准入控制器</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,25 +57,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8872118">1. 理论概要</a></li>
-<li><a href="#org50a02ee">2. 场景说明</a></li>
-<li><a href="#org3345ae0">3. 代码实现</a></li>
-<li><a href="#orgc83ae23">4. TLS 认证</a></li>
-<li><a href="#org49fb75a">5. 服务部署</a></li>
-<li><a href="#orgaa884a0">6. 参考</a></li>
+<li><a href="#org6949718">1. 理论概要</a></li>
+<li><a href="#orge6b5d3f">2. 场景说明</a></li>
+<li><a href="#org0bb144d">3. 代码实现</a></li>
+<li><a href="#orga02c963">4. TLS 认证</a></li>
+<li><a href="#org4f7b600">5. 服务部署</a></li>
+<li><a href="#orga23c8f1">6. 参考</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-org8872118" class="outline-2">
-<h2 id="org8872118"><span class="section-number-2">1.</span> 理论概要</h2>
+<div id="outline-container-org6949718" class="outline-2">
+<h2 id="org6949718"><span class="section-number-2">1.</span> 理论概要</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 除了 Kubernetes 默认的 admission controller，我们可以使用 admission webhooks 作为准入链的一部分。admission webhooks 调用 webhook 服务以在 pod 创建时变更配置，如注入标签，或者在准入过程中验证 pod 配置。下图为准入控制器流程：
 </p>
 
 
-<figure id="orgf6eb36f">
+<figure id="orgc8aea7a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/admission-controller-phases.png" alt="admission-controller-phases.png">
 
 </figure>
@@ -77,18 +113,16 @@ Admission webhooks 可以使用如下几个场景：
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org50a02ee" class="outline-2">
-<h2 id="org50a02ee"><span class="section-number-2">2.</span> 场景说明</h2>
+<div id="outline-container-orge6b5d3f" class="outline-2">
+<h2 id="orge6b5d3f"><span class="section-number-2">2.</span> 场景说明</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 本文通过一个较为实用的场景来自定义编写 admission webhooks，使用 Kubernetes 的过程中可能遇到过 DNS 5s 延迟的问题，产生问题的原因可以具体参考官方 issue <a href="https://github.com/kubernetes/kubernetes/issues/56903">DNS intermittent delays of 5s</a> 。这里我们通过编写 admission mutating webhook 注入 DNS 配置，以达到解决问题的目的。因为我们是针对 Pod 资源的 admission webhook，对于 CRD 的资源我们可以使用 kubebuilder 来生成脚手架。但是对于 core 类型的资源如 Pod，kubebuilder 并不支持，我们需要直接使用 <a href="https://github.com/kubernetes-sigs/controller-runtime">controller-runtime</a> 编写，官方提供了内建资源 webhook 的示例 <a href="https://github.com/kubernetes-sigs/controller-runtime/tree/master/examples/builtins">controller-runtime/examples/builtins/</a> （CRD 资源建议参考 <a href="https://book.kubebuilder.io/reference/webhook-overview.html">kubebuilder webhook）</a>。validating 和 mutating webhook 类似，这里我们以 mutating webhook 为例。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org3345ae0" class="outline-2">
-<h2 id="org3345ae0"><span class="section-number-2">3.</span> 代码实现</h2>
+<div id="outline-container-org0bb144d" class="outline-2">
+<h2 id="org0bb144d"><span class="section-number-2">3.</span> 代码实现</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 首先构建 <code>main</code> 函数，main 主要是构建 manager 然后创建 webhooks 并注册 API：
@@ -251,9 +285,8 @@ func (p *podMutate) InjectDecoder(d *admission.Decoder) error {
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgc83ae23" class="outline-2">
-<h2 id="orgc83ae23"><span class="section-number-2">4.</span> TLS 认证</h2>
+<div id="outline-container-orga02c963" class="outline-2">
+<h2 id="orga02c963"><span class="section-number-2">4.</span> TLS 认证</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 代码逻辑完成只是第一步，前面提到 API Server 和 webhook server 通信是基于 TLS 的，下面我们介绍如果配置 TLS。
@@ -263,8 +296,8 @@ func (p *podMutate) InjectDecoder(d *admission.Decoder) error {
 创建 <code>csr.conf</code> 文件：
 </p>
 
-<pre class="example">
-[ req ]
+<div class="org-src-container">
+<pre class="src src-nil">[ req ]
 default_bits = 2048
 prompt = no
 default_md = sha256
@@ -294,6 +327,7 @@ keyUsage=keyEncipherment,dataEncipherment
 extendedKeyUsage=serverAuth,clientAuth
 subjectAltName=@alt_names
 </pre>
+</div>
 
 <p>
 通过以下命令生成证书，证书有效期根据实际情况修改，这里使用 10000 天：
@@ -313,9 +347,8 @@ openssl x509 -req -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.
 </p>
 </div>
 </div>
-
-<div id="outline-container-org49fb75a" class="outline-2">
-<h2 id="org49fb75a"><span class="section-number-2">5.</span> 服务部署</h2>
+<div id="outline-container-org4f7b600" class="outline-2">
+<h2 id="org4f7b600"><span class="section-number-2">5.</span> 服务部署</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>mutatingwebhook.yaml</li>
@@ -460,9 +493,8 @@ spec:
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgaa884a0" class="outline-2">
-<h2 id="orgaa884a0"><span class="section-number-2">6.</span> 参考</h2>
+<div id="outline-container-orga23c8f1" class="outline-2">
+<h2 id="orga23c8f1"><span class="section-number-2">6.</span> 参考</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li><a href="https://docs.openshift.com/container-platform/3.11/architecture/additional_concepts/dynamic_admission_controllers.html">Custom Admission Controllers</a></li>
@@ -475,7 +507,7 @@ spec:
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2021-01-12 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2021-01-12 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

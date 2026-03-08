@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sublime Text2 tips</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,54 +57,53 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org473ae04">1. 设置 tab 为 4 个空格</a>
+<li><a href="#orgca5cfdf">1. 设置 tab 为 4 个空格</a>
 <ul>
-<li><a href="#orgc1b43a8">1.1. Reference</a></li>
+<li><a href="#orge89b0b3">1.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#orgf5457b1">2. 设置 vim 模式</a>
+<li><a href="#orga4c4db5">2. 设置 vim 模式</a>
 <ul>
-<li><a href="#orgeadefdd">2.1. Reference</a></li>
+<li><a href="#orga815100">2.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#org1671490">3. 列编辑模式</a>
+<li><a href="#orgae49542">3. 列编辑模式</a>
 <ul>
-<li><a href="#org8b28537">3.1. Reference</a></li>
+<li><a href="#orgf3d1202">3.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#org8d21683">4. Package Control</a></li>
-<li><a href="#orgd3a66d1">5. Markdown Preview 插件</a>
+<li><a href="#org797da97">4. Package Control</a></li>
+<li><a href="#orgb120c32">5. Markdown Preview 插件</a>
 <ul>
-<li><a href="#org3d726db">5.1. Reference</a></li>
+<li><a href="#org4700b2a">5.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#org725c28d">6. 撤销恢复</a></li>
-<li><a href="#org21ce3ae">7. 查找替换</a></li>
-<li><a href="#org5b5eaee">8. Ctrl+P</a></li>
-<li><a href="#orgb8b3f76">9. 命令调用</a></li>
-<li><a href="#orgea81810">10. Console</a></li>
+<li><a href="#org8e331a6">6. 撤销恢复</a></li>
+<li><a href="#org58b96e3">7. 查找替换</a></li>
+<li><a href="#orgbcfd687">8. Ctrl+P</a></li>
+<li><a href="#orga7424e8">9. 命令调用</a></li>
+<li><a href="#org833cd2c">10. Console</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-org473ae04" class="outline-2">
-<h2 id="org473ae04"><span class="section-number-2">1.</span> 设置 tab 为 4 个空格</h2>
+<div id="outline-container-orgca5cfdf" class="outline-2">
+<h2 id="orgca5cfdf"><span class="section-number-2">1.</span> 设置 tab 为 4 个空格</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Preferences/Settings - Default</li>
 </ul>
 
-<pre class="example">
-// The number of spaces a tab is considered equal to
+<div class="org-src-container">
+<pre class="src src-nil">// The number of spaces a tab is considered equal to
 "tab_size": 4,
 
 // Set to true to insert spaces when tab is pressed
 "translate_tabs_to_spaces": true,
 </pre>
 </div>
-
-<div id="outline-container-orgc1b43a8" class="outline-3">
-<h3 id="orgc1b43a8"><span class="section-number-3">1.1.</span> Reference</h3>
+</div>
+<div id="outline-container-orge89b0b3" class="outline-3">
+<h3 id="orge89b0b3"><span class="section-number-3">1.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/settings.html">Settings</a></li>
@@ -75,25 +111,26 @@
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgf5457b1" class="outline-2">
-<h2 id="orgf5457b1"><span class="section-number-2">2.</span> 设置 vim 模式</h2>
+<div id="outline-container-orga4c4db5" class="outline-2">
+<h2 id="orga4c4db5"><span class="section-number-2">2.</span> 设置 vim 模式</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Preferences/Settings - Default</li>
 </ul>
 
-<pre class="example">
-"ignored_packages": ["Vintage"]
+<div class="org-src-container">
+<pre class="src src-nil">"ignored_packages": ["Vintage"]
 </pre>
+</div>
 
 <p>
 to:
 </p>
 
-<pre class="example">
-"ignored_packages": []
+<div class="org-src-container">
+<pre class="src src-nil">"ignored_packages": []
 </pre>
+</div>
 
 <ul class="org-ul">
 <li>Preferences/Settings - User</li>
@@ -107,13 +144,13 @@ to:
 add:
 </p>
 
-<pre class="example">
-"vintage_start_in_command_mode": true
+<div class="org-src-container">
+<pre class="src src-nil">"vintage_start_in_command_mode": true
 </pre>
 </div>
-
-<div id="outline-container-orgeadefdd" class="outline-3">
-<h3 id="orgeadefdd"><span class="section-number-3">2.1.</span> Reference</h3>
+</div>
+<div id="outline-container-orga815100" class="outline-3">
+<h3 id="orga815100"><span class="section-number-3">2.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/vintage.html">Vintage Mode</a></li>
@@ -121,18 +158,16 @@ add:
 </div>
 </div>
 </div>
-
-<div id="outline-container-org1671490" class="outline-2">
-<h2 id="org1671490"><span class="section-number-2">3.</span> 列编辑模式</h2>
+<div id="outline-container-orgae49542" class="outline-2">
+<h2 id="orgae49542"><span class="section-number-2">3.</span> 列编辑模式</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>鼠标右键 + Shift OR 鼠标中键</li>
 <li>Add to selection: Ctrl</li>
 </ul>
 </div>
-
-<div id="outline-container-org8b28537" class="outline-3">
-<h3 id="org8b28537"><span class="section-number-3">3.1.</span> Reference</h3>
+<div id="outline-container-orgf3d1202" class="outline-3">
+<h3 id="orgf3d1202"><span class="section-number-3">3.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/column_selection.html">Column Selection</a></li>
@@ -140,9 +175,8 @@ add:
 </div>
 </div>
 </div>
-
-<div id="outline-container-org8d21683" class="outline-2">
-<h2 id="org8d21683"><span class="section-number-2">4.</span> Package Control</h2>
+<div id="outline-container-org797da97" class="outline-2">
+<h2 id="org797da97"><span class="section-number-2">4.</span> Package Control</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Ctrl+`</li>
@@ -158,18 +192,16 @@ add:
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgd3a66d1" class="outline-2">
-<h2 id="orgd3a66d1"><span class="section-number-2">5.</span> Markdown Preview 插件</h2>
+<div id="outline-container-orgb120c32" class="outline-2">
+<h2 id="orgb120c32"><span class="section-number-2">5.</span> Markdown Preview 插件</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Use Ctrl+Shift+P then Package Control: Install Package</li>
 <li>Look for Markdown Preview and install it.</li>
 </ul>
 </div>
-
-<div id="outline-container-org3d726db" class="outline-3">
-<h3 id="org3d726db"><span class="section-number-3">5.1.</span> Reference</h3>
+<div id="outline-container-org4700b2a" class="outline-3">
+<h3 id="org4700b2a"><span class="section-number-3">5.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li><a href="https://github.com/revolunet/sublimetext-markdown-preview">Markdown Preview</a></li>
@@ -177,9 +209,8 @@ add:
 </div>
 </div>
 </div>
-
-<div id="outline-container-org725c28d" class="outline-2">
-<h2 id="org725c28d"><span class="section-number-2">6.</span> 撤销恢复</h2>
+<div id="outline-container-org8e331a6" class="outline-2">
+<h2 id="org8e331a6"><span class="section-number-2">6.</span> 撤销恢复</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>Ctrl+Z 撤销</li>
@@ -187,9 +218,8 @@ add:
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org21ce3ae" class="outline-2">
-<h2 id="org21ce3ae"><span class="section-number-2">7.</span> 查找替换</h2>
+<div id="outline-container-org58b96e3" class="outline-2">
+<h2 id="org58b96e3"><span class="section-number-2">7.</span> 查找替换</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>Ctrl+F 查找</li>
@@ -197,9 +227,8 @@ add:
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org5b5eaee" class="outline-2">
-<h2 id="org5b5eaee"><span class="section-number-2">8.</span> Ctrl+P</h2>
+<div id="outline-container-orgbcfd687" class="outline-2">
+<h2 id="orgbcfd687"><span class="section-number-2">8.</span> Ctrl+P</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>Ctrl+P 快速跳转当前项目中的任意文件</li>
@@ -209,9 +238,8 @@ add:
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgb8b3f76" class="outline-2">
-<h2 id="orgb8b3f76"><span class="section-number-2">9.</span> 命令调用</h2>
+<div id="outline-container-orga7424e8" class="outline-2">
+<h2 id="orga7424e8"><span class="section-number-2">9.</span> 命令调用</h2>
 <div class="outline-text-2" id="text-9">
 <ul class="org-ul">
 <li>Ctrl+Shift+P
@@ -221,9 +249,8 @@ add:
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgea81810" class="outline-2">
-<h2 id="orgea81810"><span class="section-number-2">10.</span> Console</h2>
+<div id="outline-container-org833cd2c" class="outline-2">
+<h2 id="org833cd2c"><span class="section-number-2">10.</span> Console</h2>
 <div class="outline-text-2" id="text-10">
 <ul class="org-ul">
 <li>Ctrl+`</li>
@@ -234,7 +261,7 @@ add:
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2014-12-19 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2014-12-19 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

@@ -1,82 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-01-31 Wed 15:07 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kumu's Blog</title>
+<title>Index</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
 <header>
-<h1 class="title">Kumu's Blog</h1>
-</header><table>
-
-
-<colgroup>
-<col  class="org-left">
-
-<col  class="org-left">
-
-<col  class="org-left">
-
-<col  class="org-left">
-
-<col  class="org-left">
-</colgroup>
-<tbody>
-<tr>
-<td class="org-left"><a href="https://opskumu.com">Index</a></td>
-<td class="org-left"><a href="https://blog.opskumu.com">Blog</a></td>
-<td class="org-left"><a href="https://wiki.opskumu.com">Wiki</a></td>
-<td class="org-left"><a href="https://github.com/opskumu/issues">Issues</a></td>
-<td class="org-left"><a href="https://github.com/opskumu">GitHub</a></td>
-</tr>
-</tbody>
-</table>
-
-<div id="outline-container-org0f18d91" class="outline-2">
-<h2 id="org0f18d91"># Archive</h2>
-<div class="outline-text-2" id="text-org0f18d91">
+<h1 class="title">Index</h1>
+</header><div id="outline-container-org7f2ae5e" class="outline-2">
+<h2 id="org7f2ae5e"># Archive</h2>
+<div class="outline-text-2" id="text-org7f2ae5e">
 <hr>
 </div>
-
-<div id="outline-container-org6787194" class="outline-3">
-<h3 id="org6787194">2024</h3>
-<div class="outline-text-3" id="text-org6787194">
+<div id="outline-container-org63cde1f" class="outline-3">
+<h3 id="org63cde1f">2024</h3>
+<div class="outline-text-3" id="text-org63cde1f">
 <ul class="org-ul">
 <li>2024-01-02 <a href="bye-2023.html">2023，小结</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org303eee7" class="outline-3">
-<h3 id="org303eee7">2023</h3>
-<div class="outline-text-3" id="text-org303eee7">
+<div id="outline-container-orgaeb5663" class="outline-3">
+<h3 id="orgaeb5663">2023</h3>
+<div class="outline-text-3" id="text-orgaeb5663">
 <ul class="org-ul">
 <li>2023-01-27 <a href="bye-2022.html">2022，小结</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org55a7014" class="outline-3">
-<h3 id="org55a7014">2022</h3>
-<div class="outline-text-3" id="text-org55a7014">
+<div id="outline-container-org8509ffc" class="outline-3">
+<h3 id="org8509ffc">2022</h3>
+<div class="outline-text-3" id="text-org8509ffc">
 <ul class="org-ul">
 <li>2022-01-23 <a href="bye-2021.html">2021，小结</a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgdd9bd11" class="outline-3">
-<h3 id="orgdd9bd11">2021</h3>
-<div class="outline-text-3" id="text-orgdd9bd11">
+<div id="outline-container-org501de3e" class="outline-3">
+<h3 id="org501de3e">2021</h3>
+<div class="outline-text-3" id="text-org501de3e">
 <ul class="org-ul">
 <li>2021-03-31 <a href="kubernetes-access-controll.html">Kubernetes 访问控制</a></li>
 <li>2021-02-16 <a href="bye-2020.html">2020，小结</a></li>
@@ -85,10 +93,9 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgbdd4f3a" class="outline-3">
-<h3 id="orgbdd4f3a">2020</h3>
-<div class="outline-text-3" id="text-orgbdd4f3a">
+<div id="outline-container-orgaaf82b1" class="outline-3">
+<h3 id="orgaaf82b1">2020</h3>
+<div class="outline-text-3" id="text-orgaaf82b1">
 <ul class="org-ul">
 <li>2020-06-10 <a href="client-go-under-the-hood.html">client-go 背后机制</a></li>
 <li>2020-02-03 <a href="how-k8s-ingress-works.html">Nginx Ingress 控制器工作机制</a></li>
@@ -97,10 +104,9 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org9e0d95e" class="outline-3">
-<h3 id="org9e0d95e">2019</h3>
-<div class="outline-text-3" id="text-org9e0d95e">
+<div id="outline-container-org78291a9" class="outline-3">
+<h3 id="org78291a9">2019</h3>
+<div class="outline-text-3" id="text-org78291a9">
 <ul class="org-ul">
 <li>2019-11-26 <a href="wacai-docker.html">挖财 Kubernetes 容器化之路</a></li>
 <li>2019-10-10 <a href="xinjiang-2019.html">北疆秋色</a></li>
@@ -111,10 +117,9 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org93c51f6" class="outline-3">
-<h3 id="org93c51f6">2018</h3>
-<div class="outline-text-3" id="text-org93c51f6">
+<div id="outline-container-org164edfa" class="outline-3">
+<h3 id="org164edfa">2018</h3>
+<div class="outline-text-3" id="text-org164edfa">
 <ul class="org-ul">
 <li>2018-12-23 <a href="borg.html">Google 大规模集群管理器 Borg</a></li>
 <li>2018-11-18 <a href="k8s-pod-affinity-antiaffinity.html">Kubernetes Pod 亲和性和反亲和性</a></li>
@@ -130,10 +135,9 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgc1cdb05" class="outline-3">
-<h3 id="orgc1cdb05">2017</h3>
-<div class="outline-text-3" id="text-orgc1cdb05">
+<div id="outline-container-org755bc3c" class="outline-3">
+<h3 id="org755bc3c">2017</h3>
+<div class="outline-text-3" id="text-org755bc3c">
 <ul class="org-ul">
 <li>2017-11-12 <a href="graceful-shutdown-docker.html">如何优雅的关闭容器</a></li>
 <li>2017-09-17 <a href="slow-down.html">要不，慢点吧</a></li>
@@ -151,10 +155,9 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org69f82a9" class="outline-3">
-<h3 id="org69f82a9">2016</h3>
-<div class="outline-text-3" id="text-org69f82a9">
+<div id="outline-container-orga189f80" class="outline-3">
+<h3 id="orga189f80">2016</h3>
+<div class="outline-text-3" id="text-orga189f80">
 <ul class="org-ul">
 <li>2016-11-09 <a href="k8s-ingress.html">Kubernetes Ingress 服务负载均衡</a></li>
 <li>2016-04-20 <a href="go-pointers-defer-func.html">Go 指针、defer、匿名函数</a></li>
@@ -167,10 +170,9 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org5b490d6" class="outline-3">
-<h3 id="org5b490d6">2015</h3>
-<div class="outline-text-3" id="text-org5b490d6">
+<div id="outline-container-org048d99c" class="outline-3">
+<h3 id="org048d99c">2015</h3>
+<div class="outline-text-3" id="text-org048d99c">
 <ul class="org-ul">
 <li>2015-12-09 <a href="some-thoughts.html">我所能想到的一些事情</a></li>
 <li>2015-11-04 <a href="cadvisor.html">cAdvisor 容器数据采集</a></li>
@@ -186,10 +188,9 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org5ec2ecc" class="outline-3">
-<h3 id="org5ec2ecc">2014</h3>
-<div class="outline-text-3" id="text-org5ec2ecc">
+<div id="outline-container-org2770fb2" class="outline-3">
+<h3 id="org2770fb2">2014</h3>
+<div class="outline-text-3" id="text-org2770fb2">
 <ul class="org-ul">
 <li>2014-12-22 <a href="docker.html">Docker 学习笔记</a></li>
 <li>2014-12-19 <a href="sublime.html">Sublime Text2 tips</a></li>
@@ -199,10 +200,9 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgf040423" class="outline-3">
-<h3 id="orgf040423">2013</h3>
-<div class="outline-text-3" id="text-orgf040423">
+<div id="outline-container-org4fd390c" class="outline-3">
+<h3 id="org4fd390c">2013</h3>
+<div class="outline-text-3" id="text-org4fd390c">
 <ul class="org-ul">
 <li>2013-08-06 <a href="tmux.html">终端利器 Tmux</a></li>
 <li>2013-06-19 <a href="pdsh-pssh.html">批量主机管理 pdsh &amp; pssh</a></li>
@@ -217,7 +217,7 @@
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2021-02-16 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.1 (<a href="https://orgmode.org">Org</a> mode 9.6.6)</span>
+         class="date">2021-02-16 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

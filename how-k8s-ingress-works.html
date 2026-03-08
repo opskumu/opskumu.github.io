@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Nginx Ingress 控制器工作机制</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,14 +57,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5450027">1. NGINX 配置</a></li>
-<li><a href="#org2a46d46">2. NGINX 模型</a></li>
-<li><a href="#orgee229d5">3. 构建 NGINX 模型</a></li>
-<li><a href="#org9792097">4. 什么时候重新加载是必须的</a></li>
-<li><a href="#org6640ed3">5. 避免重新加载</a>
+<li><a href="#org187e09b">1. NGINX 配置</a></li>
+<li><a href="#org5bbda9c">2. NGINX 模型</a></li>
+<li><a href="#orgff7ee9d">3. 构建 NGINX 模型</a></li>
+<li><a href="#org6ee493c">4. 什么时候重新加载是必须的</a></li>
+<li><a href="#orgd8a908c">5. 避免重新加载</a>
 <ul>
-<li><a href="#orgae5cf77">5.1. 避免 Endpoints 变更时重新加载</a></li>
-<li><a href="#org3896225">5.2. 避免因错误的配置而中断</a></li>
+<li><a href="#org0b756fb">5.1. 避免 Endpoints 变更时重新加载</a></li>
+<li><a href="#org26292b0">5.2. 避免因错误的配置而中断</a></li>
 </ul>
 </li>
 </ul>
@@ -42,19 +79,16 @@
 <p>
 本文的目的是说明 Nginx ingress controller 是如何工作的，特别是 Nginx 模型是如何构建的以及我们为何需要这个模型。
 </p>
-
-
-<div id="outline-container-org5450027" class="outline-2">
-<h2 id="org5450027"><span class="section-number-2">1.</span> NGINX 配置</h2>
+<div id="outline-container-org187e09b" class="outline-2">
+<h2 id="org187e09b"><span class="section-number-2">1.</span> NGINX 配置</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求的主要含义是在配置文件有任何变更后都需要重新加载 NGINX。不过需要特别注意的是，在只有 <code>upstream</code> 配置变更的时候我们不需要重新加载 Nginx（即当你部署你的应用时 Endpoints 变更）。我们使用 <a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a> 达到这个目的。请通过<a href="https://kubernetes.github.io/ingress-nginx/how-it-works/#avoiding-reloads-on-endpoints-changes"> 下面的内容</a> 来学习我们如何做到这一点。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org2a46d46" class="outline-2">
-<h2 id="org2a46d46"><span class="section-number-2">2.</span> NGINX 模型</h2>
+<div id="outline-container-org5bbda9c" class="outline-2">
+<h2 id="org5bbda9c"><span class="section-number-2">2.</span> NGINX 模型</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 通常，一个 Kubernetes 控制器采用 <a href="https://coreos.com/kubernetes/docs/latest/replication-controller.html#the-reconciliation-loop-in-detail">synchronization loop pattern</a> 来检查控制器中所需的状态是否已更新或者需要变更。为了达到这个目的，我们需要使用集群的不同对象来构建模型，特别是（无特殊顺序）Ingresses，Services，Endpoints，Secrets，以及 Configmaps 来生成反映集群状态的时间点配置文件。
@@ -73,9 +107,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgee229d5" class="outline-2">
-<h2 id="orgee229d5"><span class="section-number-2">3.</span> 构建 NGINX 模型</h2>
+<div id="outline-container-orgff7ee9d" class="outline-2">
+<h2 id="orgff7ee9d"><span class="section-number-2">3.</span> 构建 NGINX 模型</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 建立模型是一项成本比较高的操作，基于这个原因，使用同步循环是必须的。通过使用 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/internal/task/queue.go#L38">work queue</a>，可以不丢失变更并通过 <a href="https://golang.org/pkg/sync/#Mutex">sync.Mutex</a> 移除来强制执行一次同步循环，此外还可以在同步循环的开始和结束之间创建一个时间窗口，从而允许我们摒弃不必要的更新。重要的是要理解，集群中的任何变更都会生成事件，然后 informer 会发送给控制器，这也是使用 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/internal/task/queue.go#L38">work queue</a> 的原因之一。
@@ -98,9 +131,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org9792097" class="outline-2">
-<h2 id="org9792097"><span class="section-number-2">4.</span> 什么时候重新加载是必须的</h2>
+<div id="outline-container-org6ee493c" class="outline-2">
+<h2 id="org6ee493c"><span class="section-number-2">4.</span> 什么时候重新加载是必须的</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 接下来的场景描述什么时候需要重新加载：
@@ -117,17 +149,15 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org6640ed3" class="outline-2">
-<h2 id="org6640ed3"><span class="section-number-2">5.</span> 避免重新加载</h2>
+<div id="outline-container-orgd8a908c" class="outline-2">
+<h2 id="orgd8a908c"><span class="section-number-2">5.</span> 避免重新加载</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 在某些情况下，有可能避免重新加载，尤其是在 endpoints 发送变化的时候，如 pod 启动或者被替换时。完全移除重新加载这超过了 Ingress 控制器的范围。这将需要大量的工作，并且有时没有任何意义。仅当 NGINX 变更了读取新配置的方式时，这才可以变更，基本上，新的变更不会替代工作进程。
 </p>
 </div>
-
-<div id="outline-container-orgae5cf77" class="outline-3">
-<h3 id="orgae5cf77"><span class="section-number-3">5.1.</span> 避免 Endpoints 变更时重新加载</h3>
+<div id="outline-container-org0b756fb" class="outline-3">
+<h3 id="org0b756fb"><span class="section-number-3">5.1.</span> 避免 Endpoints 变更时重新加载</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 在每个 endpoint 变更上，控制器从所有能看到的服务上获取 endpoints 并生成相应的后端对象。然后将这些对象发送给运行在 Nginx 内部的 Lua 处理程序。Lua 程序将这些后端存储在共享内存区域。然后对于在 <code>balancer_by_lua</code> 上下文运行的每个请求，Lua 代码检测 endpoints 选择对应 upstream 并应用已经配置的负载均衡算法。Nginx 负责其余的工作。这样，我们避免在 endpoint 变更时重新加载 Nginx。注意，这包括 annotation 的变更，不过也只是影响 Nginx <code>upstream</code> 的配置。
@@ -138,9 +168,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </p>
 </div>
 </div>
-
-<div id="outline-container-org3896225" class="outline-3">
-<h3 id="org3896225"><span class="section-number-3">5.2.</span> 避免因错误的配置而中断</h3>
+<div id="outline-container-org26292b0" class="outline-3">
+<h3 id="org26292b0"><span class="section-number-3">5.2.</span> 避免因错误的配置而中断</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 因为 ingress 控制器使用 <a href="https://coreos.com/kubernetes/docs/latest/replication-controller.html#the-reconciliation-loop-in-detail">synchronization loop pattern</a>，它对所有匹配到的对象应用配置。如果某些 ingress 对象配置损坏，如 <code>nginx.ingress.kubernetes.io/configuration-snippet</code> annotation 语法错误，生成的配置变得不可用，将不会重新加载并不再考虑其它入口。
@@ -156,7 +185,7 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2020-02-03 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2020-02-03 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

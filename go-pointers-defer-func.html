@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Go 指针、defer、匿名函数</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,16 +57,15 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9598dc2">1. Go 指针</a></li>
-<li><a href="#org6893caa">2. Go defer 表达式</a></li>
-<li><a href="#orgc91c17a">3. 匿名函数</a></li>
-<li><a href="#orga03963d">4. 实例</a></li>
+<li><a href="#orgf36e232">1. Go 指针</a></li>
+<li><a href="#org76b0c9a">2. Go defer 表达式</a></li>
+<li><a href="#org08b33c3">3. 匿名函数</a></li>
+<li><a href="#org3bd6d65">4. 实例</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-org9598dc2" class="outline-2">
-<h2 id="org9598dc2"><span class="section-number-2">1.</span> Go 指针</h2>
+<div id="outline-container-orgf36e232" class="outline-2">
+<h2 id="orgf36e232"><span class="section-number-2">1.</span> Go 指针</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <a href="https://www.golang-book.com/books/intro/8">Go Pointers</a>
@@ -69,9 +105,8 @@ func main() {
 </p>
 </div>
 </div>
-
-<div id="outline-container-org6893caa" class="outline-2">
-<h2 id="org6893caa"><span class="section-number-2">2.</span> Go defer 表达式</h2>
+<div id="outline-container-org76b0c9a" class="outline-2">
+<h2 id="org76b0c9a"><span class="section-number-2">2.</span> Go defer 表达式</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <a href="https://blog.golang.org/defer-panic-and-recover">Defer, Panic, and Recover</a>
@@ -120,9 +155,8 @@ func main() {
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgc91c17a" class="outline-2">
-<h2 id="orgc91c17a"><span class="section-number-2">3.</span> 匿名函数</h2>
+<div id="outline-container-org08b33c3" class="outline-2">
+<h2 id="org08b33c3"><span class="section-number-2">3.</span> 匿名函数</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Go 不能在函数内部显式嵌套定义函数，但是可以定义一个匿名函数，Go 通过匿名函数实现闭包（闭包，通过"捕获"自由变量的绑定对函数文本执行的"闭合"操作）。
@@ -152,9 +186,8 @@ func main() {
 </div>
 </div>
 </div>
-
-<div id="outline-container-orga03963d" class="outline-2">
-<h2 id="orga03963d"><span class="section-number-2">4.</span> 实例</h2>
+<div id="outline-container-org3bd6d65" class="outline-2">
+<h2 id="org3bd6d65"><span class="section-number-2">4.</span> 实例</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 前段时间在 twitter 看到一个例子，问以下代码应该输出什么，后来分析之后才知道结果，代码如下：
@@ -195,13 +228,14 @@ func main() {
 输出结果如下：
 </p>
 
-<pre class="example">
-➜ ～ go run test.go
+<div class="org-src-container">
+<pre class="src src-nil">➜ ～ go run test.go
 输出 number 值 pprint: 3
 输出 number 值 print: 3
 输出 number 值 pprint: 3
 输出 number 值 print: 0
 </pre>
+</div>
 
 <p>
 根据 defer 的后进先出原则，4 个 defer 语句的执行顺序为倒序的，最后两个属于闭包，很好的理解输出为 3。 <code>defer n.pprint()</code> 语句因为是指针，所以输出结果依然为 3。 <code>defer n.print()</code> 为何为 0，这个相对较难理解，根据上文的说明， <code>var n number</code> 执行后，n 被初始化为 0，之后 defer 语句就被传入内存的 list 中，因此 <code>defer n.print()</code> 输出值为 0。
@@ -212,7 +246,7 @@ func main() {
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2019-04-20 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2019-04-20 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

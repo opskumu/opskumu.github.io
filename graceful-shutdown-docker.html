@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>如何优雅的关闭容器</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,12 +57,12 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge9e7c75">1. 信号</a></li>
-<li><a href="#orgbeb6f14">2. <code>ENTRYPOINT</code> 、 <code>CMD</code></a></li>
-<li><a href="#orgb34a023">3. 实例</a>
+<li><a href="#org8254fb6">1. 信号</a></li>
+<li><a href="#org7bcb52e">2. <code>ENTRYPOINT</code> 、 <code>CMD</code></a></li>
+<li><a href="#org59c018a">3. 实例</a>
 <ul>
-<li><a href="#org9110c52">3.1. 实例 1</a></li>
-<li><a href="#org32a78ae">3.2. 实例 2</a></li>
+<li><a href="#org7c9176d">3.1. 实例 1</a></li>
+<li><a href="#orgbfec53b">3.2. 实例 2</a></li>
 </ul>
 </li>
 </ul>
@@ -38,9 +75,8 @@
 <p>
 要说如何优雅的关闭容器，那就不得不提到信号（Signal）的理念，以及 <code>Dockerfile</code> 中 <code>ENTRYPOINT</code> 和 <code>CMD</code> 指令了。在具体说优雅关闭之前，先了解一下信号这个 Linux 中的基础概念。
 </p>
-
-<div id="outline-container-orge9e7c75" class="outline-2">
-<h2 id="orge9e7c75"><span class="section-number-2">1.</span> 信号</h2>
+<div id="outline-container-org8254fb6" class="outline-2">
+<h2 id="org8254fb6"><span class="section-number-2">1.</span> 信号</h2>
 <div class="outline-text-2" id="text-1">
 <blockquote>
 <p>
@@ -52,8 +88,8 @@
 信号有不同的类型，Linux 对标准信号的编号为 1~31，可以通过 <code>kill -l</code> 获取信号名称：
 </p>
 
-<pre class="example">
-# kill -l
+<div class="org-src-container">
+<pre class="src src-nil"># kill -l
  1) SIGHUP       2) SIGINT       3) SIGQUIT      
  4) SIGILL       5) SIGTRAP      6) SIGABRT      
  7) SIGBUS       8) SIGFPE       9) SIGKILL
@@ -61,6 +97,7 @@
  13) SIGPIPE    14) SIGALRM     15) SIGTERM
 ... ...
 </pre>
+</div>
 
 <p>
 实际列出的信号超过了 31 个，有些是其它名称的同义词，有些则是定义但未使用的。以下介绍几个常用的信号：
@@ -85,7 +122,7 @@
 </p>
 
 
-<figure id="orga0a69b6">
+<figure id="org6cd3c9e">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/signal.png" alt="signal.png">
 
 </figure>
@@ -97,9 +134,8 @@
 </blockquote>
 </div>
 </div>
-
-<div id="outline-container-orgbeb6f14" class="outline-2">
-<h2 id="orgbeb6f14"><span class="section-number-2">2.</span> <code>ENTRYPOINT</code> 、 <code>CMD</code></h2>
+<div id="outline-container-org7bcb52e" class="outline-2">
+<h2 id="org7bcb52e"><span class="section-number-2">2.</span> <code>ENTRYPOINT</code> 、 <code>CMD</code></h2>
 <div class="outline-text-2" id="text-2">
 <p>
 可能有人会问，说了半天，那信号和优雅的关闭容器有半毛钱的关系啊？话说，这和钱确实没关系，但是和如何优雅关闭容器却关系密切。接着说 <code>Dockerfile</code> 中的 <code>ENTRYPOINT</code> 和 <code>CMD</code> 指令，它们的主要功能是指定容器启动时执行的程序。
@@ -128,8 +164,8 @@
 其中，不管你 <code>Dockerfile</code> 用其中哪个指令，两个指令都推荐使用 <b>exec</b> 格式，而不是 <b>shell</b> 格式。原因就是因为使用 <b>shell</b> 格式之后，程序会以 <code>/bin/sh -c</code> 的子命令启动，并且 <b>shell</b> 格式下不会传递任何信号给程序。这也就导致，在 <code>docker stop</code> 容器的时候，以这种格式运行的程序捕捉不到发送的信号，也就谈不上优雅的关闭了。
 </p>
 
-<pre class="example">
-➜  ~ docker stop --help
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker stop --help
 
 Usage:  docker stop [OPTIONS] CONTAINER [CONTAINER...]
 
@@ -139,13 +175,14 @@ Options:
       --help       Print usage
   -t, --time int   Seconds to wait for stop before killing it (default 10)
 </pre>
+</div>
 
 <p>
 <code>docker stop</code> 停掉容器的时候，默认会发送一个 <code>SIGTERM</code> 的信号，默认 10s 后容器没有停止的话，就 <code>SIGKILL</code> 强制停止容器。通过 <code>-t</code> 选项可以设置等待时间。
 </p>
 
-<pre class="example">
-➜  ~ docker kill --help
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker kill --help
 
 Usage:  docker kill [OPTIONS] CONTAINER [CONTAINER...]
 
@@ -155,6 +192,7 @@ Options:
       --help            Print usage
   -s, --signal string   Signal to send to the container (default "KILL")
 </pre>
+</div>
 
 <p>
 通过 <code>docker kill</code> 的 <code>-s</code> 选项还可以指定给容器发送的信号。
@@ -165,9 +203,8 @@ Options:
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgb34a023" class="outline-2">
-<h2 id="orgb34a023"><span class="section-number-2">3.</span> 实例</h2>
+<div id="outline-container-org59c018a" class="outline-2">
+<h2 id="org59c018a"><span class="section-number-2">3.</span> 实例</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 通过 Go 写一个简单的信号处理器：
@@ -204,12 +241,11 @@ func main() {
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org9110c52" class="outline-3">
-<h3 id="org9110c52"><span class="section-number-3">3.1.</span> 实例 1</h3>
+<div id="outline-container-org7c9176d" class="outline-3">
+<h3 id="org7c9176d"><span class="section-number-3">3.1.</span> 实例 1</h3>
 <div class="outline-text-3" id="text-3-1">
-<pre class="example">
-➜  ~ GOOS=linux GOARCH=amd64 go build signals.go
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ GOOS=linux GOARCH=amd64 go build signals.go
 ➜  ~ ls
 Dockerfile signals    signals.go
 ➜  ~ cat Dockerfile
@@ -220,25 +256,28 @@ COPY signals /signals
 CMD ["/signals"]    # exec 格式执行
 ➜  ~ docker build -t signals .
 </pre>
+</div>
 
 <p>
 通过 <code>tmux</code> 开启两个面板，一个运行容器，一个执行 <code>docker stop</code> ：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --name signals signals
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --name signals signals
 awaiting signal
 
 terminated
 exiting
 </pre>
+</div>
 
-<pre class="example">
-➜  ~ time docker stop signals
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ time docker stop signals
 signals
 docker stop signals  0.01s user 0.02s system 4% cpu 0.732 total
 ➜  ~
 </pre>
+</div>
 
 <p>
 可以发现，容器停止之前，程序接收到信号并输出相应信息，并且停止总耗时为 0.732 s，达到了优雅的效果。
@@ -248,8 +287,8 @@ docker stop signals  0.01s user 0.02s system 4% cpu 0.732 total
 修改 <code>Dockerfile</code> 中 <code>CMD</code> 执行格式，执行相同操作：
 </p>
 
-<pre class="example">
-➜  ~ cat Dockerfile
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ cat Dockerfile
 FROM busybox
 
 COPY signals /signals
@@ -257,18 +296,21 @@ COPY signals /signals
 CMD /signals        # shell 格式执行
 ➜  ~ docker build -t signals .
 </pre>
+</div>
 
-<pre class="example">
-➜  ~ docker run -it --rm --name signals signals
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --name signals signals
 awaiting signal
 ➜  ~
 </pre>
+</div>
 
-<pre class="example">
-➜  ~ time docker stop signals
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ time docker stop signals
 signals
 docker stop signals  0.01s user 0.01s system 0% cpu 10.719 total
 </pre>
+</div>
 
 <p>
 通过 <b>shell</b> 格式之后，可以发现容器停止之前，程序并未接收到任何信号，并且停止时间为 10.719s，说明该容器是被强制停止的。
@@ -279,16 +321,15 @@ docker stop signals  0.01s user 0.01s system 0% cpu 10.719 total
 </p>
 </div>
 </div>
-
-<div id="outline-container-org32a78ae" class="outline-3">
-<h3 id="org32a78ae"><span class="section-number-3">3.2.</span> 实例 2</h3>
+<div id="outline-container-orgbfec53b" class="outline-3">
+<h3 id="orgbfec53b"><span class="section-number-3">3.2.</span> 实例 2</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 通过实例 1 我们都会在 <code>Dockerfile</code> 中都会通过 <b>exec</b> 这种格式来执行程序了，那如果执行的程序本身也是一个 shell 脚本呢？ 
 </p>
 
-<pre class="example">
-➜  ~ ls
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ ls
 Dockerfile signals    signals.go start.sh
 ➜  ~ cat Dockerfile
 FROM busybox
@@ -303,50 +344,56 @@ CMD ["/start.sh"]
 /signals
 ➜  ~
 </pre>
+</div>
 
 <p>
 测试依然引用实例 1 中的方法：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --name signals signals
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --name signals signals
 awaiting signal
 ➜  ~
 </pre>
+</div>
 
-<pre class="example">
-➜  ~ time docker stop signals
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ time docker stop signals
 signals
 docker stop signals  0.01s user 0.02s system 0% cpu 10.765 total
 ➜  ~
 </pre>
+</div>
 
 <p>
 可以发现，即使 <code>Dockerfile</code> 中的 <code>CMD</code> 指令使用的是 <b>exec</b> 格式，容器中的程序依然没有接收到信号，最后被强制关闭。因为 shell 脚本中执行的原因，导致信号依然没有被传递，我们需要针对 shell 脚本做一些改造：
 </p>
 
-<pre class="example">
-➜  ~ cat start.sh
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ cat start.sh
 #!/bin/sh
 
 exec /signals   # 加入 exec 执行
 ➜  ~ docker build -t signals .
 </pre>
+</div>
 
-<pre class="example">
-➜  ~ docker run -it --rm --name signals signals
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --name signals signals
 awaiting signal
 
 terminated
 exiting
 </pre>
+</div>
 
-<pre class="example">
-➜  ~ time docker stop signals
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ time docker stop signals
 signals
 docker stop signals  0.02s user 0.02s system 4% cpu 0.744 total
 ➜  ~
 </pre>
+</div>
 
 <p>
 可以看到，加入 exec 命令之后，程序又可以接收到信号正常退出了。当然，如果你 <code>Dockerfile</code> 中的 <code>CMD</code> 是以 <b>shell</b> 格式运行的，即使启动脚本中加入 exec 也是无效的。再者，如果你的程序本身不能针对信号做一些处理，也就谈不上优雅关闭了。
@@ -358,7 +405,7 @@ docker stop signals  0.02s user 0.02s system 4% cpu 0.744 total
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2017-11-12 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2017-11-12 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

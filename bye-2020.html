@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>2020，小结</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,17 +57,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgee2d010">1. 关于工作</a></li>
-<li><a href="#org9695353">2. 关于生活</a></li>
+<li><a href="#org98aeed5">1. 关于工作</a></li>
+<li><a href="#org6af59fc">2. 关于生活</a></li>
 </ul>
 </div>
 </nav>
 <p>
 按照往年的惯例，2020 的小结早已在 2020 年 12 月底或者 2021 年 1 月初就已经交稿了。而今年，因为各种原因搁置到现在。好友 <a href="http://www.zhangjiee.com/blog/2021/2020-personal-review.html">杰宝</a> 和 <a href="https://blog.tankywoo.com/2021/01/16/2020-summary.html">Tanky</a> 都在元旦前后交了稿，我这就赶着春节回顾一番吧。2020 年经历了很多事情，要说关乎每个人的事则是疫情。一场疫情把整个世界都打乱了，直到现在还在困扰着我们。要说我个人的话，发生的事情也很多，国庆的时候在老家把婚礼举办了，春节前几天把杭州的房子搞定了，还赶在最后一天入职了新公司。如果用一个词来描述这一年的话，我想没有比 <code>魔幻</code> 二字更合适的了。
 </p>
-
-<div id="outline-container-orgee2d010" class="outline-2">
-<h2 id="orgee2d010"><span class="section-number-2">1.</span> 关于工作</h2>
+<div id="outline-container-org98aeed5" class="outline-2">
+<h2 id="org98aeed5"><span class="section-number-2">1.</span> 关于工作</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 2019 年底开始有去外面看看机会的想法，不过当时换工作的想法并不强烈，在尝试几次结果不太理想之后就暂时搁置了。2019 年终总结的时候，有提到了如何去弥补一些自身的技术短板。针对数据结构和算法这块，现在来看做的并不好。我有专门去阅读相关的书籍和刷一些算法题，中间断断续续捡起又放下，并没有很好的坚持下来。当时信心满满的写下达成这些目标，多少有些自信过头了，无论如何后面接着查漏补缺。
@@ -49,9 +85,8 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org9695353" class="outline-2">
-<h2 id="org9695353"><span class="section-number-2">2.</span> 关于生活</h2>
+<div id="outline-container-org6af59fc" class="outline-2">
+<h2 id="org6af59fc"><span class="section-number-2">2.</span> 关于生活</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 随着年龄的增长，感觉身上的担子也越来越重了。我是一个不太会想事情的人，即使想也不会想太远的事情，但是慢慢的由不得你不去想。10 月份的时候先在老家把婚礼办了，结婚不仅仅是两个人的事情，涉及到的是两个家庭。结婚之后更多的是责任，随着父母年纪慢慢变老，做子女的承担的也要越来越多。以前可能会觉得说，我不需要对别人的人生负责，现在我觉得我要对我的人生负责，我要对我人生的另一半负责，还要对父母负责，这是一种责任也是一种希望。
@@ -80,7 +115,7 @@
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2021-02-16 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2021-02-16 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

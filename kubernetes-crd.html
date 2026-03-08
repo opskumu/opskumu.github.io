@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>自定义 Kubernetes CRD</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,28 +57,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd193253">1. 理论概要</a></li>
-<li><a href="#org3c69e71">2. kubebuilder 安装</a></li>
-<li><a href="#org6aff9fc">3. kubebuilder 初始化</a></li>
-<li><a href="#org54f29fd">4. kubebuilder 创建 API</a></li>
-<li><a href="#org6dbb5c6">5. 自定义代码并生成 client 代码</a></li>
-<li><a href="#orgf4954f8">6. 创建 CRD</a></li>
-<li><a href="#orgf70090e">7. 参考文档</a></li>
+<li><a href="#orgfc7f0e0">1. 理论概要</a></li>
+<li><a href="#org1b8dc60">2. kubebuilder 安装</a></li>
+<li><a href="#org0769b7a">3. kubebuilder 初始化</a></li>
+<li><a href="#org9ed227c">4. kubebuilder 创建 API</a></li>
+<li><a href="#org1f9dce4">5. 自定义代码并生成 client 代码</a></li>
+<li><a href="#org74c6566">6. 创建 CRD</a></li>
+<li><a href="#org5e040e5">7. 参考文档</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-orgd193253" class="outline-2">
-<h2 id="orgd193253"><span class="section-number-2">1.</span> 理论概要</h2>
+<div id="outline-container-orgfc7f0e0" class="outline-2">
+<h2 id="orgfc7f0e0"><span class="section-number-2">1.</span> 理论概要</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 我们知道 Kubernetes 提供 CRD 机制用以扩展资源，在某些场景下我们可以利用 CRD 扩展通过 Kubernetes 存储资源，也就是把 Kubernetes 当作存储来使用。按照官方的说法 CRD + Controller = Operator，<a href="https://github.com/kubernetes-sigs/kubebuilder">kubebuilder </a>可以生成这样的代码框架，并且可自定义选择是否生成 Controller。client 相关代码则可以通过 <a href="https://github.com/kubernetes/code-generator">code-generator</a> 生成，生成 informer、lister、clientset 等系列代码。通过这种方式，我们只需要在生成的代码中填充业务代码，而无需关心框架之外的代码，这样可以极大的提升开发效率和降低 CRD 的上手门槛。本文通过引入 ConfigMapHistory 这个 CRD 为例，带你从零到一构建和部署 CRD。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org3c69e71" class="outline-2">
-<h2 id="org3c69e71"><span class="section-number-2">2.</span> kubebuilder 安装</h2>
+<div id="outline-container-org1b8dc60" class="outline-2">
+<h2 id="org1b8dc60"><span class="section-number-2">2.</span> kubebuilder 安装</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 kubebuilder 安装文档可以参考官档 <a href="https://book.kubebuilder.io/quick-start.html#installation">Install kubebuilder</a> ：
@@ -62,9 +97,8 @@ export PATH=$PATH:/usr/local/kubebuilder/bin
 </div>
 </div>
 </div>
-
-<div id="outline-container-org6aff9fc" class="outline-2">
-<h2 id="org6aff9fc"><span class="section-number-2">3.</span> kubebuilder 初始化</h2>
+<div id="outline-container-org0769b7a" class="outline-2">
+<h2 id="org0769b7a"><span class="section-number-2">3.</span> kubebuilder 初始化</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 kubebuilder 代码初始化：
@@ -108,9 +142,8 @@ kubebuilder edit --multigroup=true
 </div>
 </div>
 </div>
-
-<div id="outline-container-org54f29fd" class="outline-2">
-<h2 id="org54f29fd"><span class="section-number-2">4.</span> kubebuilder 创建 API</h2>
+<div id="outline-container-org9ed227c" class="outline-2">
+<h2 id="org9ed227c"><span class="section-number-2">4.</span> kubebuilder 创建 API</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
 <pre class="src src-bash"># kubebuilder create api --group test --version v1 --kind ConfigMapHistory
@@ -127,9 +160,8 @@ apis/test/v1
 </div>
 </div>
 </div>
-
-<div id="outline-container-org6dbb5c6" class="outline-2">
-<h2 id="org6dbb5c6"><span class="section-number-2">5.</span> 自定义代码并生成 client 代码</h2>
+<div id="outline-container-org1f9dce4" class="outline-2">
+<h2 id="org1f9dce4"><span class="section-number-2">5.</span> 自定义代码并生成 client 代码</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 默认生成 <code>apis/test/v1/configmaphistory_types.go</code> 代码如下：
@@ -361,9 +393,8 @@ generated
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgf4954f8" class="outline-2">
-<h2 id="orgf4954f8"><span class="section-number-2">6.</span> 创建 CRD</h2>
+<div id="outline-container-org74c6566" class="outline-2">
+<h2 id="org74c6566"><span class="section-number-2">6.</span> 创建 CRD</h2>
 <div class="outline-text-2" id="text-6">
 <div class="org-src-container">
 <pre class="src src-bash">kubectl create -f config/crd/bases/test.opskumu.com_configmaphistories.yaml
@@ -396,9 +427,8 @@ test   27s
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgf70090e" class="outline-2">
-<h2 id="orgf70090e"><span class="section-number-2">7.</span> 参考文档</h2>
+<div id="outline-container-org5e040e5" class="outline-2">
+<h2 id="org5e040e5"><span class="section-number-2">7.</span> 参考文档</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li><a href="https://github.com/kubernetes/sample-controller">sample-controller</a></li>
@@ -411,7 +441,7 @@ test   27s
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2021-01-13 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2021-01-13 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

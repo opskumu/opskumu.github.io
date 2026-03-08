@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>北疆秋色</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,29 +57,28 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7f30c4f">1. Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></a></li>
-<li><a href="#org92d3e25">2. Day 2 北屯 -&gt; 布尔津 -&gt; 布尔津五彩滩 -&gt; 白哈巴 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-28 Sat&gt;</span></span></a></li>
-<li><a href="#org16e2b9b">3. Day 3 白哈巴 -&gt; 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-29 Sun&gt;</span></span></a></li>
-<li><a href="#org211549e">4. Day 4 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-30 Mon&gt;</span></span></a></li>
-<li><a href="#orgd7e5606">5. Day 5 喀纳斯 -&gt; 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-01 Tue&gt;</span></span></a></li>
-<li><a href="#orgfac66f4">6. Day 6 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-02 Wed&gt;</span></span></a></li>
-<li><a href="#org7ec6812">7. Day 7 禾木 -&gt; 阿勒泰 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-03 Thu&gt;</span></span></a></li>
-<li><a href="#org88b35c1">8. Day 8 阿勒泰 -&gt; 可可托海 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-04 Fri&gt;</span></span></a></li>
-<li><a href="#orgf138d8e">9. Day 9 可可托海 -&gt; 古海温泉 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-05 Sat&gt;</span></span></a></li>
-<li><a href="#org4b288fc">10. Day 10 古海温泉 -&gt; 乌鲁木齐 -&gt; 杭州 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-06 Sun&gt;</span></span></a></li>
-<li><a href="#org5e29c0c">11. 小结</a></li>
+<li><a href="#org5846b44">1. Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></a></li>
+<li><a href="#orgeffad03">2. Day 2 北屯 -&gt; 布尔津 -&gt; 布尔津五彩滩 -&gt; 白哈巴 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-28 Sat&gt;</span></span></a></li>
+<li><a href="#org86ed6f5">3. Day 3 白哈巴 -&gt; 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-29 Sun&gt;</span></span></a></li>
+<li><a href="#orgd125311">4. Day 4 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-30 Mon&gt;</span></span></a></li>
+<li><a href="#orgd97479e">5. Day 5 喀纳斯 -&gt; 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-01 Tue&gt;</span></span></a></li>
+<li><a href="#org3e3f4e3">6. Day 6 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-02 Wed&gt;</span></span></a></li>
+<li><a href="#org7200d4c">7. Day 7 禾木 -&gt; 阿勒泰 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-03 Thu&gt;</span></span></a></li>
+<li><a href="#org36e091e">8. Day 8 阿勒泰 -&gt; 可可托海 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-04 Fri&gt;</span></span></a></li>
+<li><a href="#org7d7dfe2">9. Day 9 可可托海 -&gt; 古海温泉 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-05 Sat&gt;</span></span></a></li>
+<li><a href="#orga73bbf1">10. Day 10 古海温泉 -&gt; 乌鲁木齐 -&gt; 杭州 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-06 Sun&gt;</span></span></a></li>
+<li><a href="#org8421577">11. 小结</a></li>
 </ul>
 </div>
 </nav>
 <p>
 去年六月新疆的行程还历历在目，没想到时隔一年又去新疆玩了一趟。不得不感慨，新疆实在是太大了，两次共约 20 天的旅途也只是玩了新疆一小片。去年去新疆主要是看夏日的草原，此次则是奔着喀纳斯的秋色去的。与去年不同的除了季节外，另外一个不同则是去年跟着游侠客的团走的，而今年的行程则是自由行，女友和她几个同事一早就把行程规划好了。
 </p>
-
-<div id="outline-container-org7f30c4f" class="outline-2">
-<h2 id="org7f30c4f"><span class="section-number-2">1.</span> Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></h2>
+<div id="outline-container-org5846b44" class="outline-2">
+<h2 id="org5846b44"><span class="section-number-2">1.</span> Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-1">
 
-<figure id="orgce58af8">
+<figure id="org9b60558">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-1.jpg" alt="xinjiang-2019-1.jpg">
 
 </figure>
@@ -52,16 +88,15 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org92d3e25" class="outline-2">
-<h2 id="org92d3e25"><span class="section-number-2">2.</span> Day 2 北屯 -&gt; 布尔津 -&gt; 布尔津五彩滩 -&gt; 白哈巴 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-28 Sat&gt;</span></span></h2>
+<div id="outline-container-orgeffad03" class="outline-2">
+<h2 id="orgeffad03"><span class="section-number-2">2.</span> Day 2 北屯 -&gt; 布尔津 -&gt; 布尔津五彩滩 -&gt; 白哈巴 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-28 Sat&gt;</span></span></h2>
 <div class="outline-text-2" id="text-2">
 <p>
 火车虽然晚点一小时出发，但是却提前到达了北屯。火车卧铺一晚睡的居然还不错，下了火车大家合影留念。
 </p>
 
 
-<figure id="org4d1b2af">
+<figure id="org68349fe">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-2.jpg" alt="xinjiang-2019-2.jpg">
 
 </figure>
@@ -77,7 +112,7 @@
 </blockquote>
 
 
-<figure id="org058bba1">
+<figure id="orgec14f92">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-3.jpg" alt="xinjiang-2019-3.jpg">
 
 </figure>
@@ -87,7 +122,7 @@
 </p>
 
 
-<figure id="org2220b38">
+<figure id="orgdfcc96d">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-4.jpg" alt="xinjiang-2019-4.jpg">
 
 </figure>
@@ -97,7 +132,7 @@
 </p>
 
 
-<figure id="org2198863">
+<figure id="org0c10f67">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-5.jpg" alt="xinjiang-2019-5.jpg">
 
 </figure>
@@ -109,7 +144,7 @@
 </blockquote>
 
 
-<figure id="org36305d2">
+<figure id="orgb0dba7b">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-6.jpg" alt="xinjiang-2019-6.jpg">
 
 </figure>
@@ -125,7 +160,7 @@
 </p>
 
 
-<figure id="org0d27e7e">
+<figure id="org20ceab0">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-7.jpg" alt="xinjiang-2019-7.jpg">
 
 </figure>
@@ -135,16 +170,15 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org16e2b9b" class="outline-2">
-<h2 id="org16e2b9b"><span class="section-number-2">3.</span> Day 3 白哈巴 -&gt; 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-29 Sun&gt;</span></span></h2>
+<div id="outline-container-org86ed6f5" class="outline-2">
+<h2 id="org86ed6f5"><span class="section-number-2">3.</span> Day 3 白哈巴 -&gt; 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-29 Sun&gt;</span></span></h2>
 <div class="outline-text-2" id="text-3">
 <p>
 早上 8 点起床，本来打算是早点起来的，但是 7 点多的时候天气不太好，好像还下了会雨，天也没亮。出门的时候天还没有完全亮，幸运的是雨已经停了，早餐吃了几口馕，迫不及待的往晨雾观景点赶。天上云层很厚，不过在观景台看到整个村庄上层笼罩着一层淡淡的雾的时候还是美的。
 </p>
 
 
-<figure id="orgebea513">
+<figure id="org8b0d5e5">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-8.jpg" alt="xinjiang-2019-8.jpg">
 
 </figure>
@@ -154,19 +188,19 @@
 </p>
 
 
-<figure id="orgf53e77b">
+<figure id="orgdaacb5e">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-9.jpg" alt="xinjiang-2019-9.jpg">
 
 </figure>
 
 
-<figure id="org1839103">
+<figure id="orgefe2232">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-10.jpg" alt="xinjiang-2019-10.jpg">
 
 </figure>
 
 
-<figure id="org00d733e">
+<figure id="org169b187">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-11.jpg" alt="xinjiang-2019-11.jpg">
 
 </figure>
@@ -176,13 +210,13 @@
 </p>
 
 
-<figure id="org434940e">
+<figure id="org6a60178">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-12.jpg" alt="xinjiang-2019-12.jpg">
 
 </figure>
 
 
-<figure id="org2252701">
+<figure id="org1aa825c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-13.jpg" alt="xinjiang-2019-13.jpg">
 
 </figure>
@@ -192,7 +226,7 @@
 </p>
 
 
-<figure id="org8490cc3">
+<figure id="orgd2ec58c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-14.jpg" alt="xinjiang-2019-14.jpg">
 
 </figure>
@@ -204,16 +238,15 @@
 </blockquote>
 </div>
 </div>
-
-<div id="outline-container-org211549e" class="outline-2">
-<h2 id="org211549e"><span class="section-number-2">4.</span> Day 4 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-30 Mon&gt;</span></span></h2>
+<div id="outline-container-orgd125311" class="outline-2">
+<h2 id="orgd125311"><span class="section-number-2">4.</span> Day 4 喀纳斯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-30 Mon&gt;</span></span></h2>
 <div class="outline-text-2" id="text-4">
 <p>
 运气实在不佳，天气预报说今天早上会有雪，最低温度也到零度了。之前还盼着天气好，赶早徒步去看晨雾的，现在来看彻底泡汤了。早上起来雪倒是没看见，就一直在下雨，好在 9 点多的时候天就放晴了。住的地方早餐 20 元一份，馒头加稀饭，景区来说价格还算良心，好歹是热食。我们先坐景交抵达神仙湾，看完神仙湾之后，坐车直达卧龙湾，然后卧龙湾开始全称徒步。
 </p>
 
 
-<figure id="org2947035">
+<figure id="org2e59a0a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-15.jpg" alt="xinjiang-2019-15.jpg">
 
 </figure>
@@ -225,7 +258,7 @@
 </blockquote>
 
 
-<figure id="org688ca68">
+<figure id="orgcd8ccbe">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-16.jpg" alt="xinjiang-2019-16.jpg">
 
 </figure>
@@ -237,7 +270,7 @@
 </blockquote>
 
 
-<figure id="orgf21b5f8">
+<figure id="org7bbb319">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-17.jpg" alt="xinjiang-2019-17.jpg">
 
 </figure>
@@ -249,7 +282,7 @@
 </blockquote>
 
 
-<figure id="org28e9216">
+<figure id="org212d616">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-18.jpg" alt="xinjiang-2019-18.jpg">
 
 </figure>
@@ -261,7 +294,7 @@
 </blockquote>
 
 
-<figure id="org978f011">
+<figure id="orgf218e91">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-19.jpg" alt="xinjiang-2019-19.jpg">
 
 </figure>
@@ -273,7 +306,7 @@
 </blockquote>
 
 
-<figure id="org633287c">
+<figure id="orgfad6c1f">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-20.jpg" alt="xinjiang-2019-20.jpg">
 
 </figure>
@@ -285,16 +318,15 @@
 </blockquote>
 </div>
 </div>
-
-<div id="outline-container-orgd7e5606" class="outline-2">
-<h2 id="orgd7e5606"><span class="section-number-2">5.</span> Day 5 喀纳斯 -&gt; 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-01 Tue&gt;</span></span></h2>
+<div id="outline-container-orgd97479e" class="outline-2">
+<h2 id="orgd97479e"><span class="section-number-2">5.</span> Day 5 喀纳斯 -&gt; 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-01 Tue&gt;</span></span></h2>
 <div class="outline-text-2" id="text-5">
 <p>
 昨晚和其他小伙伴说早起徒步去看三湾的晨雾，大家兴致都不高，还有几个想看阅兵的直播。因为之前看攻略说晨雾很美，想着自己还是要去看，运气不错的还遇到一个小哥也准备去看，刚好可以结伴而行。早上 5 点多就爬起来了，外面很黑，温度也挺低，洗漱了一下带了个馕就出发了。6 点多的时候，天空还是满天星辰，比昨晚还要更壮观。我们俩找小道找了半天，最后到打算放弃的时候幸运的找到了路。走到大路的时候，路上开始能陆陆续续看到人了，大家应该都是起早去看风景的。
 </p>
 
 
-<figure id="org0dee5fe">
+<figure id="orgd737bd2">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-21.jpg" alt="xinjiang-2019-21.jpg">
 
 </figure>
@@ -306,7 +338,7 @@
 </blockquote>
 
 
-<figure id="orgfd89137">
+<figure id="org51b9d17">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-22.jpg" alt="xinjiang-2019-22.jpg">
 
 </figure>
@@ -318,7 +350,7 @@
 </blockquote>
 
 
-<figure id="orgf8b0ba3">
+<figure id="org1cb765d">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-23.jpg" alt="xinjiang-2019-23.jpg">
 
 </figure>
@@ -330,7 +362,7 @@
 </blockquote>
 
 
-<figure id="org82952f6">
+<figure id="org2117d31">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-24.jpg" alt="xinjiang-2019-24.jpg">
 
 </figure>
@@ -346,13 +378,13 @@
 </p>
 
 
-<figure id="orgda97289">
+<figure id="orgd81c36a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-25.jpg" alt="xinjiang-2019-25.jpg">
 
 </figure>
 
 
-<figure id="org236d366">
+<figure id="orgbbd2095">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-26.jpg" alt="xinjiang-2019-26.jpg">
 
 </figure>
@@ -368,13 +400,13 @@
 </p>
 
 
-<figure id="org859d5e0">
+<figure id="orgbff136d">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-28.jpg" alt="xinjiang-2019-28.jpg">
 
 </figure>
 
 
-<figure id="orgcdbe323">
+<figure id="org21f0d63">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-27.jpg" alt="xinjiang-2019-27.jpg">
 
 </figure>
@@ -384,7 +416,7 @@
 </p>
 
 
-<figure id="orgf5a9b2d">
+<figure id="org5cb5e9d">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-29.jpg" alt="xinjiang-2019-29.jpg">
 
 </figure>
@@ -394,25 +426,23 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgfac66f4" class="outline-2">
-<h2 id="orgfac66f4"><span class="section-number-2">6.</span> Day 6 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-02 Wed&gt;</span></span></h2>
+<div id="outline-container-org3e3f4e3" class="outline-2">
+<h2 id="org3e3f4e3"><span class="section-number-2">6.</span> Day 6 禾木 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-02 Wed&gt;</span></span></h2>
 <div class="outline-text-2" id="text-6">
 <p>
 可能对禾木的期望有点高，实际到了禾木之后多少有些让人失望的，喀纳斯几个行程里面，我觉得禾木是最差的。整个村子和其它江南的古镇感觉是一个调调的，千篇一律，并没有觉得有什么特色，相反比起禾木来说我更喜欢白哈巴。禾木这一天，就在村里溜达溜达。顺便还骑了马走了一趟美丽峰，来回 280 的价格着实也不便宜。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org7ec6812" class="outline-2">
-<h2 id="org7ec6812"><span class="section-number-2">7.</span> Day 7 禾木 -&gt; 阿勒泰 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-03 Thu&gt;</span></span></h2>
+<div id="outline-container-org7200d4c" class="outline-2">
+<h2 id="org7200d4c"><span class="section-number-2">7.</span> Day 7 禾木 -&gt; 阿勒泰 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-03 Thu&gt;</span></span></h2>
 <div class="outline-text-2" id="text-7">
 <p>
 当然，禾木最出名的还是晨雾笼罩的村庄，这次大家意见很一致，早起爬山看晨雾。早上 7 点开始爬，因为观景台离的比较近，30 多分钟就爬到山上了。不过不凑巧，今天没有晨雾，大家只能守着日出看一看风景了。
 </p>
 
 
-<figure id="org42819db">
+<figure id="orgb9d0b9a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-30.jpg" alt="xinjiang-2019-30.jpg">
 
 </figure>
@@ -422,16 +452,15 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org88b35c1" class="outline-2">
-<h2 id="org88b35c1"><span class="section-number-2">8.</span> Day 8 阿勒泰 -&gt; 可可托海 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-04 Fri&gt;</span></span></h2>
+<div id="outline-container-org36e091e" class="outline-2">
+<h2 id="org36e091e"><span class="section-number-2">8.</span> Day 8 阿勒泰 -&gt; 可可托海 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-04 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-8">
 <p>
 阿勒泰算是小住一晚，以后如果有时间觉得还是可以过来逛一逛的。印象最深的是这天早上吃的哈萨克早餐了，是整个新疆行程吃的最好的早餐了，丰盛美味（光顾着吃了，没有拍照）。吃完早餐开始往可可托海赶路，大概 5 个小时的行程到达可可托海。可可托海多少有些让人失望的，大概是看过了喀纳斯的美景了，对有点想象的可可托海多少是提不起什么兴趣的。景色没有提起兴趣，倒是景区卖的玉石把几个妹子的注意力都吸引过去了，于是就是买买买&#x2026;&#x2026;
 </p>
 
 
-<figure id="orgf724c83">
+<figure id="orga562549">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-31.jpg" alt="xinjiang-2019-31.jpg">
 
 </figure>
@@ -443,16 +472,15 @@
 </blockquote>
 </div>
 </div>
-
-<div id="outline-container-orgf138d8e" class="outline-2">
-<h2 id="orgf138d8e"><span class="section-number-2">9.</span> Day 9 可可托海 -&gt; 古海温泉 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-05 Sat&gt;</span></span></h2>
+<div id="outline-container-org7d7dfe2" class="outline-2">
+<h2 id="org7d7dfe2"><span class="section-number-2">9.</span> Day 9 可可托海 -&gt; 古海温泉 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-05 Sat&gt;</span></span></h2>
 <div class="outline-text-2" id="text-9">
 <p>
 安排古海温泉住一晚，是想着不要太累，可以泡下温泉好好休息一下。不过实际到了之后大家貌似都不太感冒，温泉也就没有泡。这边的温泉想必是真的，因为住的酒店默认是不提供冷水的，打电话询问之后酒店才把冷水打开的。
 </p>
 
 
-<figure id="orga0bf0c9">
+<figure id="org67a0258">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-32.jpg" alt="xinjiang-2019-32.jpg">
 
 </figure>
@@ -464,16 +492,15 @@
 </blockquote>
 </div>
 </div>
-
-<div id="outline-container-org4b288fc" class="outline-2">
-<h2 id="org4b288fc"><span class="section-number-2">10.</span> Day 10 古海温泉 -&gt; 乌鲁木齐 -&gt; 杭州 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-06 Sun&gt;</span></span></h2>
+<div id="outline-container-orga73bbf1" class="outline-2">
+<h2 id="orga73bbf1"><span class="section-number-2">10.</span> Day 10 古海温泉 -&gt; 乌鲁木齐 -&gt; 杭州 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-10-06 Sun&gt;</span></span></h2>
 <div class="outline-text-2" id="text-10">
 <p>
 第一天的时候本来要安排大巴扎的，但是因为时间因素没有去成。这次觉得时间还算充裕，所以临时决定去了乌鲁木齐先去大巴扎逛，逛完再去机场。
 </p>
 
 
-<figure id="org6de2891">
+<figure id="org4af7a59">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-33.jpg" alt="xinjiang-2019-33.jpg">
 
 </figure>
@@ -483,10 +510,8 @@
 </p>
 </div>
 </div>
-
-
-<div id="outline-container-org5e29c0c" class="outline-2">
-<h2 id="org5e29c0c"><span class="section-number-2">11.</span> 小结</h2>
+<div id="outline-container-org8421577" class="outline-2">
+<h2 id="org8421577"><span class="section-number-2">11.</span> 小结</h2>
 <div class="outline-text-2" id="text-11">
 <p>
 整个行程，因为时间问题并没有做够充足的准备，实际下来，觉得可以改进的点有几点：
@@ -505,7 +530,7 @@
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2019-10-10 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2019-10-10 Thu 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 内存资源限制</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,23 +57,22 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org704ba2c">1. 压测工具</a></li>
-<li><a href="#org43f17b9">2. 内存测试</a>
+<li><a href="#orgb7d5e1e">1. 压测工具</a></li>
+<li><a href="#org01ff096">2. 内存测试</a>
 <ul>
-<li><a href="#org7ac7c22">2.1. <code>-m ... --memory-swap ...</code></a></li>
-<li><a href="#org82a0bac">2.2. <code>-m ... --memory-swappiness ...</code></a></li>
-<li><a href="#org9ba0a98">2.3. <code>--memory-reservation ...</code></a></li>
-<li><a href="#orga5253d5">2.4. <code>--oom-kill-disable</code></a></li>
-<li><a href="#org90a079a">2.5. <code>--kernel-memory</code></a></li>
+<li><a href="#org029557a">2.1. <code>-m ... --memory-swap ...</code></a></li>
+<li><a href="#org0181ca1">2.2. <code>-m ... --memory-swappiness ...</code></a></li>
+<li><a href="#orga6bf5c9">2.3. <code>--memory-reservation ...</code></a></li>
+<li><a href="#org311f90c">2.4. <code>--oom-kill-disable</code></a></li>
+<li><a href="#org928506b">2.5. <code>--kernel-memory</code></a></li>
 </ul>
 </li>
-<li><a href="#orgf525352">3. 内存资源限制 Docker 源码解析</a></li>
+<li><a href="#org7dbf3c4">3. 内存资源限制 Docker 源码解析</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-org704ba2c" class="outline-2">
-<h2 id="org704ba2c"><span class="section-number-2">1.</span> 压测工具</h2>
+<div id="outline-container-orgb7d5e1e" class="outline-2">
+<h2 id="orgb7d5e1e"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="http://people.seas.harvard.edu/~apw/stress/">stress</a></li>
@@ -46,8 +82,8 @@
 通过如下 Dockerfile 构建简单的测试镜像
 </p>
 
-<pre class="example">
-➜  cat Dockerfile
+<div class="org-src-container">
+<pre class="src src-nil">➜  cat Dockerfile
 FROM ubuntu:latest
 
 RUN apt-get update &amp;&amp; \
@@ -56,9 +92,9 @@ RUN apt-get update &amp;&amp; \
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org43f17b9" class="outline-2">
-<h2 id="org43f17b9"><span class="section-number-2">2.</span> 内存测试</h2>
+</div>
+<div id="outline-container-org01ff096" class="outline-2">
+<h2 id="org01ff096"><span class="section-number-2">2.</span> 内存测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime constraints on resources</a></li>
@@ -101,8 +137,8 @@ RUN apt-get update &amp;&amp; \
 默认启动一个 container，对于容器的内存是没有任何限制的。
 </p>
 
-<pre class="example">
-➜  ~ docker help run | grep memory  # 测试 docker 版本 1.10.2，宿主系统 Ubuntu 14.04.1
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker help run | grep memory  # 测试 docker 版本 1.10.2，宿主系统 Ubuntu 14.04.1
   --kernel-memory                 Kernel memory limit
   -m, --memory                    Memory limit
   --memory-reservation            Memory soft limit
@@ -111,36 +147,38 @@ RUN apt-get update &amp;&amp; \
 ➜  ~
 </pre>
 </div>
-
-<div id="outline-container-org7ac7c22" class="outline-3">
-<h3 id="org7ac7c22"><span class="section-number-3">2.1.</span> <code>-m ... --memory-swap ...</code></h3>
+</div>
+<div id="outline-container-org029557a" class="outline-3">
+<h3 id="org029557a"><span class="section-number-3">2.1.</span> <code>-m ... --memory-swap ...</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 指定限制内存大小并且设置 memory-swap 值为 -1，表示容器程序使用内存受限，而 swap 空间使用不受限制（宿主 swap 支持使用多少则容器即可使用多少。如果 <code>--memory-swap</code> 设置小于 <code>--memory</code> 则设置不生效，使用默认设置）。
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm -m 100M --memory-swap -1 ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm -m 100M --memory-swap -1 ubuntu-stress:latest /bin/bash
 root@4b61f98e787d:/# stress --vm 1 --vm-bytes 1000M  # 通过 stress 工具对容器内存做压测
 stress: info: [14] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 </pre>
+</div>
 
 <p>
 使用 <code>docker stats</code> 查看当前容器内存资源使用：
 </p>
 
-<pre class="example">
-➜  ~ docker stats 4b61f98e787d
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker stats 4b61f98e787d
 CONTAINER           CPU %               MEM USAGE/LIMIT     MEM %               NET I/O
 4b61f98e787d        6.74%               104.8 MB/104.9 MB   99.94%              4.625 kB/648 B
 </pre>
+</div>
 
 <p>
 通过 <code>top</code> 实时监控 stress 进程内存占用：
 </p>
 
-<pre class="example">
-➜  ~ pgrep stress
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ pgrep stress
 8209
 8210    # 需查看 stress 子进程占用，
 ➜  ~ top -p 8210    # 显示可以得知 stress 的 RES 占用为 100m，而 VIRT 占用为 1007m
@@ -153,17 +191,19 @@ KiB Swap: 15625212 total,  1030028 used, 14595184 free.  4113952 cached Mem
   PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
  8210 root      20   0 1007.1m 100.3m   0.6m D  13.1  1.3   0:22.59 stress
 </pre>
+</div>
 
 <p>
 也可以通过如下命令获取 stress 进程的 swap 占用：
 </p>
 
-<pre class="example">
-➜  ~ for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | grep stress
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ for file in /proc/*/status ; do awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $file; done | sort -k 2 -n -r | grep stress
 stress 921716 kB
 stress 96 kB
 ➜  ~
 </pre>
+</div>
 
 <p>
 按照官方文档的理解，如果指定 <code>-m</code> 内存限制时不添加 <code>--memory-swap</code> 选项，则表示容器中程序可以使用 100M 内存和 100M swap 内存。默认情况下， <code>--memory-swap</code> 会被设置成 memory 的 2 倍。
@@ -207,8 +247,8 @@ WARNING: Your kernel does not support swap limit capabilities, memory limited wi
 </ul></li>
 </ul>
 
-<pre class="example">
-➜  ~ docker run -it --rm -m 100M ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm -m 100M ubuntu-stress:latest /bin/bash
 root@ed670cdcb472:/# stress --vm 1 --vm-bytes 200M # 压测 200M，stress 进程会被立即 kill 掉
 stress: info: [17] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 stress: FAIL: [17] (416) &lt;-- worker 18 got signal 9
@@ -216,13 +256,14 @@ stress: WARN: [17] (418) now reaping child worker processes
 stress: FAIL: [17] (452) failed run completed in 2s
 root@ed670cdcb472:/# stress --vm 1 --vm-bytes 199M
 </pre>
+</div>
 
 <p>
 <code>docker stats</code> 和 top 获取资源占用情况：
 </p>
 
-<pre class="example">
-➜  ~ docker stats ed670cdcb472
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker stats ed670cdcb472
 CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O
 ed670cdcb472        13.35%              104.3 MB / 104.9 MB   99.48%              6.163 kB / 648 B    26.23 GB / 29.21 GB
 ➜  ~ pgrep stress
@@ -238,9 +279,10 @@ KiB Swap: 15625212 total,   149996 used, 15475216 free.  4110440 cached Mem
   PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
 16323 root      20   0  206.1m  91.5m   0.6m D   9.9  1.2   0:52.58 stress
 </pre>
+</div>
 
-<pre class="example">
-➜  ~ docker run -it --rm -m 100M --memory-swap 400M ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm -m 100M --memory-swap 400M ubuntu-stress:latest /bin/bash
 root@5ed1fd88a1aa:/# stress --vm 1 --vm-bytes 400M  # 压测到 400M 程序会被 kill
 stress: info: [24] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 stress: FAIL: [24] (416) &lt;-- worker 25 got signal 9
@@ -248,13 +290,14 @@ stress: WARN: [24] (418) now reaping child worker processes
 stress: FAIL: [24] (452) failed run completed in 3s
 root@5ed1fd88a1aa:/# stress --vm 1 --vm-bytes 399M  # 压测到 399M 程序刚好可以正常运行（这个值已经处于临界了，不保证不被 kill）
 </pre>
+</div>
 
 <p>
 <code>docker stats</code> 和 top 获取资源占用情况：
 </p>
 
-<pre class="example">
-➜  ~ docker stats 5ed1fd88a1aa
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker stats 5ed1fd88a1aa
 CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O
 5ed                 12.44%              104.8 MB / 104.9 MB   99.92%              4.861 kB / 648 B    9.138 GB / 10.16 GB
 ➜  ~ pgrep stress
@@ -270,15 +313,15 @@ KiB Swap: 15625212 total,   366160 used, 15259052 free.  4102076 cached Mem
   PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
 22722 root      20   0  406.1m  84.1m   0.7m D  11.7  1.1   0:08.82 stress
 </pre>
+</div>
 
 <p>
 根据实际测试可以理解， <code>-m</code> 为物理内存上限，而 <code>--memory-swap</code> 则是 memory + swap 之和，当压测值是 <code>--memory-swap</code> 上限时，则容器中的进程会被直接 OOM kill。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org82a0bac" class="outline-3">
-<h3 id="org82a0bac"><span class="section-number-3">2.2.</span> <code>-m ... --memory-swappiness ...</code></h3>
+<div id="outline-container-org0181ca1" class="outline-3">
+<h3 id="org0181ca1"><span class="section-number-3">2.2.</span> <code>-m ... --memory-swappiness ...</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 swappiness 可以认为是宿主 <code>/proc/sys/vm/swappiness</code> 设定：
@@ -294,8 +337,8 @@ Swappiness is a Linux kernel parameter that controls the relative weight given t
 <code>--memory-swappiness=0</code> 表示禁用容器 swap 功能（这点不同于宿主机，宿主机 swappiness 设置为 0 也不保证 swap 不会被使用）：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm -m 100M --memory-swappiness=0 ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm -m 100M --memory-swappiness=0 ubuntu-stress:latest /bin/bash
 root@e3fd6cc73849:/# stress --vm 1 --vm-bytes 100M  # 没有任何商量的余地，到达 100M 直接被 kill
 stress: info: [18] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 stress: FAIL: [18] (416) &lt;-- worker 19 got signal 9
@@ -305,41 +348,41 @@ root@e3fd6cc73849:/#
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org9ba0a98" class="outline-3">
-<h3 id="org9ba0a98"><span class="section-number-3">2.3.</span> <code>--memory-reservation ...</code></h3>
+</div>
+<div id="outline-container-orga6bf5c9" class="outline-3">
+<h3 id="orga6bf5c9"><span class="section-number-3">2.3.</span> <code>--memory-reservation ...</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 <code>--memory-reservation ...</code> 选项可以理解为内存的软限制。如果不设置 <code>-m</code> 选项，那么容器使用内存可以理解为是不受限的。按照官方的说法，memory reservation 设置可以确保容器不会长时间占用大量内存。
 </p>
 </div>
 </div>
-
-<div id="outline-container-orga5253d5" class="outline-3">
-<h3 id="orga5253d5"><span class="section-number-3">2.4.</span> <code>--oom-kill-disable</code></h3>
+<div id="outline-container-org311f90c" class="outline-3">
+<h3 id="org311f90c"><span class="section-number-3">2.4.</span> <code>--oom-kill-disable</code></h3>
 <div class="outline-text-3" id="text-2-4">
-<pre class="example">
-➜  ~ docker run -it --rm -m 100M --memory-swappiness=0 --oom-kill-disable ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm -m 100M --memory-swappiness=0 --oom-kill-disable ubuntu-stress:latest /bin/bash
 root@f54f93440a04:/# stress --vm 1 --vm-bytes 200M  # 正常情况不添加 --oom-kill-disable 则会直接 OOM kill，加上之后则达到限制内存之后也不会被 kill
 stress: info: [17] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 </pre>
+</div>
 
 <p>
 但是如果是以下的这种没有对容器作任何资源限制的情况，添加 <code>--oom-kill-disable</code> 选项就比较 <b>危险</b> 了：
 </p>
 
-<pre class="example">
-$ docker run -it --oom-kill-disable ubuntu:14.04 /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">$ docker run -it --oom-kill-disable ubuntu:14.04 /bin/bash
 </pre>
+</div>
 
 <p>
 因为此时容器内存没有限制，并且不会被 oom kill，此时系统则会 kill 系统进程用于释放内存。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org90a079a" class="outline-3">
-<h3 id="org90a079a"><span class="section-number-3">2.5.</span> <code>--kernel-memory</code></h3>
+<div id="outline-container-org928506b" class="outline-3">
+<h3 id="org928506b"><span class="section-number-3">2.5.</span> <code>--kernel-memory</code></h3>
 <div class="outline-text-3" id="text-2-5">
 <blockquote>
 <p>
@@ -359,9 +402,8 @@ Kernel memory is fundamentally different than user memory as kernel memory can't
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgf525352" class="outline-2">
-<h2 id="orgf525352"><span class="section-number-2">3.</span> 内存资源限制 Docker 源码解析</h2>
+<div id="outline-container-org7dbf3c4" class="outline-2">
+<h2 id="org7dbf3c4"><span class="section-number-2">3.</span> 内存资源限制 Docker 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 关于 Docker 资源限制主要是依赖 Linux cgroups 去实现的，关于 cgroups 资源限制实现可以参考：<a href="http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation/">Docker背后的内核知识-cgroups资源限制</a>, libcontainer 配置相关的选项：
@@ -371,8 +413,8 @@ Kernel memory is fundamentally different than user memory as kernel memory can't
 <li><code>github.com/opencontainers/runc/libcontainer/cgroups/fs/memory.go</code></li>
 </ul>
 
-<pre class="example">
-68 func (s *MemoryGroup) Set(path string, cgroup *configs.Cgroup) error {
+<div class="org-src-container">
+<pre class="src src-nil">68 func (s *MemoryGroup) Set(path string, cgroup *configs.Cgroup) error {
 69     if cgroup.Resources.Memory != 0 {
 70         if err := writeFile(path, "memory.limit_in_bytes", strconv.FormatInt(cgroup.Resources.Memory, 10)); err != nil {
 71             return err
@@ -406,22 +448,24 @@ Kernel memory is fundamentally different than user memory as kernel memory can't
 99     return nil
 100 }
 </pre>
+</div>
 
 <p>
 附测试：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm -m 100M --memory-swappiness=-1 ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm -m 100M --memory-swappiness=-1 ubuntu-stress:latest /bin/bash
 root@fbe9b0abf665:/#
 </pre>
+</div>
 
 <p>
 查看宿主对应 container cgroup 对应值：
 </p>
 
-<pre class="example">
-➜  ~ cd /sys/fs/cgroup/memory/docker/fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ cd /sys/fs/cgroup/memory/docker/fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356
 ➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356 cat memory.swappiness           # swappiness 如果设置 -1 则该值默认为 60
 60
 ➜  fbe9b0abf665b77fff985fd04f85402eae83eb7eb7162a30070b5920d50c5356 cat memory.memsw.limit_in_bytes # 为设置的 memory 2 倍
@@ -431,10 +475,11 @@ root@fbe9b0abf665:/#
 </div>
 </div>
 </div>
+</div>
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2016-03-08 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2016-03-08 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

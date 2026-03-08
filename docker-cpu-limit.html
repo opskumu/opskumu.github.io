@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker CPU 资源限制</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,35 +57,33 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd4ac426">1. 压测工具</a></li>
-<li><a href="#org62b71ef">2. CPU 测试</a>
+<li><a href="#org379cab0">1. 压测工具</a></li>
+<li><a href="#org670d03b">2. CPU 测试</a>
 <ul>
-<li><a href="#org71842cf">2.1. CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></a></li>
-<li><a href="#orgab2d6e7">2.2. CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></a></li>
-<li><a href="#orgb42d0c4">2.3. Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></a>
+<li><a href="#orgc8f7bd7">2.1. CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></a></li>
+<li><a href="#org6e14fa4">2.2. CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></a></li>
+<li><a href="#org2daca32">2.3. Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></a>
 <ul>
-<li><a href="#org69b1462">2.3.1. <code>--cpuset-cpus</code></a></li>
-<li><a href="#org8ebf61b">2.3.2. <code>--cpuset-mems</code></a></li>
+<li><a href="#orgb0505dd">2.3.1. <code>--cpuset-cpus</code></a></li>
+<li><a href="#org43441c5">2.3.2. <code>--cpuset-mems</code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org9970226">3. 源码解析</a></li>
+<li><a href="#orgae1442c">3. 源码解析</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-orgd4ac426" class="outline-2">
-<h2 id="orgd4ac426"><span class="section-number-2">1.</span> 压测工具</h2>
+<div id="outline-container-org379cab0" class="outline-2">
+<h2 id="org379cab0"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 同上文 <a href="docker-memory-limit.html">Docker 内存资源限制</a> 使用 stress 测试。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org62b71ef" class="outline-2">
-<h2 id="org62b71ef"><span class="section-number-2">2.</span> CPU 测试</h2>
+<div id="outline-container-org670d03b" class="outline-2">
+<h2 id="org670d03b"><span class="section-number-2">2.</span> CPU 测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime constraints on resources</a></li>
@@ -79,8 +114,8 @@
 </ul></li>
 </ul>
 
-<pre class="example">
-➜  ~ docker help run | grep cpu
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker help run | grep cpu
   --cpu-shares                    CPU shares (relative weight)
   --cpu-period                    Limit CPU CFS (Completely Fair Scheduler) period
   --cpu-quota                     Limit CPU CFS (Completely Fair Scheduler) quota
@@ -88,9 +123,9 @@
   --cpuset-mems                   MEMs in which to allow execution (0-3, 0,1)
 </pre>
 </div>
-
-<div id="outline-container-org71842cf" class="outline-3">
-<h3 id="org71842cf"><span class="section-number-3">2.1.</span> CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></h3>
+</div>
+<div id="outline-container-orgc8f7bd7" class="outline-3">
+<h3 id="orgc8f7bd7"><span class="section-number-3">2.1.</span> CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 默认所有的容器对于 CPU 的利用占比都是一样的， <code>-c</code> 或者 <code>--cpu-shares</code> 可以设置 CPU 利用率权重，默认为 1024，可以设置权重为 2 或者更高(单个 CPU 为 1024，两个为 2048，以此类推)。如果设置选项为 0，则系统会忽略该选项并且使用默认值 1024。通过以上设置，只会在 CPU 密集(繁忙)型运行进程时体现出来。当一个 container 空闲时，其它容器都是可以占用 CPU 的。cpu-shares 值为一个相对值，实际 CPU 利用率则取决于系统上运行容器的数量。
@@ -104,29 +139,29 @@
 测试主机「4core」当只有 1 个 container 时，可以使用任意的 CPU：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --cpu-shares 512 ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --cpu-shares 512 ubuntu-stress:latest /bin/bash
 root@4eb961147ba6:/# stress -c 4
 stress: info: [17] dispatching hogs: 4 cpu, 0 io, 0 vm, 0 hdd
 ➜  ~ docker stats 4eb961147ba6
 CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O
 4eb961147ba6        398.05%             741.4 kB / 8.297 GB   0.01%               4.88 kB / 648 B     0 B / 0 B
 </pre>
+</div>
 
 <p>
 测试两个 container，一个设置为 3072，一个设置 1024，CPU 占用如下：
 </p>
 
 
-<figure id="org33c3010">
+<figure id="orgc7a5ccb">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cpu-test.png" alt="cpu-test.png">
 
 </figure>
 </div>
 </div>
-
-<div id="outline-container-orgab2d6e7" class="outline-3">
-<h3 id="orgab2d6e7"><span class="section-number-3">2.2.</span> CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></h3>
+<div id="outline-container-org6e14fa4" class="outline-3">
+<h3 id="org6e14fa4"><span class="section-number-3">2.2.</span> CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 默认的 CPU CFS「Completely Fair Scheduler」period 是 100ms。我们可以通过 <code>--cpu-period</code> 值限制容器的 CPU 使用。一般 <code>--cpu-period</code> 配合 <code>--cpu-quota</code> 一起使用。
@@ -136,14 +171,15 @@ CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %             
 设置 cpu-period 为 100ms，cpu-quota 为 200ms，表示最多可以使用 2 个 cpu，如下测试：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --cpu-period=100000 --cpu-quota=200000 ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --cpu-period=100000 --cpu-quota=200000 ubuntu-stress:latest /bin/bash
 root@6b89f2bda5cd:/# stress -c 4    # stress 测试使用 4 个 cpu
 stress: info: [17] dispatching hogs: 4 cpu, 0 io, 0 vm, 0 hdd
 ➜  ~ docker stats 6b89f2bda5cd      # stats 显示当前容器 CPU 使用率不超过 200%
 CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O
 6b89f2bda5cd        200.68%             745.5 kB / 8.297 GB   0.01%               4.771 kB / 648 B    0 B / 0 B
 </pre>
+</div>
 
 <p>
 通过以上测试可以得知， <code>--cpu-period</code> 结合 <code>--cpu-quota</code> 配置是固定的，无论 CPU 是闲还是繁忙，如上配置，容器最多只能使用 2 个 CPU 到 100%。
@@ -154,13 +190,12 @@ CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %             
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgb42d0c4" class="outline-3">
-<h3 id="orgb42d0c4"><span class="section-number-3">2.3.</span> Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></h3>
+<div id="outline-container-org2daca32" class="outline-3">
+<h3 id="org2daca32"><span class="section-number-3">2.3.</span> Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></h3>
 <div class="outline-text-3" id="text-2-3">
 </div>
-<div id="outline-container-org69b1462" class="outline-4">
-<h4 id="org69b1462"><span class="section-number-4">2.3.1.</span> <code>--cpuset-cpus</code></h4>
+<div id="outline-container-orgb0505dd" class="outline-4">
+<h4 id="orgb0505dd"><span class="section-number-4">2.3.1.</span> <code>--cpuset-cpus</code></h4>
 <div class="outline-text-4" id="text-2-3-1">
 <p>
 通过 <code>--cpuset-cpus</code> 可以绑定指定容器使用指定 CPU：
@@ -170,8 +205,8 @@ CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %             
 设置测试容器只能使用 cpu1 和 cpu3，即最多使用 2 个 固定的 CPU 上：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --cpuset-cpus="1,3" ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --cpuset-cpus="1,3" ubuntu-stress:latest /bin/bash
 root@9f1fc0e11b6f:/# stress -c 4
 stress: info: [17] dispatching hogs: 4 cpu, 0 io, 0 vm, 0 hdd
 ➜  ~ docker stats 9f1fc0e11b6f
@@ -186,19 +221,20 @@ Tasks: 211 total,   3 running, 207 sleeping,   1 stopped,   0 zombie
 %Cpu3  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 ... ...
 </pre>
+</div>
 
 <p>
 以下表示容器可以利用 CPU1、CPU2 和 CPU3：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --cpuset-cpus="1-3" ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --cpuset-cpus="1-3" ubuntu-stress:latest /bin/bash
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org8ebf61b" class="outline-4">
-<h4 id="org8ebf61b"><span class="section-number-4">2.3.2.</span> <code>--cpuset-mems</code></h4>
+</div>
+<div id="outline-container-org43441c5" class="outline-4">
+<h4 id="org43441c5"><span class="section-number-4">2.3.2.</span> <code>--cpuset-mems</code></h4>
 <div class="outline-text-4" id="text-2-3-2">
 <p>
 <code>--cpuset-mems</code> 只应用于 NUMA 架构的 CPU 生效，这个选项这里不过多介绍。关于 NUMA 架构可以参考这篇文章 <a href="http://cenalulu.github.io/linux/numa/">NUMA架构的CPU &#x2013; 你真的用好了么？</a>。
@@ -207,9 +243,8 @@ Tasks: 211 total,   3 running, 207 sleeping,   1 stopped,   0 zombie
 </div>
 </div>
 </div>
-
-<div id="outline-container-org9970226" class="outline-2">
-<h2 id="org9970226"><span class="section-number-2">3.</span> 源码解析</h2>
+<div id="outline-container-orgae1442c" class="outline-2">
+<h2 id="orgae1442c"><span class="section-number-2">3.</span> 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><a href="https://github.com/opencontainers/runc/tree/master/libcontainer/cgroups/fs">github.com/opencontainers/runc/libcontainer/cgroups/fs</a>
@@ -229,7 +264,7 @@ libcontainer 只是根据设定值写 cgroup 文件，这部分没有什么逻�
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2016-03-27 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2016-03-27 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

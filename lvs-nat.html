@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>One Network LVS-NAT</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,8 +57,8 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2725db8">1. To get a LVS-NAT LVS to work on one network</a></li>
-<li><a href="#org6f203c0">2. Reference</a></li>
+<li><a href="#org9bc4090">1. To get a LVS-NAT LVS to work on one network</a></li>
+<li><a href="#org2b577be">2. Reference</a></li>
 </ul>
 </div>
 </nav>
@@ -29,8 +66,8 @@
 LVS NAT 模式，VIP 和 RIP 处于同一网段方案，基本架构图如下：
 </p>
 
-<pre class="example">
-                     ________
+<div class="org-src-container">
+<pre class="src src-nil">                     ________
                     |        |
                     | client |
                     |________|
@@ -52,29 +89,31 @@ RIP1=192.168.1.2   RIP2=192.168.1.3  RIP3=192.168.1.4 (all eth0)
 | realserver  |    | realserver  |   | realserver  |
 |_____________|    |_____________|   |_____________|
 </pre>
-
-<div id="outline-container-org2725db8" class="outline-2">
-<h2 id="org2725db8"><span class="section-number-2">1.</span> To get a LVS-NAT LVS to work on one network</h2>
+</div>
+<div id="outline-container-org9bc4090" class="outline-2">
+<h2 id="org9bc4090"><span class="section-number-2">1.</span> To get a LVS-NAT LVS to work on one network</h2>
 <div class="outline-text-2" id="text-1">
 <ol class="org-ol">
 <li>在调度器上关闭 icmp 包重定向，根据实际情况修改端口，这里为 eth0</li>
 </ol>
 
-<pre class="example">
-director:/etc/lvs# echo 0 &gt; /proc/sys/net/ipv4/conf/all/send_redirects
+<div class="org-src-container">
+<pre class="src src-nil">director:/etc/lvs# echo 0 &gt; /proc/sys/net/ipv4/conf/all/send_redirects
 director:/etc/lvs# echo 0 &gt; /proc/sys/net/ipv4/conf/default/send_redirects
 director:/etc/lvs# echo 0 &gt; /proc/sys/net/ipv4/conf/eth0/send_redirects
 </pre>
+</div>
 
 <p>
 或修改 <code>/etc/sysctl.conf</code> 添加如下选项执行 <code>sysctl -p</code> 使配置永久生效
 </p>
 
-<pre class="example">
-net.ipv4.conf.all.send_redirects = 0
+<div class="org-src-container">
+<pre class="src src-nil">net.ipv4.conf.all.send_redirects = 0
 net.ipv4.conf.default.send_redirects = 0
 net.ipv4.conf.eth0.send_redirects = 0
 </pre>
+</div>
 
 <ol class="org-ol">
 <li>设置 diretor 为 RealServer 的唯一包出口（指定 director 为默认网关）</li>
@@ -84,28 +123,29 @@ net.ipv4.conf.eth0.send_redirects = 0
 默认设置之后，可能 RealServer 主机路由是以下状态：
 </p>
 
-<pre class="example">
-realserver:/etc/lvs# route -n
+<div class="org-src-container">
+<pre class="src src-nil">realserver:/etc/lvs# route -n
 Kernel IP routing table
 192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 eth0
 0.0.0.0         192.168.1.9     0.0.0.0         UG        0 0          0 eth0
 </pre>
+</div>
 
 <p>
 移除 192.168.1.0/24 的路由，防止 RIP 和 CIP直接通信
 </p>
 
-<pre class="example">
-realserver:/etc/lvs# route del -net 192.168.1.0 netmask 255.255.255.0 dev eth0
+<div class="org-src-container">
+<pre class="src src-nil">realserver:/etc/lvs# route del -net 192.168.1.0 netmask 255.255.255.0 dev eth0
 realserver:/etc/lvs# route -n
 Kernel IP routing table
 0.0.0.0         192.168.1.9     0.0.0.0         UG        0 0          0 eth0
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org6f203c0" class="outline-2">
-<h2 id="org6f203c0"><span class="section-number-2">2.</span> Reference</h2>
+</div>
+<div id="outline-container-org2b577be" class="outline-2">
+<h2 id="org2b577be"><span class="section-number-2">2.</span> Reference</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="http://www.austintek.com/LVS/LVS-HOWTO/HOWTO/LVS-HOWTO.LVS-NAT.html#one_network">OneNetwork LVS-NAT</a></li>
@@ -116,7 +156,7 @@ Kernel IP routing table
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2014-11-18 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2014-11-18 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

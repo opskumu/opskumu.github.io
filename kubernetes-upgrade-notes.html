@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 版本升级标注</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,20 +57,20 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org06315e8">1. 1.5.x &#x2013;&gt; 1.6.x</a>
+<li><a href="#orgc3c2ff4">1. 1.5.x &#x2013;&gt; 1.6.x</a>
 <ul>
-<li><a href="#org4ddd0d1">1.1. etcd 备份和数据迁移</a></li>
-<li><a href="#orgc162a82">1.2. Docker 版本支持</a></li>
+<li><a href="#org233c7ad">1.1. etcd 备份和数据迁移</a></li>
+<li><a href="#orgb76162c">1.2. Docker 版本支持</a></li>
 </ul>
 </li>
-<li><a href="#org00c1009">2. 1.6.x &#x2013;&gt; 1.7.x</a></li>
-<li><a href="#org2b356e9">3. 1.7.x &#x2013;&gt; 1.8.x</a>
+<li><a href="#orgc4d6833">2. 1.6.x &#x2013;&gt; 1.7.x</a></li>
+<li><a href="#orgdd1be01">3. 1.7.x &#x2013;&gt; 1.8.x</a>
 <ul>
-<li><a href="#orgb4c201d">3.1. Docker 版本支持</a></li>
+<li><a href="#orgae2347a">3.1. Docker 版本支持</a></li>
 </ul>
 </li>
-<li><a href="#orga5b7edc">4. 1.8.x &#x2013;&gt; 1.9.x</a></li>
-<li><a href="#org13df0a1">5. 1.9.x &#x2013;&gt; 1.10.x</a></li>
+<li><a href="#orgcb6c4eb">4. 1.8.x &#x2013;&gt; 1.9.x</a></li>
+<li><a href="#orgfa2426b">5. 1.9.x &#x2013;&gt; 1.10.x</a></li>
 </ul>
 </div>
 </nav>
@@ -50,9 +87,8 @@
 Note: You cannot upgrade your cluster master more than one minor version at a time. For example, you can upgrade a cluster from version 1.6.x to 1.7.x, but not directly from 1.6.x to 1.8.x. For more information, refer to Versioning and Upgrades.  <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/upgrading-a-cluster">Upgrading a Cluster</a>
 </p>
 </blockquote>
-
-<div id="outline-container-org06315e8" class="outline-2">
-<h2 id="org06315e8"><span class="section-number-2">1.</span> 1.5.x &#x2013;&gt; 1.6.x</h2>
+<div id="outline-container-orgc3c2ff4" class="outline-2">
+<h2 id="orgc3c2ff4"><span class="section-number-2">1.</span> 1.5.x &#x2013;&gt; 1.6.x</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 之所以从版本 1.5.x 升级到 1.6.x 开始说起，是因为这个大版本更新变动较大，升级注意点较多。因为牵扯一些兼容性的问题，这次升级需要在停服的情况下进行。
@@ -62,9 +98,8 @@ Note: You cannot upgrade your cluster master more than one minor version at a ti
 <li><a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.6.md#warning-etcd-backup-strongly-recommended">WARNING: etcd backup strongly recommended</a></li>
 </ul>
 </div>
-
-<div id="outline-container-org4ddd0d1" class="outline-3">
-<h3 id="org4ddd0d1"><span class="section-number-3">1.1.</span> etcd 备份和数据迁移</h3>
+<div id="outline-container-org233c7ad" class="outline-3">
+<h3 id="org233c7ad"><span class="section-number-3">1.1.</span> etcd 备份和数据迁移</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 从 1.6.0 版本开始，Kubernetes 默认使用 etcd v3，虽然可以通过选项设置继续使用 etcd v2，但是还是建议使用 etcd v3 版本，未来的 Kubernetes 版本也会废弃对 etcd v2 的支持。
@@ -83,43 +118,48 @@ etcd 的版本升级以及数据版本迁移详见以下两篇文档：
 a、关闭服务
 </p>
 
-<pre class="example">
-service etcd stop
+<div class="org-src-container">
+<pre class="src src-nil">service etcd stop
 </pre>
+</div>
 
 <p>
 b、数据备份
 </p>
 
-<pre class="example">
-etcdctl backup \
+<div class="org-src-container">
+<pre class="src src-nil">etcdctl backup \
       --data-dir /var/lib/etcd \
       --backup-dir /tmp/etcd_backup
 </pre>
+</div>
 
 <p>
 c、数据迁移
 </p>
 
-<pre class="example">
-ETCDCTL_API=3 etcdctl migrate --data-dir=${data_dir}
+<div class="org-src-container">
+<pre class="src src-nil">ETCDCTL_API=3 etcdctl migrate --data-dir=${data_dir}
 </pre>
+</div>
 
 <p>
 d、启动服务
 </p>
 
-<pre class="example">
-service etcd start
+<div class="org-src-container">
+<pre class="src src-nil">service etcd start
 </pre>
+</div>
 
 <p>
 当然，如果你需要继续使用 etcd v2，那么可以针对 <code>apiserver</code> 添加以下配置：
 </p>
 
-<pre class="example">
---storage-backend=etcd2 --storage-media-type=application/json
+<div class="org-src-container">
+<pre class="src src-nil">--storage-backend=etcd2 --storage-media-type=application/json
 </pre>
+</div>
 
 <blockquote>
 <p>
@@ -128,9 +168,8 @@ service etcd start
 </blockquote>
 </div>
 </div>
-
-<div id="outline-container-orgc162a82" class="outline-3">
-<h3 id="orgc162a82"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
+<div id="outline-container-orgb76162c" class="outline-3">
+<h3 id="orgb76162c"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 从 1.6.0 开始，不再支持 Docker 1.9.x，1.10.3、1.11.2、1.12.6 验证通过。
@@ -157,9 +196,8 @@ service etcd start
 </div>
 </div>
 </div>
-
-<div id="outline-container-org00c1009" class="outline-2">
-<h2 id="org00c1009"><span class="section-number-2">2.</span> 1.6.x &#x2013;&gt; 1.7.x</h2>
+<div id="outline-container-orgc4d6833" class="outline-2">
+<h2 id="orgc4d6833"><span class="section-number-2">2.</span> 1.6.x &#x2013;&gt; 1.7.x</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 1.7 版本是针对安全、有状态服务以及可扩展功能里程碑版本，<a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.7.md#major-themes">1.7.0 Major Themes</a>。
@@ -170,9 +208,8 @@ service etcd start
 </p>
 </div>
 </div>
-
-<div id="outline-container-org2b356e9" class="outline-2">
-<h2 id="org2b356e9"><span class="section-number-2">3.</span> 1.7.x &#x2013;&gt; 1.8.x</h2>
+<div id="outline-container-orgdd1be01" class="outline-2">
+<h2 id="orgdd1be01"><span class="section-number-2">3.</span> 1.7.x &#x2013;&gt; 1.8.x</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 在升级之前参考 <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.8.md#before-upgrading">1.8.0 Before Upgrading</a> 官方文档，有以下几个点值得注意： 
@@ -182,9 +219,8 @@ service etcd start
 <li>默认 1.8.x 在节点启用 swap 的时候 Kubelet 会启动失败，需要额外添加选项 <code>--fail-swap-on=false</code> - ThirdPartyResource（TPR）API 被移除，需迁移至 <a href="https://kubernetes.io/docs/tasks/access-kubernetes-api/migrate-third-party-resource/">CustomResourceDefinition（CRD）</a> - Kubelet 指定 master 节点的选项 <code>api-servers</code> 被废弃，需要通过 <code>--kubeconfig</code> 替换。</li>
 </ul>
 </div>
-
-<div id="outline-container-orgb4c201d" class="outline-3">
-<h3 id="orgb4c201d"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
+<div id="outline-container-orgae2347a" class="outline-3">
+<h3 id="orgae2347a"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
@@ -192,9 +228,8 @@ Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
 </div>
 </div>
 </div>
-
-<div id="outline-container-orga5b7edc" class="outline-2">
-<h2 id="orga5b7edc"><span class="section-number-2">4.</span> 1.8.x &#x2013;&gt; 1.9.x</h2>
+<div id="outline-container-orgcb6c4eb" class="outline-2">
+<h2 id="orgcb6c4eb"><span class="section-number-2">4.</span> 1.8.x &#x2013;&gt; 1.9.x</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.9.md#before-upgrading">1.9.0 Before Upgrading</a>
@@ -205,9 +240,8 @@ Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org13df0a1" class="outline-2">
-<h2 id="org13df0a1"><span class="section-number-2">5.</span> 1.9.x &#x2013;&gt; 1.10.x</h2>
+<div id="outline-container-orgfa2426b" class="outline-2">
+<h2 id="orgfa2426b"><span class="section-number-2">5.</span> 1.9.x &#x2013;&gt; 1.10.x</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.10.md#before-upgrading">1.10.0 Before Upgrading</a>
@@ -231,7 +265,7 @@ Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2018-09-07 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2018-09-07 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

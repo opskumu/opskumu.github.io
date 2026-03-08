@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>过年期间</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,18 +57,17 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0c86f2d">1. 感冒</a></li>
-<li><a href="#orgc401de3">2. 春节</a></li>
-<li><a href="#org4872049">3. 自律</a></li>
+<li><a href="#orgeb5c4bd">1. 感冒</a></li>
+<li><a href="#org16faf44">2. 春节</a></li>
+<li><a href="#org415d801">3. 自律</a></li>
 </ul>
 </div>
 </nav>
 <p>
 还是要常规的记录一些文字，所想和所写是两码事。脑海中的闪现总是短暂的，而文字却可以长久的留在这里。
 </p>
-
-<div id="outline-container-org0c86f2d" class="outline-2">
-<h2 id="org0c86f2d"><span class="section-number-2">1.</span> 感冒</h2>
+<div id="outline-container-orgeb5c4bd" class="outline-2">
+<h2 id="orgeb5c4bd"><span class="section-number-2">1.</span> 感冒</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 春节前两天的时候不慎着凉发烧，当然这并不是什么大病，不过那两天的自己着实脆弱的不行。特别是晚上睡觉一直发烧，整个人卷缩在被褥中瑟瑟发抖，似梦似醒，多少有些无助。有那么一瞬间会想着，有个人在身旁该多好，会觉得之前一个人也挺好的想法当真是天大的鬼话。现在回头看那期间，先是觉得一乐而后又觉得酸楚。想来单身有些年头了，这几年也有去追过喜欢的姑娘，当然都是无疾而终的。感情的事情总归是勉强不来的，该坚持的我想还是应该坚持，一个人挺好在大部分时候依然是成立的。
@@ -42,9 +78,8 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgc401de3" class="outline-2">
-<h2 id="orgc401de3"><span class="section-number-2">2.</span> 春节</h2>
+<div id="outline-container-org16faf44" class="outline-2">
+<h2 id="org16faf44"><span class="section-number-2">2.</span> 春节</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 对于过年，我记得表述过很多次不太喜欢的看法。脑海中关于过年的记忆，也不太能搜寻到很美好的事情。以前甚至是处于抵触的状态，倒是这两年内心开始趋向平和，觉得能回家和父母聚一聚就很好。也许是渐渐年长的原因，才会认为这团聚的机会变得弥足珍贵。
@@ -64,9 +99,8 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org4872049" class="outline-2">
-<h2 id="org4872049"><span class="section-number-2">3.</span> 自律</h2>
+<div id="outline-container-org415d801" class="outline-2">
+<h2 id="org415d801"><span class="section-number-2">3.</span> 自律</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 新的一年，要更加的自律，工作、生活都马虎不得。
@@ -77,7 +111,7 @@
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2019-02-11 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2019-02-11 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

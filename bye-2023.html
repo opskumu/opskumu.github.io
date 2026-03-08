@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2024-01-31 Wed 15:07 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>2023，小结</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,18 +57,17 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga18ac64">1. 关于工作</a></li>
-<li><a href="#orgb758a71">2. 关于生活</a></li>
-<li><a href="#org22073eb">3. 再见，2023</a></li>
+<li><a href="#orgbb2b198">1. 关于工作</a></li>
+<li><a href="#org580bcff">2. 关于生活</a></li>
+<li><a href="#org39a4ff7">3. 再见，2023</a></li>
 </ul>
 </div>
 </nav>
 <p>
 今天等待吃晚饭的空隙，看到一位推友的德文签名，顺手点了下翻译，大意是 “你不能拥有生活的一切”。那么一瞬间，这句话击中我的内心并不断回响。是啊，我们都不曾拥有生活的一切，我又在挣扎些什么呢。如果用一句话来总结我的 2023 年的话，做了一些选择，然后就是陷入患得患失的精神状态中不可自拔。也是迎来 2024 年的时候，才开始有点跳脱出这种状态。
 </p>
-
-<div id="outline-container-orga18ac64" class="outline-2">
-<h2 id="orga18ac64"><span class="section-number-2">1.</span> 关于工作</h2>
+<div id="outline-container-orgbb2b198" class="outline-2">
+<h2 id="orgbb2b198"><span class="section-number-2">1.</span> 关于工作</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 回到刚刚提到的患得患失的状态，主要起因还是在于年中关于工作的选择。当时，因为一些原因选择了内部转岗，离开了从事两年多 SRE 工作的团队。去的团队，是内部专门做 Kubernetes 服务的业务团队，工作内容主要围绕稳定性进行。当时想着和 SRE 的工作多少还是有些关联的，技术栈也没什么实质性的区别，整体相对 SRE 工作应该也可以更聚焦专注一个方向。实际转岗之后，发现之前的一些想法还是想简单了。适应一段时间之后，发现之前遇到的一些问题这边一样存在，所谓的聚焦专注一个方向也并不存在，而要做的事情涉及到大量拉通对齐工作，这本也不是我擅长的。用一个朋友的话说，我 2023 年的几个决定都是对当下预估的太差，对未来预估又太好，导致最后落差太大。
@@ -46,10 +82,8 @@
 </p>
 </div>
 </div>
-
-
-<div id="outline-container-orgb758a71" class="outline-2">
-<h2 id="orgb758a71"><span class="section-number-2">2.</span> 关于生活</h2>
+<div id="outline-container-org580bcff" class="outline-2">
+<h2 id="org580bcff"><span class="section-number-2">2.</span> 关于生活</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 工作的事情也没有那么不开心，再说不开心的事情也可以说出来让大家开心一下不是。比如，去年迎接 2023 年的时候得了新冠，今年迎接 2024 年的时候得了乙流，赶巧都凑在一年的同一时刻，痛并深刻。
@@ -68,9 +102,8 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org22073eb" class="outline-2">
-<h2 id="org22073eb"><span class="section-number-2">3.</span> 再见，2023</h2>
+<div id="outline-container-org39a4ff7" class="outline-2">
+<h2 id="org39a4ff7"><span class="section-number-2">3.</span> 再见，2023</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 最后，老规矩，你好，2024。再见，2023。
@@ -83,7 +116,7 @@
 </blockquote>
 
 
-<figure id="org46c4d4f">
+<figure id="org6b99c63">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/today.jpg" alt="today.jpg">
 
 </figure>
@@ -93,7 +126,7 @@
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2024-01-02 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.1 (<a href="https://orgmode.org">Org</a> mode 9.6.6)</span>
+         class="date">2024-01-02 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

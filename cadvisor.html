@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>cAdvisor 容器数据采集</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,27 +57,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9712166">1. 入口</a></li>
-<li><a href="#org9fd6e2a">2. machine info</a></li>
-<li><a href="#orga7dfdde">3. docker info</a>
+<li><a href="#orge0d5a0d">1. 入口</a></li>
+<li><a href="#org42615ac">2. machine info</a></li>
+<li><a href="#orga7a59b5">3. docker info</a>
 <ul>
-<li><a href="#org8e115b7">3.1. Getprocesslist</a></li>
-<li><a href="#orgc821019">3.2. ContainerInfo</a></li>
+<li><a href="#orgaff9e17">3.1. Getprocesslist</a></li>
+<li><a href="#org2135dac">3.2. ContainerInfo</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<figure id="org232d1ef">
+<figure id="orge413145">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cAdvisor.png" alt="cAdvisor.png">
 
 </figure>
 
 <hr>
-
-<div id="outline-container-org9712166" class="outline-2">
-<h2 id="org9712166"><span class="section-number-2">1.</span> 入口</h2>
+<div id="outline-container-orge0d5a0d" class="outline-2">
+<h2 id="orge0d5a0d"><span class="section-number-2">1.</span> 入口</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <a href="https://github.com/google/cadvisor">cAdvisor 代码托管地址</a>
@@ -52,8 +88,8 @@
 <li>基于 tag： v0.19.2</li>
 </ul>
 
-<pre class="example">
-# github.com/google/cadvisor/cadvisor.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/cadvisor.go
 ... ...
 73     containerManager, err := manager.New(memoryStorage, sysFs, *maxHousekeepingInterval, *allowDynamicHousekeeping)
 74     if err != nil {
@@ -76,13 +112,14 @@
 91     }
 ... ...
 </pre>
+</div>
 
 <p>
 从入口可以得知真正获取 container 和 machine 信息的 interface 为 Manager， <code>github.com/google/cadvisor/manager/manager.go</code>
 </p>
 
-<pre class="example">
-# github.com/google/cadvisor/manager/manager.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/manager/manager.go
 52 // The Manager interface defines operations for starting a manager and getting
 53 // container and machine information.
 54 type Manager interface {
@@ -97,18 +134,18 @@
 63     GetContainerInfo(containerName string, query *info.ContainerInfoRequest) (*info.ContainerInfo, error)
 ... ...
 </pre>
+</div>
 
 <p>
 以下对 cadvisor 具体如何获取到 machine 和 docker container 的信息结合代码具体讲解。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org9fd6e2a" class="outline-2">
-<h2 id="org9fd6e2a"><span class="section-number-2">2.</span> machine info</h2>
+<div id="outline-container-org42615ac" class="outline-2">
+<h2 id="org42615ac"><span class="section-number-2">2.</span> machine info</h2>
 <div class="outline-text-2" id="text-2">
-<pre class="example">
-# github.com/google/cadvisor/manager/manager.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/manager/manager.go
 158     machineInfo, err := getMachineInfo(sysfs, fsInfo) // 此处通过 getMachineInfo() 函数获取 machine 信息
 159     if err != nil {
 160         return nil, err
@@ -116,13 +153,14 @@
 162     newManager.machineInfo = *machineInfo
 163     glog.Infof("Machine: %+v", newManager.machineInfo)
 </pre>
+</div>
 
 <p>
 获取 machineinfo 的具体函数 <code>getMachineInfo()</code>
 </p>
 
-<pre class="example">
-# github.com/google/cadvisor/manager/machine.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/manager/machine.go
 52 func getMachineInfo(sysFs sysfs.SysFs, fsInfo fs.FsInfo) (*info.MachineInfo, error) {
 53     cpuinfo, err := ioutil.ReadFile("/proc/cpuinfo")
 54     clockSpeed, err := machine.GetClockSpeed(cpuinfo)
@@ -132,13 +170,14 @@
 58
 ... ...
 </pre>
+</div>
 
 <p>
 MachineInfo 数据结构：
 </p>
 
-<pre class="example">
-# github.com/google/cadvisor/info/v1/machine.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/info/v1/machine.go
 131 type MachineInfo struct {
 132     // The number of cores in this machine.
 133     NumCores int `json:"num_cores"`
@@ -178,14 +217,15 @@ MachineInfo 数据结构：
 167     InstanceType InstanceType `json:"instance_type"`
 168 }
 </pre>
+</div>
 
 <ul class="org-ul">
 <li>cpu <code>/proc/cpuinfo</code></li>
 <li>mem <code>/proc/meminfo</code></li>
 </ul>
 
-<pre class="example">
-# github.com/google/cadvisor/utils/machine/machine.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/utils/machine/machine.go
 76 func GetMachineMemoryCapacity() (int64, error) {
 77     out, err := ioutil.ReadFile("/proc/meminfo")
 78     if err != nil {
@@ -199,6 +239,7 @@ MachineInfo 数据结构：
 86     return memoryCapacity, err
 87 }
 </pre>
+</div>
 
 <ul class="org-ul">
 <li>machine_id <code>/var/lib/dbus/machine-id</code></li>
@@ -206,8 +247,8 @@ MachineInfo 数据结构：
 <li>system UUID <code>/sys/class/dmi/id/product_uuid</code></li>
 </ul>
 
-<pre class="example">
-➜  ~  cat /var/lib/dbus/machine-id
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~  cat /var/lib/dbus/machine-id
 a8919ec7c9ee43bd1bcaf6cd55e1a7bc
 ➜  ~  cat /proc/sys/kernel/random/boot_id
 2f6bac7f-738a-4d85-8b58-53e71296119e
@@ -215,13 +256,14 @@ a8919ec7c9ee43bd1bcaf6cd55e1a7bc
 F27316D5-4DB3-E411-A26A-F0761C6D26D6
 ➜  ~
 </pre>
+</div>
 
 <ul class="org-ul">
 <li>disk <code>/proc/diskstats</code></li>
 </ul>
 
-<pre class="example">
-# github.com/google/cadvisor/fs/fs.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/fs/fs.go
 189 func (self *RealFsInfo) GetFsInfoForPath(mountSet map[string]struct{}) ([]Fs, error) {
 190     filesystems := make([]Fs, 0)
 191     deviceSet := make(map[string]struct{})
@@ -231,25 +273,27 @@ F27316D5-4DB3-E411-A26A-F0761C6D26D6
 195     }
 ... ...
 </pre>
+</div>
 
 <p>
 对于分配给容器的 pool 值，如果是 device mapper 类型的，则通过 <code>dmsetup status pool_device_name</code> 获取设备使用情况
 </p>
 
-<pre class="example">
-# github.com/google/cadvisor/fs/fs.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/fs/fs.go
 ... ...
 205             case "devicemapper":
 206                 total, free, avail, err = getDMStats(device, partition.blockSize)
 ....
 </pre>
+</div>
 
 <ul class="org-ul">
 <li>获取磁盘设备信息 <code>/sys/block</code></li>
 </ul>
 
-<pre class="example">
-# github.com/google/cadvisor/utils/sysinfo/sysinfo.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/utils/sysinfo/sysinfo.go
 31 func GetBlockDeviceInfo(sysfs sysfs.SysFs) (map[string]info.DiskInfo, error) {
 32     disks, err := sysfs.GetBlockDevices()
        // cadvisor/utils/sysfs/sysfs.go GetBlockDevices() 可知，通过 /sys/block 获取磁盘设备名，其它信息雷同
@@ -258,9 +302,10 @@ F27316D5-4DB3-E411-A26A-F0761C6D26D6
 35     }
 ... ...
 </pre>
+</div>
 
-<pre class="example">
-➜  ~  cat /sys/block/sda/dev                # 主次设备号
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~  cat /sys/block/sda/dev                # 主次设备号
 8:0
 ➜  ~  cat /sys/block/sda/size               # 磁盘设备大小
 976773168
@@ -268,13 +313,14 @@ F27316D5-4DB3-E411-A26A-F0761C6D26D6
 noop deadline [cfq]
 ➜  ~
 </pre>
+</div>
 
 <ul class="org-ul">
 <li>netDevices <code>/sys/class/net</code></li>
 </ul>
 
-<pre class="example">
-# github.com/google/cadvisor/utils/sysinfo/sysinfo.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/utils/sysinfo/sysinfo.go
 87 func GetNetworkDevices(sysfs sysfs.SysFs) ([]info.NetInfo, error) {
 88     devs, err := sysfs.GetNetworkDevices()
 89     if err != nil {
@@ -283,9 +329,10 @@ noop deadline [cfq]
 92     netDevices := []info.NetInfo{}
 ... ...
 </pre>
+</div>
 
-<pre class="example">
-➜  ~  cat /sys/class/net/eth0/address
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~  cat /sys/class/net/eth0/address
 f0:76:1c:6d:26:d6
 ➜  ~  cat /sys/class/net/eth0/mtu
 1500
@@ -294,12 +341,12 @@ f0:76:1c:6d:26:d6
 </pre>
 </div>
 </div>
-
-<div id="outline-container-orga7dfdde" class="outline-2">
-<h2 id="orga7dfdde"><span class="section-number-2">3.</span> docker info</h2>
+</div>
+<div id="outline-container-orga7a59b5" class="outline-2">
+<h2 id="orga7a59b5"><span class="section-number-2">3.</span> docker info</h2>
 <div class="outline-text-2" id="text-3">
-<pre class="example">
-# github.com/google/cadvisor/manager/manager.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/manager/manager.go
 201 // Start the container manager.
 202 func (self *manager) Start() error {
 203     // Register Docker container factory.
@@ -309,21 +356,21 @@ f0:76:1c:6d:26:d6
 207     }
 ... ...
 </pre>
+</div>
 
 <p>
 cAdvisor 启动 container manager，通过调用 Linux 系统 inotify 监测 cgroup docker 目录的文件变化判断 docker 的创建和删除。
 </p>
 </div>
-
-<div id="outline-container-org8e115b7" class="outline-3">
-<h3 id="org8e115b7"><span class="section-number-3">3.1.</span> Getprocesslist</h3>
+<div id="outline-container-orgaff9e17" class="outline-3">
+<h3 id="orgaff9e17"><span class="section-number-3">3.1.</span> Getprocesslist</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>chroot /rootfs</code> （cAdvisor 在 container 中运行会通过 volume 方式把系统 / mount 到 /rootfs 下）再执行 <code>ps -e -o user,pid,ppid,stime,pcpu,pmem,rss,vsz,stat,time,comm,cgrou</code> ，否则直接执行获取。(github.com/google/cadvisor/manager/container.go GetProcessList() 函数实现)
 </p>
 
-<pre class="example">
-# github.com/google/cadvisor/manager/manager.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/manager/manager.go
 687 func (m *manager) GetProcessList(containerName string, options v2.RequestOptions) ([]v2.ProcessInfo, error) {
 688     // override recursive. Only support single container listing.
 689     options.Recursive = false
@@ -336,13 +383,14 @@ cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>ch
 696     }
 ... ...
 </pre>
+</div>
 
 <p>
 如果是获取全局而非某个 container 的 processlist，则 containername 默认为 "/"，判断逻辑如下：
 </p>
 
-<pre class="example">
-# github.com/google/cadvisor/manager/container.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/manager/container.go
 273         if isRoot || c.info.Name == cgroup {
 274             processes = append(processes, v2.ProcessInfo{
 275                 User:          fields[0],
@@ -354,16 +402,16 @@ cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>ch
 </pre>
 </div>
 </div>
-
-<div id="outline-container-orgc821019" class="outline-3">
-<h3 id="orgc821019"><span class="section-number-3">3.2.</span> ContainerInfo</h3>
+</div>
+<div id="outline-container-org2135dac" class="outline-3">
+<h3 id="org2135dac"><span class="section-number-3">3.2.</span> ContainerInfo</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 获取指定 container 的 info 数据：
 </p>
 
-<pre class="example">
-# github.com/google/cadvisor manager/manager.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor manager/manager.go
 531 func (self *manager) DockerContainer(containerName string, query *info.ContainerInfoRequest) (info.ContainerInfo, error) {
 532     container, err := self.getDockerContainer(containerName)
 533     if err != nil {
@@ -372,13 +420,14 @@ cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>ch
 536
 ... ...
 </pre>
+</div>
 
 <p>
 具体获取函数：
 </p>
 
-<pre class="example">
-# github.com/google/cadvisor/manager/container.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/manager/container.go
 102 func (c *containerData) GetInfo() (*containerInfo, error) {
 103     // Get spec and subcontainers.
 104     if time.Since(c.lastUpdatedTime) &gt; 5*time.Second {   // 可以看出当上一次更新时间超过 5s 的时候才会更新 info 数据 5
@@ -388,6 +437,7 @@ cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>ch
 108         }
 ... ...
 </pre>
+</div>
 
 <ul class="org-ul">
 <li>ContainerSpec</li>
@@ -401,14 +451,15 @@ cAdvisor 获取 ContainerSpec 总体的逻辑是找出对应 container 对应的
 container info handler：
 </p>
 
-<pre class="example">
-# github.com/google/cadvisor/container/docker/handler.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/container/docker/handler.go
 220 func (self *dockerContainerHandler) GetSpec() (info.ContainerSpec, error) {
 221     mi, err := self.machineInfoFactory.GetMachineInfo()
 222     if err != nil {
 223         return info.ContainerSpec{}, err
 224     }
 </pre>
+</div>
 
 <ul class="org-ul">
 <li><code>/proc/self/mountinfo</code> 当前运行进程的挂载信息</li>
@@ -416,8 +467,8 @@ container info handler：
 <li>libcontainer configpath <code>/var/run/docker/execdriver/native/containerId</code></li>
 </ul>
 
-<pre class="example">
-# github.com/google/cadvisor/container/libcontainer/compatibility.go 读取 libcontainer config 文件信息
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/container/libcontainer/compatibility.go 读取 libcontainer config 文件信息
 150 func ReadConfig(dockerRoot, dockerRun, containerID string) (*configs.Config, error) {
 151     // Try using the new config if it is available.
 152     configPath := configPath(dockerRun, containerID)
@@ -435,9 +486,10 @@ container info handler：
 164         return &amp;state.Config, nil
 165     }
 </pre>
+</div>
 
-<pre class="example">
-# github.com/google/cadvisor/container/docker/handler.go 磁盘使用率统计目前支持 aufs，这是目前 CentOS7 上没有 filesystem 大小的原因
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/container/docker/handler.go 磁盘使用率统计目前支持 aufs，这是目前 CentOS7 上没有 filesystem 大小的原因
 ... ...
 232     // For now only enable for aufs filesystems
 233     spec.HasFilesystem = self.storageDriver == aufsStorageDriver
@@ -449,6 +501,7 @@ container info handler：
 245     }
 ... ...
 </pre>
+</div>
 
 <ul class="org-ul">
 <li>文件系统相关: <code># github.com/google/cadvisor/fs/fs.go</code></li>
@@ -456,8 +509,8 @@ container info handler：
 <li>获取 cgroup 和 网络状态</li>
 </ul>
 
-<pre class="example">
-# github.com/google/cadvisor/container/docker/handler.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/container/docker/handler.go
 # cgroup 信息是调用 github.com/docker/libcontainer/cgroups 获取
 276 func (self *dockerContainerHandler) GetStats() (*info.ContainerStats, error) {
 277     stats, err := containerLibcontainer.GetStats(self.cgroupManager, self.rootFs, self.pid)
@@ -481,6 +534,7 @@ container info handler：
 295     return stats, nil
 296 }
 </pre>
+</div>
 
 <p>
 具体获取 cgroup 和 network 的函数实现 <code>GetStats()</code>
@@ -490,8 +544,8 @@ container info handler：
 <li>container 网络状态 <code>/proc/&lt;pid&gt;/net/dev</code></li>
 </ul>
 
-<pre class="example">
-# github.com/google/cadvisor/container/libcontainer/helpers.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/google/cadvisor/container/libcontainer/helpers.go
 81 // Get cgroup and networking stats of the specified container
 82 func GetStats(cgroupManager cgroups.Manager, rootFs string, pid int) (*info.ContainerStats, error) {
 83     cgroupStats, err := cgroupManager.GetStats()
@@ -513,13 +567,14 @@ container info handler：
 99         }
 ... ...
 </pre>
+</div>
 
 <p>
 cgroup status 包含信息如下（cAdvisor 调用 licontainer/cgroups 获取 container 对应 cgroup 信息）：
 </p>
 
-<pre class="example">
-# github.com/docker/libcontainer/cgroups/stats.go
+<div class="org-src-container">
+<pre class="src src-nil"># github.com/docker/libcontainer/cgroups/stats.go
 80 type Stats struct {
 81     CpuStats    CpuStats    `json:"cpu_stats,omitempty"`
 82     MemoryStats MemoryStats `json:"memory_stats,omitempty"`
@@ -532,10 +587,11 @@ cgroup status 包含信息如下（cAdvisor 调用 licontainer/cgroups 获取 co
 </div>
 </div>
 </div>
+</div>
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2015-11-04 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2015-11-04 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

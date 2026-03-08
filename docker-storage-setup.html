@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker lvm device mapper</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,30 +57,30 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge87bf94">1. Device Mapper: loop-lvm</a></li>
-<li><a href="#orgef903f7">2. Device Mapper: direct-lvm</a>
+<li><a href="#orgb3b99a5">1. Device Mapper: loop-lvm</a></li>
+<li><a href="#org89b1076">2. Device Mapper: direct-lvm</a>
 <ul>
-<li><a href="#orgae42f1c">2.1. 示例</a></li>
+<li><a href="#org1508cd6">2.1. 示例</a></li>
 </ul>
 </li>
-<li><a href="#org69515dc">3. 参考</a></li>
+<li><a href="#orgccc1911">3. 参考</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-orge87bf94" class="outline-2">
-<h2 id="orge87bf94"><span class="section-number-2">1.</span> Device Mapper: loop-lvm</h2>
+<div id="outline-container-orgb3b99a5" class="outline-2">
+<h2 id="orgb3b99a5"><span class="section-number-2">1.</span> Device Mapper: loop-lvm</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 默认 CentOS7 下 Docker 使用的 Device Mapper 设备默认使用 loopback 设备，后端为自动生成的稀疏文件，如下:
 </p>
 
-<pre class="example">
-# ls -lsh /var/lib/docker/devicemapper/devicemapper/
+<div class="org-src-container">
+<pre class="src src-nil"># ls -lsh /var/lib/docker/devicemapper/devicemapper/
 总用量 510M
 508M -rw-------. 1 root root 100G 10月 30 00:00 data
 1.9M -rw-------. 1 root root 2.0G 10月 30 00:00 metadata
 </pre>
+</div>
 
 <p>
 data （存放数据） 和 metadata （存放元数据） 的大小从输出可以看出初始化默认为 100G 和 2G 大小，都是稀疏文件，使用多少占用多少。
@@ -53,8 +90,8 @@ data （存放数据） 和 metadata （存放元数据） 的大小从输出可
 Docker 在初始化的过程中，创建 data 和 metadata 这两个稀疏文件，并分别附加到回环设备 <code>/dev/loop0</code> 和 <code>/dev/loop1</code> 上，然后基于回环设备创建 <a href="https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt">thin pool</a>。 默认一个 container 最大存放数据不超过 10G （ <b>注：</b> docker 1.8 之后默认的大小已经为 100G，建议生产环境针对 container pool 大小监控）。如果需要调整则需要修改 <code>/etc/sysconfig/docker</code> 配置文件添加相关选项 <code>--storage-opt</code> 调整即可（详细参考 man docker 查看 STORAGE DRIVER OPTIONS 具体参数说明）。
 </p>
 
-<pre class="example">
-# docker info
+<div class="org-src-container">
+<pre class="src src-nil"># docker info
 Containers: 2
 Images: 13
 Storage Driver: devicemapper
@@ -87,9 +124,9 @@ loop1                                                                           
 </pre>
 </div>
 </div>
-
-<div id="outline-container-orgef903f7" class="outline-2">
-<h2 id="orgef903f7"><span class="section-number-2">2.</span> Device Mapper: direct-lvm</h2>
+</div>
+<div id="outline-container-org89b1076" class="outline-2">
+<h2 id="org89b1076"><span class="section-number-2">2.</span> Device Mapper: direct-lvm</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 direct-lvm 也是使用 LVM， device mapper the dm-thinp 内核模块，使用 direct-lvm 不再使用 loopback 设备，直接使用 raw 分区(no filesystem)，在中等负载和高密度环境下会有更好的性能优势，另外官方也是不建议生产环境系统使用默认的 LVM thin pool，至于两种类型具体的性能对比可以参考 <a href="https://developerblog。redhat。com/2014/09/30/overview-storage-scalability-docker/">Comprehensive Overview of Storage Scalability in Docker</a> 这篇文章。
@@ -138,52 +175,54 @@ docker-storage-setup 设置之后自动扩容的实际配置在 <code>/etc/lvm/p
 因为测试的 LVM 卷组名为 docker-vg，因此 docker-storage-setup 自动生成配置文件为 <code>/etc/lvm/profile/docker-vg--docker-pool-extend.profile</code>
 </p>
 
-<pre class="example">
-# cat /etc/lvm/profile/docker-vg--docker-pool-extend.profile
+<div class="org-src-container">
+<pre class="src src-nil"># cat /etc/lvm/profile/docker-vg--docker-pool-extend.profile
 activation {
         thin_pool_autoextend_threshold=60
         thin_pool_autoextend_percent=20
 }
 </pre>
+</div>
 
 <p>
 使用 <code>lvs -o+seg_monitor</code> 可验证监控状态。
 </p>
 </div>
-
-<div id="outline-container-orgae42f1c" class="outline-3">
-<h3 id="orgae42f1c"><span class="section-number-3">2.1.</span> 示例</h3>
+<div id="outline-container-org1508cd6" class="outline-3">
+<h3 id="org1508cd6"><span class="section-number-3">2.1.</span> 示例</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 主机先添加一块设备，本例设备名为 <code>/dev/vdc</code> ，添加 <code>docker-storage-setup</code> 配置文件：
 </p>
 
-<pre class="example">
-# systemctl stop docker # 停止当前运行的 docker
+<div class="org-src-container">
+<pre class="src src-nil"># systemctl stop docker # 停止当前运行的 docker
 # cat /etc/sysconfig/docker-storage-setup
 DEVS=/dev/vdc   # A quoted, space-separated list of devices to be used. 如果添加多个设备则以空格分隔 DEVS="/dev/sdc /dev/sdd /dev/sde"
 VG=docker-vg    # The volume group to use for docker storage.
 SETUP_LVM_THIN_POOL=yes
 # docker-storage-setup  # 执行 setup 操作，相关 lvm 将自动创建
 </pre>
+</div>
 
 <p>
 创建完成之后，可以查看相关的配置
 </p>
 
-<pre class="example">
-# cat /etc/sysconfig/docker-storage     # 配置已经自动修改
+<div class="org-src-container">
+<pre class="src src-nil"># cat /etc/sysconfig/docker-storage     # 配置已经自动修改
 DOCKER_STORAGE_OPTIONS=-s devicemapper --storage-opt dm.fs=xfs --storage-opt dm.thinpooldev=/dev/mapper/docker--vg-docker--pool
 # grep 'sysconfig/docker-storage' /usr/lib/systemd/system/docker.service
 EnvironmentFile=-/etc/sysconfig/docker-storage  # 可以看出 docker 启动会自动加载该配置文件
 </pre>
+</div>
 
 <p>
 删除源数据并启动 docker
 </p>
 
-<pre class="example">
-# cat /etc/sysconfig/docker-storage-setup
+<div class="org-src-container">
+<pre class="src src-nil"># cat /etc/sysconfig/docker-storage-setup
 # DEVS=/dev/vdc     # 注释该行
 VG=docker-vg
 SETUP_LVM_THIN_POOL=yes
@@ -191,9 +230,10 @@ SETUP_LVM_THIN_POOL=yes
 # systemctl restart lvm2-monitor        # 确保 lvm2-monitor 服务运行
 # systemctl start docker
 </pre>
+</div>
 
-<pre class="example">
-# docker info
+<div class="org-src-container">
+<pre class="src src-nil"># docker info
 Containers: 39
 Images: 98
 Storage Driver: devicemapper
@@ -215,9 +255,9 @@ Storage Driver: devicemapper
 </div>
 </div>
 </div>
-
-<div id="outline-container-org69515dc" class="outline-2">
-<h2 id="org69515dc"><span class="section-number-2">3.</span> 参考</h2>
+</div>
+<div id="outline-container-orgccc1911" class="outline-2">
+<h2 id="orgccc1911"><span class="section-number-2">3.</span> 参考</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Docker 官方文档：
@@ -247,7 +287,7 @@ Storage Driver: devicemapper
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2015-10-30 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2015-10-30 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

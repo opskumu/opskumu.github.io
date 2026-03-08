@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>个人简历</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,31 +57,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0392caa">1. 联系方式</a></li>
-<li><a href="#orgc767835">2. 个人信息</a></li>
-<li><a href="#org60abfb1">3. 工作经历</a>
+<li><a href="#org2b9b09e">1. 联系方式</a></li>
+<li><a href="#org7ba7f69">2. 个人信息</a></li>
+<li><a href="#orgae92e09">3. 工作经历</a>
 <ul>
-<li><a href="#orgcb541b8">3.1. 杭州挖财（2016 年 8 月 ~ 至今）</a></li>
-<li><a href="#orge1eb0e0">3.2. 唯品会（上海） （2015 年 4 月 ~ 2016 年 8 月）</a></li>
-<li><a href="#org6b996bc">3.3. 上海江游（ 2013 年 8 月 ~ 2015 年 4 月 ）</a></li>
-<li><a href="#org8823a61">3.4. 北京知道创宇（2013 年 1 月 ~ 2013 年 8 月）</a></li>
+<li><a href="#org6cabcca">3.1. 杭州挖财（2016 年 8 月 ~ 至今）</a></li>
+<li><a href="#org4277549">3.2. 唯品会（上海） （2015 年 4 月 ~ 2016 年 8 月）</a></li>
+<li><a href="#org4221c13">3.3. 上海江游（ 2013 年 8 月 ~ 2015 年 4 月 ）</a></li>
+<li><a href="#org1ab870f">3.4. 北京知道创宇（2013 年 1 月 ~ 2013 年 8 月）</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-org0392caa" class="outline-2">
-<h2 id="org0392caa"><span class="section-number-2">1.</span> 联系方式</h2>
+<div id="outline-container-org2b9b09e" class="outline-2">
+<h2 id="org2b9b09e"><span class="section-number-2">1.</span> 联系方式</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Email：opskumu@gmail.com</li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgc767835" class="outline-2">
-<h2 id="orgc767835"><span class="section-number-2">2.</span> 个人信息</h2>
+<div id="outline-container-org7ba7f69" class="outline-2">
+<h2 id="org7ba7f69"><span class="section-number-2">2.</span> 个人信息</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>吴磊 | 男 | 1988</li>
@@ -55,13 +90,12 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org60abfb1" class="outline-2">
-<h2 id="org60abfb1"><span class="section-number-2">3.</span> 工作经历</h2>
+<div id="outline-container-orgae92e09" class="outline-2">
+<h2 id="orgae92e09"><span class="section-number-2">3.</span> 工作经历</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgcb541b8" class="outline-3">
-<h3 id="orgcb541b8"><span class="section-number-3">3.1.</span> 杭州挖财（2016 年 8 月 ~ 至今）</h3>
+<div id="outline-container-org6cabcca" class="outline-3">
+<h3 id="org6cabcca"><span class="section-number-3">3.1.</span> 杭州挖财（2016 年 8 月 ~ 至今）</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 <b>职位：</b> 平台研发，云平台小组负责人
@@ -88,9 +122,8 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orge1eb0e0" class="outline-3">
-<h3 id="orge1eb0e0"><span class="section-number-3">3.2.</span> 唯品会（上海） （2015 年 4 月 ~ 2016 年 8 月）</h3>
+<div id="outline-container-org4277549" class="outline-3">
+<h3 id="org4277549"><span class="section-number-3">3.2.</span> 唯品会（上海） （2015 年 4 月 ~ 2016 年 8 月）</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 <b>职位：</b> 平台研发
@@ -100,14 +133,18 @@
 <li>参与唯品会 PaaS 持续集成和部署平台整体的架构设计（Jenkins、Kubernetes、Swarm）</li>
 <li>参与唯品会 PaaS 平台的开发（Go）
 <ul class="org-ul">
-<li>实现平台基于 Kubernetes 的资源配额管理</li>
+<li>实现平台基于 Kubernetes 的资源配额管理
+<ul class="org-ul">
 <li>实现平台基于 Kubernetes 的容器 Volume 功能</li>
 <li>自有服务集成 Promethues metrics，实现 Promethues 监控告警</li>
 </ul></li>
+</ul></li>
 <li>负责唯品会应用（1000+ 域）的 Docker 化迁移
 <ul class="org-ul">
-<li>负责 Docker 基础镜像的构建</li>
+<li>负责 Docker 基础镜像的构建
+<ul class="org-ul">
 <li>负责应用 Docker 化标准定制、文档编写、Docker 技术培训</li>
+</ul></li>
 </ul></li>
 <li>负责唯品会 PaaS 平台基础设施的部署和维护（Docker、Kubernetes、Swarm）
 <ul class="org-ul">
@@ -117,9 +154,8 @@
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org6b996bc" class="outline-3">
-<h3 id="org6b996bc"><span class="section-number-3">3.3.</span> 上海江游（ 2013 年 8 月 ~ 2015 年 4 月 ）</h3>
+<div id="outline-container-org4221c13" class="outline-3">
+<h3 id="org4221c13"><span class="section-number-3">3.3.</span> 上海江游（ 2013 年 8 月 ~ 2015 年 4 月 ）</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 <b>职位：</b> 系统运维
@@ -128,17 +164,18 @@
 <ul class="org-ul">
 <li>独立负责热血街霸3D手游、英雄神殿页游、美食大战老鼠页游项目维护
 <ul class="org-ul">
-<li>参与设计游戏项目的系统架构（Nginx、LVS、Keepalived）和后期 DB 维护（MySQL）</li>
+<li>参与设计游戏项目的系统架构（Nginx、LVS、Keepalived）和后期 DB 维护（MySQL）
+<ul class="org-ul">
 <li>负责实现游戏更新、开合服自动化脚本开发部署（Python、Shell、Puppet）</li>
+</ul></li>
 </ul></li>
 <li>负责构建和维护基于 OpenNebula 的企业私有云（2000+ KVM）</li>
 <li>推动团队文档化（Markdown）、标准化建立，组织推进内部运维技术分享</li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org8823a61" class="outline-3">
-<h3 id="org8823a61"><span class="section-number-3">3.4.</span> 北京知道创宇（2013 年 1 月 ~ 2013 年 8 月）</h3>
+<div id="outline-container-org1ab870f" class="outline-3">
+<h3 id="org1ab870f"><span class="section-number-3">3.4.</span> 北京知道创宇（2013 年 1 月 ~ 2013 年 8 月）</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 <b>职位：</b> 系统运维
@@ -156,7 +193,7 @@
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2019-12-31 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2019-12-31 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

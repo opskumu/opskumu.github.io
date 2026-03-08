@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-29 Sun 14:06 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>马上毕业了，还能做些什么</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,22 +57,22 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org28797ba">1. 确定方向</a></li>
-<li><a href="#org7fda3e1">2. 如何行动</a>
+<li><a href="#orgb571b97">1. 确定方向</a></li>
+<li><a href="#orgd6463c0">2. 如何行动</a>
 <ul>
-<li><a href="#org47948f2">2.1. 拥有一个 Github 账户</a></li>
-<li><a href="#org0bf995b">2.2. 拥有一个属于自己的技术博客</a></li>
-<li><a href="#org33b004e">2.3. 选择好的专业书籍阅读</a></li>
-<li><a href="#org94a47ce">2.4. 关注行业的动态</a></li>
+<li><a href="#orgcfbc55d">2.1. 拥有一个 Github 账户</a></li>
+<li><a href="#org24fed6b">2.2. 拥有一个属于自己的技术博客</a></li>
+<li><a href="#orgdfc3fd8">2.3. 选择好的专业书籍阅读</a></li>
+<li><a href="#orgaf4319c">2.4. 关注行业的动态</a></li>
 </ul>
 </li>
-<li><a href="#org2d3be4a">3. 工作地点</a></li>
-<li><a href="#org46eacb3">4. 大四找工作</a></li>
+<li><a href="#org00a2ca9">3. 工作地点</a></li>
+<li><a href="#org1e2260c">4. 大四找工作</a></li>
 </ul>
 </div>
 </nav>
 
-<figure id="org2edcd91">
+<figure id="org53ccdd7">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/whiplash.jpg" alt="whiplash.jpg">
 
 </figure>
@@ -45,9 +82,8 @@
 <p>
 年前的时候，还在读大三计算机系的表弟和我沟通了下关于毕业如何找工作，现在应该做哪些准备的问题。于是，我根据个人这几年的一些学习和工作经历，做了一些总结。
 </p>
-
-<div id="outline-container-org28797ba" class="outline-2">
-<h2 id="org28797ba"><span class="section-number-2">1.</span> 确定方向</h2>
+<div id="outline-container-orgb571b97" class="outline-2">
+<h2 id="orgb571b97"><span class="section-number-2">1.</span> 确定方向</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 大学已经学了三年，对自己以后的方向差不多应该有一个基本定位。广义上来说互联网是一个很庞大的行业，具体到实际要做的事情分工是很多的（前端、后端、运维、安全、测试等等，再具体细化又要分很多种），面对那么多的方向如何抉择：
@@ -78,9 +114,8 @@
 </ol>
 </div>
 </div>
-
-<div id="outline-container-org7fda3e1" class="outline-2">
-<h2 id="org7fda3e1"><span class="section-number-2">2.</span> 如何行动</h2>
+<div id="outline-container-orgd6463c0" class="outline-2">
+<h2 id="orgd6463c0"><span class="section-number-2">2.</span> 如何行动</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 对于应届生来说，扎实的计算机理论基础是很有必要的，关于基础知识的技能点因为我是非科班出身，可以参考这篇文章 <a href="http://www.zhangjiee.com/blog/2015/graduate-student-should-have-professional-skills.html">毕业生应该具有的基本素养</a>。其实要达到扎实的理论基础，结合当前大学所教的知识点以及大学整体的氛围还是蛮难达到的。
@@ -90,9 +125,8 @@
 一般企业校招都是从 10 月份开始，结合你现在已经大三下学期了，也就是说离大四校招给你的时间只有七个月了，这个时候理论基础是一点，更多的有针对性的学习相对来说更实际一点。
 </p>
 </div>
-
-<div id="outline-container-org47948f2" class="outline-3">
-<h3 id="org47948f2"><span class="section-number-3">2.1.</span> 拥有一个 Github 账户</h3>
+<div id="outline-container-orgcfbc55d" class="outline-3">
+<h3 id="orgcfbc55d"><span class="section-number-3">2.1.</span> 拥有一个 Github 账户</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 学习代码管理工具 Git 或者 SVN，建议直接使用 Git。当然光会这些工具还不够，需要一个代码的管理平台，那么你就需要注册一个 github 账户，把自己平常的代码练习或者做的小项目都提交到 github 上。
@@ -103,18 +137,16 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org0bf995b" class="outline-3">
-<h3 id="org0bf995b"><span class="section-number-3">2.2.</span> 拥有一个属于自己的技术博客</h3>
+<div id="outline-container-org24fed6b" class="outline-3">
+<h3 id="org24fed6b"><span class="section-number-3">2.2.</span> 拥有一个属于自己的技术博客</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 从现在开始拥有一个技术博客，推荐直接使用 Jekyll + Markdown + Github Pages，如何搭建可以参考 <a href="http://jekyllbootstrap.com/usage/jekyll-quick-start.html">Jekyll QuickStart</a> 。对于一个技术人，拥有一个博客是很重要的，初期的定位就从记录学习笔记开始。坚持下来，以后回顾的时候将会是一个巨大的财富，它见证你技术和写作功底的不断提升。千万不要觉得把自己的学习笔记公布出去会让别人捡了便宜，最大的受益人永远都是自己。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org33b004e" class="outline-3">
-<h3 id="org33b004e"><span class="section-number-3">2.3.</span> 选择好的专业书籍阅读</h3>
+<div id="outline-container-orgdfc3fd8" class="outline-3">
+<h3 id="orgdfc3fd8"><span class="section-number-3">2.3.</span> 选择好的专业书籍阅读</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 现在学习比较以前来说，资料的获取是越来越容易了，量一上来，那么质量就会有些参差不齐了。因为你之前和我说过想做安全，所以这里先推荐两本基础的书籍给你，书不在多，在于读透理解：
@@ -138,9 +170,8 @@
 </p>
 </div>
 </div>
-
-<div id="outline-container-org94a47ce" class="outline-3">
-<h3 id="org94a47ce"><span class="section-number-3">2.4.</span> 关注行业的动态</h3>
+<div id="outline-container-orgaf4319c" class="outline-3">
+<h3 id="orgaf4319c"><span class="section-number-3">2.4.</span> 关注行业的动态</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 关注行业的动态也是很重要的一件事情，就拿安全举例，那么你应该知道通过什么渠道获取。如果是从事 web 安全，那么 <a href="http://www.wooyun.org/">乌云</a> 这个网站的关注是必不可少的。
@@ -148,18 +179,16 @@
 </div>
 </div>
 </div>
-
-<div id="outline-container-org2d3be4a" class="outline-2">
-<h2 id="org2d3be4a"><span class="section-number-2">3.</span> 工作地点</h2>
+<div id="outline-container-org00a2ca9" class="outline-2">
+<h2 id="org00a2ca9"><span class="section-number-2">3.</span> 工作地点</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 互联网行业机会比较多的那就属于北上广深了，你之前和我提过想去南京，如果不是有特别好的选择的话，我个人的建议还是先去一线城市。
 </p>
 </div>
 </div>
-
-<div id="outline-container-org46eacb3" class="outline-2">
-<h2 id="org46eacb3"><span class="section-number-2">4.</span> 大四找工作</h2>
+<div id="outline-container-org1e2260c" class="outline-2">
+<h2 id="org1e2260c"><span class="section-number-2">4.</span> 大四找工作</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 鉴于一般比较大的公司校招的话都会选择相对知名的大学，所以不要拘泥于自己大学的校招。你离南京比较近，那么就要关注南京各个大学的校园招聘「每个大学官网应该都会发布一些招聘信息」。如果有合适的公司去校招，直接投简历参加面试，不一定能面上，但是不排除可能性，要懂得去争取一些机会。当然简历也要有不能盲投，根据个人的意愿和实际情况有选择的投，做好准备，切勿乱了阵脚。
@@ -178,7 +207,7 @@
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2016-03-16 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2016-03-16 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

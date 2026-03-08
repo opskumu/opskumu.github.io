@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 磁盘 IO 资源限制</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,31 +57,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1afdcd4">1. 压测工具</a></li>
-<li><a href="#org5dc7119">2. IO 测试</a>
+<li><a href="#orgf1a2cbd">1. 压测工具</a></li>
+<li><a href="#org75c10d2">2. IO 测试</a>
 <ul>
-<li><a href="#org2dcd7cd">2.1. <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></a></li>
-<li><a href="#org7c9a942">2.2. <code>--device-read-bps</code> 、 <code>--device-write-bps</code></a></li>
-<li><a href="#org6e51e83">2.3. <code>--device-read-iops</code> 、 <code>--device-write-iops</code></a></li>
+<li><a href="#org7840e4f">2.1. <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></a></li>
+<li><a href="#org47876dd">2.2. <code>--device-read-bps</code> 、 <code>--device-write-bps</code></a></li>
+<li><a href="#org7bf65bd">2.3. <code>--device-read-iops</code> 、 <code>--device-write-iops</code></a></li>
 </ul>
 </li>
-<li><a href="#org08c20d1">3. 源码解析</a></li>
-<li><a href="#org9a9a767">4. 拓展</a></li>
+<li><a href="#org6cebb31">3. 源码解析</a></li>
+<li><a href="#orge9c4859">4. 拓展</a></li>
 </ul>
 </div>
 </nav>
-
-<div id="outline-container-org1afdcd4" class="outline-2">
-<h2 id="org1afdcd4"><span class="section-number-2">1.</span> 压测工具</h2>
+<div id="outline-container-orgf1a2cbd" class="outline-2">
+<h2 id="orgf1a2cbd"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 通过 Linux <code>dd</code> 命令测试
 </p>
 </div>
 </div>
-
-<div id="outline-container-org5dc7119" class="outline-2">
-<h2 id="org5dc7119"><span class="section-number-2">2.</span> IO 测试</h2>
+<div id="outline-container-org75c10d2" class="outline-2">
+<h2 id="org75c10d2"><span class="section-number-2">2.</span> IO 测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime
@@ -84,8 +119,8 @@ constraints on resources</a></li>
 </ul></li>
 </ul>
 
-<pre class="example">
-➜  ~ docker help run | grep -E 'bps|IO'
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker help run | grep -E 'bps|IO'
 Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
   --blkio-weight                  Block IO (relative weight), between 10 and 1000
   --blkio-weight-device=[]        Block IO weight (relative device weight)
@@ -96,9 +131,9 @@ Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 ➜  ~
 </pre>
 </div>
-
-<div id="outline-container-org2dcd7cd" class="outline-3">
-<h3 id="org2dcd7cd"><span class="section-number-3">2.1.</span> <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></h3>
+</div>
+<div id="outline-container-org7840e4f" class="outline-3">
+<h3 id="org7840e4f"><span class="section-number-3">2.1.</span> <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><code>--blkio-weight</code></li>
@@ -118,31 +153,33 @@ Note: The blkio weight setting is only available for direct IO.  Buffered IO is 
 使用 blkio weight 还需要注意 IO 的调度必须为 CFQ：
 </p>
 
-<pre class="example">
-➜  ~ cat /sys/block/sda/queue/scheduler
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ cat /sys/block/sda/queue/scheduler
 noop [deadline] cfq
 ➜  ~ sudo sh -c "echo cfq &gt; /sys/block/sda/queue/scheduler"
 ➜  ~ cat /sys/block/sda/queue/scheduler
 noop deadline [cfq]
 </pre>
+</div>
 
 <p>
 按照 Docker 官方文档的介绍测试：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --blkio-weight 100 ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --blkio-weight 100 ubuntu-stress:latest /bin/bash
 root@0b6770ee80e0:/#
 ➜  ~ docker run -it --rm --blkio-weight 1000 ubuntu-stress:latest /bin/bash
 root@6778b6b39686:/#
 </pre>
+</div>
 
 <p>
 在运行的容器上同时执行如下命令，统计测试时间：
 </p>
 
-<pre class="example">
-root@0b6770ee80e0:/# time dd if=/dev/zero of=test.out bs=1M count=1024 oflag=direct
+<div class="org-src-container">
+<pre class="src src-nil">root@0b6770ee80e0:/# time dd if=/dev/zero of=test.out bs=1M count=1024 oflag=direct
 1024+0 records in
 1024+0 records out
 1073741824 bytes (1.1 GB) copied, 122.442 s, 8.8 MB/s
@@ -160,6 +197,7 @@ user    0m0.020s
 sys     0m0.480s
 root@6778b6b39686:/#
 </pre>
+</div>
 
 <p>
 测试下来，效果不是很理想，没有获得官档的效果，类似的问题可以在相关的 issue 上找到，如 <a href="https://github.com/docker/docker/issues/16173">&#x2013;blkio-weight doesn't take effect in docker Docker version 1.8.1 #16173</a>
@@ -183,33 +221,34 @@ You'll find that the proportion of time is the same as the proportion of blkio w
 <code>--blkio-weight-device</code> 可以指定某个设备的权重大小，如果同时指定 <code>--blkio-weight</code> 则以 <code>--blkio-weight</code> 为全局默认配置，针对指定设备以 <code>--blkio-weight-device</code> 指定设备值为主。
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --blkio-weight-device "/dev/sda:100" ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --blkio-weight-device "/dev/sda:100" ubuntu-stress:latest /bin/bash
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org7c9a942" class="outline-3">
-<h3 id="org7c9a942"><span class="section-number-3">2.2.</span> <code>--device-read-bps</code> 、 <code>--device-write-bps</code></h3>
+</div>
+<div id="outline-container-org47876dd" class="outline-3">
+<h3 id="org47876dd"><span class="section-number-3">2.2.</span> <code>--device-read-bps</code> 、 <code>--device-write-bps</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 限制容器的写入速度是 1mb「 <code>&lt;device-path&gt;:&lt;limit&gt;[unit]</code> ，单位可以是 kb、mb、gb 正整数」:
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --device-write-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --device-write-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
 root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 100+0 records in
 100+0 records out
 104857600 bytes (105 MB) copied, 100.064 s, 1.0 MB/s    # 可以得知写入的平均速度是 1.0 MB/s
 </pre>
+</div>
 
 <p>
 通过 iotop 获取测试过程中的 bps 也是 1.0 MB 为上限：
 </p>
 
 
-<figure id="orga957aa9">
+<figure id="org0994d97">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/io-write-bps.png" alt="io-write-bps.png">
 
 </figure>
@@ -218,33 +257,34 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 读 bps 限制使用方式同写 bps 限制：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --device-read-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --device-read-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org6e51e83" class="outline-3">
-<h3 id="org6e51e83"><span class="section-number-3">2.3.</span> <code>--device-read-iops</code> 、 <code>--device-write-iops</code></h3>
+</div>
+<div id="outline-container-org7bf65bd" class="outline-3">
+<h3 id="org7bf65bd"><span class="section-number-3">2.3.</span> <code>--device-read-iops</code> 、 <code>--device-write-iops</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 限制容器 write iops 为 5「 <code>&lt;device-path&gt;:&lt;limit&gt;</code> ，必须为正整数」：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --device-write-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --device-write-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
 root@c2a2fa232594:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 100+0 records in
 100+0 records out
 104857600 bytes (105 MB) copied, 42.6987 s, 2.5 MB/s
 </pre>
+</div>
 
 <p>
 通过 <code>iostat</code> 监控 tps「此处即为 iops」 基本上持续在 10 左右「会有些偏差」：
 </p>
 
-<pre class="example">
-➜  ~ iostat 1
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ iostat 1
 ... ...
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            1.13    0.00    0.13   23.46    0.00   75.28
@@ -253,14 +293,16 @@ Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
 sda              10.00         0.00      2610.00          0       5220
 ... ...
 </pre>
+</div>
 
 <p>
 读 iops 限制使用方式同写 iops 限制：
 </p>
 
-<pre class="example">
-➜  ~ docker run -it --rm --device-read-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
+<div class="org-src-container">
+<pre class="src src-nil">➜  ~ docker run -it --rm --device-read-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
 </pre>
+</div>
 
 <p>
 <b>注：</b> 在容器中通过 <code>dd</code> 测试读速度并没有看到很好的效果，经查没有找到磁盘读操作的好工具，所以文中没有介绍读测试。
@@ -268,9 +310,8 @@ sda              10.00         0.00      2610.00          0       5220
 </div>
 </div>
 </div>
-
-<div id="outline-container-org08c20d1" class="outline-2">
-<h2 id="org08c20d1"><span class="section-number-2">3.</span> 源码解析</h2>
+<div id="outline-container-org6cebb31" class="outline-2">
+<h2 id="org6cebb31"><span class="section-number-2">3.</span> 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><a href="https://github.com/opencontainers/runc/tree/master/libcontainer/cgroups/fs">github.com/opencontainers/runc/libcontainer/cgroups/fs</a>
@@ -284,9 +325,8 @@ libcontainer 主要操作是对 cgroup 下相关文件根据选项写操作，�
 </p>
 </div>
 </div>
-
-<div id="outline-container-org9a9a767" class="outline-2">
-<h2 id="org9a9a767"><span class="section-number-2">4.</span> 拓展</h2>
+<div id="outline-container-orge9c4859" class="outline-2">
+<h2 id="orge9c4859"><span class="section-number-2">4.</span> 拓展</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><a href="http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation">Docker背后的内核知识 - cgroups资源限制</a></li>
@@ -298,7 +338,7 @@ libcontainer 主要操作是对 cgroup 下相关文件根据选项写操作，�
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2016-03-27 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2016-03-27 Sun 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>

@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2023-01-28 Sat 22:42 -->
+<!-- 2026-03-08 Sun 15:09 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Calico 备忘</title>
 <meta name="author" content="Kumu" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/googlecode.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<style>
+.navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
+.navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
+.navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
+body.index-page .title { display: none; }
+.navbar-links a:hover { color: #333; }
+.reading-time { color: #888; font-size: 0.85rem; margin-top: 0.5rem; }
+#table-of-contents { background: #f8f9fa; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 4px; }
+#table-of-contents h2 { font-size: 1rem; margin: 0 0 0.5rem 0; }
+#table-of-contents ul { margin: 0; padding-left: 1.2rem; }
+#table-of-contents li { margin: 0.3rem 0; }
+.content { max-width: 800px; margin: 0 auto; padding: 0 1rem; }
+.content img { max-width: 100%; height: auto; }
+.content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+.content th, .content td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+.content th { background: #f8f9fa; }
+.content blockquote { border-left: 4px solid #ddd; margin: 1rem 0; padding: 0.5rem 1rem; color: #666; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
+document.body.insertAdjacentHTML("afterbegin", navbar);
+var text = document.querySelector("#content").innerText;
+var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function(a,b){return a+b.length},0);
+var wordCount = chinese + english;
+var wpm = 350;
+var readTime = Math.max(1, Math.ceil(wordCount / wpm));
+var postamble = document.querySelector("#postamble");
+if (postamble) {
+postamble.insertAdjacentHTML("afterbegin", "<span class=\"reading-time\"><i class=\"far fa-clock\"></i> " + readTime + " min read</span> | ");
+postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}:\d{2}/, '$1');
+}
+});
+</script>
 </head>
 <body>
 <div id="content" class="content">
@@ -20,23 +57,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgee670ee">1. calicoctl</a>
+<li><a href="#orge1ce9d4">1. calicoctl</a>
 <ul>
-<li><a href="#orgde6bf70">1.1. Command Reference</a>
+<li><a href="#org4b64137">1.1. Command Reference</a>
 <ul>
-<li><a href="#org714a1be">1.1.1. Overview</a></li>
-<li><a href="#org80cce8e">1.1.2. <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></a></li>
-<li><a href="#orgad999ad">1.1.3. <code>get</code></a></li>
-<li><a href="#orgab5b45c">1.1.4. <code>config</code></a></li>
-<li><a href="#orgbf60c7f">1.1.5. <code>ipam</code></a></li>
-<li><a href="#org3d78017">1.1.6. <code>node</code></a></li>
+<li><a href="#org71603ec">1.1.1. Overview</a></li>
+<li><a href="#org9dfdb9f">1.1.2. <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></a></li>
+<li><a href="#orgf00f1a8">1.1.3. <code>get</code></a></li>
+<li><a href="#org2b46485">1.1.4. <code>config</code></a></li>
+<li><a href="#org78b6d87">1.1.5. <code>ipam</code></a></li>
+<li><a href="#orga058fec">1.1.6. <code>node</code></a></li>
 </ul>
 </li>
-<li><a href="#orgd1c4117">1.2. 资源类型</a></li>
+<li><a href="#orgbd12eda">1.2. 资源类型</a></li>
 </ul>
 </li>
-<li><a href="#orgf7e4530">2. Calico CNI Plugins</a></li>
-<li><a href="#orgd49cd49">3. BGP Peering</a></li>
+<li><a href="#orgfb0c907">2. Calico CNI Plugins</a></li>
+<li><a href="#orgabc04af">3. BGP Peering</a></li>
 </ul>
 </div>
 </nav>
@@ -59,20 +96,19 @@ Calico v2.0 版本支持以下平台：
 <li>Docker</li>
 <li>Openstack Mitaka, Liberty, Kilo, Juno and icehouse</li>
 </ul>
-
-<div id="outline-container-orgee670ee" class="outline-2">
-<h2 id="orgee670ee"><span class="section-number-2">1.</span> calicoctl</h2>
+<div id="outline-container-orge1ce9d4" class="outline-2">
+<h2 id="orge1ce9d4"><span class="section-number-2">1.</span> calicoctl</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgde6bf70" class="outline-3">
-<h3 id="orgde6bf70"><span class="section-number-3">1.1.</span> Command Reference</h3>
+<div id="outline-container-org4b64137" class="outline-3">
+<h3 id="org4b64137"><span class="section-number-3">1.1.</span> Command Reference</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-org714a1be" class="outline-4">
-<h4 id="org714a1be"><span class="section-number-4">1.1.1.</span> Overview</h4>
+<div id="outline-container-org71603ec" class="outline-4">
+<h4 id="org71603ec"><span class="section-number-4">1.1.1.</span> Overview</h4>
 <div class="outline-text-4" id="text-1-1-1">
-<pre class="example">
-# calicoctl --help
+<div class="org-src-container">
+<pre class="src src-nil"># calicoctl --help
 Usage:
   calicoctl [options] &lt;command&gt; [&lt;args&gt;...]
 
@@ -113,36 +149,39 @@ Description:
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org80cce8e" class="outline-4">
-<h4 id="org80cce8e"><span class="section-number-4">1.1.2.</span> <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></h4>
+</div>
+<div id="outline-container-org9dfdb9f" class="outline-4">
+<h4 id="org9dfdb9f"><span class="section-number-4">1.1.2.</span> <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></h4>
 <div class="outline-text-4" id="text-1-1-2">
-<pre class="example">
-# Create a policy using the data in policy.yaml.
+<div class="org-src-container">
+<pre class="src src-nil"># Create a policy using the data in policy.yaml.
 calicoctl create -f ./policy.yaml
 
 # Create a policy based on the JSON passed into stdin.
 cat policy.json | calicoctl create -f -
 </pre>
+</div>
 
-<pre class="example">
-# Replace a policy using the data in policy.yaml.
+<div class="org-src-container">
+<pre class="src src-nil"># Replace a policy using the data in policy.yaml.
 calicoctl replace -f ./policy.yaml
 
 # Replace a policy based on the JSON passed into stdin.
 cat policy.json | calicoctl replace -f -
 </pre>
+</div>
 
-<pre class="example">
-# Apply a policy using the data in policy.yaml.
+<div class="org-src-container">
+<pre class="src src-nil"># Apply a policy using the data in policy.yaml.
 calicoctl apply -f ./policy.yaml
 
 # Apply a policy based on the JSON passed into stdin.
 cat policy.json | calicoctl apply -f -
 </pre>
+</div>
 
-<pre class="example">
-# Delete a policy using the type and name specified in policy.yaml.
+<div class="org-src-container">
+<pre class="src src-nil"># Delete a policy using the type and name specified in policy.yaml.
 calicoctl delete -f ./policy.yaml
 
 # Delete a policy based on the type and name in the YAML passed into stdin.
@@ -153,63 +192,68 @@ calicoctl delete policy foo
 </pre>
 </div>
 </div>
-
-<div id="outline-container-orgad999ad" class="outline-4">
-<h4 id="orgad999ad"><span class="section-number-4">1.1.3.</span> <code>get</code></h4>
+</div>
+<div id="outline-container-orgf00f1a8" class="outline-4">
+<h4 id="orgf00f1a8"><span class="section-number-4">1.1.3.</span> <code>get</code></h4>
 <div class="outline-text-4" id="text-1-1-3">
-<pre class="example">
-# List all policy in default output format.
+<div class="org-src-container">
+<pre class="src src-nil"># List all policy in default output format.
  calicoctl get policy
 
 # List a specific policy in YAML format
 calicoctl get -o yaml policy my-policy-1
 </pre>
+</div>
 
-<pre class="example">
--o --output=&lt;OUTPUT FORMAT&gt;  Output format.  One of: yaml, json, ps, wide,
+<div class="org-src-container">
+<pre class="src src-nil">-o --output=&lt;OUTPUT FORMAT&gt;  Output format.  One of: yaml, json, ps, wide,
                              custom-columns=..., go-template=...,
                              go-template-file=...   [Default: ps]
 </pre>
+</div>
 
 <p>
 默认 <code>get</code> 命令输出格式为 <code>ps</code>
 </p>
 
-<pre class="example">
-$ calicoctl get hostEndpoint
+<div class="org-src-container">
+<pre class="src src-nil">$ calicoctl get hostEndpoint
 HOSTNAME   NAME        
 host1      endpoint1   
 myhost     eth0  
 </pre>
+</div>
 
 <p>
 <code>wide</code> 格式输出会更详细，会输出资源的一些附加列
 </p>
 
-<pre class="example">
-$ calicoctl get hostEndpoint --output=wide
+<div class="org-src-container">
+<pre class="src src-nil">$ calicoctl get hostEndpoint --output=wide
 HOSTNAME   NAME        INTERFACE   IPS                PROFILES      
 host1      endpoint1               1.2.3.4,0:bb::aa   prof1,prof2   
 myhost     eth0                                       profile1
 </pre>
+</div>
 
 <p>
 <code>custom-columns</code> 可以自定义输出列
 </p>
 
-<pre class="example">
-$ calicoctl get hostEndpoint --output=custom-columns=NAME,IPS
+<div class="org-src-container">
+<pre class="src src-nil">$ calicoctl get hostEndpoint --output=custom-columns=NAME,IPS
 NAME        IPS                
 endpoint1   1.2.3.4,0:bb::aa   
 eth0          
 </pre>
+</div>
 
 <p>
 <code>yaml</code> / <code>json</code> 以 <code>yaml</code> 或者 <code>json</code> 格式输出
 </p>
 
-<pre class="example">
-$ calicoctl get hostEndpoint --output=yaml
+<div class="org-src-container">
+<pre class="src src-nil">$ calicoctl get hostEndpoint --output=yaml
 - apiVersion: v1
   kind: hostEndpoint
   metadata:
@@ -233,22 +277,23 @@ $ calicoctl get hostEndpoint --output=yaml
     profiles:
     - profile1
 </pre>
+</div>
 
 <p>
 如果节点没有运行 etcd，那么需要通过 <code>ETCD_ENDPOINTS</code> 指定 etcd 地址，否则将无法操作：
 </p>
 
-<pre class="example">
-ETCD_ENDPOINTS=http://172.16.0.10:2379 calicoctl get bgppeers
+<div class="org-src-container">
+<pre class="src src-nil">ETCD_ENDPOINTS=http://172.16.0.10:2379 calicoctl get bgppeers
 </pre>
 </div>
 </div>
-
-<div id="outline-container-orgab5b45c" class="outline-4">
-<h4 id="orgab5b45c"><span class="section-number-4">1.1.4.</span> <code>config</code></h4>
+</div>
+<div id="outline-container-org2b46485" class="outline-4">
+<h4 id="org2b46485"><span class="section-number-4">1.1.4.</span> <code>config</code></h4>
 <div class="outline-text-4" id="text-1-1-4">
-<pre class="example">
-# calicoctl config --help
+<div class="org-src-container">
+<pre class="src src-nil"># calicoctl config --help
 Set the Calico datastore access information in the environment variables or
 or supply details in a config file.
 
@@ -317,18 +362,18 @@ The table below details the valid config options.
  asNumber        | global      | 0-4294967295                           |
  ipip            | global      | on,off                                 |
 </pre>
+</div>
 
 <p>
 目前 <code>calicoctl config</code> 只有 <code>logLevel</code> 可以单独设置节点，其它如 <code>nodeToNodeMesh</code> 、 <code>asNumber</code> 、 <code>ipip</code> 配置的都是全局选项。
 </p>
 </div>
 </div>
-
-<div id="outline-container-orgbf60c7f" class="outline-4">
-<h4 id="orgbf60c7f"><span class="section-number-4">1.1.5.</span> <code>ipam</code></h4>
+<div id="outline-container-org78b6d87" class="outline-4">
+<h4 id="org78b6d87"><span class="section-number-4">1.1.5.</span> <code>ipam</code></h4>
 <div class="outline-text-4" id="text-1-1-5">
-<pre class="example">
-Usage:
+<div class="org-src-container">
+<pre class="src src-nil">Usage:
   calicoctl ipam &lt;command&gt; [&lt;args&gt;...]
 
     release      Release a Calico assigned IP address.
@@ -342,6 +387,7 @@ Description:
 
   See 'calicoctl ipam &lt;command&gt; --help' to read about a specific subcommand.
 </pre>
+</div>
 
 <p>
 目前 <code>calicoctl ipam</code> 的地址管理相对 <code>v2.0</code> 以下的版本，功能还是比较弱的，有 <code>release</code> 和 <code>show</code> 两个命令。
@@ -351,16 +397,17 @@ Description:
 <code>calico ipam release</code> 用于从 Calico 清除未被正常回收的地址
 </p>
 
-<pre class="example">
-$ calicoctl ipam release --ip=192.168.1.2
+<div class="org-src-container">
+<pre class="src src-nil">$ calicoctl ipam release --ip=192.168.1.2
 </pre>
+</div>
 
 <p>
 <code>calico ipam show</code> 用于获取指定 ip 地址使用情况
 </p>
 
-<pre class="example">
-# IP is not assigned to an endpoint
+<div class="org-src-container">
+<pre class="src src-nil"># IP is not assigned to an endpoint
 $ calicoctl ipam show --ip=192.168.1.2
 IP 192.168.1.2 is not currently assigned
 
@@ -371,12 +418,12 @@ No attributes defined for 192.168.1.1
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org3d78017" class="outline-4">
-<h4 id="org3d78017"><span class="section-number-4">1.1.6.</span> <code>node</code></h4>
+</div>
+<div id="outline-container-orga058fec" class="outline-4">
+<h4 id="orga058fec"><span class="section-number-4">1.1.6.</span> <code>node</code></h4>
 <div class="outline-text-4" id="text-1-1-6">
-<pre class="example">
-Usage:
+<div class="org-src-container">
+<pre class="src src-nil">Usage:
   calicoctl node &lt;command&gt; [&lt;args&gt;...]
 
     status       View the current status of a Calico node.
@@ -395,13 +442,14 @@ Description:
 
   See 'calicoctl node &lt;command&gt; --help' to read about a specific subcommand.
 </pre>
+</div>
 
 <p>
 获取 Calico 节点状态信息：
 </p>
 
-<pre class="example">
-$ sudo calicoctl node status
+<div class="org-src-container">
+<pre class="src src-nil">$ sudo calicoctl node status
 Calico process is running.
 
 IPv4 BGP status
@@ -414,13 +462,14 @@ IPv4 BGP status
 IPv6 BGP status
 No IPv6 peers found.
 </pre>
+</div>
 
 <p>
 <code>calicoctl node run</code> calico 节点启动参数选项：
 </p>
 
-<pre class="example">
-Usage:
+<div class="org-src-container">
+<pre class="src src-nil">Usage:
   calicoctl node run [--ip=&lt;IP&gt;] [--ip6=&lt;IP6&gt;] [--as=&lt;AS_NUM&gt;]
                      [--name=&lt;NAME&gt;]
                      [--log-dir=&lt;LOG_DIR&gt;]
@@ -505,16 +554,16 @@ Description:
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgd1c4117" class="outline-3">
-<h3 id="orgd1c4117"><span class="section-number-3">1.2.</span> 资源类型</h3>
+</div>
+<div id="outline-container-orgbd12eda" class="outline-3">
+<h3 id="orgbd12eda"><span class="section-number-3">1.2.</span> 资源类型</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 资源结构概览：
 </p>
 
-<pre class="example">
-apiVersion: v1                      // API 版本号
+<div class="org-src-container">
+<pre class="src src-nil">apiVersion: v1                      // API 版本号
 kind: &lt;type of resource&gt;            // 资源类型
 metadata:                           // 元数据
   # Identifying information
@@ -524,6 +573,7 @@ spec:                               // 资源配置信息
   # Specification of the resource
   ...
 </pre>
+</div>
 
 <ul class="org-ul">
 <li><b>bgpPeer</b>
@@ -536,8 +586,8 @@ spec:                               // 资源配置信息
 配置 Calico 集群节点，支持如下别名： <code>bgppeer</code> 、 <code>bgppeers</code> 、 <code>bgpp</code> 、 <code>bgpps</code> 、 <code>bp</code> 、 <code>bps</code>
 </p>
 
-<pre class="example">
-apiVersion: v1
+<div class="org-src-container">
+<pre class="src src-nil">apiVersion: v1
 kind: bgpPeer
 metadata:
   scope: node           // 范围：global/node
@@ -546,6 +596,7 @@ metadata:
 spec:
   asNumber: 63400       // 当前 peer As Number
 </pre>
+</div>
 
 <table>
 
@@ -633,8 +684,8 @@ spec:
 <code>Host Endpoint</code> 资源表示运行 Calico 主机关联接口，每个主机的 endpoint 包括针对该接口设置 labels 和 profiles，用以应用相关策略。
 </p>
 
-<pre class="example">
-apiVersion: v1
+<div class="org-src-container">
+<pre class="src src-nil">apiVersion: v1
 kind: hostEndpoint
 metadata:
   name: eth0
@@ -650,6 +701,7 @@ spec:
   - profile1
   - profile2
 </pre>
+</div>
 
 <ul class="org-ul">
 <li><b>IP Pool Resource(ipPool)</b></li>
@@ -659,8 +711,8 @@ spec:
 定义 Calico IP 地址资源池，除了 <code>ipPool</code> 还有以下别名： <code>ippool</code> 、 <code>ippools</code> 、 <code>ipp</code> 、 <code>ipps</code> 、 <code>pool</code> 、 <code>pools</code>
 </p>
 
-<pre class="example">
-apiVersion: v1
+<div class="org-src-container">
+<pre class="src src-nil">apiVersion: v1
 kind: ipPool
 metadata:
   cidr: 10.1.0.0/16
@@ -670,6 +722,7 @@ spec:
   nat-outgoing: true
   disabled: false       # 标注为 true 表示不启用该地址池
 </pre>
+</div>
 
 <p>
 <code>ipip</code> ：ipip tunneling configuration for this pool. If not specified, ipip tunneling is disabled for this pool.  在公有云平台跨主机通信需要添加这一选项
@@ -697,8 +750,8 @@ spec:
 默认启动 Calico node 实例，会自动创建一个使用主机名的节点资源。
 </p>
 
-<pre class="example">
-apiVersion: v1
+<div class="org-src-container">
+<pre class="src src-nil">apiVersion: v1
 kind: node
 metadata:
   name: node-hostname
@@ -708,18 +761,20 @@ spec:
     ipv4Address: 10.244.0.1
     ipv6Address: 2001:db8:85a3::8a2e:370:7334
 </pre>
+</div>
 
 <p>
 获取节点信息：
 </p>
 
-<pre class="example">
-# calicoctl get node  -o wide
+<div class="org-src-container">
+<pre class="src src-nil"># calicoctl get node  -o wide
 NAME                   ASN     IPV4            IPV6
 k8smaster-64-1-hzifc   64511   172.16.64.1
 k8snode-47-200-hzifc   64514   172.16.47.200
 k8snode-64-10-hzifc    64513   172.16.64.10
 </pre>
+</div>
 
 <ul class="org-ul">
 <li><b>Policy Resource(policy)</b> 和 <b>Profile Resource(profile)</b></li>
@@ -735,19 +790,18 @@ k8snode-64-10-hzifc    64513   172.16.64.10
 </div>
 </div>
 </div>
-
-<div id="outline-container-orgf7e4530" class="outline-2">
-<h2 id="orgf7e4530"><span class="section-number-2">2.</span> <a href="http://docs.projectcalico.org/v2.0/reference/cni-plugin/configuration">Calico CNI Plugins</a></h2>
+<div id="outline-container-orgfb0c907" class="outline-2">
+<h2 id="orgfb0c907"><span class="section-number-2">2.</span> <a href="http://docs.projectcalico.org/v2.0/reference/cni-plugin/configuration">Calico CNI Plugins</a></h2>
 </div>
 
-<div id="outline-container-orgd49cd49" class="outline-2">
-<h2 id="orgd49cd49"><span class="section-number-2">3.</span> <a href="http://docs.projectcalico.org/v2.0/usage/configuration/bgp">BGP Peering</a></h2>
+<div id="outline-container-orgabc04af" class="outline-2">
+<h2 id="orgabc04af"><span class="section-number-2">3.</span> <a href="http://docs.projectcalico.org/v2.0/usage/configuration/bgp">BGP Peering</a></h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <a class="author"
          href="https://blog.opskumu.com">Kumu</a> / <span
-         class="date">2017-02-25 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)</span>
+         class="date">2017-02-25 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>
 </body>
 </html>
