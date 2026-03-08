@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:09 -->
+<!-- 2026-03-08 Sun 15:14 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>北疆秋色</title>
@@ -32,7 +32,8 @@ body.index-page .title { display: none; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var path = window.location.pathname;
+if (path === '/' || path === '/index.html' || path.endsWith('index.html')) document.body.classList.add('index-page');
 var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
 document.body.insertAdjacentHTML("afterbegin", navbar);
 var text = document.querySelector("#content").innerText;
@@ -78,7 +79,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 <h2 id="org5846b44"><span class="section-number-2">1.</span> Day 1 杭州 -&gt; 乌鲁木齐 -&gt; 北屯 <span class="timestamp-wrapper"><span class="timestamp">&lt;2019-09-27 Fri&gt;</span></span></h2>
 <div class="outline-text-2" id="text-1">
 
-<figure id="org9b60558">
+<figure id="org61cfeec">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-1.jpg" alt="xinjiang-2019-1.jpg">
 
 </figure>
@@ -96,7 +97,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org68349fe">
+<figure id="org2ec0083">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-2.jpg" alt="xinjiang-2019-2.jpg">
 
 </figure>
@@ -112,7 +113,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="orgec14f92">
+<figure id="org97ad1da">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-3.jpg" alt="xinjiang-2019-3.jpg">
 
 </figure>
@@ -122,7 +123,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgdfcc96d">
+<figure id="org547326e">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-4.jpg" alt="xinjiang-2019-4.jpg">
 
 </figure>
@@ -132,7 +133,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org0c10f67">
+<figure id="orgea9668f">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-5.jpg" alt="xinjiang-2019-5.jpg">
 
 </figure>
@@ -144,7 +145,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="orgb0dba7b">
+<figure id="org969565e">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-6.jpg" alt="xinjiang-2019-6.jpg">
 
 </figure>
@@ -160,7 +161,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org20ceab0">
+<figure id="orgd6e6c9f">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-7.jpg" alt="xinjiang-2019-7.jpg">
 
 </figure>
@@ -178,7 +179,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org8b0d5e5">
+<figure id="org0f2f2ee">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-8.jpg" alt="xinjiang-2019-8.jpg">
 
 </figure>
@@ -188,19 +189,19 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgdaacb5e">
+<figure id="org4922b87">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-9.jpg" alt="xinjiang-2019-9.jpg">
 
 </figure>
 
 
-<figure id="orgefe2232">
+<figure id="org69759b6">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-10.jpg" alt="xinjiang-2019-10.jpg">
 
 </figure>
 
 
-<figure id="org169b187">
+<figure id="orgfb53521">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-11.jpg" alt="xinjiang-2019-11.jpg">
 
 </figure>
@@ -210,13 +211,13 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org6a60178">
+<figure id="org4e7f6cb">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-12.jpg" alt="xinjiang-2019-12.jpg">
 
 </figure>
 
 
-<figure id="org1aa825c">
+<figure id="org8e23aa6">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-13.jpg" alt="xinjiang-2019-13.jpg">
 
 </figure>
@@ -226,7 +227,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgd2ec58c">
+<figure id="org1c44513">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-14.jpg" alt="xinjiang-2019-14.jpg">
 
 </figure>
@@ -246,7 +247,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org2e59a0a">
+<figure id="orgcedd458">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-15.jpg" alt="xinjiang-2019-15.jpg">
 
 </figure>
@@ -258,7 +259,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="orgcd8ccbe">
+<figure id="org4cd3f49">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-16.jpg" alt="xinjiang-2019-16.jpg">
 
 </figure>
@@ -270,7 +271,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="org7bbb319">
+<figure id="org4135d1b">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-17.jpg" alt="xinjiang-2019-17.jpg">
 
 </figure>
@@ -282,7 +283,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="org212d616">
+<figure id="org3ede631">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-18.jpg" alt="xinjiang-2019-18.jpg">
 
 </figure>
@@ -294,7 +295,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="orgf218e91">
+<figure id="orgf31fe96">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-19.jpg" alt="xinjiang-2019-19.jpg">
 
 </figure>
@@ -306,7 +307,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="orgfad6c1f">
+<figure id="org4bd1aac">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-20.jpg" alt="xinjiang-2019-20.jpg">
 
 </figure>
@@ -326,7 +327,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgd737bd2">
+<figure id="org0fd8f14">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-21.jpg" alt="xinjiang-2019-21.jpg">
 
 </figure>
@@ -338,7 +339,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="org51b9d17">
+<figure id="org95d4d59">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-22.jpg" alt="xinjiang-2019-22.jpg">
 
 </figure>
@@ -350,7 +351,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="org1cb765d">
+<figure id="orgec66e42">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-23.jpg" alt="xinjiang-2019-23.jpg">
 
 </figure>
@@ -362,7 +363,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </blockquote>
 
 
-<figure id="org2117d31">
+<figure id="orga1d4bf0">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-24.jpg" alt="xinjiang-2019-24.jpg">
 
 </figure>
@@ -378,13 +379,13 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgd81c36a">
+<figure id="orge12f5cb">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-25.jpg" alt="xinjiang-2019-25.jpg">
 
 </figure>
 
 
-<figure id="orgbbd2095">
+<figure id="orgb3cb56c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-26.jpg" alt="xinjiang-2019-26.jpg">
 
 </figure>
@@ -400,13 +401,13 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgbff136d">
+<figure id="org85662c4">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-28.jpg" alt="xinjiang-2019-28.jpg">
 
 </figure>
 
 
-<figure id="org21f0d63">
+<figure id="org7ac5283">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-27.jpg" alt="xinjiang-2019-27.jpg">
 
 </figure>
@@ -416,7 +417,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org5cb5e9d">
+<figure id="orga660e41">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-29.jpg" alt="xinjiang-2019-29.jpg">
 
 </figure>
@@ -442,7 +443,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orgb9d0b9a">
+<figure id="orgc34bcc6">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-30.jpg" alt="xinjiang-2019-30.jpg">
 
 </figure>
@@ -460,7 +461,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="orga562549">
+<figure id="org46cf7cc">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-31.jpg" alt="xinjiang-2019-31.jpg">
 
 </figure>
@@ -480,7 +481,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org67a0258">
+<figure id="org000187f">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-32.jpg" alt="xinjiang-2019-32.jpg">
 
 </figure>
@@ -500,7 +501,7 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </p>
 
 
-<figure id="org4af7a59">
+<figure id="org15bb2db">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/xinjiang-2019-33.jpg" alt="xinjiang-2019-33.jpg">
 
 </figure>

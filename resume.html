@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:09 -->
+<!-- 2026-03-08 Sun 15:14 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>个人简历</title>
@@ -32,7 +32,8 @@ body.index-page .title { display: none; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var path = window.location.pathname;
+if (path === '/' || path === '/index.html' || path.endsWith('index.html')) document.body.classList.add('index-page');
 var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
 document.body.insertAdjacentHTML("afterbegin", navbar);
 var text = document.querySelector("#content").innerText;

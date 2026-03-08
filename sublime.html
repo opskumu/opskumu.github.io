@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:09 -->
+<!-- 2026-03-08 Sun 15:14 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sublime Text2 tips</title>
@@ -32,7 +32,8 @@ body.index-page .title { display: none; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var path = window.location.pathname;
+if (path === '/' || path === '/index.html' || path.endsWith('index.html')) document.body.classList.add('index-page');
 var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
 document.body.insertAdjacentHTML("afterbegin", navbar);
 var text = document.querySelector("#content").innerText;
@@ -59,23 +60,23 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 <ul>
 <li><a href="#orgca5cfdf">1. 设置 tab 为 4 个空格</a>
 <ul>
-<li><a href="#orge89b0b3">1.1. Reference</a></li>
+<li><a href="#org4700b2a">1.1. Reference</a></li>
 </ul>
 </li>
 <li><a href="#orga4c4db5">2. 设置 vim 模式</a>
 <ul>
-<li><a href="#orga815100">2.1. Reference</a></li>
+<li><a href="#orgbc6fd0a">2.1. Reference</a></li>
 </ul>
 </li>
 <li><a href="#orgae49542">3. 列编辑模式</a>
 <ul>
-<li><a href="#orgf3d1202">3.1. Reference</a></li>
+<li><a href="#org0572b61">3.1. Reference</a></li>
 </ul>
 </li>
 <li><a href="#org797da97">4. Package Control</a></li>
 <li><a href="#orgb120c32">5. Markdown Preview 插件</a>
 <ul>
-<li><a href="#org4700b2a">5.1. Reference</a></li>
+<li><a href="#org5248b62">5.1. Reference</a></li>
 </ul>
 </li>
 <li><a href="#org8e331a6">6. 撤销恢复</a></li>
@@ -102,8 +103,8 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 </pre>
 </div>
 </div>
-<div id="outline-container-orge89b0b3" class="outline-3">
-<h3 id="orge89b0b3"><span class="section-number-3">1.1.</span> Reference</h3>
+<div id="outline-container-org4700b2a" class="outline-3">
+<h3 id="org4700b2a"><span class="section-number-3">1.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/settings.html">Settings</a></li>
@@ -149,8 +150,8 @@ add:
 </pre>
 </div>
 </div>
-<div id="outline-container-orga815100" class="outline-3">
-<h3 id="orga815100"><span class="section-number-3">2.1.</span> Reference</h3>
+<div id="outline-container-orgbc6fd0a" class="outline-3">
+<h3 id="orgbc6fd0a"><span class="section-number-3">2.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/vintage.html">Vintage Mode</a></li>
@@ -166,8 +167,8 @@ add:
 <li>Add to selection: Ctrl</li>
 </ul>
 </div>
-<div id="outline-container-orgf3d1202" class="outline-3">
-<h3 id="orgf3d1202"><span class="section-number-3">3.1.</span> Reference</h3>
+<div id="outline-container-org0572b61" class="outline-3">
+<h3 id="org0572b61"><span class="section-number-3">3.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/column_selection.html">Column Selection</a></li>
@@ -200,8 +201,8 @@ add:
 <li>Look for Markdown Preview and install it.</li>
 </ul>
 </div>
-<div id="outline-container-org4700b2a" class="outline-3">
-<h3 id="org4700b2a"><span class="section-number-3">5.1.</span> Reference</h3>
+<div id="outline-container-org5248b62" class="outline-3">
+<h3 id="org5248b62"><span class="section-number-3">5.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li><a href="https://github.com/revolunet/sublimetext-markdown-preview">Markdown Preview</a></li>

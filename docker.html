@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:09 -->
+<!-- 2026-03-08 Sun 15:14 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 学习笔记</title>
@@ -32,7 +32,8 @@ body.index-page .title { display: none; }
 </style>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-if (window.location.href.indexOf('index.html') > -1) document.body.classList.add('index-page');
+var path = window.location.pathname;
+if (path === '/' || path === '/index.html' || path.endsWith('index.html')) document.body.classList.add('index-page');
 var navbar = '<nav class="navbar"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html">Blog</a><a href="https://wiki.opskumu.com" target="_blank">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank">Issues</a><a href="https://github.com/opskumu" target="_blank">GitHub</a><a href="https://opskumu.com/" target="_blank">About</a></div></nav>';
 document.body.insertAdjacentHTML("afterbegin", navbar);
 var text = document.querySelector("#content").innerText;
@@ -201,10 +202,10 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 <li><a href="#org2ed3b1b">8.4. 删除 Volumes</a></li>
 </ul>
 </li>
-<li><a href="#orgbaa02e5">9. 链接容器</a>
+<li><a href="#org0c3a636">9. 链接容器</a>
 <ul>
 <li><a href="#org8106b9a">9.1. 容器命名</a></li>
-<li><a href="#orgb0e3ad0">9.2. 链接容器</a>
+<li><a href="#orgbaa02e5">9.2. 链接容器</a>
 <ul>
 <li><a href="#orgf75cfee">9.2.1. 环境变量</a></li>
 <li><a href="#orgd29877d">9.2.2. 更新 <code>/etc/hosts</code> 文件</a></li>
@@ -246,7 +247,7 @@ Docker 使用客户端-服务器 (C/S) 架构模式。Docker 客户端会与 Doc
 </p>
 
 
-<figure id="org4a47954">
+<figure id="org261fedc">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_arch.png" alt="docker_arch.png">
 
 </figure>
@@ -314,7 +315,7 @@ Docker 从 0.9 版本开始使用 libcontainer 替代 lxc，libcontainer 和 Lin
 </p>
 
 
-<figure id="org50ddba6">
+<figure id="org4253137">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libcontainer-linux.png" alt="libcontainer-linux.png">
 
 </figure>
@@ -1138,7 +1139,7 @@ $ sudo docker run -p 127.0.0.1:53:5353/udp &lt;image&gt; &lt;cmd&gt;
 <h2 id="org9797aef"><span class="section-number-2">6.</span> Docker 网络配置</h2>
 <div class="outline-text-2" id="text-6">
 
-<figure id="org2312ad9">
+<figure id="orgaf6d190">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_networking.png" alt="docker_networking.png">
 
 </figure>
@@ -1220,7 +1221,7 @@ docker run 创建 Docker 容器时，可以用 <code>--net</code> 选项指定�
 <h4 id="org2802b0a"><span class="section-number-4">6.1.4.</span> bridge模式</h4>
 <div class="outline-text-4" id="text-6-1-4">
 
-<figure id="org715239a">
+<figure id="org48235cd">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/vethbridge.png" alt="vethbridge.png">
 
 </figure>
@@ -1414,7 +1415,7 @@ $ sudo systemctl start docker
 <h4 id="org7827771"><span class="section-number-4">6.5.3.</span> pipework</h4>
 <div class="outline-text-4" id="text-6-5-3">
 
-<figure id="org0ec7ff1">
+<figure id="org9569f7b">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_bridge.png" alt="docker_bridge.png">
 
 </figure>
@@ -2290,7 +2291,7 @@ bash-4.1# exit
 </div>
 
 
-<figure id="org833ef11">
+<figure id="orgb2fa2ab">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_data.png" alt="docker_data.png">
 
 </figure>
@@ -2374,8 +2375,8 @@ Volume 只有在下列情况下才能被删除：
 </div>
 </div>
 </div>
-<div id="outline-container-orgbaa02e5" class="outline-2">
-<h2 id="orgbaa02e5"><span class="section-number-2">9.</span> 链接容器</h2>
+<div id="outline-container-org0c3a636" class="outline-2">
+<h2 id="org0c3a636"><span class="section-number-2">9.</span> 链接容器</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 docker 允许把多个容器连接在一起，相互交互信息。docker 链接会创建一种容器父子级别的关系，其中父容器可以看到其子容器提供的信息。
@@ -2411,8 +2412,8 @@ $ sudo docker  inspect --format="{% raw %}{{ .Nmae }}{% endraw %}" test
 </blockquote>
 </div>
 </div>
-<div id="outline-container-orgb0e3ad0" class="outline-3">
-<h3 id="orgb0e3ad0"><span class="section-number-3">9.2.</span> 链接容器</h3>
+<div id="outline-container-orgbaa02e5" class="outline-3">
+<h3 id="orgbaa02e5"><span class="section-number-3">9.2.</span> 链接容器</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 链接允许容器间安全通信，使用 <code>--link</code> 选项创建链接。
