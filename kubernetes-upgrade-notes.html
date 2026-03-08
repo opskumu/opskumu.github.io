@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:14 -->
+<!-- 2026-03-08 Sun 15:18 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 版本升级标注</title>
@@ -12,7 +12,11 @@
 <script>var hlf=function(){Array.prototype.forEach.call(document.querySelectorAll("pre.src"),function(t){var e;e=t.getAttribute("class").toLowerCase(),e=e.replace(/src-(\w+)/,"src-$1 $1"),console.log(e),t.setAttribute("class",e),hljs.highlightBlock(t)})};addEventListener("DOMContentLoaded",hlf);</script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.7; color: #333; }
 .navbar { background: #f8f9fa; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e9ecef; margin-bottom: 2rem; }
 .navbar-brand { font-weight: 600; color: #333; text-decoration: none; font-size: 1.4rem; }
 .navbar-links a { margin-left: 2rem; color: #666; text-decoration: none; font-size: 1.1rem; }
@@ -61,13 +65,13 @@ postamble.innerHTML = postamble.innerHTML.replace(/(\d{4}-\d{2}-\d{2}) \w+ \d{2}
 <li><a href="#orgc3c2ff4">1. 1.5.x &#x2013;&gt; 1.6.x</a>
 <ul>
 <li><a href="#org233c7ad">1.1. etcd 备份和数据迁移</a></li>
-<li><a href="#orgae2347a">1.2. Docker 版本支持</a></li>
+<li><a href="#org18a962a">1.2. Docker 版本支持</a></li>
 </ul>
 </li>
 <li><a href="#orgc4d6833">2. 1.6.x &#x2013;&gt; 1.7.x</a></li>
 <li><a href="#orgdd1be01">3. 1.7.x &#x2013;&gt; 1.8.x</a>
 <ul>
-<li><a href="#org18a962a">3.1. Docker 版本支持</a></li>
+<li><a href="#org3097320">3.1. Docker 版本支持</a></li>
 </ul>
 </li>
 <li><a href="#orgcb6c4eb">4. 1.8.x &#x2013;&gt; 1.9.x</a></li>
@@ -169,8 +173,8 @@ d、启动服务
 </blockquote>
 </div>
 </div>
-<div id="outline-container-orgae2347a" class="outline-3">
-<h3 id="orgae2347a"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
+<div id="outline-container-org18a962a" class="outline-3">
+<h3 id="org18a962a"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 从 1.6.0 开始，不再支持 Docker 1.9.x，1.10.3、1.11.2、1.12.6 验证通过。
@@ -220,8 +224,8 @@ d、启动服务
 <li>默认 1.8.x 在节点启用 swap 的时候 Kubelet 会启动失败，需要额外添加选项 <code>--fail-swap-on=false</code> - ThirdPartyResource（TPR）API 被移除，需迁移至 <a href="https://kubernetes.io/docs/tasks/access-kubernetes-api/migrate-third-party-resource/">CustomResourceDefinition（CRD）</a> - Kubelet 指定 master 节点的选项 <code>api-servers</code> 被废弃，需要通过 <code>--kubeconfig</code> 替换。</li>
 </ul>
 </div>
-<div id="outline-container-org18a962a" class="outline-3">
-<h3 id="org18a962a"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
+<div id="outline-container-org3097320" class="outline-3">
+<h3 id="org3097320"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
