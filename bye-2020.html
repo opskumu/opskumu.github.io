@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-05-06 Wed 21:43 -->
+<!-- 2026-05-06 Wed 22:05 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>2020，小结</title>
@@ -153,7 +153,7 @@ if (!outline3 || !text) return;
 var links = text.querySelectorAll("a").length;
 var details = document.createElement("details");
 details.className = "archive-year";
-details.open = (h3.textContent || "").trim() === "2024";
+details.open = true;
 var summary = document.createElement("summary");
 summary.innerHTML = '<span>' + h3.textContent + '</span><span class="meta">' + links + ' post' + (links === 1 ? '' : 's') + '</span>';
 details.appendChild(summary);

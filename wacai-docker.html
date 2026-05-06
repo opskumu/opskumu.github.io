@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-05-06 Wed 21:43 -->
+<!-- 2026-05-06 Wed 22:05 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>挖财 Kubernetes 容器化之路</title>
@@ -153,7 +153,7 @@ if (!outline3 || !text) return;
 var links = text.querySelectorAll("a").length;
 var details = document.createElement("details");
 details.className = "archive-year";
-details.open = (h3.textContent || "").trim() === "2024";
+details.open = true;
 var summary = document.createElement("summary");
 summary.innerHTML = '<span>' + h3.textContent + '</span><span class="meta">' + links + ' post' + (links === 1 ? '' : 's') + '</span>';
 details.appendChild(summary);
@@ -300,7 +300,7 @@ container.appendChild(btn);
 <li><a href="#orgbd4b05a">3.4. 日志</a></li>
 <li><a href="#orgda797fb">3.5. 监控告警</a></li>
 <li><a href="#org90dda85">3.6. 用户行为分析和统计</a></li>
-<li><a href="#org8070bef">3.7. 其它</a></li>
+<li><a href="#orga4b71dd">3.7. 其它</a></li>
 </ul>
 </li>
 <li><a href="#org539ef1b">4. 趟过的坑</a>
@@ -314,7 +314,7 @@ container.appendChild(btn);
 <li><a href="#org13d3e17">4.7. 容器内自定义时间的问题</a></li>
 </ul>
 </li>
-<li><a href="#orga4b71dd">5. 其它</a>
+<li><a href="#org74f07c1">5. 其它</a>
 <ul>
 <li><a href="#org127399b">5.1. 技术之外，产品本身</a></li>
 <li><a href="#org15c3f67">5.2. 基于容器的云原生应用设计原则</a></li>
@@ -338,7 +338,7 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org0bdaf00">
+<figure id="org2230db0">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-first-commit.png" alt="k2-first-commit.png">
 
 </figure>
@@ -401,7 +401,7 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org29c0565">
+<figure id="orgc83b434">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-kubernetes.png" alt="k2-kubernetes.png">
 
 </figure>
@@ -411,19 +411,19 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org2838c2c">
+<figure id="org780710e">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-ns-dashboard.png" alt="k2-ns-dashboard.png">
 
 </figure>
 
 
-<figure id="org5482c43">
+<figure id="orgcc83fa7">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-dashboard.png" alt="k2-app-dashboard.png">
 
 </figure>
 
 
-<figure id="orgf0cba57">
+<figure id="orgeeda70a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-view-dashboard.png" alt="k2-app-view-dashboard.png">
 
 </figure>
@@ -433,19 +433,19 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org866ef57">
+<figure id="orgb264998">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-clone.png" alt="k2-app-clone.png">
 
 </figure>
 
 
-<figure id="org6597b68">
+<figure id="org8d9bbb1">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-statefulset.png" alt="k2-app-statefulset.png">
 
 </figure>
 
 
-<figure id="org38ed503">
+<figure id="orgd0ee092">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-canary.png" alt="k2-app-canary.png">
 
 </figure>
@@ -487,13 +487,13 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org7ba3e47">
+<figure id="orgfb75748">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-1.png" alt="calico-network-test-1.png">
 
 </figure>
 
 
-<figure id="org66fbaeb">
+<figure id="org758c401">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-2.png" alt="calico-network-test-2.png">
 
 </figure>
@@ -515,7 +515,7 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org0c70725">
+<figure id="org5c7c401">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-log-volume.png" alt="k2-log-volume.png">
 
 </figure>
@@ -529,7 +529,7 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org4c6b7cc">
+<figure id="org6506d1e">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-stdout-log.png" alt="k2-stdout-log.png">
 
 </figure>
@@ -565,21 +565,21 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="orgd95c038">
+<figure id="orga13826e">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-datastat.png" alt="k2-app-datastat.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org8070bef" class="outline-3">
-<h3 id="org8070bef"><span class="section-number-3">3.7.</span> 其它</h3>
+<div id="outline-container-orga4b71dd" class="outline-3">
+<h3 id="orga4b71dd"><span class="section-number-3">3.7.</span> 其它</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 针对完整的组件和架构方案，可以具体看下图：
 </p>
 
 
-<figure id="org7c0089e">
+<figure id="org852ee84">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-Kubernetes-arch.png" alt="k2-Kubernetes-arch.png">
 
 </figure>
@@ -614,7 +614,7 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org1b39c7c">
+<figure id="org4954dac">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-dns-cache.png" alt="nodelocal-dns-cache.png"> 
 
 </figure>
@@ -624,7 +624,7 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org82372ef">
+<figure id="org6f24d6a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-HA.png" alt="nodelocal-HA.png">
 
 </figure>
@@ -744,8 +744,8 @@ CMD ["/my/script", "--with", "--args"]
 </div>
 </div>
 </div>
-<div id="outline-container-orga4b71dd" class="outline-2">
-<h2 id="orga4b71dd"><span class="section-number-2">5.</span> 其它</h2>
+<div id="outline-container-org74f07c1" class="outline-2">
+<h2 id="org74f07c1"><span class="section-number-2">5.</span> 其它</h2>
 <div class="outline-text-2" id="text-5">
 </div>
 <div id="outline-container-org127399b" class="outline-3">
@@ -769,7 +769,7 @@ CMD ["/my/script", "--with", "--args"]
 </ul>
 
 
-<figure id="org6bbd531">
+<figure id="org246e1ac">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cloud-native-container-design-principles.png" alt="cloud-native-container-design-principles.png">
 
 </figure>

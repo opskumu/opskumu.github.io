@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-05-06 Wed 21:43 -->
+<!-- 2026-05-06 Wed 22:05 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 访问控制</title>
@@ -153,7 +153,7 @@ if (!outline3 || !text) return;
 var links = text.querySelectorAll("a").length;
 var details = document.createElement("details");
 details.className = "archive-year";
-details.open = (h3.textContent || "").trim() === "2024";
+details.open = true;
 var summary = document.createElement("summary");
 summary.innerHTML = '<span>' + h3.textContent + '</span><span class="meta">' + links + ' post' + (links === 1 ? '' : 's') + '</span>';
 details.appendChild(summary);
@@ -294,7 +294,7 @@ container.appendChild(btn);
 </div>
 </nav>
 
-<figure id="orga357ca5">
+<figure id="org9105d4c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/components-of-kubernetes.png" alt="components-of-kubernetes.png">
 
 </figure>
@@ -312,7 +312,7 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="orgf584c31">
+<figure id="orgf70a93e">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/access-control-overview.png" alt="access-control-overview.png">
 
 </figure>
@@ -326,7 +326,7 @@ container.appendChild(btn);
 </p>
 
 
-<figure id="org94ba482">
+<figure id="org2ca8a35">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kubernetes-authentication.png" alt="kubernetes-authentication.png">
 
 </figure>
@@ -346,7 +346,7 @@ APIServer 和集群组件通信使用 TLS 双向认证，顾名思义，客户�
 </p>
 
 
-<figure id="orgd763e8c">
+<figure id="org8bbaef9">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mutual-ssl.png" alt="mutual-ssl.png">
 
 </figure>
@@ -390,13 +390,13 @@ kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书�
 </p>
 
 
-<figure id="org37bb3bf">
+<figure id="orgbc3a53e">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/role-binding.png" alt="role-binding.png">
 
 </figure>
 
 
-<figure id="orgbfdc8ea">
+<figure id="orgcd30ac0">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cluster-role-binding.png" alt="cluster-role-binding.png">
 
 </figure>
@@ -461,7 +461,7 @@ ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空�
 </p>
 
 
-<figure id="orga61a713">
+<figure id="org0cb8d97">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/bootstrapping-workflow.png" alt="bootstrapping-workflow.png">
 
 </figure>

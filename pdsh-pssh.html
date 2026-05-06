@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-05-06 Wed 21:43 -->
+<!-- 2026-05-06 Wed 22:05 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>批量主机管理 pdsh &amp; pssh</title>
@@ -153,7 +153,7 @@ if (!outline3 || !text) return;
 var links = text.querySelectorAll("a").length;
 var details = document.createElement("details");
 details.className = "archive-year";
-details.open = (h3.textContent || "").trim() === "2024";
+details.open = true;
 var summary = document.createElement("summary");
 summary.innerHTML = '<span>' + h3.textContent + '</span><span class="meta">' + links + ' post' + (links === 1 ? '' : 's') + '</span>';
 details.appendChild(summary);
@@ -290,14 +290,14 @@ container.appendChild(btn);
 <li><a href="#org2f138a7">1.1. 安装</a></li>
 <li><a href="#org04919f2">1.2. pssh相关参数</a></li>
 <li><a href="#org11997c2">1.3. 附加工具</a></li>
-<li><a href="#org9d9776b">1.4. 使用实例</a></li>
-<li><a href="#org59db5ef">1.5. 参考文档</a></li>
+<li><a href="#orgcc578bd">1.4. 使用实例</a></li>
+<li><a href="#org62ce172">1.5. 参考文档</a></li>
 </ul>
 </li>
 <li><a href="#orgacc55f1">2. pdsh</a>
 <ul>
 <li><a href="#orgb982c84">2.1. pdsh 基本用法</a></li>
-<li><a href="#orgcc578bd">2.2. 使用实例</a>
+<li><a href="#org2e4d3e4">2.2. 使用实例</a>
 <ul>
 <li><a href="#orgc02439b">2.2.1. 单个主机测试</a></li>
 <li><a href="#org44ffed8">2.2.2. 多个主机测试</a></li>
@@ -307,7 +307,7 @@ container.appendChild(btn);
 <li><a href="#org66267b8">2.2.6. <code>dshbak</code> 格式化输出</a></li>
 </ul>
 </li>
-<li><a href="#org62ce172">2.3. 参考文档</a></li>
+<li><a href="#org67628cd">2.3. 参考文档</a></li>
 </ul>
 </li>
 </ul>
@@ -381,8 +381,8 @@ python setup.py install
 </ul>
 </div>
 </div>
-<div id="outline-container-org9d9776b" class="outline-3">
-<h3 id="org9d9776b"><span class="section-number-3">1.4.</span> 使用实例</h3>
+<div id="outline-container-orgcc578bd" class="outline-3">
+<h3 id="orgcc578bd"><span class="section-number-3">1.4.</span> 使用实例</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 写入主机到文件中，语法为 <code>用户名@主机ip</code>
@@ -439,8 +439,8 @@ Stderr: Connection to 10.0.0.8 closed.
 </div>
 </div>
 </div>
-<div id="outline-container-org59db5ef" class="outline-3">
-<h3 id="org59db5ef"><span class="section-number-3">1.5.</span> 参考文档</h3>
+<div id="outline-container-org62ce172" class="outline-3">
+<h3 id="org62ce172"><span class="section-number-3">1.5.</span> 参考文档</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li><a href="http://linux.die.net/man/1/pssh">pssh</a></li>
@@ -485,8 +485,8 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </div>
 </div>
 </div>
-<div id="outline-container-orgcc578bd" class="outline-3">
-<h3 id="orgcc578bd"><span class="section-number-3">2.2.</span> 使用实例</h3>
+<div id="outline-container-org2e4d3e4" class="outline-3">
+<h3 id="org2e4d3e4"><span class="section-number-3">2.2.</span> 使用实例</h3>
 <div class="outline-text-3" id="text-2-2">
 </div>
 <div id="outline-container-orgc02439b" class="outline-4">
@@ -594,8 +594,8 @@ Wed Jun 19 16:24:19 CST 2013
 </div>
 </div>
 </div>
-<div id="outline-container-org62ce172" class="outline-3">
-<h3 id="org62ce172"><span class="section-number-3">2.3.</span> 参考文档</h3>
+<div id="outline-container-org67628cd" class="outline-3">
+<h3 id="org67628cd"><span class="section-number-3">2.3.</span> 参考文档</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li><a href="https://code.google.com/p/pdsh/wiki/UsingPDSH">Using PDSH</a></li>

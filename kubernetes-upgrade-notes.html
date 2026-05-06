@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- 2026-05-06 Wed 21:43 -->
+<!-- 2026-05-06 Wed 22:05 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 版本升级标注</title>
@@ -153,7 +153,7 @@ if (!outline3 || !text) return;
 var links = text.querySelectorAll("a").length;
 var details = document.createElement("details");
 details.className = "archive-year";
-details.open = (h3.textContent || "").trim() === "2024";
+details.open = true;
 var summary = document.createElement("summary");
 summary.innerHTML = '<span>' + h3.textContent + '</span><span class="meta">' + links + ' post' + (links === 1 ? '' : 's') + '</span>';
 details.appendChild(summary);
@@ -288,13 +288,13 @@ container.appendChild(btn);
 <li><a href="#orgc3c2ff4">1. 1.5.x &#x2013;&gt; 1.6.x</a>
 <ul>
 <li><a href="#org233c7ad">1.1. etcd 备份和数据迁移</a></li>
-<li><a href="#orgc6e7ddb">1.2. Docker 版本支持</a></li>
+<li><a href="#org3d63d1f">1.2. Docker 版本支持</a></li>
 </ul>
 </li>
 <li><a href="#orgc4d6833">2. 1.6.x &#x2013;&gt; 1.7.x</a></li>
 <li><a href="#orgdd1be01">3. 1.7.x &#x2013;&gt; 1.8.x</a>
 <ul>
-<li><a href="#org3d63d1f">3.1. Docker 版本支持</a></li>
+<li><a href="#orgb69c4f4">3.1. Docker 版本支持</a></li>
 </ul>
 </li>
 <li><a href="#orgcb6c4eb">4. 1.8.x &#x2013;&gt; 1.9.x</a></li>
@@ -396,8 +396,8 @@ d、启动服务
 </blockquote>
 </div>
 </div>
-<div id="outline-container-orgc6e7ddb" class="outline-3">
-<h3 id="orgc6e7ddb"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
+<div id="outline-container-org3d63d1f" class="outline-3">
+<h3 id="org3d63d1f"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 从 1.6.0 开始，不再支持 Docker 1.9.x，1.10.3、1.11.2、1.12.6 验证通过。
@@ -447,8 +447,8 @@ d、启动服务
 <li>默认 1.8.x 在节点启用 swap 的时候 Kubelet 会启动失败，需要额外添加选项 <code>--fail-swap-on=false</code> - ThirdPartyResource（TPR）API 被移除，需迁移至 <a href="https://kubernetes.io/docs/tasks/access-kubernetes-api/migrate-third-party-resource/">CustomResourceDefinition（CRD）</a> - Kubelet 指定 master 节点的选项 <code>api-servers</code> 被废弃，需要通过 <code>--kubeconfig</code> 替换。</li>
 </ul>
 </div>
-<div id="outline-container-org3d63d1f" class="outline-3">
-<h3 id="org3d63d1f"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
+<div id="outline-container-orgb69c4f4" class="outline-3">
+<h3 id="orgb69c4f4"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
