@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-15 Fri 23:13 -->
+<!-- 2026-05-15 Fri 23:29 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 版本升级标注</title>
@@ -37,13 +37,13 @@
 <li><a href="#org84939d6">1. 1.5.x &#x2013;&gt; 1.6.x</a>
 <ul>
 <li><a href="#org7246e2f">1.1. etcd 备份和数据迁移</a></li>
-<li><a href="#orge48fe64">1.2. Docker 版本支持</a></li>
+<li><a href="#orgafcbf5c">1.2. Docker 版本支持</a></li>
 </ul>
 </li>
 <li><a href="#org908f886">2. 1.6.x &#x2013;&gt; 1.7.x</a></li>
 <li><a href="#orgcda0495">3. 1.7.x &#x2013;&gt; 1.8.x</a>
 <ul>
-<li><a href="#orgcd2c9e3">3.1. Docker 版本支持</a></li>
+<li><a href="#org5aac0fd">3.1. Docker 版本支持</a></li>
 </ul>
 </li>
 <li><a href="#org9b5fdce">4. 1.8.x &#x2013;&gt; 1.9.x</a></li>
@@ -145,8 +145,8 @@ d、启动服务
 </blockquote>
 </div>
 </div>
-<div id="outline-container-orge48fe64" class="outline-3">
-<h3 id="orge48fe64"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
+<div id="outline-container-orgafcbf5c" class="outline-3">
+<h3 id="orgafcbf5c"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 从 1.6.0 开始，不再支持 Docker 1.9.x，1.10.3、1.11.2、1.12.6 验证通过。
@@ -196,8 +196,8 @@ d、启动服务
 <li>默认 1.8.x 在节点启用 swap 的时候 Kubelet 会启动失败，需要额外添加选项 <code>--fail-swap-on=false</code> - ThirdPartyResource（TPR）API 被移除，需迁移至 <a href="https://kubernetes.io/docs/tasks/access-kubernetes-api/migrate-third-party-resource/">CustomResourceDefinition（CRD）</a> - Kubelet 指定 master 节点的选项 <code>api-servers</code> 被废弃，需要通过 <code>--kubeconfig</code> 替换。</li>
 </ul>
 </div>
-<div id="outline-container-orgcd2c9e3" class="outline-3">
-<h3 id="orgcd2c9e3"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
+<div id="outline-container-org5aac0fd" class="outline-3">
+<h3 id="org5aac0fd"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
@@ -239,6 +239,7 @@ Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
 </div>
 </div>
 </div>
+<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="k8s-pod-affinity-antiaffinity.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">Kubernetes Pod 亲和性和反亲和性</span><span class="article-nav-date">2018-11-18</span></a><a class="article-nav-link article-nav-older" href="docker-overlayfs.html"><span class="article-nav-label">Older</span><span class="article-nav-title">Docker OverlayFS 驱动</span><span class="article-nav-date">2018-09-05</span></a></nav>
 <div id="postamble" class="status">
 <a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2018-09-07 Fri 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
 </div>

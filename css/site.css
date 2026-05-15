@@ -248,6 +248,57 @@ button:focus-visible {
   justify-content: flex-end;
 }
 
+.article-nav {
+  max-width: var(--content-w);
+  margin: 2.25rem auto 1.4rem;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  box-sizing: border-box;
+}
+
+.article-nav-link {
+  min-height: 44px;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.article-nav-link:hover {
+  border-color: #cbd5e1;
+  background: #fbfdff;
+  text-decoration: none;
+}
+
+.article-nav-older {
+  grid-column: 2;
+  text-align: right;
+}
+
+.article-nav-label,
+.article-nav-date {
+  color: var(--muted-soft);
+  font-size: 0.82rem;
+}
+
+.article-nav-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.article-nav-title {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
 body.index-page #postamble {
   justify-content: space-between;
   gap: 0.25rem;
@@ -271,6 +322,17 @@ body.index-page #postamble .creator {
   #postamble .creator {
     margin-left: 0;
     flex-basis: 100%;
+    text-align: left;
+  }
+
+  .article-nav {
+    grid-template-columns: 1fr;
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+  }
+
+  .article-nav-older {
+    grid-column: auto;
     text-align: left;
   }
 }
@@ -328,6 +390,16 @@ body.index-page #postamble .creator {
 #table-of-contents ul ul a {
   font-size: 0.95em;
   color: var(--muted);
+}
+
+@media (min-width: 1024px) {
+  #table-of-contents {
+    position: sticky;
+    top: 0.75rem;
+    z-index: 10;
+    max-height: calc(100vh - 1.5rem);
+    overflow: auto;
+  }
 }
 
 .content {
@@ -429,6 +501,10 @@ body.index-page .title {
 
 .content p,
 .content li {
+  overflow-wrap: break-word;
+}
+
+.content a {
   overflow-wrap: anywhere;
 }
 
@@ -459,6 +535,10 @@ pre.src {
   background: var(--surface-soft);
 }
 
+.org-src-container.has-copy pre.src {
+  padding-top: 2.8rem;
+}
+
 pre.example {
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -471,7 +551,7 @@ pre.example {
 .code-copy-btn {
   position: absolute;
   right: 0.55rem;
-  bottom: 0.55rem;
+  top: 0.55rem;
   min-height: 44px;
   min-width: 44px;
   padding: 0.25rem 0.45rem;
@@ -617,7 +697,6 @@ body.index-page .archive-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: 0.55rem;
   margin: 0.5rem 0 1.1rem;
 }
@@ -637,12 +716,6 @@ body.index-page .archive-toolbar button {
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
-}
-
-body.index-page .archive-count {
-  flex-basis: 100%;
-  color: var(--muted);
-  font-size: 0.86rem;
 }
 
 body.index-page .archive-toolbar button:hover {

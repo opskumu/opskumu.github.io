@@ -7,9 +7,8 @@
     articleMeta: "文章信息",
     readingTimeTitle: "预计阅读时间",
     minuteRead: "约 {minutes} 分钟",
-    expandAll: "展开全部",
-    collapseAll: "折叠全部",
-    totalPosts: "共 {total} 篇文章，最近年份默认展开",
+    expandAll: "Expand all",
+    collapseAll: "Collapse all",
     postsCount: "{count} 篇",
     backToTop: "返回顶部",
     copyCode: "复制代码",
@@ -321,18 +320,13 @@
     });
     toolbar.appendChild(actions);
 
-    var count = document.createElement("div");
-    count.className = "archive-count";
-    count.setAttribute("aria-live", "polite");
-    toolbar.appendChild(count);
-
     var archiveHeader = root.querySelector("h2");
     if (archiveHeader && archiveHeader.parentElement) {
       archiveHeader.parentElement.insertBefore(toolbar, archiveHeader.nextSibling);
     }
 
     var yearHeadings = Array.prototype.slice.call(root.querySelectorAll(".outline-3 > h3"));
-    yearHeadings.forEach(function (h3, index) {
+    yearHeadings.forEach(function (h3) {
       var outline3 = h3.parentElement;
       var text = outline3 ? outline3.querySelector(".outline-text-3") : null;
       if (!outline3 || !text) return;
@@ -340,8 +334,7 @@
       var links = text.querySelectorAll("a").length;
       var details = document.createElement("details");
       details.className = "archive-year";
-      details.open = index < 4;
-      details.dataset.initialOpen = details.open ? "true" : "false";
+      details.open = true;
       details.dataset.total = String(links);
 
       var summary = document.createElement("summary");
@@ -362,13 +355,6 @@
       h3.remove();
     });
 
-    var allItems = Array.prototype.slice.call(root.querySelectorAll("details.archive-year li"));
-    var totalPosts = allItems.length;
-
-    var updateCount = function () {
-      count.textContent = format(labels.totalPosts, { total: totalPosts });
-    };
-
     toolbar.addEventListener("click", function (event) {
       var target = event.target && event.target.closest ? event.target.closest("button[data-action]") : null;
       if (!target) return;
@@ -378,11 +364,8 @@
 
       Array.prototype.forEach.call(root.querySelectorAll("details.archive-year"), function (details) {
         details.open = action === "expand";
-        details.dataset.initialOpen = details.open ? "true" : "false";
       });
     });
-
-    updateCount();
   };
 
   var initScrollEnhancements = function () {
@@ -498,6 +481,7 @@
     blocks.forEach(function (pre) {
       var container = pre.parentElement;
       if (!container || container.querySelector(".code-copy-btn")) return;
+      container.classList.add("has-copy");
 
       var button = document.createElement("button");
       button.type = "button";
