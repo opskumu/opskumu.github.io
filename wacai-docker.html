@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-15 Fri 23:29 -->
+<!-- 2026-05-15 Fri 23:54 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>挖财 Kubernetes 容器化之路</title>
@@ -49,7 +49,7 @@
 <li><a href="#org4764a9b">3.4. 日志</a></li>
 <li><a href="#orgb89469f">3.5. 监控告警</a></li>
 <li><a href="#org4f5036e">3.6. 用户行为分析和统计</a></li>
-<li><a href="#orga2a369d">3.7. 其它</a></li>
+<li><a href="#orgf4a29d6">3.7. 其它</a></li>
 </ul>
 </li>
 <li><a href="#org8622f51">4. 趟过的坑</a>
@@ -63,7 +63,7 @@
 <li><a href="#org18063e2">4.7. 容器内自定义时间的问题</a></li>
 </ul>
 </li>
-<li><a href="#orgf4a29d6">5. 其它</a>
+<li><a href="#orgd3fa9e5">5. 其它</a>
 <ul>
 <li><a href="#org140cdca">5.1. 技术之外，产品本身</a></li>
 <li><a href="#orgd7744b9">5.2. 基于容器的云原生应用设计原则</a></li>
@@ -87,7 +87,7 @@
 </p>
 
 
-<figure id="orgd37a30f">
+<figure id="orga12a17c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-first-commit.png" alt="k2-first-commit.png">
 
 </figure>
@@ -150,7 +150,7 @@
 </p>
 
 
-<figure id="org8857eb6">
+<figure id="org9ecac2a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-kubernetes.png" alt="k2-kubernetes.png">
 
 </figure>
@@ -160,19 +160,19 @@
 </p>
 
 
-<figure id="orgc0a4245">
+<figure id="orgdd774e0">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-ns-dashboard.png" alt="k2-ns-dashboard.png">
 
 </figure>
 
 
-<figure id="orgb60fc0b">
+<figure id="orgb9b00ae">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-dashboard.png" alt="k2-app-dashboard.png">
 
 </figure>
 
 
-<figure id="org84f6386">
+<figure id="orgccea58b">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-view-dashboard.png" alt="k2-app-view-dashboard.png">
 
 </figure>
@@ -182,19 +182,19 @@
 </p>
 
 
-<figure id="org2f16dbb">
+<figure id="org229ec41">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-clone.png" alt="k2-app-clone.png">
 
 </figure>
 
 
-<figure id="org27bb9ca">
+<figure id="org55aba9d">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-statefulset.png" alt="k2-app-statefulset.png">
 
 </figure>
 
 
-<figure id="orgf3f3364">
+<figure id="org4ac0ba7">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-canary.png" alt="k2-app-canary.png">
 
 </figure>
@@ -236,13 +236,13 @@
 </p>
 
 
-<figure id="orgd1eaaf3">
+<figure id="org96bfec1">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-1.png" alt="calico-network-test-1.png">
 
 </figure>
 
 
-<figure id="org46fa3db">
+<figure id="org2abd684">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-2.png" alt="calico-network-test-2.png">
 
 </figure>
@@ -264,7 +264,7 @@
 </p>
 
 
-<figure id="orgbeee40e">
+<figure id="org3669e86">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-log-volume.png" alt="k2-log-volume.png">
 
 </figure>
@@ -278,7 +278,7 @@
 </p>
 
 
-<figure id="orgc2d9c3b">
+<figure id="org8058640">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-stdout-log.png" alt="k2-stdout-log.png">
 
 </figure>
@@ -314,21 +314,21 @@
 </p>
 
 
-<figure id="org18bf12a">
+<figure id="org168385c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-datastat.png" alt="k2-app-datastat.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-orga2a369d" class="outline-3">
-<h3 id="orga2a369d"><span class="section-number-3">3.7.</span> 其它</h3>
+<div id="outline-container-orgf4a29d6" class="outline-3">
+<h3 id="orgf4a29d6"><span class="section-number-3">3.7.</span> 其它</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 针对完整的组件和架构方案，可以具体看下图：
 </p>
 
 
-<figure id="orgb8b99db">
+<figure id="org415d010">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-Kubernetes-arch.png" alt="k2-Kubernetes-arch.png">
 
 </figure>
@@ -363,7 +363,7 @@
 </p>
 
 
-<figure id="org6e2bbdc">
+<figure id="org7f18f75">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-dns-cache.png" alt="nodelocal-dns-cache.png"> 
 
 </figure>
@@ -373,7 +373,7 @@
 </p>
 
 
-<figure id="orga34b63e">
+<figure id="orgc45b788">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-HA.png" alt="nodelocal-HA.png">
 
 </figure>
@@ -493,8 +493,8 @@ CMD ["/my/script", "--with", "--args"]
 </div>
 </div>
 </div>
-<div id="outline-container-orgf4a29d6" class="outline-2">
-<h2 id="orgf4a29d6"><span class="section-number-2">5.</span> 其它</h2>
+<div id="outline-container-orgd3fa9e5" class="outline-2">
+<h2 id="orgd3fa9e5"><span class="section-number-2">5.</span> 其它</h2>
 <div class="outline-text-2" id="text-5">
 </div>
 <div id="outline-container-org140cdca" class="outline-3">
@@ -518,7 +518,7 @@ CMD ["/my/script", "--with", "--args"]
 </ul>
 
 
-<figure id="org733deef">
+<figure id="orgf6b454a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cloud-native-container-design-principles.png" alt="cloud-native-container-design-principles.png">
 
 </figure>
