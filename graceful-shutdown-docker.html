@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>如何优雅的关闭容器</title>
@@ -12,24 +12,34 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/graceful-shutdown-docker.html"/>
+<meta property="og:title" content="如何优雅的关闭容器"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/graceful-shutdown-docker.html"/>
+<meta name="twitter:title" content="如何优雅的关闭容器"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">如何优雅的关闭容器</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8254fb6">1. 信号</a></li>
-<li><a href="#org7bcb52e">2. <code>ENTRYPOINT</code> 、 <code>CMD</code></a></li>
-<li><a href="#org59c018a">3. 实例</a>
+<li><a href="#org77ab725">1. 信号</a></li>
+<li><a href="#org7e8f576">2. <code>ENTRYPOINT</code> 、 <code>CMD</code></a></li>
+<li><a href="#org4d690c8">3. 实例</a>
 <ul>
-<li><a href="#org7c9176d">3.1. 实例 1</a></li>
-<li><a href="#orgbfec53b">3.2. 实例 2</a></li>
+<li><a href="#orgb492674">3.1. 实例 1</a></li>
+<li><a href="#orgfef2c23">3.2. 实例 2</a></li>
 </ul>
 </li>
 </ul>
@@ -42,8 +52,8 @@
 <p>
 要说如何优雅的关闭容器，那就不得不提到信号（Signal）的理念，以及 <code>Dockerfile</code> 中 <code>ENTRYPOINT</code> 和 <code>CMD</code> 指令了。在具体说优雅关闭之前，先了解一下信号这个 Linux 中的基础概念。
 </p>
-<div id="outline-container-org8254fb6" class="outline-2">
-<h2 id="org8254fb6"><span class="section-number-2">1.</span> 信号</h2>
+<div id="outline-container-org77ab725" class="outline-2">
+<h2 id="org77ab725"><span class="section-number-2">1.</span> 信号</h2>
 <div class="outline-text-2" id="text-1">
 <blockquote>
 <p>
@@ -89,7 +99,7 @@
 </p>
 
 
-<figure id="orgedbb446">
+<figure id="orgecd77ea">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/signal.png" alt="signal.png">
 
 </figure>
@@ -101,8 +111,8 @@
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org7bcb52e" class="outline-2">
-<h2 id="org7bcb52e"><span class="section-number-2">2.</span> <code>ENTRYPOINT</code> 、 <code>CMD</code></h2>
+<div id="outline-container-org7e8f576" class="outline-2">
+<h2 id="org7e8f576"><span class="section-number-2">2.</span> <code>ENTRYPOINT</code> 、 <code>CMD</code></h2>
 <div class="outline-text-2" id="text-2">
 <p>
 可能有人会问，说了半天，那信号和优雅的关闭容器有半毛钱的关系啊？话说，这和钱确实没关系，但是和如何优雅关闭容器却关系密切。接着说 <code>Dockerfile</code> 中的 <code>ENTRYPOINT</code> 和 <code>CMD</code> 指令，它们的主要功能是指定容器启动时执行的程序。
@@ -170,8 +180,8 @@ Options:
 </p>
 </div>
 </div>
-<div id="outline-container-org59c018a" class="outline-2">
-<h2 id="org59c018a"><span class="section-number-2">3.</span> 实例</h2>
+<div id="outline-container-org4d690c8" class="outline-2">
+<h2 id="org4d690c8"><span class="section-number-2">3.</span> 实例</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 通过 Go 写一个简单的信号处理器：
@@ -208,8 +218,8 @@ func main() {
 </pre>
 </div>
 </div>
-<div id="outline-container-org7c9176d" class="outline-3">
-<h3 id="org7c9176d"><span class="section-number-3">3.1.</span> 实例 1</h3>
+<div id="outline-container-orgb492674" class="outline-3">
+<h3 id="orgb492674"><span class="section-number-3">3.1.</span> 实例 1</h3>
 <div class="outline-text-3" id="text-3-1">
 <div class="org-src-container">
 <pre class="src src-nil">➜  ~ GOOS=linux GOARCH=amd64 go build signals.go
@@ -288,8 +298,8 @@ docker stop signals  0.01s user 0.01s system 0% cpu 10.719 total
 </p>
 </div>
 </div>
-<div id="outline-container-orgbfec53b" class="outline-3">
-<h3 id="orgbfec53b"><span class="section-number-3">3.2.</span> 实例 2</h3>
+<div id="outline-container-orgfef2c23" class="outline-3">
+<h3 id="orgfef2c23"><span class="section-number-3">3.2.</span> 实例 2</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 通过实例 1 我们都会在 <code>Dockerfile</code> 中都会通过 <b>exec</b> 这种格式来执行程序了，那如果执行的程序本身也是一个 shell 脚本呢？ 

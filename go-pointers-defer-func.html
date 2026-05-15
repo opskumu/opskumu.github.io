@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Go 指针、defer、匿名函数</title>
@@ -12,27 +12,37 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/go-pointers-defer-func.html"/>
+<meta property="og:title" content="Go 指针、defer、匿名函数"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/go-pointers-defer-func.html"/>
+<meta name="twitter:title" content="Go 指针、defer、匿名函数"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Go 指针、defer、匿名函数</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf36e232">1. Go 指针</a></li>
-<li><a href="#org76b0c9a">2. Go defer 表达式</a></li>
-<li><a href="#org08b33c3">3. 匿名函数</a></li>
-<li><a href="#org3bd6d65">4. 实例</a></li>
+<li><a href="#orgbf6a6ba">1. Go 指针</a></li>
+<li><a href="#org561785c">2. Go defer 表达式</a></li>
+<li><a href="#org164ea45">3. 匿名函数</a></li>
+<li><a href="#orgf46acc8">4. 实例</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgf36e232" class="outline-2">
-<h2 id="orgf36e232"><span class="section-number-2">1.</span> Go 指针</h2>
+<div id="outline-container-orgbf6a6ba" class="outline-2">
+<h2 id="orgbf6a6ba"><span class="section-number-2">1.</span> Go 指针</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <a href="https://www.golang-book.com/books/intro/8">Go Pointers</a>
@@ -72,8 +82,8 @@ func main() {
 </p>
 </div>
 </div>
-<div id="outline-container-org76b0c9a" class="outline-2">
-<h2 id="org76b0c9a"><span class="section-number-2">2.</span> Go defer 表达式</h2>
+<div id="outline-container-org561785c" class="outline-2">
+<h2 id="org561785c"><span class="section-number-2">2.</span> Go defer 表达式</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <a href="https://blog.golang.org/defer-panic-and-recover">Defer, Panic, and Recover</a>
@@ -122,8 +132,8 @@ func main() {
 </div>
 </div>
 </div>
-<div id="outline-container-org08b33c3" class="outline-2">
-<h2 id="org08b33c3"><span class="section-number-2">3.</span> 匿名函数</h2>
+<div id="outline-container-org164ea45" class="outline-2">
+<h2 id="org164ea45"><span class="section-number-2">3.</span> 匿名函数</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Go 不能在函数内部显式嵌套定义函数，但是可以定义一个匿名函数，Go 通过匿名函数实现闭包（闭包，通过"捕获"自由变量的绑定对函数文本执行的"闭合"操作）。
@@ -153,8 +163,8 @@ func main() {
 </div>
 </div>
 </div>
-<div id="outline-container-org3bd6d65" class="outline-2">
-<h2 id="org3bd6d65"><span class="section-number-2">4.</span> 实例</h2>
+<div id="outline-container-orgf46acc8" class="outline-2">
+<h2 id="orgf46acc8"><span class="section-number-2">4.</span> 实例</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 前段时间在 twitter 看到一个例子，问以下代码应该输出什么，后来分析之后才知道结果，代码如下：

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KVM 学习笔记</title>
@@ -12,78 +12,88 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/kvm-notes.html"/>
+<meta property="og:title" content="KVM 学习笔记"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/kvm-notes.html"/>
+<meta name="twitter:title" content="KVM 学习笔记"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">KVM 学习笔记</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org34c6697">1. KVM 原理</a></li>
-<li><a href="#org5b1befa">2. KVM 基础功能</a>
+<li><a href="#orgca1fb4d">1. KVM 原理</a></li>
+<li><a href="#orgad7fe61">2. KVM 基础功能</a>
 <ul>
-<li><a href="#org08f72a3">2.1. CPU</a></li>
-<li><a href="#orga9106e1">2.2. 内存</a>
+<li><a href="#org77dbdbb">2.1. CPU</a></li>
+<li><a href="#org6507619">2.2. 内存</a>
 <ul>
-<li><a href="#orgbee2362">2.2.1. EPT 和 VPID</a></li>
+<li><a href="#org73fffb0">2.2.1. EPT 和 VPID</a></li>
 </ul>
 </li>
-<li><a href="#org4bf0818">2.3. 存储</a>
+<li><a href="#orgf72e8e1">2.3. 存储</a>
 <ul>
-<li><a href="#org5c8cc8f">2.3.1. qemu-img</a>
+<li><a href="#org047e277">2.3.1. qemu-img</a>
 <ul>
-<li><a href="#org9d3244f">2.3.1.1. raw</a></li>
-<li><a href="#org63d2fa4">2.3.1.2. qcow2</a></li>
-<li><a href="#org858b090">2.3.1.3. qemu-img 支持的命令分为以下几种</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org00f9523">2.4. 网络</a>
-<ul>
-<li><a href="#org74ebf09">2.4.1. QEMU 支持的网络模式</a>
-<ul>
-<li><a href="#org7067d2f">2.4.1.1. 桥接网络</a></li>
+<li><a href="#orga21cd62">2.3.1.1. raw</a></li>
+<li><a href="#org7394d9f">2.3.1.2. qcow2</a></li>
+<li><a href="#orgbae4dc3">2.3.1.3. qemu-img 支持的命令分为以下几种</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#orgd06c6f3">3. KVM 高级功能</a>
+<li><a href="#orgbd84a14">2.4. 网络</a>
 <ul>
-<li><a href="#org770f640">3.1. 半虚拟化驱动</a>
+<li><a href="#org076fa51">2.4.1. QEMU 支持的网络模式</a>
 <ul>
-<li><a href="#orgcafd184">3.1.1. virtio</a></li>
+<li><a href="#org6bb5572">2.4.1.1. 桥接网络</a></li>
 </ul>
 </li>
-<li><a href="#org62f08b3">3.2. 热插拔 (hot plugging)</a></li>
-<li><a href="#org28e2b03">3.3. 动态迁移</a></li>
 </ul>
 </li>
-<li><a href="#org2ec54b0">4. KVM 管理工具</a>
+</ul>
+</li>
+<li><a href="#org4565d2f">3. KVM 高级功能</a>
 <ul>
-<li><a href="#org48e4fc0">4.1. libvirt</a></li>
+<li><a href="#orgfaa4d71">3.1. 半虚拟化驱动</a>
+<ul>
+<li><a href="#orgbf2d594">3.1.1. virtio</a></li>
 </ul>
 </li>
-<li><a href="#org0a35ef6">5. 参考文档</a></li>
+<li><a href="#org8df380e">3.2. 热插拔 (hot plugging)</a></li>
+<li><a href="#org3c9c166">3.3. 动态迁移</a></li>
+</ul>
+</li>
+<li><a href="#org582b768">4. KVM 管理工具</a>
+<ul>
+<li><a href="#orgec2d346">4.1. libvirt</a></li>
+</ul>
+</li>
+<li><a href="#org644ed04">5. 参考文档</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org34c6697" class="outline-2">
-<h2 id="org34c6697"><span class="section-number-2">1.</span> KVM 原理</h2>
+<div id="outline-container-orgca1fb4d" class="outline-2">
+<h2 id="orgca1fb4d"><span class="section-number-2">1.</span> KVM 原理</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/AMD-V) 的 X86 硬件，是 Linux 完全原生的全虚拟化解决方案。
 </p>
 
 
-<figure id="orgda438fa">
+<figure id="org6587c29">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm.png" alt="kvm.png">
 
 </figure>
@@ -93,12 +103,12 @@ KVM 本身不执行任何模拟，需要用户空间应用程序 <code>QEMU</cod
 </p>
 </div>
 </div>
-<div id="outline-container-org5b1befa" class="outline-2">
-<h2 id="org5b1befa"><span class="section-number-2">2.</span> KVM 基础功能</h2>
+<div id="outline-container-orgad7fe61" class="outline-2">
+<h2 id="orgad7fe61"><span class="section-number-2">2.</span> KVM 基础功能</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org08f72a3" class="outline-3">
-<h3 id="org08f72a3"><span class="section-number-3">2.1.</span> CPU</h3>
+<div id="outline-container-org77dbdbb" class="outline-3">
+<h3 id="org77dbdbb"><span class="section-number-3">2.1.</span> CPU</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 在 QEMU/KVM 中，QEMU 提供对 CPU 的模拟，展现给客户机一定的 CPU 数目和 CPU 的特性。在 KVM 打开的情况下，客户机中 CPU 指令的执行由硬件处理器的虚拟化功能「如 Intel VT-x 和 AMD AMD-V」辅助执行，具有非常高的执行效率。
@@ -137,14 +147,14 @@ KVM 本身不执行任何模拟，需要用户空间应用程序 <code>QEMU</cod
 </ul>
 
 
-<figure id="org38a3957">
+<figure id="orgc7654d1">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-vcpu.png" alt="kvm-vcpu.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-orga9106e1" class="outline-3">
-<h3 id="orga9106e1"><span class="section-number-3">2.2.</span> 内存</h3>
+<div id="outline-container-org6507619" class="outline-3">
+<h3 id="org6507619"><span class="section-number-3">2.2.</span> 内存</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 内存是一个非常重要的部件，它是与 CPU 沟通的一个桥梁。
@@ -158,8 +168,8 @@ KVM 本身不执行任何模拟，需要用户空间应用程序 <code>QEMU</cod
 <li><code>-m</code> megs # 设置客户机的内存为 megs MB 大小</li>
 </ul>
 </div>
-<div id="outline-container-orgbee2362" class="outline-4">
-<h4 id="orgbee2362"><span class="section-number-4">2.2.1.</span> EPT 和 VPID</h4>
+<div id="outline-container-org73fffb0" class="outline-4">
+<h4 id="org73fffb0"><span class="section-number-4">2.2.1.</span> EPT 和 VPID</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 EPT（Extended Page Tables，扩展页表），属于 Intel 的第二代硬件虚拟化技术，它是针对内存管理单元（MMU）的虚拟化扩展。如果只是一台物理服务器，这个物理地址就只为一个操作系统服务，但如果进行了虚拟化部署，有多个虚拟机时，就存在着稳定性的隐患。因为在进行 VM Entry（虚拟机进入）与 VM Exit（虚拟机退出）时（尤其是后者），都要对内存页进行修改。但物理内存是多个虚拟机共享的，因此不能让虚拟机直接访问物理地址，否则一个虚拟机出现内存错误，就会殃及整个物理服务器的运行。所以必须要采取虚拟地址，而 EPT 的作用就在于加速从虚拟机地址至主机物理地址的转换过程，节省传统软件处理方式的系统开销。
@@ -179,8 +189,8 @@ Y
 </div>
 </div>
 </div>
-<div id="outline-container-org4bf0818" class="outline-3">
-<h3 id="org4bf0818"><span class="section-number-3">2.3.</span> 存储</h3>
+<div id="outline-container-orgf72e8e1" class="outline-3">
+<h3 id="orgf72e8e1"><span class="section-number-3">2.3.</span> 存储</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 QEMU 提供了对多种块存储设备的模拟，包括 IDE、SCSI、软盘、U盘、virtio 磁盘等。
@@ -217,7 +227,7 @@ cache 不同模式工作原理图：
 </p>
 
 
-<figure id="orgee012af">
+<figure id="orge75a49c">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-cache.png" alt="kvm-cache.png">
 
 </figure>
@@ -229,8 +239,8 @@ cache 不同模式工作原理图：
 <li><code>unsafe</code> 这个选项告诉 QEMU 不需要写入任何数据到磁盘，只要保证在缓存即可</li>
 </ul>
 </div>
-<div id="outline-container-org5c8cc8f" class="outline-4">
-<h4 id="org5c8cc8f"><span class="section-number-4">2.3.1.</span> qemu-img</h4>
+<div id="outline-container-org047e277" class="outline-4">
+<h4 id="org047e277"><span class="section-number-4">2.3.1.</span> qemu-img</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <p>
 <code>qemu-img</code> 是 QEMU 的磁盘管理工具，支持多种虚拟镜像格式
@@ -247,8 +257,8 @@ qcow2 qed parallels nbd blkdebug host_cdrom host_floppy host_device file
 <code>qemu-img</code> 默认创建的格式是 <code>raw</code> ，man 手册中对几种格式也都有介绍。以下为对 raw 和 qcow2 镜像的详细介绍：
 </p>
 </div>
-<div id="outline-container-org9d3244f" class="outline-5">
-<h5 id="org9d3244f"><span class="section-number-5">2.3.1.1.</span> raw</h5>
+<div id="outline-container-orga21cd62" class="outline-5">
+<h5 id="orga21cd62"><span class="section-number-5">2.3.1.1.</span> raw</h5>
 <div class="outline-text-5" id="text-2-3-1-1">
 <p>
 原始的磁盘镜像格式，qemu-img 默认支持的格式，它的优势在于它非常简单而且非常容易移植到其他模拟器（emulator，QEMU 也是一个 emulator）上去使用。如果客户机文件系统（如 Linux 上的 ext2/ext3/ext4、Windows 的 NTFS）支持"空洞" （hole），那么镜像文件只有在被写有数据的扇区才会真正占用磁盘空间，从而有节省磁盘空间的作用。 <code>qemu-img</code> 默认的 <code>raw</code> 格式的文件其实是稀疏文件（sparse file）「稀疏文件就是在文件中留有很多空余空间，留备将来插入数据使用。如果这些空余空间被 ASCII 码的 NULL 字符占据，并且这些空间相当大，那么这个文件就被称为稀疏文件，而且，并不分配相应的磁盘块」，dd 命令创建的也是 raw 格式，不过 dd 一开始就让镜像实际占用了分配的空间，而没有使用稀疏文件的方式对待空洞而节省磁盘空间。尽管一开始就实际占用磁盘空间的方式没有节省磁盘的效果，不过它在写入新的数据时不需要宿主机从现有磁盘空间中分配，从而在第一次写入数据时性能会比稀疏文件的方式更好一点。简单来说，raw 有以下几个特点：
@@ -261,16 +271,16 @@ qcow2 qed parallels nbd blkdebug host_cdrom host_floppy host_device file
 </ul>
 </div>
 </div>
-<div id="outline-container-org63d2fa4" class="outline-5">
-<h5 id="org63d2fa4"><span class="section-number-5">2.3.1.2.</span> qcow2</h5>
+<div id="outline-container-org7394d9f" class="outline-5">
+<h5 id="org7394d9f"><span class="section-number-5">2.3.1.2.</span> qcow2</h5>
 <div class="outline-text-5" id="text-2-3-1-2">
 <p>
 <code>qcow2</code> 是 qcow 的一种改进，是 QEMU 实现的一种虚拟机镜像格式。更小的虚拟硬盘空间（尤其是宿主分区不支持 hole 的情况下），支持压缩、加密、快照功能，磁盘读写性能较 raw 差。
 </p>
 </div>
 </div>
-<div id="outline-container-org858b090" class="outline-5">
-<h5 id="org858b090"><span class="section-number-5">2.3.1.3.</span> qemu-img 支持的命令分为以下几种</h5>
+<div id="outline-container-orgbae4dc3" class="outline-5">
+<h5 id="orgbae4dc3"><span class="section-number-5">2.3.1.3.</span> qemu-img 支持的命令分为以下几种</h5>
 <div class="outline-text-5" id="text-2-3-1-3">
 <ul class="org-ul">
 <li>（1）check [-f fmt] filename</li>
@@ -373,12 +383,12 @@ cluster_size: 65536
 </div>
 </div>
 </div>
-<div id="outline-container-org00f9523" class="outline-3">
-<h3 id="org00f9523"><span class="section-number-3">2.4.</span> 网络</h3>
+<div id="outline-container-orgbd84a14" class="outline-3">
+<h3 id="orgbd84a14"><span class="section-number-3">2.4.</span> 网络</h3>
 <div class="outline-text-3" id="text-2-4">
 </div>
-<div id="outline-container-org74ebf09" class="outline-4">
-<h4 id="org74ebf09"><span class="section-number-4">2.4.1.</span> QEMU 支持的网络模式</h4>
+<div id="outline-container-org076fa51" class="outline-4">
+<h4 id="org076fa51"><span class="section-number-4">2.4.1.</span> QEMU 支持的网络模式</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <ul class="org-ul">
 <li>基于网桥的虚拟网卡</li>
@@ -421,8 +431,8 @@ nic[,vlan=n][,macaddr=mac][,model=type][,name=name][,addr=addr][,vectors=v]
 如果提供 VM 多个网卡，则需要多次使用 <code>-net</code> 参数。
 </p>
 </div>
-<div id="outline-container-org7067d2f" class="outline-5">
-<h5 id="org7067d2f"><span class="section-number-5">2.4.1.1.</span> 桥接网络</h5>
+<div id="outline-container-org6bb5572" class="outline-5">
+<h5 id="org6bb5572"><span class="section-number-5">2.4.1.1.</span> 桥接网络</h5>
 <div class="outline-text-5" id="text-2-4-1-1">
 <p>
 <b>手动桥接</b>
@@ -499,20 +509,20 @@ br0     8000.b8975a626020   no      eth0
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"># cat /tmp/qemu-ifup.sh
-#!/bin/bash
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">cat /tmp/qemu-ifup.sh
+</span><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/bash
+</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#26725;&#25509;&#32593;&#32476;&#35774;&#22791;
+</span><span class="org-variable-name">switch</span>=br0
 
-# 桥接网络设备
-switch=br0
-
-if [ -n $1 ]; then          # $1 为 qemu-kvm 传递值，这里是 tap
-    ip link set $1 up
-    brctl addif ${switch} $1
-    exit 0
-else
-   echo "no interface!"
-   exit 1
-fi
+<span class="org-keyword">if</span> [ -n $<span class="org-variable-name">1</span> ]; <span class="org-keyword">then</span>          <span class="org-comment-delimiter"># </span><span class="org-comment">$1 &#20026; qemu-kvm &#20256;&#36882;&#20540;&#65292;&#36825;&#37324;&#26159; tap
+</span>    ip link set $<span class="org-variable-name">1</span> up
+    brctl addif ${<span class="org-variable-name">switch</span>} $<span class="org-variable-name">1</span>
+    <span class="org-keyword">exit</span> 0
+<span class="org-keyword">else</span>
+   <span class="org-builtin">echo</span> <span class="org-string">"no interface!"</span>
+   <span class="org-keyword">exit</span> 1
+<span class="org-keyword">fi</span>
 </pre>
 </div>
 </div>
@@ -520,16 +530,16 @@ fi
 </div>
 </div>
 </div>
-<div id="outline-container-orgd06c6f3" class="outline-2">
-<h2 id="orgd06c6f3"><span class="section-number-2">3.</span> KVM 高级功能</h2>
+<div id="outline-container-org4565d2f" class="outline-2">
+<h2 id="org4565d2f"><span class="section-number-2">3.</span> KVM 高级功能</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org770f640" class="outline-3">
-<h3 id="org770f640"><span class="section-number-3">3.1.</span> 半虚拟化驱动</h3>
+<div id="outline-container-orgfaa4d71" class="outline-3">
+<h3 id="orgfaa4d71"><span class="section-number-3">3.1.</span> 半虚拟化驱动</h3>
 <div class="outline-text-3" id="text-3-1">
 </div>
-<div id="outline-container-orgcafd184" class="outline-4">
-<h4 id="orgcafd184"><span class="section-number-4">3.1.1.</span> virtio</h4>
+<div id="outline-container-orgbf2d594" class="outline-4">
+<h4 id="orgbf2d594"><span class="section-number-4">3.1.1.</span> virtio</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 KVM 是必须使用硬件虚拟化辅助技术（如 Intel VT-x、AMD-V）的 hypervisor，在 CPU 运行效率方面有硬件支持，其效率是比较高的；在有 Intel EPT 特性支持的平台上，内存虚拟化的效率也较高。QEMU/KVM 提供了全虚拟化环境，可以让客户机不经过任何修改就能运行在 KVM 环境中。不过，KVM 在 I/O 虚拟化方面，传统的方式是使用 QEMU 纯软件的方式来模拟 I/O 设备（如模拟的网卡、磁盘、显卡等等），其效率并不非常高。在 KVM 中，可以在客户机中使用半虚拟化驱动（Paravirtualized Drivers，PV Drivers）来提高客户机的性能（特别是 I/O 性能）。目前，KVM 中实现半虚拟化驱动的方式是采用了 <code>virtio</code> 这个 Linux 上的设备驱动标准框架。
@@ -540,7 +550,7 @@ KVM 是必须使用硬件虚拟化辅助技术（如 Intel VT-x、AMD-V）的 hy
 </p>
 
 
-<figure id="org7ab87c6">
+<figure id="orgbf73d43">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-emulated-io.jpg" alt="qemu-emulated-io.jpg">
 
 </figure>
@@ -558,7 +568,7 @@ QEMU 模拟 I/O 设备的方式，其优点是可以通过软件模拟出各种�
 </p>
 
 
-<figure id="org465f794">
+<figure id="org6d14c58">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-kvm-virtio.jpg" alt="qemu-kvm-virtio.jpg">
 
 </figure>
@@ -576,7 +586,7 @@ virtio 半虚拟化驱动的方式，可以获得很好的 I/O 性能，其性�
 </p>
 
 
-<figure id="org146a3e2">
+<figure id="org1f88e6a">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/virtio-vhostnet.png" alt="virtio-vhostnet.png">
 
 </figure>
@@ -598,15 +608,15 @@ virtio_blk 驱动使用 virtio API 为客户机提供了一个高效访问块设
 </p>
 
 
-<figure id="org2328591">
+<figure id="orgc414510">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/devassign-sriov.png" alt="devassign-sriov.png">
 
 </figure>
 </div>
 </div>
 </div>
-<div id="outline-container-org62f08b3" class="outline-3">
-<h3 id="org62f08b3"><span class="section-number-3">3.2.</span> 热插拔 (hot plugging)</h3>
+<div id="outline-container-org8df380e" class="outline-3">
+<h3 id="org8df380e"><span class="section-number-3">3.2.</span> 热插拔 (hot plugging)</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 热插拔可以提高服务器扩展性、灵活性以及对相关硬件问题的及时恢复能力。在服务器中，可以实现热插拔的部件主要是 SATA 硬盘、CPU、内存、USB、网卡、风扇等。在 KVM 虚拟化环境中，也支持客户机相应的设备热插拔。目前，KVM 对热插拔的支持还不是很完善，主要支持 PCI 设备和 CPU 的热插拔，内存的热插拔目前还不是很完善。
@@ -629,8 +639,8 @@ KVM 热插拔的操作可以参考 KVM 官方文档：
 </ul>
 </div>
 </div>
-<div id="outline-container-org28e2b03" class="outline-3">
-<h3 id="org28e2b03"><span class="section-number-3">3.3.</span> 动态迁移</h3>
+<div id="outline-container-org3c9c166" class="outline-3">
+<h3 id="org3c9c166"><span class="section-number-3">3.3.</span> 动态迁移</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 动态迁移（Live Migration）：也叫在线迁移（Online Migration）。就是在保证虚拟机上服务正常运行的同时，将一个虚拟机系统从一个物理主机移动到另一个物理主机的过程。该过程不会对最终用户造成明显的影响，从而使得管理员能够在不影响用户正常使用的情况下，对物理服务器进行离线维修或者升级。与静态迁移不同的是，为了保证迁移过程中虚拟机服务的可用，迁移过程仅有非常短暂的停机时间。迁移的前面阶段，服务在源主机的虚拟机上运行，当迁移进行到一定阶段，目的主机已经具备了运行虚拟机系统的必须资源，经过一个非常短暂的切换，源主机将控制权转移到目的主机，虚拟机系统在目的主机上继续运行。对于虚拟机服务本身而言，由于切换的时间非常短暂，用户感觉不到服务的中断，因而迁移过程对用户是透明的。动态迁移适用于对虚拟机服务可用性要求很高的场合。<a href="http://www.ibm.com/developerworks/cn/linux/l-cn-mgrtvm2/index.html">KVM 虚拟机在物理主机之间迁移的实现</a>
@@ -638,17 +648,17 @@ KVM 热插拔的操作可以参考 KVM 官方文档：
 </div>
 </div>
 </div>
-<div id="outline-container-org2ec54b0" class="outline-2">
-<h2 id="org2ec54b0"><span class="section-number-2">4.</span> KVM 管理工具</h2>
+<div id="outline-container-org582b768" class="outline-2">
+<h2 id="org582b768"><span class="section-number-2">4.</span> KVM 管理工具</h2>
 <div class="outline-text-2" id="text-4">
 
-<figure id="orgb739aaf">
+<figure id="org63dd2c9">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-support.png" alt="libvirt-support.png">
 
 </figure>
 </div>
-<div id="outline-container-org48e4fc0" class="outline-3">
-<h3 id="org48e4fc0"><span class="section-number-3">4.1.</span> libvirt</h3>
+<div id="outline-container-orgec2d346" class="outline-3">
+<h3 id="orgec2d346"><span class="section-number-3">4.1.</span> libvirt</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 libvirt 是目前使用最为广泛的对 KVM 虚拟机进行管理的工具和应用程序接口（API），而且一些常用的虚拟机管理工具（如virsh、virt-install、virt-manager等）和云计算框架平台（如 OpenStack、OpenNebula、Eucalyptus 等）都在底层使用 libvirt
@@ -664,7 +674,7 @@ libvirt 作为中间适配层，让底层 Hypervisor 对上层用户空间的管
 </p>
 
 
-<figure id="orgef735ff">
+<figure id="orgb0f25c8">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-manage-hypervisors.jpg" alt="libvirt-manage-hypervisors.jpg">
 
 </figure>
@@ -690,8 +700,8 @@ libvirt 主要由三个部分组成，它们分别是：应用程序编程接口
 </div>
 </div>
 </div>
-<div id="outline-container-org0a35ef6" class="outline-2">
-<h2 id="org0a35ef6"><span class="section-number-2">5.</span> 参考文档</h2>
+<div id="outline-container-org644ed04" class="outline-2">
+<h2 id="org644ed04"><span class="section-number-2">5.</span> 参考文档</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><a href="http://book.douban.com/subject/25743939/">《KVM 虚拟化技术》</a></li>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Sublime Text2 tips</title>
@@ -12,49 +12,59 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/sublime.html"/>
+<meta property="og:title" content="Sublime Text2 tips"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/sublime.html"/>
+<meta name="twitter:title" content="Sublime Text2 tips"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Sublime Text2 tips</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgca5cfdf">1. 设置 tab 为 4 个空格</a>
+<li><a href="#org073670f">1. 设置 tab 为 4 个空格</a>
 <ul>
-<li><a href="#org61dd2a1">1.1. Reference</a></li>
+<li><a href="#org6fd54fa">1.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#orga4c4db5">2. 设置 vim 模式</a>
+<li><a href="#org4dc5b74">2. 设置 vim 模式</a>
 <ul>
-<li><a href="#org35112ae">2.1. Reference</a></li>
+<li><a href="#org8911702">2.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#orgae49542">3. 列编辑模式</a>
+<li><a href="#org5eda580">3. 列编辑模式</a>
 <ul>
-<li><a href="#org956dca2">3.1. Reference</a></li>
+<li><a href="#org8b6f6a9">3.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#org797da97">4. Package Control</a></li>
-<li><a href="#orgb120c32">5. Markdown Preview 插件</a>
+<li><a href="#org36f74ca">4. Package Control</a></li>
+<li><a href="#org2a26dc0">5. Markdown Preview 插件</a>
 <ul>
-<li><a href="#org9c93cf3">5.1. Reference</a></li>
+<li><a href="#orgcc9903c">5.1. Reference</a></li>
 </ul>
 </li>
-<li><a href="#org8e331a6">6. 撤销恢复</a></li>
-<li><a href="#org58b96e3">7. 查找替换</a></li>
-<li><a href="#orgbcfd687">8. Ctrl+P</a></li>
-<li><a href="#orga7424e8">9. 命令调用</a></li>
-<li><a href="#org833cd2c">10. Console</a></li>
+<li><a href="#orge8e2f7f">6. 撤销恢复</a></li>
+<li><a href="#orge26dae1">7. 查找替换</a></li>
+<li><a href="#orgcba6777">8. Ctrl+P</a></li>
+<li><a href="#org86b9d79">9. 命令调用</a></li>
+<li><a href="#org667b09e">10. Console</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgca5cfdf" class="outline-2">
-<h2 id="orgca5cfdf"><span class="section-number-2">1.</span> 设置 tab 为 4 个空格</h2>
+<div id="outline-container-org073670f" class="outline-2">
+<h2 id="org073670f"><span class="section-number-2">1.</span> 设置 tab 为 4 个空格</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Preferences/Settings - Default</li>
@@ -69,8 +79,8 @@
 </pre>
 </div>
 </div>
-<div id="outline-container-org61dd2a1" class="outline-3">
-<h3 id="org61dd2a1"><span class="section-number-3">1.1.</span> Reference</h3>
+<div id="outline-container-org6fd54fa" class="outline-3">
+<h3 id="org6fd54fa"><span class="section-number-3">1.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/settings.html">Settings</a></li>
@@ -78,8 +88,8 @@
 </div>
 </div>
 </div>
-<div id="outline-container-orga4c4db5" class="outline-2">
-<h2 id="orga4c4db5"><span class="section-number-2">2.</span> 设置 vim 模式</h2>
+<div id="outline-container-org4dc5b74" class="outline-2">
+<h2 id="org4dc5b74"><span class="section-number-2">2.</span> 设置 vim 模式</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Preferences/Settings - Default</li>
@@ -116,8 +126,8 @@ add:
 </pre>
 </div>
 </div>
-<div id="outline-container-org35112ae" class="outline-3">
-<h3 id="org35112ae"><span class="section-number-3">2.1.</span> Reference</h3>
+<div id="outline-container-org8911702" class="outline-3">
+<h3 id="org8911702"><span class="section-number-3">2.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/vintage.html">Vintage Mode</a></li>
@@ -125,16 +135,16 @@ add:
 </div>
 </div>
 </div>
-<div id="outline-container-orgae49542" class="outline-2">
-<h2 id="orgae49542"><span class="section-number-2">3.</span> 列编辑模式</h2>
+<div id="outline-container-org5eda580" class="outline-2">
+<h2 id="org5eda580"><span class="section-number-2">3.</span> 列编辑模式</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>鼠标右键 + Shift OR 鼠标中键</li>
 <li>Add to selection: Ctrl</li>
 </ul>
 </div>
-<div id="outline-container-org956dca2" class="outline-3">
-<h3 id="org956dca2"><span class="section-number-3">3.1.</span> Reference</h3>
+<div id="outline-container-org8b6f6a9" class="outline-3">
+<h3 id="org8b6f6a9"><span class="section-number-3">3.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><a href="https://www.sublimetext.com/docs/2/column_selection.html">Column Selection</a></li>
@@ -142,15 +152,15 @@ add:
 </div>
 </div>
 </div>
-<div id="outline-container-org797da97" class="outline-2">
-<h2 id="org797da97"><span class="section-number-2">4.</span> Package Control</h2>
+<div id="outline-container-org36f74ca" class="outline-2">
+<h2 id="org36f74ca"><span class="section-number-2">4.</span> Package Control</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Ctrl+`</li>
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-python">import urllib2,os; pf='Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); open( os.path.join( ipp, pf), 'wb' ).write( urllib2.urlopen( 'http://sublime.wbond.net/' +pf.replace( ' ','%20' )).read()); print( 'Please restart Sublime Text to finish installation')
+<pre class="src src-python"><span class="org-keyword">import</span> urllib2,os; <span class="org-variable-name">pf</span><span class="org-operator">=</span><span class="org-string">'Package Control.sublime-package'</span>; <span class="org-variable-name">ipp</span> <span class="org-operator">=</span> sublime.installed_packages_path(); os.makedirs( ipp ) <span class="org-keyword">if</span> <span class="org-keyword">not</span> os.path.exists(ipp) <span class="org-keyword">else</span> <span class="org-constant">None</span>; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); <span class="org-builtin">open</span>( os.path.join( ipp, pf), <span class="org-string">'wb'</span> ).write( urllib2.urlopen( <span class="org-string">'http://sublime.wbond.net/'</span> <span class="org-operator">+</span>pf.replace( <span class="org-string">' '</span>,<span class="org-string">'%20'</span> )).read()); <span class="org-builtin">print</span>( <span class="org-string">'Please restart Sublime Text to finish installation'</span>)
 </pre>
 </div>
 
@@ -159,16 +169,16 @@ add:
 </p>
 </div>
 </div>
-<div id="outline-container-orgb120c32" class="outline-2">
-<h2 id="orgb120c32"><span class="section-number-2">5.</span> Markdown Preview 插件</h2>
+<div id="outline-container-org2a26dc0" class="outline-2">
+<h2 id="org2a26dc0"><span class="section-number-2">5.</span> Markdown Preview 插件</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Use Ctrl+Shift+P then Package Control: Install Package</li>
 <li>Look for Markdown Preview and install it.</li>
 </ul>
 </div>
-<div id="outline-container-org9c93cf3" class="outline-3">
-<h3 id="org9c93cf3"><span class="section-number-3">5.1.</span> Reference</h3>
+<div id="outline-container-orgcc9903c" class="outline-3">
+<h3 id="orgcc9903c"><span class="section-number-3">5.1.</span> Reference</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li><a href="https://github.com/revolunet/sublimetext-markdown-preview">Markdown Preview</a></li>
@@ -176,8 +186,8 @@ add:
 </div>
 </div>
 </div>
-<div id="outline-container-org8e331a6" class="outline-2">
-<h2 id="org8e331a6"><span class="section-number-2">6.</span> 撤销恢复</h2>
+<div id="outline-container-orge8e2f7f" class="outline-2">
+<h2 id="orge8e2f7f"><span class="section-number-2">6.</span> 撤销恢复</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>Ctrl+Z 撤销</li>
@@ -185,8 +195,8 @@ add:
 </ul>
 </div>
 </div>
-<div id="outline-container-org58b96e3" class="outline-2">
-<h2 id="org58b96e3"><span class="section-number-2">7.</span> 查找替换</h2>
+<div id="outline-container-orge26dae1" class="outline-2">
+<h2 id="orge26dae1"><span class="section-number-2">7.</span> 查找替换</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>Ctrl+F 查找</li>
@@ -194,8 +204,8 @@ add:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbcfd687" class="outline-2">
-<h2 id="orgbcfd687"><span class="section-number-2">8.</span> Ctrl+P</h2>
+<div id="outline-container-orgcba6777" class="outline-2">
+<h2 id="orgcba6777"><span class="section-number-2">8.</span> Ctrl+P</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>Ctrl+P 快速跳转当前项目中的任意文件</li>
@@ -205,8 +215,8 @@ add:
 </ul>
 </div>
 </div>
-<div id="outline-container-orga7424e8" class="outline-2">
-<h2 id="orga7424e8"><span class="section-number-2">9.</span> 命令调用</h2>
+<div id="outline-container-org86b9d79" class="outline-2">
+<h2 id="org86b9d79"><span class="section-number-2">9.</span> 命令调用</h2>
 <div class="outline-text-2" id="text-9">
 <ul class="org-ul">
 <li>Ctrl+Shift+P
@@ -216,8 +226,8 @@ add:
 </ul>
 </div>
 </div>
-<div id="outline-container-org833cd2c" class="outline-2">
-<h2 id="org833cd2c"><span class="section-number-2">10.</span> Console</h2>
+<div id="outline-container-org667b09e" class="outline-2">
+<h2 id="org667b09e"><span class="section-number-2">10.</span> Console</h2>
 <div class="outline-text-2" id="text-10">
 <ul class="org-ul">
 <li>Ctrl+`</li>

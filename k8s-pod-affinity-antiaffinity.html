@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes Pod 亲和性和反亲和性</title>
@@ -12,28 +12,38 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/k8s-pod-affinity-antiaffinity.html"/>
+<meta property="og:title" content="Kubernetes Pod 亲和性和反亲和性"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/k8s-pod-affinity-antiaffinity.html"/>
+<meta name="twitter:title" content="Kubernetes Pod 亲和性和反亲和性"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Kubernetes Pod 亲和性和反亲和性</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgccf0c03">1. nodeSelector</a></li>
-<li><a href="#orgcdfbcb7">2. 亲和性和反亲和性（Affinity and anti-affinity）</a>
+<li><a href="#org8e5478c">1. nodeSelector</a></li>
+<li><a href="#org0697af2">2. 亲和性和反亲和性（Affinity and anti-affinity）</a>
 <ul>
-<li><a href="#org28fadab">2.1. Node affinity</a></li>
-<li><a href="#org791beb0">2.2. Pod affinity and anti-affinity</a></li>
+<li><a href="#org2db6874">2.1. Node affinity</a></li>
+<li><a href="#org1ba5ee4">2.2. Pod affinity and anti-affinity</a></li>
 </ul>
 </li>
-<li><a href="#org62905bc">3. 实践案例</a>
+<li><a href="#org80c3597">3. 实践案例</a>
 <ul>
-<li><a href="#org825a50b">3.1. 始终调度在同一个节点</a></li>
+<li><a href="#org4b30274">3.1. 始终调度在同一个节点</a></li>
 </ul>
 </li>
 </ul>
@@ -52,8 +62,8 @@
 <p>
 <code>labels</code> 在 K8s 中是一个很重要的概念，作为一个标识，Service、Deployments 和 Pods 之间的关联都是通过 <code>label</code> 来实现的。而每个节点也都拥有 <code>label</code> ，通过设置 <code>label</code> 相关的策略可以使得 pods 关联到对应 <code>label</code> 的节点上。
 </p>
-<div id="outline-container-orgccf0c03" class="outline-2">
-<h2 id="orgccf0c03"><span class="section-number-2">1.</span> nodeSelector</h2>
+<div id="outline-container-org8e5478c" class="outline-2">
+<h2 id="org8e5478c"><span class="section-number-2">1.</span> nodeSelector</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>nodeSelector</code> 是最简单的约束方式。 <code>nodeSelector</code> 是 PodSpec 的一个字段。
@@ -139,8 +149,8 @@ nginx     1/1       Running   0          1m        172.18.0.4   minikube
 </p>
 </div>
 </div>
-<div id="outline-container-orgcdfbcb7" class="outline-2">
-<h2 id="orgcdfbcb7"><span class="section-number-2">2.</span> 亲和性和反亲和性（Affinity and anti-affinity）</h2>
+<div id="outline-container-org0697af2" class="outline-2">
+<h2 id="org0697af2"><span class="section-number-2">2.</span> 亲和性和反亲和性（Affinity and anti-affinity）</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 affinity/anti-affinity 特性还处于 beta 状态，相比 <code>nodeSelector</code> 来说有几点优势：
@@ -156,8 +166,8 @@ affinity/anti-affinity 特性还处于 beta 状态，相比 <code>nodeSelector</
 affinity 特性拥有两种类型，一种是 node affinity，一种是 pod affinity/anti-affinity。node affinity 类似 <code>nodeSelector</code> ，但同时拥有上文提到的 1、2 两点优势，pod affinity/anti-affinity 针对 pods 指定 <code>labels</code> ，同时拥有以上三点优势。
 </p>
 </div>
-<div id="outline-container-org28fadab" class="outline-3">
-<h3 id="org28fadab"><span class="section-number-3">2.1.</span> Node affinity</h3>
+<div id="outline-container-org2db6874" class="outline-3">
+<h3 id="org2db6874"><span class="section-number-3">2.1.</span> Node affinity</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 K8s 在 1.2 的时候以 alpha 的特性引入 node affinity。node affinity 通过 node <code>labels</code> 约束 pod 调度节点。Node affinity 有两种类型：
@@ -221,8 +231,8 @@ spec:
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org791beb0" class="outline-3">
-<h3 id="org791beb0"><span class="section-number-3">2.2.</span> Pod affinity and anti-affinity</h3>
+<div id="outline-container-org1ba5ee4" class="outline-3">
+<h3 id="org1ba5ee4"><span class="section-number-3">2.2.</span> Pod affinity and anti-affinity</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 pod 亲和性和反亲和性在 K8s 1.4 版本引入，它基于运行在 node 上的 pod 标签来限制 pod 调度在哪个节点上，而不是节点的标签。
@@ -311,12 +321,12 @@ spec:
 </div>
 </div>
 </div>
-<div id="outline-container-org62905bc" class="outline-2">
-<h2 id="org62905bc"><span class="section-number-2">3.</span> 实践案例</h2>
+<div id="outline-container-org80c3597" class="outline-2">
+<h2 id="org80c3597"><span class="section-number-2">3.</span> 实践案例</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org825a50b" class="outline-3">
-<h3 id="org825a50b"><span class="section-number-3">3.1.</span> 始终调度在同一个节点</h3>
+<div id="outline-container-org4b30274" class="outline-3">
+<h3 id="org4b30274"><span class="section-number-3">3.1.</span> 始终调度在同一个节点</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 在一个三个节点的集群中，一个 web 应用程序依赖内存存储，如 redis，我们想 web 程序尽可能的和缓存调度在同一个节点上。redis 的 Deployment 配置如下：

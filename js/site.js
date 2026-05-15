@@ -1,6 +1,29 @@
 (function () {
   "use strict";
 
+  var labels = {
+    mainSkip: "Skip to main content",
+    tocSkip: "Skip to table of contents",
+    articleMeta: "文章信息",
+    readingTimeTitle: "预计阅读时间",
+    minuteRead: "约 {minutes} 分钟",
+    expandAll: "展开全部",
+    collapseAll: "折叠全部",
+    totalPosts: "共 {total} 篇文章，最近年份默认展开",
+    postsCount: "{count} 篇",
+    backToTop: "返回顶部",
+    copyCode: "复制代码",
+    copy: "复制",
+    copied: "已复制",
+    copyFailed: "复制失败"
+  };
+
+  var format = function (template, values) {
+    return template.replace(/\{(\w+)\}/g, function (_match, key) {
+      return values[key];
+    });
+  };
+
   var icon = function (name) {
     var svg = {
       clock: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>',
@@ -11,6 +34,22 @@
     };
 
     return svg[name] || "";
+  };
+
+  var appendIcon = function (node, name) {
+    var span = document.createElement("span");
+    span.innerHTML = icon(name);
+    if (span.firstChild) node.appendChild(span.firstChild);
+  };
+
+  var setIconLabel = function (node, iconName, text) {
+    node.textContent = "";
+    appendIcon(node, iconName);
+
+    var label = document.createElement("span");
+    label.className = "label";
+    label.textContent = text;
+    node.appendChild(label);
   };
 
   var loadHighlight = function () {
@@ -27,9 +66,29 @@
     js.onload = function () {
       if (!window.hljs) return;
       blocks.forEach(function (pre) {
-        var klass = pre.getAttribute("class").toLowerCase();
-        klass = klass.replace(/src-(\w+)/, "src-$1 $1");
+        var klass = (pre.getAttribute("class") || "").toLowerCase();
+        var match = klass.match(/(?:^|\s)src-([a-z0-9_-]+)/);
+        var aliases = {
+          "c++": "cpp",
+          "emacs-lisp": "lisp",
+          elisp: "lisp",
+          js: "javascript",
+          sh: "bash",
+          shell: "bash",
+          yml: "yaml"
+        };
+
         pre.setAttribute("class", klass);
+        if (match && match[1]) {
+          if (match[1] === "nil") {
+            pre.classList.remove("src-nil");
+          } else {
+            var lang = aliases[match[1]] || match[1];
+            pre.classList.add(lang);
+            pre.classList.add("language-" + lang);
+          }
+        }
+
         if (window.hljs.highlightElement) {
           window.hljs.highlightElement(pre);
         } else {
@@ -40,59 +99,134 @@
     document.head.appendChild(js);
   };
 
-  var setSocialMeta = function () {
-    var head = document.head;
-    var meta = function (attr, name, content) {
-      if (!content) return;
-      var tag = document.createElement("meta");
-      tag.setAttribute(attr, name);
-      tag.setAttribute("content", content);
-      head.appendChild(tag);
-    };
+  var ensureMeta = function (selector, attr, name, content) {
+    if (!content || document.head.querySelector(selector)) return;
 
+    var tag = document.createElement("meta");
+    tag.setAttribute(attr, name);
+    tag.setAttribute("content", content);
+    document.head.appendChild(tag);
+  };
+
+  var setSocialMeta = function () {
     var title = document.title || "Kumu's Blog";
     var description = document.querySelector('meta[name="description"]');
     var descriptionText = description && description.getAttribute("content");
 
-    meta("property", "og:title", title);
+    ensureMeta('meta[property="og:title"]', "property", "og:title", title);
     if (descriptionText) {
-      meta("property", "og:description", descriptionText);
-      meta("name", "twitter:description", descriptionText);
+      ensureMeta('meta[property="og:description"]', "property", "og:description", descriptionText);
+      ensureMeta('meta[name="twitter:description"]', "name", "twitter:description", descriptionText);
     }
-    meta("name", "twitter:title", title);
+    ensureMeta('meta[name="twitter:title"]', "name", "twitter:title", title);
 
     if (window.location && /^https?:$/i.test(window.location.protocol)) {
       var url = String(window.location.href).split("#")[0];
-      meta("property", "og:url", url);
+      ensureMeta('meta[property="og:url"]', "property", "og:url", url);
 
-      var link = document.createElement("link");
-      link.setAttribute("rel", "canonical");
-      link.setAttribute("href", url);
-      head.appendChild(link);
+      if (!document.head.querySelector('link[rel="canonical"]')) {
+        var link = document.createElement("link");
+        link.setAttribute("rel", "canonical");
+        link.setAttribute("href", url);
+        document.head.appendChild(link);
+      }
     }
   };
 
-  var insertChrome = function () {
+  var createSkipLink = function (href, text) {
+    var link = document.createElement("a");
+    link.className = "skip-link";
+    link.href = href;
+    link.textContent = text;
+    return link;
+  };
+
+  var createFallbackNavbar = function () {
+    var nav = document.createElement("nav");
+    nav.className = "navbar";
+    nav.setAttribute("role", "navigation");
+    nav.setAttribute("aria-label", "Primary");
+
+    var brand = document.createElement("a");
+    brand.className = "navbar-brand";
+    brand.href = "index.html";
+    brand.textContent = "Kumu's Blog";
+    nav.appendChild(brand);
+
+    var links = document.createElement("div");
+    links.className = "navbar-links";
+    [
+      ["Blog", "index.html", "blog"],
+      ["Wiki", "https://wiki.opskumu.com"],
+      ["Issues", "https://github.com/opskumu/issues"],
+      ["GitHub", "https://github.com/opskumu"],
+      ["About", "https://opskumu.com/"]
+    ].forEach(function (item) {
+      var link = document.createElement("a");
+      link.textContent = item[0];
+      link.href = item[1];
+      if (item[2]) link.setAttribute("data-nav", item[2]);
+      if (/^https?:\/\//.test(item[1])) {
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      }
+      links.appendChild(link);
+    });
+
+    nav.appendChild(links);
+    return nav;
+  };
+
+  var initChrome = function () {
     var path = window.location.pathname;
-    if (path === "/" || path === "/index.html" || path.endsWith("index.html")) {
+    var isIndex = path === "/" || path === "/index.html" || path.endsWith("index.html");
+
+    if (isIndex) {
       document.body.classList.add("index-page");
     }
 
-    var navPath = path.replace(/\/+$/, "");
-    var blogActive = navPath === "" || navPath === "/" || navPath.endsWith("/index.html");
-    var skip = '<a class="skip-link" href="#content">Skip to main content</a><a class="skip-link" href="#table-of-contents">Skip to table of contents</a>';
-    var navbar = '<nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu\'s Blog</a><div class="navbar-links"><a href="index.html"' + (blogActive ? ' class="active" aria-current="page"' : "") + '>Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>';
+    if (!document.querySelector(".reading-progress")) {
+      var progress = document.createElement("div");
+      progress.className = "reading-progress";
+      progress.setAttribute("aria-hidden", "true");
+      document.body.insertBefore(progress, document.body.firstChild);
+    }
 
-    document.body.insertAdjacentHTML("afterbegin", '<div class="reading-progress" aria-hidden="true"></div>' + skip + navbar);
+    if (!document.querySelector(".navbar")) {
+      document.body.insertBefore(createFallbackNavbar(), document.body.firstChild);
+    }
+
+    if (!document.querySelector('a.skip-link[href="#content"]')) {
+      document.body.insertBefore(createSkipLink("#content", labels.mainSkip), document.body.firstChild);
+    }
 
     var main = document.querySelector("#content");
     if (main && !main.getAttribute("role")) main.setAttribute("role", "main");
 
-    if (!document.querySelector("#table-of-contents")) {
+    if (document.querySelector("#table-of-contents")) {
+      if (!document.querySelector('a.skip-link[href="#table-of-contents"]')) {
+        var mainSkip = document.querySelector('a.skip-link[href="#content"]');
+        var tocSkip = createSkipLink("#table-of-contents", labels.tocSkip);
+        if (mainSkip && mainSkip.parentNode) {
+          mainSkip.parentNode.insertBefore(tocSkip, mainSkip.nextSibling);
+        } else {
+          document.body.insertBefore(tocSkip, document.body.firstChild);
+        }
+      }
+    } else {
       Array.prototype.forEach.call(document.querySelectorAll('a.skip-link[href="#table-of-contents"]'), function (link) {
         link.remove();
       });
     }
+
+    Array.prototype.forEach.call(document.querySelectorAll(".navbar-links a"), function (link) {
+      link.classList.remove("active");
+      link.removeAttribute("aria-current");
+      if (isIndex && link.getAttribute("data-nav") === "blog") {
+        link.classList.add("active");
+        link.setAttribute("aria-current", "page");
+      }
+    });
 
     Array.prototype.forEach.call(document.querySelectorAll(".content img"), function (img) {
       if (!img.getAttribute("loading")) img.setAttribute("loading", "lazy");
@@ -123,23 +257,27 @@
 
     var text = content.innerText || "";
     var chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
-    var english = (text.match(/[a-zA-Z]+/g) || []).reduce(function (total, word) {
-      return total + word.length;
-    }, 0);
-    var readTime = Math.max(1, Math.ceil((chinese + english) / 350));
+    var englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
+    var readTime = Math.max(1, Math.ceil(chinese / 500 + englishWords / 220));
 
     var meta = document.createElement("div");
     meta.className = "article-meta";
-    meta.setAttribute("aria-label", "Article metadata");
-    meta.innerHTML = '<span class="reading-time" title="Estimated reading time">' + icon("clock") + " " + readTime + ' min read</span>';
+    meta.setAttribute("aria-label", labels.articleMeta);
+
+    var readingTime = document.createElement("span");
+    readingTime.className = "reading-time";
+    readingTime.title = labels.readingTimeTitle;
+    appendIcon(readingTime, "clock");
+    readingTime.appendChild(document.createTextNode(" " + format(labels.minuteRead, { minutes: readTime })));
+    meta.appendChild(readingTime);
 
     if (author) {
-      meta.insertAdjacentHTML("beforeend", '<span class="article-meta-sep" aria-hidden="true">/</span>');
+      meta.appendChild(createMetaSeparator());
       meta.appendChild(author);
     }
 
     if (dateSpan) {
-      meta.insertAdjacentHTML("beforeend", '<span class="article-meta-sep" aria-hidden="true">/</span>');
+      meta.appendChild(createMetaSeparator());
       meta.appendChild(dateSpan);
     }
 
@@ -152,6 +290,14 @@
     }
   };
 
+  var createMetaSeparator = function () {
+    var sep = document.createElement("span");
+    sep.className = "article-meta-sep";
+    sep.setAttribute("aria-hidden", "true");
+    sep.textContent = "/";
+    return sep;
+  };
+
   var initArchive = function () {
     if (!document.body.classList.contains("index-page")) return;
 
@@ -160,7 +306,25 @@
 
     var toolbar = document.createElement("div");
     toolbar.className = "archive-toolbar";
-    toolbar.innerHTML = '<button type="button" data-action="expand">Expand all</button><button type="button" data-action="collapse">Collapse all</button>';
+
+    var actions = document.createElement("div");
+    actions.className = "archive-actions";
+    [
+      ["expand", labels.expandAll],
+      ["collapse", labels.collapseAll]
+    ].forEach(function (item) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.setAttribute("data-action", item[0]);
+      button.textContent = item[1];
+      actions.appendChild(button);
+    });
+    toolbar.appendChild(actions);
+
+    var count = document.createElement("div");
+    count.className = "archive-count";
+    count.setAttribute("aria-live", "polite");
+    toolbar.appendChild(count);
 
     var archiveHeader = root.querySelector("h2");
     if (archiveHeader && archiveHeader.parentElement) {
@@ -168,7 +332,7 @@
     }
 
     var yearHeadings = Array.prototype.slice.call(root.querySelectorAll(".outline-3 > h3"));
-    yearHeadings.forEach(function (h3) {
+    yearHeadings.forEach(function (h3, index) {
       var outline3 = h3.parentElement;
       var text = outline3 ? outline3.querySelector(".outline-text-3") : null;
       if (!outline3 || !text) return;
@@ -176,10 +340,21 @@
       var links = text.querySelectorAll("a").length;
       var details = document.createElement("details");
       details.className = "archive-year";
-      details.open = true;
+      details.open = index < 4;
+      details.dataset.initialOpen = details.open ? "true" : "false";
+      details.dataset.total = String(links);
 
       var summary = document.createElement("summary");
-      summary.innerHTML = "<span>" + h3.textContent + '</span><span class="meta">' + links + " post" + (links === 1 ? "" : "s") + "</span>";
+
+      var year = document.createElement("span");
+      year.textContent = h3.textContent;
+
+      var meta = document.createElement("span");
+      meta.className = "meta";
+      meta.textContent = format(labels.postsCount, { count: links });
+
+      summary.appendChild(year);
+      summary.appendChild(meta);
 
       details.appendChild(summary);
       details.appendChild(text);
@@ -187,25 +362,39 @@
       h3.remove();
     });
 
+    var allItems = Array.prototype.slice.call(root.querySelectorAll("details.archive-year li"));
+    var totalPosts = allItems.length;
+
+    var updateCount = function () {
+      count.textContent = format(labels.totalPosts, { total: totalPosts });
+    };
+
     toolbar.addEventListener("click", function (event) {
-      var target = event.target;
-      if (!target || !target.getAttribute) return;
+      var target = event.target && event.target.closest ? event.target.closest("button[data-action]") : null;
+      if (!target) return;
 
       var action = target.getAttribute("data-action");
       if (!action) return;
 
       Array.prototype.forEach.call(root.querySelectorAll("details.archive-year"), function (details) {
         details.open = action === "expand";
+        details.dataset.initialOpen = details.open ? "true" : "false";
       });
     });
+
+    updateCount();
   };
 
-  var initBackToTop = function () {
+  var initScrollEnhancements = function () {
     var button = document.createElement("button");
     button.type = "button";
     button.className = "fab-top";
-    button.setAttribute("aria-label", "Back to top");
-    button.innerHTML = icon("arrowUp") + '<span class="sr-only">Back to top</span>';
+    button.setAttribute("aria-label", labels.backToTop);
+    appendIcon(button, "arrowUp");
+    var hidden = document.createElement("span");
+    hidden.className = "sr-only";
+    hidden.textContent = labels.backToTop;
+    button.appendChild(hidden);
     document.body.appendChild(button);
 
     var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -213,28 +402,29 @@
       window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
     });
 
-    var onScroll = function () {
+    var bar = document.querySelector(".reading-progress");
+    var raf = null;
+
+    var update = function () {
+      raf = null;
       if (window.scrollY > 600) button.classList.add("is-visible");
       else button.classList.remove("is-visible");
+
+      if (bar) {
+        var doc = document.documentElement;
+        var scrollable = doc.scrollHeight - window.innerHeight;
+        var percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+        bar.style.width = Math.max(0, Math.min(100, percent)) + "%";
+      }
     };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-  };
-
-  var initReadingProgress = function () {
-    var bar = document.querySelector(".reading-progress");
-    if (!bar) return;
 
     var onScroll = function () {
-      var doc = document.documentElement;
-      var scrollable = doc.scrollHeight - window.innerHeight;
-      var percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
-      bar.style.width = Math.max(0, Math.min(100, percent)) + "%";
+      if (raf !== null) return;
+      raf = window.requestAnimationFrame(update);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    update();
   };
 
   var initTocActiveState = function () {
@@ -312,24 +502,24 @@
       var button = document.createElement("button");
       button.type = "button";
       button.className = "code-copy-btn";
-      button.setAttribute("aria-label", "Copy code block");
-      button.innerHTML = icon("copy") + '<span class="label">Copy</span>';
+      button.setAttribute("aria-label", labels.copyCode);
+      setIconLabel(button, "copy", labels.copy);
 
       button.addEventListener("click", function () {
-        var text = pre.innerText || pre.textContent || "";
+        var text = pre.textContent || "";
         var done = function (ok) {
           button.classList.remove("is-copied", "is-error");
           if (ok) {
             button.classList.add("is-copied");
-            button.innerHTML = icon("check") + '<span class="label">Copied</span>';
+            setIconLabel(button, "check", labels.copied);
           } else {
             button.classList.add("is-error");
-            button.innerHTML = icon("xmark") + '<span class="label">Failed</span>';
+            setIconLabel(button, "xmark", labels.copyFailed);
           }
 
           window.setTimeout(function () {
             button.classList.remove("is-copied", "is-error");
-            button.innerHTML = icon("copy") + '<span class="label">Copy</span>';
+            setIconLabel(button, "copy", labels.copy);
           }, 1400);
         };
 
@@ -351,11 +541,10 @@
   document.addEventListener("DOMContentLoaded", function () {
     loadHighlight();
     setSocialMeta();
-    insertChrome();
+    initChrome();
     initReadingTime();
     initArchive();
-    initBackToTop();
-    initReadingProgress();
+    initScrollEnhancements();
     initTocActiveState();
     initCodeCopy();
   });

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>rsync 备份备忘</title>
@@ -12,39 +12,49 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/rsync.html"/>
+<meta property="og:title" content="rsync 备份备忘"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/rsync.html"/>
+<meta name="twitter:title" content="rsync 备份备忘"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">rsync 备份备忘</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgb366a35">1. rsync 基本介绍</a></li>
-<li><a href="#org0c3adaf">2. rsync 选项</a>
+<li><a href="#orgbdeba8e">1. rsync 基本介绍</a></li>
+<li><a href="#orga3af7c1">2. rsync 选项</a>
 <ul>
-<li><a href="#org3c8d348">2.1. 常用选项</a></li>
+<li><a href="#org03ed3c7">2.1. 常用选项</a></li>
 </ul>
 </li>
-<li><a href="#orge073d4b">3. 远程 Shell 方式</a></li>
-<li><a href="#org47da811">4. rsync C/S 方式</a></li>
-<li><a href="#org75fcfdb">5. 一些命令</a>
+<li><a href="#orgec248fe">3. 远程 Shell 方式</a></li>
+<li><a href="#orgf2a54eb">4. rsync C/S 方式</a></li>
+<li><a href="#orgfa83650">5. 一些命令</a>
 <ul>
-<li><a href="#org8224103">5.1. 常用命令</a></li>
-<li><a href="#org2d74755">5.2. ssh 端口非默认 22 同步</a></li>
-<li><a href="#org3ace954">5.3. 查看服务器同步资源</a></li>
+<li><a href="#orgff84fe1">5.1. 常用命令</a></li>
+<li><a href="#orgb2596c9">5.2. ssh 端口非默认 22 同步</a></li>
+<li><a href="#org1bcc8f0">5.3. 查看服务器同步资源</a></li>
 </ul>
 </li>
-<li><a href="#org1a78b90">6. 参考文档</a></li>
+<li><a href="#org9637054">6. 参考文档</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgb366a35" class="outline-2">
-<h2 id="orgb366a35"><span class="section-number-2">1.</span> rsync 基本介绍</h2>
+<div id="outline-container-orgbdeba8e" class="outline-2">
+<h2 id="orgbdeba8e"><span class="section-number-2">1.</span> rsync 基本介绍</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>rsync</code> 是类 unix 系统下的数据镜像备份工具，从软件的命名上就可以看出来了- remote sync。它的特性如下：
@@ -68,8 +78,8 @@
 </p>
 </div>
 </div>
-<div id="outline-container-org0c3adaf" class="outline-2">
-<h2 id="org0c3adaf"><span class="section-number-2">2.</span> rsync 选项</h2>
+<div id="outline-container-orga3af7c1" class="outline-2">
+<h2 id="orga3af7c1"><span class="section-number-2">2.</span> rsync 选项</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-nil">Usage: rsync [OPTION]... SRC [SRC]... DEST
@@ -93,8 +103,8 @@ to an rsync daemon, and require SRC or DEST to start with a module name.
 <li><i>data</i> ：表示将 <i>data</i> 目录中的所有内容复制到目标目录</li>
 </ul>
 </div>
-<div id="outline-container-org3c8d348" class="outline-3">
-<h3 id="org3c8d348"><span class="section-number-3">2.1.</span> 常用选项</h3>
+<div id="outline-container-org03ed3c7" class="outline-3">
+<h3 id="org03ed3c7"><span class="section-number-3">2.1.</span> 常用选项</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><code>-v</code> : Verbose (try -vv for more detailed information) # 详细模式显示</li>
@@ -128,8 +138,8 @@ to an rsync daemon, and require SRC or DEST to start with a module name.
 </div>
 </div>
 </div>
-<div id="outline-container-orge073d4b" class="outline-2">
-<h2 id="orge073d4b"><span class="section-number-2">3.</span> 远程 Shell 方式</h2>
+<div id="outline-container-orgec248fe" class="outline-2">
+<h2 id="orgec248fe"><span class="section-number-2">3.</span> 远程 Shell 方式</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-nil">rsync [OPTION]... SRC [SRC]... [USER@]HOST:DEST # 执行“推”操作
@@ -138,8 +148,8 @@ or   rsync [OPTION]... [USER@]HOST:SRC [DEST]   # 执行“拉”操作
 </div>
 </div>
 </div>
-<div id="outline-container-org47da811" class="outline-2">
-<h2 id="org47da811"><span class="section-number-2">4.</span> rsync C/S 方式</h2>
+<div id="outline-container-orgf2a54eb" class="outline-2">
+<h2 id="orgf2a54eb"><span class="section-number-2">4.</span> rsync C/S 方式</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
 <pre class="src src-nil">rsync [OPTION]... SRC [SRC]... [USER@]HOST::DEST                    # 执行“推”操作
@@ -224,12 +234,12 @@ The "filter" parameter takes a space-separated list of daemon filter rules, thou
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org75fcfdb" class="outline-2">
-<h2 id="org75fcfdb"><span class="section-number-2">5.</span> 一些命令</h2>
+<div id="outline-container-orgfa83650" class="outline-2">
+<h2 id="orgfa83650"><span class="section-number-2">5.</span> 一些命令</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org8224103" class="outline-3">
-<h3 id="org8224103"><span class="section-number-3">5.1.</span> 常用命令</h3>
+<div id="outline-container-orgff84fe1" class="outline-3">
+<h3 id="orgff84fe1"><span class="section-number-3">5.1.</span> 常用命令</h3>
 <div class="outline-text-3" id="text-5-1">
 <div class="org-src-container">
 <pre class="src src-nil">RSYNC_PASSWORD=123321 rsync -havAEHXi -n --numeric-ids --delete --stats --progress [SRC] [DEST]
@@ -241,8 +251,8 @@ The "filter" parameter takes a space-separated list of daemon filter rules, thou
 </p>
 </div>
 </div>
-<div id="outline-container-org2d74755" class="outline-3">
-<h3 id="org2d74755"><span class="section-number-3">5.2.</span> ssh 端口非默认 22 同步</h3>
+<div id="outline-container-orgb2596c9" class="outline-3">
+<h3 id="orgb2596c9"><span class="section-number-3">5.2.</span> ssh 端口非默认 22 同步</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 使用 ssh 方式传输时如果连接服务器 ssh 端口非标准，则需要通过 <code>-e</code> 选项指定：
@@ -254,8 +264,8 @@ The "filter" parameter takes a space-separated list of daemon filter rules, thou
 </div>
 </div>
 </div>
-<div id="outline-container-org3ace954" class="outline-3">
-<h3 id="org3ace954"><span class="section-number-3">5.3.</span> 查看服务器同步资源</h3>
+<div id="outline-container-org1bcc8f0" class="outline-3">
+<h3 id="org1bcc8f0"><span class="section-number-3">5.3.</span> 查看服务器同步资源</h3>
 <div class="outline-text-3" id="text-5-3">
 <div class="org-src-container">
 <pre class="src src-nil">RSYNC_PASSWORD=123321 rsync --list-only data@192.168.80.150::bak-data
@@ -273,8 +283,8 @@ OR
 </div>
 </div>
 </div>
-<div id="outline-container-org1a78b90" class="outline-2">
-<h2 id="org1a78b90"><span class="section-number-2">6.</span> 参考文档</h2>
+<div id="outline-container-org9637054" class="outline-2">
+<h2 id="org9637054"><span class="section-number-2">6.</span> 参考文档</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li><a href="http://www.samba.org/ftp/rsync/rsyncd.conf.html">rsync man 手册</a></li>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker CPU 资源限制</title>
@@ -12,45 +12,55 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/docker-cpu-limit.html"/>
+<meta property="og:title" content="Docker CPU 资源限制"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/docker-cpu-limit.html"/>
+<meta name="twitter:title" content="Docker CPU 资源限制"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Docker CPU 资源限制</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org379cab0">1. 压测工具</a></li>
-<li><a href="#org670d03b">2. CPU 测试</a>
+<li><a href="#org29d2f8b">1. 压测工具</a></li>
+<li><a href="#orga0de54a">2. CPU 测试</a>
 <ul>
-<li><a href="#orgc8f7bd7">2.1. CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></a></li>
-<li><a href="#org6e14fa4">2.2. CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></a></li>
-<li><a href="#org2daca32">2.3. Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></a>
+<li><a href="#org2ae1294">2.1. CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></a></li>
+<li><a href="#org39cbe2c">2.2. CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></a></li>
+<li><a href="#orgb3222ba">2.3. Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></a>
 <ul>
-<li><a href="#orgb0505dd">2.3.1. <code>--cpuset-cpus</code></a></li>
-<li><a href="#org43441c5">2.3.2. <code>--cpuset-mems</code></a></li>
+<li><a href="#org110dbf0">2.3.1. <code>--cpuset-cpus</code></a></li>
+<li><a href="#org964eee4">2.3.2. <code>--cpuset-mems</code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgae1442c">3. 源码解析</a></li>
+<li><a href="#orge709cfa">3. 源码解析</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org379cab0" class="outline-2">
-<h2 id="org379cab0"><span class="section-number-2">1.</span> 压测工具</h2>
+<div id="outline-container-org29d2f8b" class="outline-2">
+<h2 id="org29d2f8b"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 同上文 <a href="docker-memory-limit.html">Docker 内存资源限制</a> 使用 stress 测试。
 </p>
 </div>
 </div>
-<div id="outline-container-org670d03b" class="outline-2">
-<h2 id="org670d03b"><span class="section-number-2">2.</span> CPU 测试</h2>
+<div id="outline-container-orga0de54a" class="outline-2">
+<h2 id="orga0de54a"><span class="section-number-2">2.</span> CPU 测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime constraints on resources</a></li>
@@ -91,8 +101,8 @@
 </pre>
 </div>
 </div>
-<div id="outline-container-orgc8f7bd7" class="outline-3">
-<h3 id="orgc8f7bd7"><span class="section-number-3">2.1.</span> CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></h3>
+<div id="outline-container-org2ae1294" class="outline-3">
+<h3 id="org2ae1294"><span class="section-number-3">2.1.</span> CPU share constraint: <code>-c</code> or <code>--cpu-shares</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 默认所有的容器对于 CPU 的利用占比都是一样的， <code>-c</code> 或者 <code>--cpu-shares</code> 可以设置 CPU 利用率权重，默认为 1024，可以设置权重为 2 或者更高(单个 CPU 为 1024，两个为 2048，以此类推)。如果设置选项为 0，则系统会忽略该选项并且使用默认值 1024。通过以上设置，只会在 CPU 密集(繁忙)型运行进程时体现出来。当一个 container 空闲时，其它容器都是可以占用 CPU 的。cpu-shares 值为一个相对值，实际 CPU 利用率则取决于系统上运行容器的数量。
@@ -121,14 +131,14 @@ CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %             
 </p>
 
 
-<figure id="orgbc36471">
+<figure id="org5de1790">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cpu-test.png" alt="cpu-test.png">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org6e14fa4" class="outline-3">
-<h3 id="org6e14fa4"><span class="section-number-3">2.2.</span> CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></h3>
+<div id="outline-container-org39cbe2c" class="outline-3">
+<h3 id="org39cbe2c"><span class="section-number-3">2.2.</span> CPU period constraint: <code>--cpu-period</code> &amp; <code>--cpu-quota</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 默认的 CPU CFS「Completely Fair Scheduler」period 是 100ms。我们可以通过 <code>--cpu-period</code> 值限制容器的 CPU 使用。一般 <code>--cpu-period</code> 配合 <code>--cpu-quota</code> 一起使用。
@@ -157,12 +167,12 @@ CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %             
 </ul>
 </div>
 </div>
-<div id="outline-container-org2daca32" class="outline-3">
-<h3 id="org2daca32"><span class="section-number-3">2.3.</span> Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></h3>
+<div id="outline-container-orgb3222ba" class="outline-3">
+<h3 id="orgb3222ba"><span class="section-number-3">2.3.</span> Cpuset constraint: <code>--cpuset-cpus</code> 、 <code>--cpuset-mems</code></h3>
 <div class="outline-text-3" id="text-2-3">
 </div>
-<div id="outline-container-orgb0505dd" class="outline-4">
-<h4 id="orgb0505dd"><span class="section-number-4">2.3.1.</span> <code>--cpuset-cpus</code></h4>
+<div id="outline-container-org110dbf0" class="outline-4">
+<h4 id="org110dbf0"><span class="section-number-4">2.3.1.</span> <code>--cpuset-cpus</code></h4>
 <div class="outline-text-4" id="text-2-3-1">
 <p>
 通过 <code>--cpuset-cpus</code> 可以绑定指定容器使用指定 CPU：
@@ -200,8 +210,8 @@ Tasks: 211 total,   3 running, 207 sleeping,   1 stopped,   0 zombie
 </div>
 </div>
 </div>
-<div id="outline-container-org43441c5" class="outline-4">
-<h4 id="org43441c5"><span class="section-number-4">2.3.2.</span> <code>--cpuset-mems</code></h4>
+<div id="outline-container-org964eee4" class="outline-4">
+<h4 id="org964eee4"><span class="section-number-4">2.3.2.</span> <code>--cpuset-mems</code></h4>
 <div class="outline-text-4" id="text-2-3-2">
 <p>
 <code>--cpuset-mems</code> 只应用于 NUMA 架构的 CPU 生效，这个选项这里不过多介绍。关于 NUMA 架构可以参考这篇文章 <a href="http://cenalulu.github.io/linux/numa/">NUMA架构的CPU &#x2013; 你真的用好了么？</a>。
@@ -210,8 +220,8 @@ Tasks: 211 total,   3 running, 207 sleeping,   1 stopped,   0 zombie
 </div>
 </div>
 </div>
-<div id="outline-container-orgae1442c" class="outline-2">
-<h2 id="orgae1442c"><span class="section-number-2">3.</span> 源码解析</h2>
+<div id="outline-container-orge709cfa" class="outline-2">
+<h2 id="orge709cfa"><span class="section-number-2">3.</span> 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><a href="https://github.com/opencontainers/runc/tree/master/libcontainer/cgroups/fs">github.com/opencontainers/runc/libcontainer/cgroups/fs</a>

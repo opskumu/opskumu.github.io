@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 磁盘 IO 资源限制</title>
@@ -12,41 +12,51 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/docker-io-limit.html"/>
+<meta property="og:title" content="Docker 磁盘 IO 资源限制"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/docker-io-limit.html"/>
+<meta name="twitter:title" content="Docker 磁盘 IO 资源限制"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Docker 磁盘 IO 资源限制</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf1a2cbd">1. 压测工具</a></li>
-<li><a href="#org75c10d2">2. IO 测试</a>
+<li><a href="#org330e59e">1. 压测工具</a></li>
+<li><a href="#orgc3959bb">2. IO 测试</a>
 <ul>
-<li><a href="#org7840e4f">2.1. <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></a></li>
-<li><a href="#org47876dd">2.2. <code>--device-read-bps</code> 、 <code>--device-write-bps</code></a></li>
-<li><a href="#org7bf65bd">2.3. <code>--device-read-iops</code> 、 <code>--device-write-iops</code></a></li>
+<li><a href="#orgcd4605a">2.1. <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></a></li>
+<li><a href="#orgdb4fcb2">2.2. <code>--device-read-bps</code> 、 <code>--device-write-bps</code></a></li>
+<li><a href="#org3390d67">2.3. <code>--device-read-iops</code> 、 <code>--device-write-iops</code></a></li>
 </ul>
 </li>
-<li><a href="#org6cebb31">3. 源码解析</a></li>
-<li><a href="#orge9c4859">4. 拓展</a></li>
+<li><a href="#orgc09bd5c">3. 源码解析</a></li>
+<li><a href="#org2cb4835">4. 拓展</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgf1a2cbd" class="outline-2">
-<h2 id="orgf1a2cbd"><span class="section-number-2">1.</span> 压测工具</h2>
+<div id="outline-container-org330e59e" class="outline-2">
+<h2 id="org330e59e"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 通过 Linux <code>dd</code> 命令测试
 </p>
 </div>
 </div>
-<div id="outline-container-org75c10d2" class="outline-2">
-<h2 id="org75c10d2"><span class="section-number-2">2.</span> IO 测试</h2>
+<div id="outline-container-orgc3959bb" class="outline-2">
+<h2 id="orgc3959bb"><span class="section-number-2">2.</span> IO 测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime
@@ -99,8 +109,8 @@ Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 </pre>
 </div>
 </div>
-<div id="outline-container-org7840e4f" class="outline-3">
-<h3 id="org7840e4f"><span class="section-number-3">2.1.</span> <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></h3>
+<div id="outline-container-orgcd4605a" class="outline-3">
+<h3 id="orgcd4605a"><span class="section-number-3">2.1.</span> <code>--blkio-weight</code> 、 <code>--blkio-weight-device</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><code>--blkio-weight</code></li>
@@ -194,8 +204,8 @@ You'll find that the proportion of time is the same as the proportion of blkio w
 </div>
 </div>
 </div>
-<div id="outline-container-org47876dd" class="outline-3">
-<h3 id="org47876dd"><span class="section-number-3">2.2.</span> <code>--device-read-bps</code> 、 <code>--device-write-bps</code></h3>
+<div id="outline-container-orgdb4fcb2" class="outline-3">
+<h3 id="orgdb4fcb2"><span class="section-number-3">2.2.</span> <code>--device-read-bps</code> 、 <code>--device-write-bps</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 限制容器的写入速度是 1mb「 <code>&lt;device-path&gt;:&lt;limit&gt;[unit]</code> ，单位可以是 kb、mb、gb 正整数」:
@@ -215,7 +225,7 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 </p>
 
 
-<figure id="org5919616">
+<figure id="org598ba87">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/io-write-bps.png" alt="io-write-bps.png">
 
 </figure>
@@ -230,8 +240,8 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 </div>
 </div>
 </div>
-<div id="outline-container-org7bf65bd" class="outline-3">
-<h3 id="org7bf65bd"><span class="section-number-3">2.3.</span> <code>--device-read-iops</code> 、 <code>--device-write-iops</code></h3>
+<div id="outline-container-org3390d67" class="outline-3">
+<h3 id="org3390d67"><span class="section-number-3">2.3.</span> <code>--device-read-iops</code> 、 <code>--device-write-iops</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 限制容器 write iops 为 5「 <code>&lt;device-path&gt;:&lt;limit&gt;</code> ，必须为正整数」：
@@ -277,8 +287,8 @@ sda              10.00         0.00      2610.00          0       5220
 </div>
 </div>
 </div>
-<div id="outline-container-org6cebb31" class="outline-2">
-<h2 id="org6cebb31"><span class="section-number-2">3.</span> 源码解析</h2>
+<div id="outline-container-orgc09bd5c" class="outline-2">
+<h2 id="orgc09bd5c"><span class="section-number-2">3.</span> 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><a href="https://github.com/opencontainers/runc/tree/master/libcontainer/cgroups/fs">github.com/opencontainers/runc/libcontainer/cgroups/fs</a>
@@ -292,8 +302,8 @@ libcontainer 主要操作是对 cgroup 下相关文件根据选项写操作，�
 </p>
 </div>
 </div>
-<div id="outline-container-orge9c4859" class="outline-2">
-<h2 id="orge9c4859"><span class="section-number-2">4.</span> 拓展</h2>
+<div id="outline-container-org2cb4835" class="outline-2">
+<h2 id="org2cb4835"><span class="section-number-2">4.</span> 拓展</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><a href="http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation">Docker背后的内核知识 - cgroups资源限制</a></li>

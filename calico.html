@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Calico 备忘</title>
@@ -12,35 +12,45 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/calico.html"/>
+<meta property="og:title" content="Calico 备忘"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/calico.html"/>
+<meta name="twitter:title" content="Calico 备忘"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Calico 备忘</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge1ce9d4">1. calicoctl</a>
+<li><a href="#orgc333f6c">1. calicoctl</a>
 <ul>
-<li><a href="#org4b64137">1.1. Command Reference</a>
+<li><a href="#orgdc6cf64">1.1. Command Reference</a>
 <ul>
-<li><a href="#org71603ec">1.1.1. Overview</a></li>
-<li><a href="#org9dfdb9f">1.1.2. <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></a></li>
-<li><a href="#orgf00f1a8">1.1.3. <code>get</code></a></li>
-<li><a href="#org2b46485">1.1.4. <code>config</code></a></li>
-<li><a href="#org78b6d87">1.1.5. <code>ipam</code></a></li>
-<li><a href="#orga058fec">1.1.6. <code>node</code></a></li>
+<li><a href="#orgcc9627e">1.1.1. Overview</a></li>
+<li><a href="#orgded0724">1.1.2. <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></a></li>
+<li><a href="#orgf4caa01">1.1.3. <code>get</code></a></li>
+<li><a href="#orgb542350">1.1.4. <code>config</code></a></li>
+<li><a href="#orga5b78f7">1.1.5. <code>ipam</code></a></li>
+<li><a href="#orgd33a9e3">1.1.6. <code>node</code></a></li>
 </ul>
 </li>
-<li><a href="#orgbd12eda">1.2. 资源类型</a></li>
+<li><a href="#org382854d">1.2. 资源类型</a></li>
 </ul>
 </li>
-<li><a href="#orgfb0c907">2. Calico CNI Plugins</a></li>
-<li><a href="#orgabc04af">3. BGP Peering</a></li>
+<li><a href="#orga5183bf">2. Calico CNI Plugins</a></li>
+<li><a href="#orgd270eee">3. BGP Peering</a></li>
 </ul>
 </div>
 </nav>
@@ -63,16 +73,16 @@ Calico v2.0 版本支持以下平台：
 <li>Docker</li>
 <li>Openstack Mitaka, Liberty, Kilo, Juno and icehouse</li>
 </ul>
-<div id="outline-container-orge1ce9d4" class="outline-2">
-<h2 id="orge1ce9d4"><span class="section-number-2">1.</span> calicoctl</h2>
+<div id="outline-container-orgc333f6c" class="outline-2">
+<h2 id="orgc333f6c"><span class="section-number-2">1.</span> calicoctl</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org4b64137" class="outline-3">
-<h3 id="org4b64137"><span class="section-number-3">1.1.</span> Command Reference</h3>
+<div id="outline-container-orgdc6cf64" class="outline-3">
+<h3 id="orgdc6cf64"><span class="section-number-3">1.1.</span> Command Reference</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-org71603ec" class="outline-4">
-<h4 id="org71603ec"><span class="section-number-4">1.1.1.</span> Overview</h4>
+<div id="outline-container-orgcc9627e" class="outline-4">
+<h4 id="orgcc9627e"><span class="section-number-4">1.1.1.</span> Overview</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <div class="org-src-container">
 <pre class="src src-nil"># calicoctl --help
@@ -117,8 +127,8 @@ Description:
 </div>
 </div>
 </div>
-<div id="outline-container-org9dfdb9f" class="outline-4">
-<h4 id="org9dfdb9f"><span class="section-number-4">1.1.2.</span> <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></h4>
+<div id="outline-container-orgded0724" class="outline-4">
+<h4 id="orgded0724"><span class="section-number-4">1.1.2.</span> <code>create</code> 、 <code>replace</code> 、 <code>apply</code> 、 <code>delete</code></h4>
 <div class="outline-text-4" id="text-1-1-2">
 <div class="org-src-container">
 <pre class="src src-nil"># Create a policy using the data in policy.yaml.
@@ -160,8 +170,8 @@ calicoctl delete policy foo
 </div>
 </div>
 </div>
-<div id="outline-container-orgf00f1a8" class="outline-4">
-<h4 id="orgf00f1a8"><span class="section-number-4">1.1.3.</span> <code>get</code></h4>
+<div id="outline-container-orgf4caa01" class="outline-4">
+<h4 id="orgf4caa01"><span class="section-number-4">1.1.3.</span> <code>get</code></h4>
 <div class="outline-text-4" id="text-1-1-3">
 <div class="org-src-container">
 <pre class="src src-nil"># List all policy in default output format.
@@ -256,8 +266,8 @@ eth0
 </div>
 </div>
 </div>
-<div id="outline-container-org2b46485" class="outline-4">
-<h4 id="org2b46485"><span class="section-number-4">1.1.4.</span> <code>config</code></h4>
+<div id="outline-container-orgb542350" class="outline-4">
+<h4 id="orgb542350"><span class="section-number-4">1.1.4.</span> <code>config</code></h4>
 <div class="outline-text-4" id="text-1-1-4">
 <div class="org-src-container">
 <pre class="src src-nil"># calicoctl config --help
@@ -336,8 +346,8 @@ The table below details the valid config options.
 </p>
 </div>
 </div>
-<div id="outline-container-org78b6d87" class="outline-4">
-<h4 id="org78b6d87"><span class="section-number-4">1.1.5.</span> <code>ipam</code></h4>
+<div id="outline-container-orga5b78f7" class="outline-4">
+<h4 id="orga5b78f7"><span class="section-number-4">1.1.5.</span> <code>ipam</code></h4>
 <div class="outline-text-4" id="text-1-1-5">
 <div class="org-src-container">
 <pre class="src src-nil">Usage:
@@ -386,8 +396,8 @@ No attributes defined for 192.168.1.1
 </div>
 </div>
 </div>
-<div id="outline-container-orga058fec" class="outline-4">
-<h4 id="orga058fec"><span class="section-number-4">1.1.6.</span> <code>node</code></h4>
+<div id="outline-container-orgd33a9e3" class="outline-4">
+<h4 id="orgd33a9e3"><span class="section-number-4">1.1.6.</span> <code>node</code></h4>
 <div class="outline-text-4" id="text-1-1-6">
 <div class="org-src-container">
 <pre class="src src-nil">Usage:
@@ -522,8 +532,8 @@ Description:
 </div>
 </div>
 </div>
-<div id="outline-container-orgbd12eda" class="outline-3">
-<h3 id="orgbd12eda"><span class="section-number-3">1.2.</span> 资源类型</h3>
+<div id="outline-container-org382854d" class="outline-3">
+<h3 id="org382854d"><span class="section-number-3">1.2.</span> 资源类型</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 资源结构概览：
@@ -757,12 +767,12 @@ k8snode-64-10-hzifc    64513   172.16.64.10
 </div>
 </div>
 </div>
-<div id="outline-container-orgfb0c907" class="outline-2">
-<h2 id="orgfb0c907"><span class="section-number-2">2.</span> <a href="http://docs.projectcalico.org/v2.0/reference/cni-plugin/configuration">Calico CNI Plugins</a></h2>
+<div id="outline-container-orga5183bf" class="outline-2">
+<h2 id="orga5183bf"><span class="section-number-2">2.</span> <a href="http://docs.projectcalico.org/v2.0/reference/cni-plugin/configuration">Calico CNI Plugins</a></h2>
 </div>
 
-<div id="outline-container-orgabc04af" class="outline-2">
-<h2 id="orgabc04af"><span class="section-number-2">3.</span> <a href="http://docs.projectcalico.org/v2.0/usage/configuration/bgp">BGP Peering</a></h2>
+<div id="outline-container-orgd270eee" class="outline-2">
+<h2 id="orgd270eee"><span class="section-number-2">3.</span> <a href="http://docs.projectcalico.org/v2.0/usage/configuration/bgp">BGP Peering</a></h2>
 </div>
 </div>
 <div id="postamble" class="status">

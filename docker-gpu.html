@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 中玩转 GPU</title>
@@ -12,31 +12,41 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/docker-gpu.html"/>
+<meta property="og:title" content="Docker 中玩转 GPU"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/docker-gpu.html"/>
+<meta name="twitter:title" content="Docker 中玩转 GPU"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Docker 中玩转 GPU</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0afca4b">1. GPU 驱动安装</a>
+<li><a href="#orgcde74fe">1. GPU 驱动安装</a>
 <ul>
-<li><a href="#org9de0c92">1.1. 下载 CUDA Toolkit 并安装</a></li>
-<li><a href="#orgd2d1ead">1.2. NVIDIA cuDNN Install</a></li>
+<li><a href="#orgbeb354a">1.1. 下载 CUDA Toolkit 并安装</a></li>
+<li><a href="#org9e18538">1.2. NVIDIA cuDNN Install</a></li>
 </ul>
 </li>
-<li><a href="#org8f9444b">2. Docker 中访问 GPU</a></li>
-<li><a href="#orgd95e61b">3. 通过 K8s 调度 GPU 资源</a></li>
+<li><a href="#orgd328036">2. Docker 中访问 GPU</a></li>
+<li><a href="#orgee64a90">3. 通过 K8s 调度 GPU 资源</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org0afca4b" class="outline-2">
-<h2 id="org0afca4b"><span class="section-number-2">1.</span> GPU 驱动安装</h2>
+<div id="outline-container-orgcde74fe" class="outline-2">
+<h2 id="orgcde74fe"><span class="section-number-2">1.</span> GPU 驱动安装</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 在讲解 Docker 中使用 GPU 之前，需要先在当前宿主上安装好 CUDA，本文介绍的是基于 CentOS7 的安装，关于更多 Linux 的安装方法，可以参考官方文档 <a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux">NVIDIA CUDA Installation Guide for Linux</a>。
@@ -54,15 +64,15 @@
 </pre>
 </div>
 </div>
-<div id="outline-container-org9de0c92" class="outline-3">
-<h3 id="org9de0c92"><span class="section-number-3">1.1.</span> 下载 CUDA Toolkit 并安装</h3>
+<div id="outline-container-orgbeb354a" class="outline-3">
+<h3 id="orgbeb354a"><span class="section-number-3">1.1.</span> 下载 CUDA Toolkit 并安装</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 <a href="https://developer.nvidia.com/cuda-downloads">CUDA Toolkit Download</a> 官网下载，选择所对应的版本
 </p>
 
 
-<figure id="orgbca168e">
+<figure id="orgcb197be">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cuda-download.png" alt="cuda-download.png">
 
 </figure>
@@ -93,8 +103,8 @@ export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:/usr/local/cuda-8.0/extras/CUPT
 </div>
 </div>
 </div>
-<div id="outline-container-orgd2d1ead" class="outline-3">
-<h3 id="orgd2d1ead"><span class="section-number-3">1.2.</span> NVIDIA cuDNN Install</h3>
+<div id="outline-container-org9e18538" class="outline-3">
+<h3 id="org9e18538"><span class="section-number-3">1.2.</span> NVIDIA cuDNN Install</h3>
 <div class="outline-text-3" id="text-1-2">
 <blockquote>
 <p>
@@ -143,15 +153,15 @@ Fri Jul 14 23:19:38 2017
 </div>
 </div>
 </div>
-<div id="outline-container-org8f9444b" class="outline-2">
-<h2 id="org8f9444b"><span class="section-number-2">2.</span> Docker 中访问 GPU</h2>
+<div id="outline-container-orgd328036" class="outline-2">
+<h2 id="orgd328036"><span class="section-number-2">2.</span> Docker 中访问 GPU</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 nvidia 官方提供了 nvidia-docker 可以直接驱动 GPU 设备，具体文档可以参考 <a href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a>，本文介绍原生的 Docker 方式。
 </p>
 
 
-<figure id="org98013a2">
+<figure id="orgbf78a39">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker-gpu.png" alt="docker-gpu.png">
 
 </figure>
@@ -193,8 +203,8 @@ Device mapping:
 </p>
 </div>
 </div>
-<div id="outline-container-orgd95e61b" class="outline-2">
-<h2 id="orgd95e61b"><span class="section-number-2">3.</span> 通过 K8s 调度 GPU 资源</h2>
+<div id="outline-container-orgee64a90" class="outline-2">
+<h2 id="orgee64a90"><span class="section-number-2">3.</span> 通过 K8s 调度 GPU 资源</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 K8s 现在已经支持 GPU 的资源调度了，具体可以看官方的介绍 <a href="https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/">Schedule GPUs</a>，这里介绍一个简单的实例。

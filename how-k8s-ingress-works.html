@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Nginx Ingress 控制器工作机制</title>
@@ -12,26 +12,36 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/how-k8s-ingress-works.html"/>
+<meta property="og:title" content="Nginx Ingress 控制器工作机制"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/how-k8s-ingress-works.html"/>
+<meta name="twitter:title" content="Nginx Ingress 控制器工作机制"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Nginx Ingress 控制器工作机制</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org187e09b">1. NGINX 配置</a></li>
-<li><a href="#org5bbda9c">2. NGINX 模型</a></li>
-<li><a href="#orgff7ee9d">3. 构建 NGINX 模型</a></li>
-<li><a href="#org6ee493c">4. 什么时候重新加载是必须的</a></li>
-<li><a href="#orgd8a908c">5. 避免重新加载</a>
+<li><a href="#org65e6ca8">1. NGINX 配置</a></li>
+<li><a href="#org3470f80">2. NGINX 模型</a></li>
+<li><a href="#org0bc3d7b">3. 构建 NGINX 模型</a></li>
+<li><a href="#orgeaba0bc">4. 什么时候重新加载是必须的</a></li>
+<li><a href="#orgfe04927">5. 避免重新加载</a>
 <ul>
-<li><a href="#org0b756fb">5.1. 避免 Endpoints 变更时重新加载</a></li>
-<li><a href="#org26292b0">5.2. 避免因错误的配置而中断</a></li>
+<li><a href="#org6fc25af">5.1. 避免 Endpoints 变更时重新加载</a></li>
+<li><a href="#orgf77de60">5.2. 避免因错误的配置而中断</a></li>
 </ul>
 </li>
 </ul>
@@ -46,16 +56,16 @@
 <p>
 本文的目的是说明 Nginx ingress controller 是如何工作的，特别是 Nginx 模型是如何构建的以及我们为何需要这个模型。
 </p>
-<div id="outline-container-org187e09b" class="outline-2">
-<h2 id="org187e09b"><span class="section-number-2">1.</span> NGINX 配置</h2>
+<div id="outline-container-org65e6ca8" class="outline-2">
+<h2 id="org65e6ca8"><span class="section-number-2">1.</span> NGINX 配置</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求的主要含义是在配置文件有任何变更后都需要重新加载 NGINX。不过需要特别注意的是，在只有 <code>upstream</code> 配置变更的时候我们不需要重新加载 Nginx（即当你部署你的应用时 Endpoints 变更）。我们使用 <a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a> 达到这个目的。请通过<a href="https://kubernetes.github.io/ingress-nginx/how-it-works/#avoiding-reloads-on-endpoints-changes"> 下面的内容</a> 来学习我们如何做到这一点。
 </p>
 </div>
 </div>
-<div id="outline-container-org5bbda9c" class="outline-2">
-<h2 id="org5bbda9c"><span class="section-number-2">2.</span> NGINX 模型</h2>
+<div id="outline-container-org3470f80" class="outline-2">
+<h2 id="org3470f80"><span class="section-number-2">2.</span> NGINX 模型</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 通常，一个 Kubernetes 控制器采用 <a href="https://coreos.com/kubernetes/docs/latest/replication-controller.html#the-reconciliation-loop-in-detail">synchronization loop pattern</a> 来检查控制器中所需的状态是否已更新或者需要变更。为了达到这个目的，我们需要使用集群的不同对象来构建模型，特别是（无特殊顺序）Ingresses，Services，Endpoints，Secrets，以及 Configmaps 来生成反映集群状态的时间点配置文件。
@@ -74,8 +84,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </p>
 </div>
 </div>
-<div id="outline-container-orgff7ee9d" class="outline-2">
-<h2 id="orgff7ee9d"><span class="section-number-2">3.</span> 构建 NGINX 模型</h2>
+<div id="outline-container-org0bc3d7b" class="outline-2">
+<h2 id="org0bc3d7b"><span class="section-number-2">3.</span> 构建 NGINX 模型</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 建立模型是一项成本比较高的操作，基于这个原因，使用同步循环是必须的。通过使用 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/internal/task/queue.go#L38">work queue</a>，可以不丢失变更并通过 <a href="https://golang.org/pkg/sync/#Mutex">sync.Mutex</a> 移除来强制执行一次同步循环，此外还可以在同步循环的开始和结束之间创建一个时间窗口，从而允许我们摒弃不必要的更新。重要的是要理解，集群中的任何变更都会生成事件，然后 informer 会发送给控制器，这也是使用 <a href="https://github.com/kubernetes/ingress-nginx/blob/master/internal/task/queue.go#L38">work queue</a> 的原因之一。
@@ -98,8 +108,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </ul>
 </div>
 </div>
-<div id="outline-container-org6ee493c" class="outline-2">
-<h2 id="org6ee493c"><span class="section-number-2">4.</span> 什么时候重新加载是必须的</h2>
+<div id="outline-container-orgeaba0bc" class="outline-2">
+<h2 id="orgeaba0bc"><span class="section-number-2">4.</span> 什么时候重新加载是必须的</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 接下来的场景描述什么时候需要重新加载：
@@ -116,15 +126,15 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd8a908c" class="outline-2">
-<h2 id="orgd8a908c"><span class="section-number-2">5.</span> 避免重新加载</h2>
+<div id="outline-container-orgfe04927" class="outline-2">
+<h2 id="orgfe04927"><span class="section-number-2">5.</span> 避免重新加载</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 在某些情况下，有可能避免重新加载，尤其是在 endpoints 发送变化的时候，如 pod 启动或者被替换时。完全移除重新加载这超过了 Ingress 控制器的范围。这将需要大量的工作，并且有时没有任何意义。仅当 NGINX 变更了读取新配置的方式时，这才可以变更，基本上，新的变更不会替代工作进程。
 </p>
 </div>
-<div id="outline-container-org0b756fb" class="outline-3">
-<h3 id="org0b756fb"><span class="section-number-3">5.1.</span> 避免 Endpoints 变更时重新加载</h3>
+<div id="outline-container-org6fc25af" class="outline-3">
+<h3 id="org6fc25af"><span class="section-number-3">5.1.</span> 避免 Endpoints 变更时重新加载</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 在每个 endpoint 变更上，控制器从所有能看到的服务上获取 endpoints 并生成相应的后端对象。然后将这些对象发送给运行在 Nginx 内部的 Lua 处理程序。Lua 程序将这些后端存储在共享内存区域。然后对于在 <code>balancer_by_lua</code> 上下文运行的每个请求，Lua 代码检测 endpoints 选择对应 upstream 并应用已经配置的负载均衡算法。Nginx 负责其余的工作。这样，我们避免在 endpoint 变更时重新加载 Nginx。注意，这包括 annotation 的变更，不过也只是影响 Nginx <code>upstream</code> 的配置。
@@ -135,8 +145,8 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </p>
 </div>
 </div>
-<div id="outline-container-org26292b0" class="outline-3">
-<h3 id="org26292b0"><span class="section-number-3">5.2.</span> 避免因错误的配置而中断</h3>
+<div id="outline-container-orgf77de60" class="outline-3">
+<h3 id="orgf77de60"><span class="section-number-3">5.2.</span> 避免因错误的配置而中断</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 因为 ingress 控制器使用 <a href="https://coreos.com/kubernetes/docs/latest/replication-controller.html#the-reconciliation-loop-in-detail">synchronization loop pattern</a>，它对所有匹配到的对象应用配置。如果某些 ingress 对象配置损坏，如 <code>nginx.ingress.kubernetes.io/configuration-snippet</code> annotation 语法错误，生成的配置变得不可用，将不会重新加载并不再考虑其它入口。

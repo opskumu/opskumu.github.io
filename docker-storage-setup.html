@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker lvm device mapper</title>
@@ -12,30 +12,40 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/docker-storage-setup.html"/>
+<meta property="og:title" content="Docker lvm device mapper"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/docker-storage-setup.html"/>
+<meta name="twitter:title" content="Docker lvm device mapper"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Docker lvm device mapper</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgb3b99a5">1. Device Mapper: loop-lvm</a></li>
-<li><a href="#org89b1076">2. Device Mapper: direct-lvm</a>
+<li><a href="#orgf9b5762">1. Device Mapper: loop-lvm</a></li>
+<li><a href="#org0f3134c">2. Device Mapper: direct-lvm</a>
 <ul>
-<li><a href="#org1508cd6">2.1. 示例</a></li>
+<li><a href="#org76eb540">2.1. 示例</a></li>
 </ul>
 </li>
-<li><a href="#orgccc1911">3. 参考</a></li>
+<li><a href="#org81e9a14">3. 参考</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgb3b99a5" class="outline-2">
-<h2 id="orgb3b99a5"><span class="section-number-2">1.</span> Device Mapper: loop-lvm</h2>
+<div id="outline-container-orgf9b5762" class="outline-2">
+<h2 id="orgf9b5762"><span class="section-number-2">1.</span> Device Mapper: loop-lvm</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 默认 CentOS7 下 Docker 使用的 Device Mapper 设备默认使用 loopback 设备，后端为自动生成的稀疏文件，如下:
@@ -92,8 +102,8 @@ loop1                                                                           
 </div>
 </div>
 </div>
-<div id="outline-container-org89b1076" class="outline-2">
-<h2 id="org89b1076"><span class="section-number-2">2.</span> Device Mapper: direct-lvm</h2>
+<div id="outline-container-org0f3134c" class="outline-2">
+<h2 id="org0f3134c"><span class="section-number-2">2.</span> Device Mapper: direct-lvm</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 direct-lvm 也是使用 LVM， device mapper the dm-thinp 内核模块，使用 direct-lvm 不再使用 loopback 设备，直接使用 raw 分区(no filesystem)，在中等负载和高密度环境下会有更好的性能优势，另外官方也是不建议生产环境系统使用默认的 LVM thin pool，至于两种类型具体的性能对比可以参考 <a href="https://developerblog。redhat。com/2014/09/30/overview-storage-scalability-docker/">Comprehensive Overview of Storage Scalability in Docker</a> 这篇文章。
@@ -155,8 +165,8 @@ activation {
 使用 <code>lvs -o+seg_monitor</code> 可验证监控状态。
 </p>
 </div>
-<div id="outline-container-org1508cd6" class="outline-3">
-<h3 id="org1508cd6"><span class="section-number-3">2.1.</span> 示例</h3>
+<div id="outline-container-org76eb540" class="outline-3">
+<h3 id="org76eb540"><span class="section-number-3">2.1.</span> 示例</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 主机先添加一块设备，本例设备名为 <code>/dev/vdc</code> ，添加 <code>docker-storage-setup</code> 配置文件：
@@ -223,8 +233,8 @@ Storage Driver: devicemapper
 </div>
 </div>
 </div>
-<div id="outline-container-orgccc1911" class="outline-2">
-<h2 id="orgccc1911"><span class="section-number-2">3.</span> 参考</h2>
+<div id="outline-container-org81e9a14" class="outline-2">
+<h2 id="org81e9a14"><span class="section-number-2">3.</span> 参考</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Docker 官方文档：

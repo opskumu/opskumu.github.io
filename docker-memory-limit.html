@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 内存资源限制</title>
@@ -12,34 +12,44 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/docker-memory-limit.html"/>
+<meta property="og:title" content="Docker 内存资源限制"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/docker-memory-limit.html"/>
+<meta name="twitter:title" content="Docker 内存资源限制"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Docker 内存资源限制</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgb7d5e1e">1. 压测工具</a></li>
-<li><a href="#org01ff096">2. 内存测试</a>
+<li><a href="#org88ea6c6">1. 压测工具</a></li>
+<li><a href="#orgb6f45ca">2. 内存测试</a>
 <ul>
-<li><a href="#org029557a">2.1. <code>-m ... --memory-swap ...</code></a></li>
-<li><a href="#org0181ca1">2.2. <code>-m ... --memory-swappiness ...</code></a></li>
-<li><a href="#orga6bf5c9">2.3. <code>--memory-reservation ...</code></a></li>
-<li><a href="#org311f90c">2.4. <code>--oom-kill-disable</code></a></li>
-<li><a href="#org928506b">2.5. <code>--kernel-memory</code></a></li>
+<li><a href="#orga027d8d">2.1. <code>-m ... --memory-swap ...</code></a></li>
+<li><a href="#org22932d8">2.2. <code>-m ... --memory-swappiness ...</code></a></li>
+<li><a href="#orgd9a4299">2.3. <code>--memory-reservation ...</code></a></li>
+<li><a href="#orgbcd2562">2.4. <code>--oom-kill-disable</code></a></li>
+<li><a href="#org877868a">2.5. <code>--kernel-memory</code></a></li>
 </ul>
 </li>
-<li><a href="#org7dbf3c4">3. 内存资源限制 Docker 源码解析</a></li>
+<li><a href="#orgb6e8205">3. 内存资源限制 Docker 源码解析</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgb7d5e1e" class="outline-2">
-<h2 id="orgb7d5e1e"><span class="section-number-2">1.</span> 压测工具</h2>
+<div id="outline-container-org88ea6c6" class="outline-2">
+<h2 id="org88ea6c6"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="http://people.seas.harvard.edu/~apw/stress/">stress</a></li>
@@ -60,8 +70,8 @@ RUN apt-get update &amp;&amp; \
 </div>
 </div>
 </div>
-<div id="outline-container-org01ff096" class="outline-2">
-<h2 id="org01ff096"><span class="section-number-2">2.</span> 内存测试</h2>
+<div id="outline-container-orgb6f45ca" class="outline-2">
+<h2 id="orgb6f45ca"><span class="section-number-2">2.</span> 内存测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime constraints on resources</a></li>
@@ -115,8 +125,8 @@ RUN apt-get update &amp;&amp; \
 </pre>
 </div>
 </div>
-<div id="outline-container-org029557a" class="outline-3">
-<h3 id="org029557a"><span class="section-number-3">2.1.</span> <code>-m ... --memory-swap ...</code></h3>
+<div id="outline-container-orga027d8d" class="outline-3">
+<h3 id="orga027d8d"><span class="section-number-3">2.1.</span> <code>-m ... --memory-swap ...</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 指定限制内存大小并且设置 memory-swap 值为 -1，表示容器程序使用内存受限，而 swap 空间使用不受限制（宿主 swap 支持使用多少则容器即可使用多少。如果 <code>--memory-swap</code> 设置小于 <code>--memory</code> 则设置不生效，使用默认设置）。
@@ -287,8 +297,8 @@ KiB Swap: 15625212 total,   366160 used, 15259052 free.  4102076 cached Mem
 </p>
 </div>
 </div>
-<div id="outline-container-org0181ca1" class="outline-3">
-<h3 id="org0181ca1"><span class="section-number-3">2.2.</span> <code>-m ... --memory-swappiness ...</code></h3>
+<div id="outline-container-org22932d8" class="outline-3">
+<h3 id="org22932d8"><span class="section-number-3">2.2.</span> <code>-m ... --memory-swappiness ...</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 swappiness 可以认为是宿主 <code>/proc/sys/vm/swappiness</code> 设定：
@@ -316,16 +326,16 @@ root@e3fd6cc73849:/#
 </div>
 </div>
 </div>
-<div id="outline-container-orga6bf5c9" class="outline-3">
-<h3 id="orga6bf5c9"><span class="section-number-3">2.3.</span> <code>--memory-reservation ...</code></h3>
+<div id="outline-container-orgd9a4299" class="outline-3">
+<h3 id="orgd9a4299"><span class="section-number-3">2.3.</span> <code>--memory-reservation ...</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 <code>--memory-reservation ...</code> 选项可以理解为内存的软限制。如果不设置 <code>-m</code> 选项，那么容器使用内存可以理解为是不受限的。按照官方的说法，memory reservation 设置可以确保容器不会长时间占用大量内存。
 </p>
 </div>
 </div>
-<div id="outline-container-org311f90c" class="outline-3">
-<h3 id="org311f90c"><span class="section-number-3">2.4.</span> <code>--oom-kill-disable</code></h3>
+<div id="outline-container-orgbcd2562" class="outline-3">
+<h3 id="orgbcd2562"><span class="section-number-3">2.4.</span> <code>--oom-kill-disable</code></h3>
 <div class="outline-text-3" id="text-2-4">
 <div class="org-src-container">
 <pre class="src src-nil">➜  ~ docker run -it --rm -m 100M --memory-swappiness=0 --oom-kill-disable ubuntu-stress:latest /bin/bash
@@ -348,8 +358,8 @@ stress: info: [17] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 </p>
 </div>
 </div>
-<div id="outline-container-org928506b" class="outline-3">
-<h3 id="org928506b"><span class="section-number-3">2.5.</span> <code>--kernel-memory</code></h3>
+<div id="outline-container-org877868a" class="outline-3">
+<h3 id="org877868a"><span class="section-number-3">2.5.</span> <code>--kernel-memory</code></h3>
 <div class="outline-text-3" id="text-2-5">
 <blockquote>
 <p>
@@ -369,8 +379,8 @@ Kernel memory is fundamentally different than user memory as kernel memory can't
 </div>
 </div>
 </div>
-<div id="outline-container-org7dbf3c4" class="outline-2">
-<h2 id="org7dbf3c4"><span class="section-number-2">3.</span> 内存资源限制 Docker 源码解析</h2>
+<div id="outline-container-orgb6e8205" class="outline-2">
+<h2 id="orgb6e8205"><span class="section-number-2">3.</span> 内存资源限制 Docker 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 关于 Docker 资源限制主要是依赖 Linux cgroups 去实现的，关于 cgroups 资源限制实现可以参考：<a href="http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation/">Docker背后的内核知识-cgroups资源限制</a>, libcontainer 配置相关的选项：

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>自定义 Kubernetes CRD</title>
@@ -12,71 +12,81 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/kubernetes-crd.html"/>
+<meta property="og:title" content="自定义 Kubernetes CRD"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/kubernetes-crd.html"/>
+<meta name="twitter:title" content="自定义 Kubernetes CRD"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">自定义 Kubernetes CRD</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgfc7f0e0">1. 理论概要</a></li>
-<li><a href="#org1b8dc60">2. kubebuilder 安装</a></li>
-<li><a href="#org0769b7a">3. kubebuilder 初始化</a></li>
-<li><a href="#org9ed227c">4. kubebuilder 创建 API</a></li>
-<li><a href="#org1f9dce4">5. 自定义代码并生成 client 代码</a></li>
-<li><a href="#org74c6566">6. 创建 CRD</a></li>
-<li><a href="#org5e040e5">7. 参考文档</a></li>
+<li><a href="#org5c673b5">1. 理论概要</a></li>
+<li><a href="#orga2191c9">2. kubebuilder 安装</a></li>
+<li><a href="#org47306b7">3. kubebuilder 初始化</a></li>
+<li><a href="#orge46b867">4. kubebuilder 创建 API</a></li>
+<li><a href="#org8444ebd">5. 自定义代码并生成 client 代码</a></li>
+<li><a href="#org0ae8e86">6. 创建 CRD</a></li>
+<li><a href="#org1f86ac6">7. 参考文档</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgfc7f0e0" class="outline-2">
-<h2 id="orgfc7f0e0"><span class="section-number-2">1.</span> 理论概要</h2>
+<div id="outline-container-org5c673b5" class="outline-2">
+<h2 id="org5c673b5"><span class="section-number-2">1.</span> 理论概要</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 我们知道 Kubernetes 提供 CRD 机制用以扩展资源，在某些场景下我们可以利用 CRD 扩展通过 Kubernetes 存储资源，也就是把 Kubernetes 当作存储来使用。按照官方的说法 CRD + Controller = Operator，<a href="https://github.com/kubernetes-sigs/kubebuilder">kubebuilder </a>可以生成这样的代码框架，并且可自定义选择是否生成 Controller。client 相关代码则可以通过 <a href="https://github.com/kubernetes/code-generator">code-generator</a> 生成，生成 informer、lister、clientset 等系列代码。通过这种方式，我们只需要在生成的代码中填充业务代码，而无需关心框架之外的代码，这样可以极大的提升开发效率和降低 CRD 的上手门槛。本文通过引入 ConfigMapHistory 这个 CRD 为例，带你从零到一构建和部署 CRD。
 </p>
 </div>
 </div>
-<div id="outline-container-org1b8dc60" class="outline-2">
-<h2 id="org1b8dc60"><span class="section-number-2">2.</span> kubebuilder 安装</h2>
+<div id="outline-container-orga2191c9" class="outline-2">
+<h2 id="orga2191c9"><span class="section-number-2">2.</span> kubebuilder 安装</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 kubebuilder 安装文档可以参考官档 <a href="https://book.kubebuilder.io/quick-start.html#installation">Install kubebuilder</a> ：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">os=$(go env GOOS)
-arch=$(go env GOARCH)
+<pre class="src src-bash"><span class="org-variable-name">os</span>=$(go env GOOS)
+<span class="org-variable-name">arch</span>=$(go env GOARCH)
 
-# download kubebuilder and extract it to tmp
-curl -L https://go.kubebuilder.io/dl/2.3.1/${os}/${arch} | tar -xz -C /tmp/
+<span class="org-comment-delimiter"># </span><span class="org-comment">download kubebuilder and extract it to tmp
+</span>curl -L https://go.kubebuilder.io/dl/2.3.1/${<span class="org-variable-name">os</span>}/${<span class="org-variable-name">arch</span>} | tar -xz -C /tmp/
 
-# move to a long-term location and put it on your path
-# (you'll need to set the KUBEBUILDER_ASSETS env var if you put it somewhere else)
-sudo mv /tmp/kubebuilder_2.3.1_${os}_${arch} /usr/local/kubebuilder
-export PATH=$PATH:/usr/local/kubebuilder/bin
+<span class="org-comment-delimiter"># </span><span class="org-comment">move to a long-term location and put it on your path
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">(you'll need to set the KUBEBUILDER_ASSETS env var if you put it somewhere else)
+</span>sudo mv /tmp/kubebuilder_2.3.1_${<span class="org-variable-name">os</span>}_${<span class="org-variable-name">arch</span>} /usr/local/kubebuilder
+<span class="org-builtin">export</span> <span class="org-variable-name">PATH</span>=$<span class="org-variable-name">PATH</span>:/usr/local/kubebuilder/bin
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org0769b7a" class="outline-2">
-<h2 id="org0769b7a"><span class="section-number-2">3.</span> kubebuilder 初始化</h2>
+<div id="outline-container-org47306b7" class="outline-2">
+<h2 id="org47306b7"><span class="section-number-2">3.</span> kubebuilder 初始化</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 kubebuilder 代码初始化：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"># github.com/opskumu 以实际仓库为主，本实例为 crd-example
-mkdir -p $GOPATH/src/github.com/opskumu/crd-example
-cd $GOPATH/src/github.com/opskumu/crd-example
-# 域名以实际域名为主，本实例为 opskumu.com
-kubebuilder init --domain opskumu.com
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">github.com/opskumu &#20197;&#23454;&#38469;&#20179;&#24211;&#20026;&#20027;&#65292;&#26412;&#23454;&#20363;&#20026; crd-example
+</span>mkdir -p $<span class="org-variable-name">GOPATH</span>/src/github.com/opskumu/crd-example
+<span class="org-builtin">cd</span> $<span class="org-variable-name">GOPATH</span>/src/github.com/opskumu/crd-example
+<span class="org-comment-delimiter"># </span><span class="org-comment">&#22495;&#21517;&#20197;&#23454;&#38469;&#22495;&#21517;&#20026;&#20027;&#65292;&#26412;&#23454;&#20363;&#20026; opskumu.com
+</span>kubebuilder init --domain opskumu.com
 kubebuilder edit --multigroup=true
 </pre>
 </div>
@@ -86,49 +96,49 @@ kubebuilder edit --multigroup=true
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"># tree -L 2 ./
-.
-├── Dockerfile
-├── Makefile
-├── PROJECT
-├── bin
-│   └── manager
-├── config
-│   ├── certmanager
-│   ├── default
-│   ├── manager
-│   ├── prometheus
-│   ├── rbac
-│   └── webhook
-├── go.mod
-├── go.sum
-├── hack
-│   └── boilerplate.go.txt
-└── main.go
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">tree -L 2 ./
+</span>.
+&#9500;&#9472;&#9472; Dockerfile
+&#9500;&#9472;&#9472; Makefile
+&#9500;&#9472;&#9472; PROJECT
+&#9500;&#9472;&#9472; bin
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; manager
+&#9500;&#9472;&#9472; config
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; certmanager
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; default
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; manager
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; prometheus
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; rbac
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; webhook
+&#9500;&#9472;&#9472; go.mod
+&#9500;&#9472;&#9472; go.sum
+&#9500;&#9472;&#9472; hack
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; boilerplate.go.txt
+&#9492;&#9472;&#9472; main.go
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org9ed227c" class="outline-2">
-<h2 id="org9ed227c"><span class="section-number-2">4.</span> kubebuilder 创建 API</h2>
+<div id="outline-container-orge46b867" class="outline-2">
+<h2 id="orge46b867"><span class="section-number-2">4.</span> kubebuilder 创建 API</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
-<pre class="src src-bash"># kubebuilder create api --group test --version v1 --kind ConfigMapHistory
-Create Resource [y/n]    # 创建 ConfigMapHistory 资源，此处选择 y
-y
-Create Controller [y/n]  # 创建控制器，此处不需要，选择 n
-n
-# tree apis/test/v1   # apis 目录存放 group test v1 相关的资源 API
-apis/test/v1
-├── configmaphistory_types.go
-├── groupversion_info.go
-└── zz_generated.deepcopy.go
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">kubebuilder create api --group test --version v1 --kind ConfigMapHistory
+</span>Create Resource [y/n]    <span class="org-comment-delimiter"># </span><span class="org-comment">&#21019;&#24314; ConfigMapHistory &#36164;&#28304;&#65292;&#27492;&#22788;&#36873;&#25321; y
+</span>y
+Create Controller [y/n]  <span class="org-comment-delimiter"># </span><span class="org-comment">&#21019;&#24314;&#25511;&#21046;&#22120;&#65292;&#27492;&#22788;&#19981;&#38656;&#35201;&#65292;&#36873;&#25321; n
+</span>n
+<span class="org-comment-delimiter"># </span><span class="org-comment">tree apis/test/v1   # apis &#30446;&#24405;&#23384;&#25918; group test v1 &#30456;&#20851;&#30340;&#36164;&#28304; API
+</span>apis/test/v1
+&#9500;&#9472;&#9472; configmaphistory_types.go
+&#9500;&#9472;&#9472; groupversion_info.go
+&#9492;&#9472;&#9472; zz_generated.deepcopy.go
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org1f9dce4" class="outline-2">
-<h2 id="org1f9dce4"><span class="section-number-2">5.</span> 自定义代码并生成 client 代码</h2>
+<div id="outline-container-org8444ebd" class="outline-2">
+<h2 id="org8444ebd"><span class="section-number-2">5.</span> 自定义代码并生成 client 代码</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 默认生成 <code>apis/test/v1/configmaphistory_types.go</code> 代码如下：
@@ -176,9 +186,9 @@ type ConfigMapHistory struct {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"># make manifests
-# ls config/crd/bases
-test.opskumu.com_configmaphistories.yaml
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">make manifests
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">ls config/crd/bases
+</span>test.opskumu.com_configmaphistories.yaml
 </pre>
 </div>
 
@@ -286,37 +296,37 @@ import _ "k8s.io/code-generator"
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-bash">#!/usr/bin/env bash
+<pre class="src src-bash"><span class="org-comment-delimiter">#</span><span class="org-comment">!/usr/bin/</span><span class="org-keyword">env</span><span class="org-comment"> bash
+</span>
+<span class="org-comment-delimiter"># </span><span class="org-comment">Copyright 2017 The Kubernetes Authors.                                                                                       #                                                                                                                              # Licensed under the Apache License, Version 2.0 (the "License");                                                              # you may not use this file except in compliance with the License.                                                             # You may obtain a copy of the License at
+</span><span class="org-comment-delimiter">#</span><span class="org-comment">
+</span><span class="org-comment-delimiter">#     </span><span class="org-comment">http://www.apache.org/licenses/LICENSE-2.0
+</span><span class="org-comment-delimiter">#</span><span class="org-comment">
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">Unless required by applicable law or agreed to in writing, software
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">distributed under the License is distributed on an "AS IS" BASIS,
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">See the License for the specific language governing permissions and
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">limitations under the License.
+</span>
+<span class="org-builtin">set</span> -o errexit
+<span class="org-builtin">set</span> -o nounset
+<span class="org-builtin">set</span> -o pipefail
 
-# Copyright 2017 The Kubernetes Authors.                                                                                       #                                                                                                                              # Licensed under the Apache License, Version 2.0 (the "License");                                                              # you may not use this file except in compliance with the License.                                                             # You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+<span class="org-variable-name">SCRIPT_ROOT</span>=$(dirname <span class="org-string">"${BASH_SOURCE[0]}"</span>)/..
+<span class="org-variable-name">CODEGEN_PKG</span>=${<span class="org-variable-name">CODEGEN_PKG</span>:-$(<span class="org-builtin">cd</span> <span class="org-string">"${SCRIPT_ROOT}"</span>; ls -d -1 ./vendor/k8s.io/code-generator 2&gt;/dev/null || <span class="org-builtin">echo</span> ../code-generator)}
 
-set -o errexit
-set -o nounset
-set -o pipefail
+<span class="org-comment-delimiter"># </span><span class="org-comment">generate the code with:
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">--output-base    because this script should also be able to run inside the vendor dir of
+</span><span class="org-comment-delimiter">#                  </span><span class="org-comment">k8s.io/kubernetes. The output-base is needed for the generators to output into the vendor dir
+</span><span class="org-comment-delimiter">#                  </span><span class="org-comment">instead of the $GOPATH directly. For normal projects this can be dropped.
+</span>bash <span class="org-string">"${CODEGEN_PKG}"</span>/generate-groups.sh <span class="org-string">"client,informer,lister"</span> <span class="org-sh-escaped-newline">\</span>
+  github.com/opskumu/crd-example/generated github.com/opskumu/crd-example/apis <span class="org-sh-escaped-newline">\</span>
+  test:v1 <span class="org-sh-escaped-newline">\</span>
+  --output-base <span class="org-string">"$(dirname "${BASH_SOURCE[0]}")/../../../.."</span> <span class="org-sh-escaped-newline">\</span>
+  --go-header-file <span class="org-string">"${SCRIPT_ROOT}"</span>/hack/boilerplate.go.txt
 
-SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
-CODEGEN_PKG=${CODEGEN_PKG:-$(cd "${SCRIPT_ROOT}"; ls -d -1 ./vendor/k8s.io/code-generator 2&gt;/dev/null || echo ../code-generator)}
-
-# generate the code with:
-# --output-base    because this script should also be able to run inside the vendor dir of
-#                  k8s.io/kubernetes. The output-base is needed for the generators to output into the vendor dir
-#                  instead of the $GOPATH directly. For normal projects this can be dropped.
-bash "${CODEGEN_PKG}"/generate-groups.sh "client,informer,lister" \
-  github.com/opskumu/crd-example/generated github.com/opskumu/crd-example/apis \
-  test:v1 \
-  --output-base "$(dirname "${BASH_SOURCE[0]}")/../../../.." \
-  --go-header-file "${SCRIPT_ROOT}"/hack/boilerplate.go.txt
-
-# To use your own boilerplate text append:
-#   --go-header-file "${SCRIPT_ROOT}"/hack/custom-boilerplate.go.txt
+<span class="org-comment-delimiter"># </span><span class="org-comment">To use your own boilerplate text append:
+</span><span class="org-comment-delimiter">#   </span><span class="org-comment">--go-header-file "${SCRIPT_ROOT}"/hack/custom-boilerplate.go.txt</span>
 </pre>
 </div>
 
@@ -329,12 +339,12 @@ bash "${CODEGEN_PKG}"/generate-groups.sh "client,informer,lister" \
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"># 注意此处版本以下几个包要一致，否则可能出现不兼容的情况
-# K8SVERSION=v0.19.6
-# go get -v k8s.io/code-generator@${K8SVERSION}
-# go get -v k8s.io/client-go@${K8SVERSION}
-# go get -v k8s.io/apimachinery@${K8SVERSION}
-# go mod vendor
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">&#27880;&#24847;&#27492;&#22788;&#29256;&#26412;&#20197;&#19979;&#20960;&#20010;&#21253;&#35201;&#19968;&#33268;&#65292;&#21542;&#21017;&#21487;&#33021;&#20986;&#29616;&#19981;&#20860;&#23481;&#30340;&#24773;&#20917;
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">K8SVERSION=v0.19.6
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">go get -v k8s.io/code-generator@${K8SVERSION}
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">go get -v k8s.io/client-go@${K8SVERSION}
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">go get -v k8s.io/apimachinery@${K8SVERSION}
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">go mod vendor</span>
 </pre>
 </div>
 
@@ -343,15 +353,15 @@ bash "${CODEGEN_PKG}"/generate-groups.sh "client,informer,lister" \
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"># bash hack/update-codegen.sh
-Generating clientset for test:v1 at github.com/opskumu/crd-example/generated/clientset
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">bash hack/update-codegen.sh
+</span>Generating clientset for test:v1 at github.com/opskumu/crd-example/generated/clientset
 Generating listers for test:v1 at github.com/opskumu/crd-example/generated/listers
 Generating informers for test:v1 at github.com/opskumu/crd-example/generated/informers
-# crd-example tree -L 1 generated
-generated
-├── clientset
-├── informers
-└── listers
+<span class="org-comment-delimiter"># </span><span class="org-comment">crd-example tree -L 1 generated
+</span>generated
+&#9500;&#9472;&#9472; clientset
+&#9500;&#9472;&#9472; informers
+&#9492;&#9472;&#9472; listers
 </pre>
 </div>
 
@@ -360,8 +370,8 @@ generated
 </p>
 </div>
 </div>
-<div id="outline-container-org74c6566" class="outline-2">
-<h2 id="org74c6566"><span class="section-number-2">6.</span> 创建 CRD</h2>
+<div id="outline-container-org0ae8e86" class="outline-2">
+<h2 id="org0ae8e86"><span class="section-number-2">6.</span> 创建 CRD</h2>
 <div class="outline-text-2" id="text-6">
 <div class="org-src-container">
 <pre class="src src-bash">kubectl create -f config/crd/bases/test.opskumu.com_configmaphistories.yaml
@@ -373,18 +383,18 @@ generated
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"># cat test.yaml
-apiVersion: "test.opskumu.com/v1"
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">cat test.yaml
+</span>apiVersion: <span class="org-string">"test.opskumu.com/v1"</span>
 kind: ConfigMapHistory
 metadata:
   name: test
-configMap: "test"
+configMap: <span class="org-string">"test"</span>
 data:
   test: test
-# kubectl create -f ./test.yaml
-configmaphistory.test.opskumu.com/test created
-# kubectl get configmaphistory.test.opskumu.com
-NAME   AGE
+<span class="org-comment-delimiter"># </span><span class="org-comment">kubectl create -f ./test.yaml
+</span>configmaphistory.test.opskumu.com/test created
+<span class="org-comment-delimiter"># </span><span class="org-comment">kubectl get configmaphistory.test.opskumu.com
+</span>NAME   AGE
 test   27s
 </pre>
 </div>
@@ -394,8 +404,8 @@ test   27s
 </p>
 </div>
 </div>
-<div id="outline-container-org5e040e5" class="outline-2">
-<h2 id="org5e040e5"><span class="section-number-2">7.</span> 参考文档</h2>
+<div id="outline-container-org1f86ac6" class="outline-2">
+<h2 id="org1f86ac6"><span class="section-number-2">7.</span> 参考文档</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li><a href="https://github.com/kubernetes/sample-controller">sample-controller</a></li>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>cAdvisor 容器数据采集</title>
@@ -12,38 +12,48 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/cadvisor.html"/>
+<meta property="og:title" content="cAdvisor 容器数据采集"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/cadvisor.html"/>
+<meta name="twitter:title" content="cAdvisor 容器数据采集"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">cAdvisor 容器数据采集</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge0d5a0d">1. 入口</a></li>
-<li><a href="#org42615ac">2. machine info</a></li>
-<li><a href="#orga7a59b5">3. docker info</a>
+<li><a href="#org8c76386">1. 入口</a></li>
+<li><a href="#org94e3325">2. machine info</a></li>
+<li><a href="#orgc6376c9">3. docker info</a>
 <ul>
-<li><a href="#orgaff9e17">3.1. Getprocesslist</a></li>
-<li><a href="#org2135dac">3.2. ContainerInfo</a></li>
+<li><a href="#org546dc8f">3.1. Getprocesslist</a></li>
+<li><a href="#org753b43f">3.2. ContainerInfo</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 
-<figure id="org80bdfe5">
+<figure id="org3cbb340">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cAdvisor.png" alt="cAdvisor.png">
 
 </figure>
 
 <hr>
-<div id="outline-container-orge0d5a0d" class="outline-2">
-<h2 id="orge0d5a0d"><span class="section-number-2">1.</span> 入口</h2>
+<div id="outline-container-org8c76386" class="outline-2">
+<h2 id="org8c76386"><span class="section-number-2">1.</span> 入口</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <a href="https://github.com/google/cadvisor">cAdvisor 代码托管地址</a>
@@ -108,8 +118,8 @@
 </p>
 </div>
 </div>
-<div id="outline-container-org42615ac" class="outline-2">
-<h2 id="org42615ac"><span class="section-number-2">2.</span> machine info</h2>
+<div id="outline-container-org94e3325" class="outline-2">
+<h2 id="org94e3325"><span class="section-number-2">2.</span> machine info</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-nil"># github.com/google/cadvisor/manager/manager.go
@@ -309,8 +319,8 @@ f0:76:1c:6d:26:d6
 </div>
 </div>
 </div>
-<div id="outline-container-orga7a59b5" class="outline-2">
-<h2 id="orga7a59b5"><span class="section-number-2">3.</span> docker info</h2>
+<div id="outline-container-orgc6376c9" class="outline-2">
+<h2 id="orgc6376c9"><span class="section-number-2">3.</span> docker info</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-nil"># github.com/google/cadvisor/manager/manager.go
@@ -329,8 +339,8 @@ f0:76:1c:6d:26:d6
 cAdvisor 启动 container manager，通过调用 Linux 系统 inotify 监测 cgroup docker 目录的文件变化判断 docker 的创建和删除。
 </p>
 </div>
-<div id="outline-container-orgaff9e17" class="outline-3">
-<h3 id="orgaff9e17"><span class="section-number-3">3.1.</span> Getprocesslist</h3>
+<div id="outline-container-org546dc8f" class="outline-3">
+<h3 id="org546dc8f"><span class="section-number-3">3.1.</span> Getprocesslist</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>chroot /rootfs</code> （cAdvisor 在 container 中运行会通过 volume 方式把系统 / mount 到 /rootfs 下）再执行 <code>ps -e -o user,pid,ppid,stime,pcpu,pmem,rss,vsz,stat,time,comm,cgrou</code> ，否则直接执行获取。(github.com/google/cadvisor/manager/container.go GetProcessList() 函数实现)
@@ -370,8 +380,8 @@ cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>ch
 </div>
 </div>
 </div>
-<div id="outline-container-org2135dac" class="outline-3">
-<h3 id="org2135dac"><span class="section-number-3">3.2.</span> ContainerInfo</h3>
+<div id="outline-container-org753b43f" class="outline-3">
+<h3 id="org753b43f"><span class="section-number-3">3.2.</span> ContainerInfo</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 获取指定 container 的 info 数据：

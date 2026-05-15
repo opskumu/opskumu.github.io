@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>top command tips</title>
@@ -12,35 +12,45 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/top.html"/>
+<meta property="og:title" content="top command tips"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/top.html"/>
+<meta name="twitter:title" content="top command tips"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">top command tips</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1270ddb">1. top 理论</a></li>
-<li><a href="#org38da6bb">2. top 技巧</a></li>
-<li><a href="#org887bd60">3. 参考</a></li>
+<li><a href="#org6fce1bb">1. top 理论</a></li>
+<li><a href="#org468158c">2. top 技巧</a></li>
+<li><a href="#org457f99d">3. 参考</a></li>
 </ul>
 </div>
 </nav>
 <p>
 <code>top</code> 命令是 Linux 下常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于 Windows 的任务管理器。
 </p>
-<div id="outline-container-org1270ddb" class="outline-2">
-<h2 id="org1270ddb"><span class="section-number-2">1.</span> top 理论</h2>
+<div id="outline-container-org6fce1bb" class="outline-2">
+<h2 id="org6fce1bb"><span class="section-number-2">1.</span> top 理论</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
-<pre class="src src-bash"># top
-top - 10:52:40 up 3 days, 52 min,  1 user,  load average: 57.28, 112.40, 123.60
+<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">top
+</span>top - 10:52:40 up 3 days, 52 min,  1 user,  load average: 57.28, 112.40, 123.60
 Tasks:  99 total,   1 running,  98 sleeping,   0 stopped,   0 zombie
-Cpu(s): 19.5%us, 11.4%sy,  0.0%ni,  0.0%id, 65.7%wa,  0.0%hi,  3.4%si,  0.0%st
+<span class="org-function-name">Cpu</span>(s): 19.5%us, 11.4%sy,  0.0%ni,  0.0%id, 65.7%wa,  0.0%hi,  3.4%si,  0.0%st
 Mem:  16435896k total, 16232468k used,   203428k free,    58004k buffers
 Swap:  1044476k total,   713552k used,   330924k free, 10052032k cached
 
@@ -235,8 +245,8 @@ In addition to cache memory, RAM itself is a cache memory for hard disk storage 
 </ul>
 </div>
 </div>
-<div id="outline-container-org38da6bb" class="outline-2">
-<h2 id="org38da6bb"><span class="section-number-2">2.</span> top 技巧</h2>
+<div id="outline-container-org468158c" class="outline-2">
+<h2 id="org468158c"><span class="section-number-2">2.</span> top 技巧</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 终端执行 top 命令之后（也可后接一些选项，比如 <code>top -p 1</code>  只监控 init 进程， <code>top -u root</code> 只显示 root 运行进程等等），可以通过以下按键，实现不同功能：
@@ -270,8 +280,8 @@ In addition to cache memory, RAM itself is a cache memory for hard disk storage 
 </ul>
 </div>
 </div>
-<div id="outline-container-org887bd60" class="outline-2">
-<h2 id="org887bd60"><span class="section-number-2">3.</span> 参考</h2>
+<div id="outline-container-org457f99d" class="outline-2">
+<h2 id="org457f99d"><span class="section-number-2">3.</span> 参考</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><a href="http://linux.vbird.org/">鸟哥的 Linux 私房菜</a></li>

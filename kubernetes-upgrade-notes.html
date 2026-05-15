@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<!-- 2026-05-07 Thu 01:07 -->
+<!-- 2026-05-15 Fri 23:13 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 版本升级标注</title>
@@ -12,32 +12,42 @@
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:type" content="article"/>
+<meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
+<link rel="canonical" href="https://blog.opskumu.com/kubernetes-upgrade-notes.html"/>
+<meta property="og:title" content="Kubernetes 版本升级标注"/>
+<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:url" content="https://blog.opskumu.com/kubernetes-upgrade-notes.html"/>
+<meta name="twitter:title" content="Kubernetes 版本升级标注"/>
+<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
 </head>
 <body>
+<div id="preamble" class="status">
+<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+</div>
 <div id="content" class="content">
 <header>
 <h1 class="title">Kubernetes 版本升级标注</h1>
 </header><nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
+<h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc3c2ff4">1. 1.5.x &#x2013;&gt; 1.6.x</a>
+<li><a href="#org84939d6">1. 1.5.x &#x2013;&gt; 1.6.x</a>
 <ul>
-<li><a href="#org233c7ad">1.1. etcd 备份和数据迁移</a></li>
-<li><a href="#org148d0b2">1.2. Docker 版本支持</a></li>
+<li><a href="#org7246e2f">1.1. etcd 备份和数据迁移</a></li>
+<li><a href="#orge48fe64">1.2. Docker 版本支持</a></li>
 </ul>
 </li>
-<li><a href="#orgc4d6833">2. 1.6.x &#x2013;&gt; 1.7.x</a></li>
-<li><a href="#orgdd1be01">3. 1.7.x &#x2013;&gt; 1.8.x</a>
+<li><a href="#org908f886">2. 1.6.x &#x2013;&gt; 1.7.x</a></li>
+<li><a href="#orgcda0495">3. 1.7.x &#x2013;&gt; 1.8.x</a>
 <ul>
-<li><a href="#org55aad2d">3.1. Docker 版本支持</a></li>
+<li><a href="#orgcd2c9e3">3.1. Docker 版本支持</a></li>
 </ul>
 </li>
-<li><a href="#orgcb6c4eb">4. 1.8.x &#x2013;&gt; 1.9.x</a></li>
-<li><a href="#orgfa2426b">5. 1.9.x &#x2013;&gt; 1.10.x</a></li>
+<li><a href="#org9b5fdce">4. 1.8.x &#x2013;&gt; 1.9.x</a></li>
+<li><a href="#orgd962cc5">5. 1.9.x &#x2013;&gt; 1.10.x</a></li>
 </ul>
 </div>
 </nav>
@@ -54,8 +64,8 @@
 Note: You cannot upgrade your cluster master more than one minor version at a time. For example, you can upgrade a cluster from version 1.6.x to 1.7.x, but not directly from 1.6.x to 1.8.x. For more information, refer to Versioning and Upgrades.  <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/upgrading-a-cluster">Upgrading a Cluster</a>
 </p>
 </blockquote>
-<div id="outline-container-orgc3c2ff4" class="outline-2">
-<h2 id="orgc3c2ff4"><span class="section-number-2">1.</span> 1.5.x &#x2013;&gt; 1.6.x</h2>
+<div id="outline-container-org84939d6" class="outline-2">
+<h2 id="org84939d6"><span class="section-number-2">1.</span> 1.5.x &#x2013;&gt; 1.6.x</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 之所以从版本 1.5.x 升级到 1.6.x 开始说起，是因为这个大版本更新变动较大，升级注意点较多。因为牵扯一些兼容性的问题，这次升级需要在停服的情况下进行。
@@ -65,8 +75,8 @@ Note: You cannot upgrade your cluster master more than one minor version at a ti
 <li><a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.6.md#warning-etcd-backup-strongly-recommended">WARNING: etcd backup strongly recommended</a></li>
 </ul>
 </div>
-<div id="outline-container-org233c7ad" class="outline-3">
-<h3 id="org233c7ad"><span class="section-number-3">1.1.</span> etcd 备份和数据迁移</h3>
+<div id="outline-container-org7246e2f" class="outline-3">
+<h3 id="org7246e2f"><span class="section-number-3">1.1.</span> etcd 备份和数据迁移</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 从 1.6.0 版本开始，Kubernetes 默认使用 etcd v3，虽然可以通过选项设置继续使用 etcd v2，但是还是建议使用 etcd v3 版本，未来的 Kubernetes 版本也会废弃对 etcd v2 的支持。
@@ -135,8 +145,8 @@ d、启动服务
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org148d0b2" class="outline-3">
-<h3 id="org148d0b2"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
+<div id="outline-container-orge48fe64" class="outline-3">
+<h3 id="orge48fe64"><span class="section-number-3">1.2.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 从 1.6.0 开始，不再支持 Docker 1.9.x，1.10.3、1.11.2、1.12.6 验证通过。
@@ -163,8 +173,8 @@ d、启动服务
 </div>
 </div>
 </div>
-<div id="outline-container-orgc4d6833" class="outline-2">
-<h2 id="orgc4d6833"><span class="section-number-2">2.</span> 1.6.x &#x2013;&gt; 1.7.x</h2>
+<div id="outline-container-org908f886" class="outline-2">
+<h2 id="org908f886"><span class="section-number-2">2.</span> 1.6.x &#x2013;&gt; 1.7.x</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 1.7 版本是针对安全、有状态服务以及可扩展功能里程碑版本，<a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.7.md#major-themes">1.7.0 Major Themes</a>。
@@ -175,8 +185,8 @@ d、启动服务
 </p>
 </div>
 </div>
-<div id="outline-container-orgdd1be01" class="outline-2">
-<h2 id="orgdd1be01"><span class="section-number-2">3.</span> 1.7.x &#x2013;&gt; 1.8.x</h2>
+<div id="outline-container-orgcda0495" class="outline-2">
+<h2 id="orgcda0495"><span class="section-number-2">3.</span> 1.7.x &#x2013;&gt; 1.8.x</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 在升级之前参考 <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.8.md#before-upgrading">1.8.0 Before Upgrading</a> 官方文档，有以下几个点值得注意： 
@@ -186,8 +196,8 @@ d、启动服务
 <li>默认 1.8.x 在节点启用 swap 的时候 Kubelet 会启动失败，需要额外添加选项 <code>--fail-swap-on=false</code> - ThirdPartyResource（TPR）API 被移除，需迁移至 <a href="https://kubernetes.io/docs/tasks/access-kubernetes-api/migrate-third-party-resource/">CustomResourceDefinition（CRD）</a> - Kubelet 指定 master 节点的选项 <code>api-servers</code> 被废弃，需要通过 <code>--kubeconfig</code> 替换。</li>
 </ul>
 </div>
-<div id="outline-container-org55aad2d" class="outline-3">
-<h3 id="org55aad2d"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
+<div id="outline-container-orgcd2c9e3" class="outline-3">
+<h3 id="orgcd2c9e3"><span class="section-number-3">3.1.</span> Docker 版本支持</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
@@ -195,8 +205,8 @@ Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
 </div>
 </div>
 </div>
-<div id="outline-container-orgcb6c4eb" class="outline-2">
-<h2 id="orgcb6c4eb"><span class="section-number-2">4.</span> 1.8.x &#x2013;&gt; 1.9.x</h2>
+<div id="outline-container-org9b5fdce" class="outline-2">
+<h2 id="org9b5fdce"><span class="section-number-2">4.</span> 1.8.x &#x2013;&gt; 1.9.x</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.9.md#before-upgrading">1.9.0 Before Upgrading</a>
@@ -207,8 +217,8 @@ Docker 1.11.2、1.12.6、1.13.1 以及 17.03.2 验证通过。
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfa2426b" class="outline-2">
-<h2 id="orgfa2426b"><span class="section-number-2">5.</span> 1.9.x &#x2013;&gt; 1.10.x</h2>
+<div id="outline-container-orgd962cc5" class="outline-2">
+<h2 id="orgd962cc5"><span class="section-number-2">5.</span> 1.9.x &#x2013;&gt; 1.10.x</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.10.md#before-upgrading">1.10.0 Before Upgrading</a>
