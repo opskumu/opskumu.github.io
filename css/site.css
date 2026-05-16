@@ -300,11 +300,17 @@ button:focus-visible {
 }
 
 body.index-page #postamble {
-  justify-content: space-between;
-  gap: 0.25rem;
+  justify-content: flex-start;
+  gap: 0.25rem 0.35rem;
   margin-top: 0.75rem;
   color: var(--muted);
   font-size: 0.86rem;
+}
+
+body.index-page #postamble .author,
+body.index-page #postamble .postamble-sep,
+body.index-page #postamble .date {
+  flex: 0 0 auto;
 }
 
 body.index-page #postamble .creator {
