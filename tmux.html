@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 14:43 -->
+<!-- 2026-05-16 Sat 15:31 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>终端利器 Tmux</title>
@@ -52,7 +52,7 @@
 </div>
 </nav>
 <p>
-对于终端复用工具这里推荐使用 tmux，当然此类工具比较好的还有 screen，不过相对 <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-screen/">screen</a> 这里我更倾向于推荐 tmux （强悍的分屏等）。如果仅仅只是多标签的功能，那么 putty 结合一些工具也可以做到，或者干脆使用 xshell，当然 tmux 此类工具不仅仅是那么简单。另外一个选择使用 tmux/screen 工具的原因是，有时我们会经常需要 SSH 或者 telent 远程登录到 Linux 服务器，有一些任务需要长时间运行，比如系统备份、数据传输等。通常情况下我们都是开一个远程终端窗口，因为执行时间比较长，一般需要等待它执行完毕，在此过程中不能关闭窗口或者网络原因断开连接，断开之后就 Game Over 了。这个功能就有点类似 <code>nohup</code> 和 <code>setsid</code> 命令的实现了，而 <code>tmux/screen</code> 则集 <code>nohup/setsid</code> 和多标签于一身。
+对于终端复用工具这里推荐使用 tmux，当然此类工具比较好的还有 screen，不过相对 <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-screen/">screen</a> 这里我更倾向于推荐 tmux （强悍的分屏等）。如果仅仅只是多标签的功能，那么 putty 结合一些工具也可以做到，或者干脆使用 xshell，当然 tmux 此类工具不仅仅是那么简单。另外一个选择使用 tmux/screen 工具的原因是，有时我们会经常需要 SSH 或者 telnet 远程登录到 Linux 服务器，有一些任务需要长时间运行，比如系统备份、数据传输等。通常情况下我们都是开一个远程终端窗口，因为执行时间比较长，一般需要等待它执行完毕，在此过程中不能关闭窗口或者网络原因断开连接，断开之后就 Game Over 了。这个功能就有点类似 <code>nohup</code> 和 <code>setsid</code> 命令的实现了，而 <code>tmux/screen</code> 则集 <code>nohup/setsid</code> 和多标签于一身。
 </p>
 <div id="outline-container-org5a58672" class="outline-2">
 <h2 id="org5a58672"><span class="section-number-2">1.</span> 安装</h2>

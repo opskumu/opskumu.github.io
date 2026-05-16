@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 14:43 -->
+<!-- 2026-05-16 Sat 15:31 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>一个 HTTP 应用在 Kubernetes 的运行形式</title>
@@ -51,7 +51,7 @@
 </p>
 
 
-<figure id="org07e355d">
+<figure id="org3feb042">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kubernetes-app.png" alt="kubernetes-app.png">
 
 </figure>
@@ -59,7 +59,7 @@
 <h2 id="orgb8e71d8"><span class="section-number-2">1.</span> Namespace（空间）</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-这张图中涉及了很多 Kubernetes 中的术语，我们先从第一个术语 Namespace 讲起。什么是 Namespace，翻译过来就是空间。如果你要在 Kubernetes 中部署应用，第一步就要创建一个属于应用运行的空间，官方的说法是一个 Kubernetes 物理集群支持多个虚拟集群，这里的虚拟集群就是指代的 Namespace。简单来说，你可以理解为环境或者项目组的概念。Namespace之间是逻辑隔离的，针对每个 Namespace 可以做相应的资源限制（CPU、内存等资源）以及用户管理控制（<a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">RBAC</a>）。不同的空间可以运行相同的应用，通过空间逻辑隔离。
+这张图中涉及了很多 Kubernetes 中的术语，我们先从第一个术语 Namespace 讲起。什么是 Namespace，翻译过来就是空间。如果你要在 Kubernetes 中部署应用，第一步就要创建一个属于应用运行的空间，官方的说法是一个 Kubernetes 物理集群支持多个虚拟集群，这里的虚拟集群就是指代的 Namespace。简单来说，你可以理解为环境或者项目组的概念。Namespace 之间是逻辑隔离的，针对每个 Namespace 可以做相应的资源限制（CPU、内存等资源）以及用户管理控制（<a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">RBAC</a>）。不同的空间可以运行相同的应用，通过空间逻辑隔离。
 </p>
 </div>
 </div>
@@ -71,7 +71,7 @@
 </p>
 
 <p>
-如果我们要运行一个应用，直接创建一个 Pod 即可运行。回到前文说的 ReplicaSet，Pod 本身就可以把应用跑起来了，为何一般不直接创建一个 Pod 呢？这是因为单个部署 Pod，如果 Pod 因为一些因素异常退出了，Pod 本身是不会自动恢复的。而 ReplicaSet 则担任管理 Pod 状态的角色，ReplicaSet 的机制保证通过它们管理的 Pod 保持固定的副本数并持续运行。如果 Pod 因异常原退出了，那么 ReplicaSet 会请求创建新的 Pod，保障 Pod 按照我们的设定运行。
+如果我们要运行一个应用，直接创建一个 Pod 即可运行。回到前文说的 ReplicaSet，Pod 本身就可以把应用跑起来了，为何一般不直接创建一个 Pod 呢？这是因为单个部署 Pod，如果 Pod 因为一些因素异常退出了，Pod 本身是不会自动恢复的。而 ReplicaSet 则担任管理 Pod 状态的角色，ReplicaSet 的机制保证通过它们管理的 Pod 保持固定的副本数并持续运行。如果 Pod 因异常原因退出了，那么 ReplicaSet 会请求创建新的 Pod，保障 Pod 按照我们的设定运行。
 </p>
 
 <p>
@@ -109,7 +109,7 @@
 </blockquote>
 
 <p>
-如果是集群之外的用户或者应用需要调用呢，这时候 Service 可能就满足不了了，这时候就需要引入 Ingress。通过 Ingress 关联 Service，就可以把集群的服务暴露到外部访问的目的（实际还需要借助 ingress controller 才可以真正对外提供访问，受于篇幅，这里不作介绍）。
+如果是集群之外的用户或者应用需要调用呢，这时候 Service 可能就满足不了了，这时候就需要引入 Ingress。通过 Ingress 关联 Service，就可以达到把集群服务暴露给外部访问的目的（实际还需要借助 ingress controller 才可以真正对外提供访问，受限于篇幅，这里不作介绍）。
 </p>
 
 <blockquote>
@@ -123,7 +123,7 @@
 <h2 id="orgd4b79fa"><span class="section-number-2">5.</span> 小结</h2>
 <div class="outline-text-2" id="text-5">
 <p>
-以上就是一个 HTTP 应用在 Kubernetes 中完整涉及到的知识点，回到之前那张图，针对一个应用我们真正需要创建的就是 Deployment、Service、Ingress。如果服务不对集群外的服务访问那么就只有 Deployment 和 Service，ReplicaSet、Endpoint、Pod 会自动创建，用户无需关心。其中，有一个重要的点，我们可以从图中看到，贯穿其中的一个重要的标记就是 <code>app=test</code> 这个 label，Kubernetes 中 Deployment、Service 等资源都通过 label 关联 Pod 标识。
+以上就是一个 HTTP 应用在 Kubernetes 中完整涉及到的知识点，回到之前那张图，针对一个应用我们真正需要创建的就是 Deployment、Service、Ingress。如果服务不对集群外提供访问，那么就只有 Deployment 和 Service，ReplicaSet、Endpoint、Pod 会自动创建，用户无需关心。其中，有一个重要的点，我们可以从图中看到，贯穿其中的一个重要的标记就是 <code>app=test</code> 这个 label，Kubernetes 中 Deployment、Service 等资源都通过 label 关联 Pod 标识。
 </p>
 </div>
 </div>

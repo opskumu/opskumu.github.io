@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 14:43 -->
+<!-- 2026-05-16 Sat 15:31 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>client-go 背后机制「译」</title>
@@ -48,7 +48,7 @@
 </p>
 
 
-<figure id="org2f8a466">
+<figure id="org4e8ad0f">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/client-go-controller-interaction.jpeg" alt="client-go-controller-interaction.jpeg">
 
 </figure>
@@ -57,7 +57,7 @@
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Reflector：reflector 定义在 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/reflector.go">type Reflector inside package cache</a> ，监视 Kubernetes API 中指定的资源类型（kind）。完成此功能的函数是 <code>ListAndWatch</code> 。可以监视内置的资源，也可以监视自定义资源。当 reflector 通过 watch API 接收到新资源存在的通知时，它将使用相应的 listing API 获取新创建的对象，并将其存放到 <code>watchHandler</code> 函数中的 Delta FIFO 队列中。</li>
-<li>Informer：informer 定义在 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/controller.go">base controller inside package cache </a> ，它会从 Delta FIFO 队列中弹出对象。完成此功能的函数是 <code>processLoop</code> 。该基础控制器的任务是保存对象以备检索，并调用我们的控制器传递该对象。</li>
+<li>Informer：informer 定义在 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/controller.go">base controller inside package cache</a> ，它会从 Delta FIFO 队列中弹出对象。完成此功能的函数是 <code>processLoop</code> 。该基础控制器的任务是保存对象以备检索，并调用我们的控制器传递该对象。</li>
 <li>Indexer：indexer 提供了资源索引功能。它定义在 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/controller.go">type Indexer inside package cache</a> 。一个典型的索引用例是基于对象的标签来创建索引。indexer 可以基于几个索引函数来维护索引。Indexer 使用了一个线程安全的数据存储来存放对象和它们的键。这里有一个名为 <code>MetaNamespaceKeyFunc</code> 的函数定义在 <a href="https://github.com/kubernetes/client-go/blob/master/tools/cache/store.go">type Store inside package cache</a> ，它会为对象生成一个 <code>&lt;namespace&gt;/&lt;name&gt;</code> 组合键。</li>
 </ul>
 </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 14:43 -->
+<!-- 2026-05-16 Sat 15:31 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>cAdvisor 容器数据采集</title>
@@ -46,7 +46,7 @@
 </div>
 </nav>
 
-<figure id="org81d4715">
+<figure id="org79c88e4">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cAdvisor.png" alt="cAdvisor.png">
 
 </figure>
@@ -343,7 +343,7 @@ cAdvisor 启动 container manager，通过调用 Linux 系统 inotify 监测 cgr
 <h3 id="org546dc8f"><span class="section-number-3">3.1.</span> Getprocesslist</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>chroot /rootfs</code> （cAdvisor 在 container 中运行会通过 volume 方式把系统 / mount 到 /rootfs 下）再执行 <code>ps -e -o user,pid,ppid,stime,pcpu,pmem,rss,vsz,stat,time,comm,cgrou</code> ，否则直接执行获取。(github.com/google/cadvisor/manager/container.go GetProcessList() 函数实现)
+cAdvisor 首先判断自己是否运行在 container 中，如果是则 <code>chroot /rootfs</code> （cAdvisor 在 container 中运行会通过 volume 方式把系统 / mount 到 /rootfs 下）再执行 <code>ps -e -o user,pid,ppid,stime,pcpu,pmem,rss,vsz,stat,time,comm,cgroup</code> ，否则直接执行获取。(github.com/google/cadvisor/manager/container.go GetProcessList() 函数实现)
 </p>
 
 <div class="org-src-container">

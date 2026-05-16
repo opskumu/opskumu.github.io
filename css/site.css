@@ -101,6 +101,26 @@ button:focus-visible {
   color: var(--link-hover);
 }
 
+.content sup {
+  font-size: 0.72em;
+  margin-left: 0.05em;
+  line-height: 0;
+  vertical-align: super;
+}
+
+.content sup a {
+  color: var(--muted-soft);
+  font-size: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.content sup a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 #preamble.status {
   width: auto;
   margin: 0;

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 14:43 -->
+<!-- 2026-05-16 Sat 15:31 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>自定义 Kubernetes 准入控制器</title>
@@ -51,7 +51,7 @@
 </p>
 
 
-<figure id="orgc2a9c96">
+<figure id="org6faff72">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/admission-controller-phases.png" alt="admission-controller-phases.png">
 
 </figure>
@@ -94,7 +94,7 @@ Admission webhooks 可以使用如下几个场景：
 <h2 id="org3db54be"><span class="section-number-2">2.</span> 场景说明</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-本文通过一个较为实用的场景来自定义编写 admission webhooks，使用 Kubernetes 的过程中可能遇到过 DNS 5s 延迟的问题，产生问题的原因可以具体参考官方 issue <a href="https://github.com/kubernetes/kubernetes/issues/56903">DNS intermittent delays of 5s</a> 。这里我们通过编写 admission mutating webhook 注入 DNS 配置，以达到解决问题的目的。因为我们是针对 Pod 资源的 admission webhook，对于 CRD 的资源我们可以使用 kubebuilder 来生成脚手架。但是对于 core 类型的资源如 Pod，kubebuilder 并不支持，我们需要直接使用 <a href="https://github.com/kubernetes-sigs/controller-runtime">controller-runtime</a> 编写，官方提供了内建资源 webhook 的示例 <a href="https://github.com/kubernetes-sigs/controller-runtime/tree/master/examples/builtins">controller-runtime/examples/builtins/</a> （CRD 资源建议参考 <a href="https://book.kubebuilder.io/reference/webhook-overview.html">kubebuilder webhook）</a>。validating 和 mutating webhook 类似，这里我们以 mutating webhook 为例。
+本文通过一个较为实用的场景来自定义编写 admission webhooks，使用 Kubernetes 的过程中可能遇到过 DNS 5s 延迟的问题，产生问题的原因可以具体参考官方 issue <a href="https://github.com/kubernetes/kubernetes/issues/56903">DNS intermittent delays of 5s</a> 。这里我们通过编写 admission mutating webhook 注入 DNS 配置，以达到解决问题的目的。因为我们是针对 Pod 资源的 admission webhook，对于 CRD 的资源我们可以使用 kubebuilder 来生成脚手架。但是对于 core 类型的资源如 Pod，kubebuilder 并不支持，我们需要直接使用 <a href="https://github.com/kubernetes-sigs/controller-runtime">controller-runtime</a> 编写，官方提供了内建资源 webhook 的示例 <a href="https://github.com/kubernetes-sigs/controller-runtime/tree/master/examples/builtins">controller-runtime/examples/builtins/</a> （CRD 资源建议参考 <a href="https://book.kubebuilder.io/reference/webhook-overview.html">kubebuilder webhook</a>）。validating 和 mutating webhook 类似，这里我们以 mutating webhook 为例。
 </p>
 </div>
 </div>

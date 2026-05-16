@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 14:43 -->
+<!-- 2026-05-16 Sat 15:31 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 磁盘 IO 资源限制</title>
@@ -177,7 +177,7 @@ root@6778b6b39686:/#
 </div>
 
 <p>
-测试下来，效果不是很理想，没有获得官档的效果，类似的问题可以在相关的 issue 上找到，如 <a href="https://github.com/docker/docker/issues/16173">&#x2013;blkio-weight doesn't take effect in docker Docker version 1.8.1 #16173</a>
+测试下来，效果不是很理想，没有获得官方文档中的效果，类似的问题可以在相关的 issue 上找到，如 <a href="https://github.com/docker/docker/issues/16173">&#x2013;blkio-weight doesn't take effect in docker Docker version 1.8.1 #16173</a>
 </p>
 
 <p>
@@ -225,7 +225,7 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 </p>
 
 
-<figure id="org6637273">
+<figure id="org61c8406">
 <img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/io-write-bps.png" alt="io-write-bps.png">
 
 </figure>
