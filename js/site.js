@@ -2,13 +2,13 @@
   "use strict";
 
   var labels = {
-    mainSkip: "跳到主要内容",
-    tocSkip: "跳到目录",
+    mainSkip: "Skip to main content",
+    tocSkip: "Skip to table of contents",
     articleMeta: "文章信息",
     readingTimeTitle: "预计阅读时间",
     minuteRead: "约 {minutes} 分钟",
-    expandAll: "全部展开",
-    collapseAll: "全部收起",
+    expandAll: "Expand all",
+    collapseAll: "Collapse all",
     postsCount: "{count} 篇",
     backToTop: "返回顶部",
     copyCode: "复制代码",
@@ -144,7 +144,7 @@
     var nav = document.createElement("nav");
     nav.className = "navbar";
     nav.setAttribute("role", "navigation");
-    nav.setAttribute("aria-label", "主导航");
+    nav.setAttribute("aria-label", "Primary");
 
     var brand = document.createElement("a");
     brand.className = "navbar-brand";
@@ -155,11 +155,11 @@
     var links = document.createElement("div");
     links.className = "navbar-links";
     [
-      ["博客", "index.html", "blog"],
+      ["Blog", "index.html", "blog"],
       ["Wiki", "https://wiki.opskumu.com"],
       ["Issues", "https://github.com/opskumu/issues"],
       ["GitHub", "https://github.com/opskumu"],
-      ["关于", "https://opskumu.com/"]
+      ["About", "https://opskumu.com/"]
     ].forEach(function (item) {
       var link = document.createElement("a");
       link.textContent = item[0];
