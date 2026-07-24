@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MySQL 大字段溢出导致数据回写失败</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using ROW_FORMAT=DYNAMIC or ROW_FORMAT=COMPRESSED may help. In current row format, BLOB…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
-<meta name="twitter:card" content="summary"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/mysql-blob.html"/>
 <meta property="og:title" content="MySQL 大字段溢出导致数据回写失败"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using ROW_FORMAT=DYNAMIC or ROW_FORMAT=COMPRESSED may help. In current row format, BLOB…"/>
 <meta property="og:url" content="https://blog.opskumu.com/mysql-blob.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2015-01-14T00:00:00+08:00"/>
+<meta property="og:image" content="https://blog.opskumu.com/images/mysql-innodb-file-format.png"/>
 <meta name="twitter:title" content="MySQL 大字段溢出导致数据回写失败"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using ROW_FORMAT=DYNAMIC or ROW_FORMAT=COMPRESSED may help. In current row format, BLOB…"/>
+<meta name="twitter:image" content="https://blog.opskumu.com/images/mysql-innodb-file-format.png"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,28 +38,28 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga534163">1. 问题描述</a></li>
-<li><a href="#org9e1f56a">2. 问题解决</a>
+<li><a href="#section-e8835da11a6a">1. 问题描述</a></li>
+<li><a href="#section-b6976c9b8774">2. 问题解决</a>
 <ul>
-<li><a href="#org95d0206">2.1. 修复 Slave</a></li>
+<li><a href="#section-d6a4462ccf3e">2.1. 修复 Slave</a></li>
 </ul>
 </li>
-<li><a href="#org31eb545">3. 问题分析</a>
+<li><a href="#section-dc4d9c87c336">3. 问题分析</a>
 <ul>
-<li><a href="#org09b7366">3.1. Antelope 和 Barracuda 文件格式</a>
+<li><a href="#section-e4bbd555d6e3">3.1. Antelope 和 Barracuda 文件格式</a>
 <ul>
-<li><a href="#orgb4b88f2">3.1.1. Antelope</a></li>
-<li><a href="#org5499637">3.1.2. Barracuda</a></li>
+<li><a href="#section-1e61d4e9da97">3.1.1. Antelope</a></li>
+<li><a href="#section-8f0a209be0fb">3.1.2. Barracuda</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org60ee152">4. 参考延伸</a></li>
+<li><a href="#section-e0cf57898242">4. 参考延伸</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orga534163" class="outline-2">
-<h2 id="orga534163"><span class="section-number-2">1.</span> 问题描述</h2>
+<div id="outline-container-section-e8835da11a6a" class="outline-2">
+<h2 id="section-e8835da11a6a"><span class="section-number-2">1.</span> 问题描述</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 2015-01-12 18:10 左右公司某游戏日志监控报警，查看日志显示如下错误：
@@ -72,8 +76,8 @@ Row size too large (&gt; 8126). Changing some columns to TEXT or BLOB or using R
 </p>
 </div>
 </div>
-<div id="outline-container-org9e1f56a" class="outline-2">
-<h2 id="org9e1f56a"><span class="section-number-2">2.</span> 问题解决</h2>
+<div id="outline-container-section-b6976c9b8774" class="outline-2">
+<h2 id="section-b6976c9b8774"><span class="section-number-2">2.</span> 问题解决</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 因为对 MySQL 行写入到页的原理性不清楚，导致问题的解决花费了一定的时间。Google 对应的错误建议修改 MySQL <code>innodb_file_format</code> 值，并修改对应表的 <code>row_format</code> 。
@@ -169,8 +173,8 @@ mysql&gt;
 加入 <code>innodb_file_format=BARRACUDA</code> 到 MySQL 配置文件 my.cnf 中，防止下次 DB 重启造成 <code>innodb_file_format</code> 恢复默认。
 </p>
 </div>
-<div id="outline-container-org95d0206" class="outline-3">
-<h3 id="org95d0206"><span class="section-number-3">2.1.</span> 修复 Slave</h3>
+<div id="outline-container-section-d6a4462ccf3e" class="outline-3">
+<h3 id="section-d6a4462ccf3e"><span class="section-number-3">2.1.</span> 修复 Slave</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 因为主修改了环境变量和表的 <code>row_format</code> ，修复了 Master 的数据回写问题，但是 Slave 这边没有更改，导致 Slave 同步出错，卡在了插入语句的地方，导致主从同步失败，修复如下：
@@ -189,24 +193,24 @@ mysql&gt;
 </div>
 </div>
 </div>
-<div id="outline-container-org31eb545" class="outline-2">
-<h2 id="org31eb545"><span class="section-number-2">3.</span> 问题分析</h2>
+<div id="outline-container-section-dc4d9c87c336" class="outline-2">
+<h2 id="section-dc4d9c87c336"><span class="section-number-2">3.</span> 问题分析</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 问题虽然解决了，但是有时候需要追根溯源，特别对于数据安全性相关的，原理性的东西弄明白就会好解释一些问题了。13 号继续跟踪这个问题，在网上找到了这篇文章 <a href="http://hidba.org/?p=551">innodb使用大字段text，blob的一些优化建议</a>，看了一遍，继续查看了相应的资料之后彻底弄明白了。
 </p>
 </div>
-<div id="outline-container-org09b7366" class="outline-3">
-<h3 id="org09b7366"><span class="section-number-3">3.1.</span> Antelope 和 Barracuda 文件格式</h3>
+<div id="outline-container-section-e4bbd555d6e3" class="outline-3">
+<h3 id="section-e4bbd555d6e3"><span class="section-number-3">3.1.</span> Antelope 和 Barracuda 文件格式</h3>
 <div class="outline-text-3" id="text-3-1">
 
-<figure id="orga7d2e73">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/mysql-innodb-file-format.png" alt="mysql-innodb-file-format.png">
+<figure id="generated-1">
+<img src="images/mysql-innodb-file-format.png" alt="mysql-innodb-file-format.png" decoding="async" loading="eager" fetchpriority="high" width="457" height="192">
 
 </figure>
 </div>
-<div id="outline-container-orgb4b88f2" class="outline-4">
-<h4 id="orgb4b88f2"><span class="section-number-4">3.1.1.</span> Antelope</h4>
+<div id="outline-container-section-1e61d4e9da97" class="outline-4">
+<h4 id="section-1e61d4e9da97"><span class="section-number-4">3.1.1.</span> Antelope</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 InnoDB 存储引擎和大多数数据库一样（如 Oracle 和 Microsoft SQL Server 数据库），记录是以行的形式存储的。这意味着页中保存着表中一行行的数据。在InnoDB 1.0.x版本之前，InnoDB 存储引擎提供了 Compact 和 Redundant 两种格式来存放行记录数据，这也是目前使用最多的一种格式。Redundant格式是为兼容之前版本而保留的。在 MySQL 5.6 版本中，默认设置为 Compact 行格式。用户可以通过命令 <code>SHOW TABLE STATUS LIKE'table_name'</code> 来查看当前表使用的行格式，其中 <code>row_format</code> 属性表示当前所使用的行记录结构类型。
@@ -217,8 +221,8 @@ Compact 行记录是在 MySQL 5.0 中引入的，其设计目标是高效地存�
 </p>
 
 
-<figure id="org2b87495">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/Compact.png" alt="Compact.png">
+<figure id="generated-2">
+<img src="images/Compact.png" alt="Compact.png" decoding="async" loading="lazy" width="556" height="62">
 
 </figure>
 
@@ -236,8 +240,8 @@ Compact 行记录格式的首部是一个非 NULL 变长字段长度列表，并
 </p>
 
 
-<figure id="org305b852">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/Compact-record.png" alt="Compact-record.png">
+<figure id="generated-3">
+<img src="images/Compact-record.png" alt="Compact-record.png" decoding="async" loading="lazy" width="573" height="218">
 
 </figure>
 
@@ -246,8 +250,8 @@ Compact 行记录格式的首部是一个非 NULL 变长字段长度列表，并
 </p>
 
 
-<figure id="orgde2b2ab">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/Compact-blob.png" alt="Compact-blob.png">
+<figure id="generated-4">
+<img src="images/Compact-blob.png" alt="Compact-blob.png" decoding="async" loading="lazy" width="356" height="97">
 
 </figure>
 
@@ -260,8 +264,8 @@ innoDB 存储引擎表是索引组织的，即 B+Tree 的结构，这样每个�
 </p>
 </div>
 </div>
-<div id="outline-container-org5499637" class="outline-4">
-<h4 id="org5499637"><span class="section-number-4">3.1.2.</span> Barracuda</h4>
+<div id="outline-container-section-8f0a209be0fb" class="outline-4">
+<h4 id="section-8f0a209be0fb"><span class="section-number-4">3.1.2.</span> Barracuda</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <p>
 InnoDB 1. 0.x 版本开始引入了新的文件格式（file format，用户可以理解为新的页格式），以前支持的 Compact 和 Redundant 格式称为 Antelope 文件格式，新的文件格式称为 Barracuda 文件格式。Barracuda 文件格式下拥有两种新的行记录格式：Compressed 和 Dynamic。
@@ -272,8 +276,8 @@ InnoDB 1. 0.x 版本开始引入了新的文件格式（file format，用户可�
 </p>
 
 
-<figure id="org2f9d9f5">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/Compressed-blob.png" alt="Compressed-blob.png">
+<figure id="generated-5">
+<img src="images/Compressed-blob.png" alt="Compressed-blob.png" decoding="async" loading="lazy" width="371" height="103">
 
 </figure>
 
@@ -315,8 +319,8 @@ mysql&gt;
 </div>
 </div>
 </div>
-<div id="outline-container-org60ee152" class="outline-2">
-<h2 id="org60ee152"><span class="section-number-2">4.</span> 参考延伸</h2>
+<div id="outline-container-section-e0cf57898242" class="outline-2">
+<h2 id="section-e0cf57898242"><span class="section-number-2">4.</span> 参考延伸</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><a href="http://book.douban.com/subject/24708143/">《MySQL 技术内幕: InnoDB 存储引擎》</a> 第4章 表</li>
@@ -332,9 +336,9 @@ mysql&gt;
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="bye-2014.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">2014，小结</span><span class="article-nav-date">2015-01-26</span></a><a class="article-nav-link article-nav-older" href="rsync.html"><span class="article-nav-label">Older</span><span class="article-nav-title">rsync 备份备忘</span><span class="article-nav-date">2015-01-09</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="bye-2014.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">2014，小结</span><span class="article-nav-date">2015-01-26</span></a><a class="article-nav-link article-nav-older" href="rsync.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">rsync 备份备忘</span><span class="article-nav-date">2015-01-09</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2015-01-14 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2015-01-14 Wed 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

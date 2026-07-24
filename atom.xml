@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
+  <title>Kumu's Blog</title>
+  <id>https://blog.opskumu.com/</id>
+  <link href="https://blog.opskumu.com/"/>
+  <link rel="self" href="https://blog.opskumu.com/atom.xml"/>
+  <updated>2024-01-02T00:00:00+08:00</updated>
+  <entry>
+    <title>2023，小结</title>
+    <id>https://blog.opskumu.com/bye-2023.html</id>
+    <link href="https://blog.opskumu.com/bye-2023.html"/>
+    <updated>2024-01-02T00:00:00+08:00</updated>
+    <summary type="text">今天等待吃晚饭的空隙，看到一位推友的德文签名，顺手点了下翻译，大意是 “你不能拥有生活的一切”。那么一瞬间，这句话击中我的内心并不断回响。是啊，我们都不曾拥有生活的一切，我又在挣扎些什么呢。如果用一句话来总结我的 2023 年的话，做了一些选择，然后就是陷入患得患失的精神状态中不可自拔。也是迎来 2024 年的时…</summary>
+  </entry>
+  <entry>
+    <title>2022，小结</title>
+    <id>https://blog.opskumu.com/bye-2022.html</id>
+    <link href="https://blog.opskumu.com/bye-2022.html"/>
+    <updated>2023-01-27T00:00:00+08:00</updated>
+    <summary type="text">又是一年一度交作业的时候，和往年差不多，这篇也是迟来的总结。不管写的早或迟亦或是好与坏，每年一次的总结，早已经成为惯例，</summary>
+  </entry>
+  <entry>
+    <title>2021，小结</title>
+    <id>https://blog.opskumu.com/bye-2021.html</id>
+    <link href="https://blog.opskumu.com/bye-2021.html"/>
+    <updated>2022-01-23T00:00:00+08:00</updated>
+    <summary type="text">元旦将近的时候就想着花一点时间回顾下过去的 2021 年，可真到点了又刻意不再想这件事。大概是太久没有动笔，也就少了提笔的勇气了。年终小结已经坚持了很多年，最初的时候我们「 Jerry 、 Tanky 和我」几个各自写着，后来每到一年年底的时候会彼此催稿，今年大家就像商量好一样不再提年终总结了。一年又一年，经历的…</summary>
+  </entry>
+  <entry>
+    <title>Kubernetes 访问控制</title>
+    <id>https://blog.opskumu.com/kubernetes-access-controll.html</id>
+    <link href="https://blog.opskumu.com/kubernetes-access-controll.html"/>
+    <updated>2021-03-31T00:00:00+08:00</updated>
+    <summary type="text">如上图，这是一个典型的 Kubernetes 集群组件图，通过上图我们可以看到 Kubernetes 各组件都是以 APIServer 作为网关通信的。为了安全，APIServer 一般通过 TLS 认证对外暴露，集群组件若要访问 APIServer 则需要相应的 TLS 证书。</summary>
+  </entry>
+  <entry>
+    <title>2020，小结</title>
+    <id>https://blog.opskumu.com/bye-2020.html</id>
+    <link href="https://blog.opskumu.com/bye-2020.html"/>
+    <updated>2021-02-16T00:00:00+08:00</updated>
+    <summary type="text">按照往年的惯例，2020 的小结早已在 2020 年 12 月底或者 2021 年 1 月初就已经交稿了。而今年，因为各种原因搁置到现在。好友 杰宝 和 Tanky 都在元旦前后交了稿，我这就赶着春节回顾一番吧。2020 年经历了很多事情，要说关乎每个人的事则是疫情。一场疫情把整个世界都打乱了，直到现在还在困扰着…</summary>
+  </entry>
+  <entry>
+    <title>自定义 Kubernetes CRD</title>
+    <id>https://blog.opskumu.com/kubernetes-crd.html</id>
+    <link href="https://blog.opskumu.com/kubernetes-crd.html"/>
+    <updated>2021-01-13T00:00:00+08:00</updated>
+    <summary type="text">我们知道 Kubernetes 提供 CRD 机制用以扩展资源，在某些场景下我们可以利用 CRD 扩展通过 Kubernetes 存储资源，也就是把 Kubernetes 当作存储来使用。按照官方的说法 CRD + Controller = Operator， kubebuilder 可以生成这样的代码框架，并且…</summary>
+  </entry>
+  <entry>
+    <title>自定义 Kubernetes 准入控制器</title>
+    <id>https://blog.opskumu.com/kubernetes-mutating-webhook.html</id>
+    <link href="https://blog.opskumu.com/kubernetes-mutating-webhook.html"/>
+    <updated>2021-01-12T00:00:00+08:00</updated>
+    <summary type="text">除了 Kubernetes 默认的 admission controller，我们可以使用 admission webhooks 作为准入链的一部分。admission webhooks 调用 webhook 服务以在 pod 创建时变更配置，如注入标签，或者在准入过程中验证 pod 配置。下图为准入控制器流程：</summary>
+  </entry>
+  <entry>
+    <title>client-go 背后机制「译」</title>
+    <id>https://blog.opskumu.com/client-go-under-the-hood.html</id>
+    <link href="https://blog.opskumu.com/client-go-under-the-hood.html"/>
+    <updated>2020-06-10T00:00:00+08:00</updated>
+    <summary type="text">client-go 库囊括了各种机制，你可以在开发自定义控制器的时候使用它们。这些机制定义在 tools/cache 目录下。 下图展示了 client-go 库中各组件工作机制，以及和你编写的自定义控制器的交互点。</summary>
+  </entry>
+  <entry>
+    <title>Nginx Ingress 控制器工作机制</title>
+    <id>https://blog.opskumu.com/how-k8s-ingress-works.html</id>
+    <link href="https://blog.opskumu.com/how-k8s-ingress-works.html"/>
+    <updated>2020-02-03T00:00:00+08:00</updated>
+    <summary type="text">本文为 NGINX ingress controller - How it works 官方译文，这篇文章基本概括了 ingress-nginx 的工作机制，在这篇文章的基础上结合源码阅读对其原理会更深入。</summary>
+  </entry>
+  <entry>
+    <title>Kubernetes 外部服务映射</title>
+    <id>https://blog.opskumu.com/kubernetes-ext-service.html</id>
+    <link href="https://blog.opskumu.com/kubernetes-ext-service.html"/>
+    <updated>2020-01-20T00:00:00+08:00</updated>
+    <summary type="text">集群内的应用有时候需要调用外部的服务，我们知道集群内部服务调用都是通过 Service 互相访问，那么针对外部的服务是否也可以保持统一使用 Service 呢？答案是肯定的，通过 Service 访问外部服务，除了方式统一以外，还能带来其他好处。如配置统一，不同环境（空间）相同应用访问外部不同环境的数据库，可以通…</summary>
+  </entry>
+  <entry>
+    <title>2019，小结</title>
+    <id>https://blog.opskumu.com/bye-2019.html</id>
+    <link href="https://blog.opskumu.com/bye-2019.html"/>
+    <updated>2020-01-01T00:00:00+08:00</updated>
+    <summary type="text">2019 年，对我来说，发生的事情有点多，有些历历在目，有些已变得模糊。和往年一样，今年又是好友 张杰 催更年度总结，拖了几天算是交上 2019 年的年终稿。</summary>
+  </entry>
+  <entry>
+    <title>挖财 Kubernetes 容器化之路</title>
+    <id>https://blog.opskumu.com/wacai-docker.html</id>
+    <link href="https://blog.opskumu.com/wacai-docker.html"/>
+    <updated>2019-11-26T00:00:00+08:00</updated>
+    <summary type="text">挖财内部对容器化项目的代号为 K2 （乔戈里峰），乔戈里峰是世界第二高峰，但攀登极富挑战，寓意就是面对挑战，勇攀高峰 ；）。项目从 2016 年 11 月到现在已经有三年的时间了，如今挖财内部测试环境早已全部 Docker 容器化，而线上环境也运行着重要的业务。经历从零到一的整个落地过程，回顾下来，这座高峰算是拿…</summary>
+  </entry>
+  <entry>
+    <title>北疆秋色</title>
+    <id>https://blog.opskumu.com/xinjiang-2019.html</id>
+    <link href="https://blog.opskumu.com/xinjiang-2019.html"/>
+    <updated>2019-10-10T00:00:00+08:00</updated>
+    <summary type="text">去年六月新疆的行程还历历在目，没想到时隔一年又去新疆玩了一趟。不得不感慨，新疆实在是太大了，两次共约 20 天的旅途也只是玩了新疆一小片。去年去新疆主要是看夏日的草原，此次则是奔着喀纳斯的秋色去的。与去年不同的除了季节外，另外一个不同则是去年跟着游侠客的团走的，而今年的行程则是自由行，女友和她几个同事一早就把行程…</summary>
+  </entry>
+  <entry>
+    <title>一个 HTTP 应用在 Kubernetes 的运行形式</title>
+    <id>https://blog.opskumu.com/kubernetes-app.html</id>
+    <link href="https://blog.opskumu.com/kubernetes-app.html"/>
+    <updated>2019-06-04T00:00:00+08:00</updated>
+    <summary type="text">伴随着 Kubernetes 功能越来越多，代码量越来越大，相对的可能也就越来越复杂。我有时候在想使用 Kubernetes 的用户应该关心什么，不应该关心什么。对于一个新手来说，开始的时候首先应该弄清楚基本的工作流程。当然，如果你直接看 Kubernetes 的文档，一堆让人眼花缭乱的概念，多少会让人摸不着头脑…</summary>
+  </entry>
+  <entry>
+    <title>过年期间</title>
+    <id>https://blog.opskumu.com/nian.html</id>
+    <link href="https://blog.opskumu.com/nian.html"/>
+    <updated>2019-02-11T00:00:00+08:00</updated>
+    <summary type="text">春节前两天的时候不慎着凉发烧，当然这并不是什么大病，不过那两天的自己着实脆弱的不行。特别是晚上睡觉一直发烧，整个人卷缩在被褥中瑟瑟发抖，似梦似醒，多少有些无助。有那么一瞬间会想着，有个人在身旁该多好，会觉得之前一个人也挺好的想法当真是天大的鬼话。现在回头看那期间，先是觉得一乐而后又觉得酸楚。想来单身有些年头了，这…</summary>
+  </entry>
+  <entry>
+    <title>只是为了好玩</title>
+    <id>https://blog.opskumu.com/just-for-fun.html</id>
+    <link href="https://blog.opskumu.com/just-for-fun.html"/>
+    <updated>2019-01-06T00:00:00+08:00</updated>
+    <summary type="text">本文是 Linus 自传 《只是为了好玩》 的一些摘要，去年 12 月底的时候把这本买了四年的书看完了。推荐想了解 Linus 本人以及 Linux 的一些趣事的人看，当然如果你只是对故事感兴趣也可以看，因为本书并没有什么深奥的技术知识，但真的很有趣。</summary>
+  </entry>
+  <entry>
+    <title>2018，小结</title>
+    <id>https://blog.opskumu.com/bye-2018.html</id>
+    <link href="https://blog.opskumu.com/bye-2018.html"/>
+    <updated>2019-01-01T00:00:00+08:00</updated>
+    <summary type="text">30 号的时候，好友 张杰 就喊着该写文章了，年终总结似乎已成惯例。我嚷嚷着说，不急不急，总会写的（至于写些什么，我心里是没什么数的）。直到打开电脑的时候，也不确定该写些什么，那么就想到哪里写到哪里吧。</summary>
+  </entry>
+  <entry>
+    <title>Google 大规模集群管理器 Borg</title>
+    <id>https://blog.opskumu.com/borg.html</id>
+    <link href="https://blog.opskumu.com/borg.html"/>
+    <updated>2018-12-23T00:00:00+08:00</updated>
+    <summary type="text">本文是 Google Borg 论文的译文，从事 Kubernetes 相关的工作几年来，一直惦记着这篇论文，所以就花了一点时间翻译了一下。后续还需要花时间校正，有些翻译的名词个人觉得也不太合适，不过先凑合着看吧，自己完整过一遍还是感觉不一样的。</summary>
+  </entry>
+  <entry>
+    <title>Kubernetes Pod 亲和性和反亲和性</title>
+    <id>https://blog.opskumu.com/k8s-pod-affinity-antiaffinity.html</id>
+    <link href="https://blog.opskumu.com/k8s-pod-affinity-antiaffinity.html"/>
+    <updated>2018-11-18T00:00:00+08:00</updated>
+    <summary type="text">通过 Kubernetes 你可以将一个 pod 限制或倾向于在某些特定节点运行。有几种方式可以达到这个目的，它们都通过 label selectors 进行选择。通常情况下，这样的约束是不必要的，因为调度程序会自动进行合理的调度（如通过一系列的评分机制将 pods 合理分配到最优节点上，而不会将 pod 分配在…</summary>
+  </entry>
+  <entry>
+    <title>Kubernetes 版本升级标注</title>
+    <id>https://blog.opskumu.com/kubernetes-upgrade-notes.html</id>
+    <link href="https://blog.opskumu.com/kubernetes-upgrade-notes.html"/>
+    <updated>2018-09-07T00:00:00+08:00</updated>
+    <summary type="text">作为从 0.14.x 版本开始追 Kubernetes 的我来说，有时候也不得不感慨，Kubernetes 社区的升级步伐越来越让人赶不上了，版本追的实在有些累了。但是，有些功能特性不升级还不行，某些版本的向下兼容性做的又不太好，导致每次版本变化较大的升级都让人提心吊胆。</summary>
+  </entry>
+</feed>

@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>One Network LVS-NAT</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="________ | | | client | |________| CIP=192.168.1.254 | | __________ | | | | VIP=192.168.1.110 (eth0:110) | director |---| |__________| | DIP=192.168.1.9 (eth…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/lvs-nat.html"/>
 <meta property="og:title" content="One Network LVS-NAT"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="________ | | | client | |________| CIP=192.168.1.254 | | __________ | | | | VIP=192.168.1.110 (eth0:110) | director |---| |__________| | DIP=192.168.1.9 (eth…"/>
 <meta property="og:url" content="https://blog.opskumu.com/lvs-nat.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2014-11-18T00:00:00+08:00"/>
 <meta name="twitter:title" content="One Network LVS-NAT"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="________ | | | client | |________| CIP=192.168.1.254 | | __________ | | | | VIP=192.168.1.110 (eth0:110) | director |---| |__________| | DIP=192.168.1.9 (eth…"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,8 +36,8 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgeecc63e">1. To get a LVS-NAT LVS to work on one network</a></li>
-<li><a href="#org06364c5">2. Reference</a></li>
+<li><a href="#section-5886969071b3">1. To get a LVS-NAT LVS to work on one network</a></li>
+<li><a href="#section-02ab610f4245">2. Reference</a></li>
 </ul>
 </div>
 </nav>
@@ -67,8 +69,8 @@ RIP1=192.168.1.2   RIP2=192.168.1.3  RIP3=192.168.1.4 (all eth0)
 |_____________|    |_____________|   |_____________|
 </pre>
 </div>
-<div id="outline-container-orgeecc63e" class="outline-2">
-<h2 id="orgeecc63e"><span class="section-number-2">1.</span> To get a LVS-NAT LVS to work on one network</h2>
+<div id="outline-container-section-5886969071b3" class="outline-2">
+<h2 id="section-5886969071b3"><span class="section-number-2">1.</span> To get a LVS-NAT LVS to work on one network</h2>
 <div class="outline-text-2" id="text-1">
 <ol class="org-ol">
 <li>在调度器上关闭 icmp 包重定向，根据实际情况修改端口，这里为 eth0</li>
@@ -121,8 +123,8 @@ Kernel IP routing table
 </div>
 </div>
 </div>
-<div id="outline-container-org06364c5" class="outline-2">
-<h2 id="org06364c5"><span class="section-number-2">2.</span> Reference</h2>
+<div id="outline-container-section-02ab610f4245" class="outline-2">
+<h2 id="section-02ab610f4245"><span class="section-number-2">2.</span> Reference</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="http://www.austintek.com/LVS/LVS-HOWTO/HOWTO/LVS-HOWTO.LVS-NAT.html#one_network">OneNetwork LVS-NAT</a></li>
@@ -130,9 +132,9 @@ Kernel IP routing table
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="init-ssh.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">init 管理 ssh 服务</span><span class="article-nav-date">2014-11-25</span></a><a class="article-nav-link article-nav-older" href="mysql-rep.html"><span class="article-nav-label">Older</span><span class="article-nav-title">MySQL 复制备忘</span><span class="article-nav-date">2014-02-17</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="init-ssh.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">init 管理 ssh 服务</span><span class="article-nav-date">2014-11-25</span></a><a class="article-nav-link article-nav-older" href="mysql-rep.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">MySQL 复制备忘</span><span class="article-nav-date">2014-02-17</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2014-11-18 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2014-11-18 Tue 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

@@ -2,13 +2,13 @@
   "use strict";
 
   var labels = {
-    mainSkip: "Skip to main content",
-    tocSkip: "Skip to table of contents",
+    mainSkip: "跳到主要内容",
+    tocSkip: "跳到目录",
     articleMeta: "文章信息",
     readingTimeTitle: "预计阅读时间",
     minuteRead: "约 {minutes} 分钟",
-    expandAll: "Expand all",
-    collapseAll: "Collapse all",
+    expandAll: "全部展开",
+    collapseAll: "全部收起",
     postsCount: "{count} 篇",
     backToTop: "返回顶部",
     copyCode: "复制代码",
@@ -144,7 +144,7 @@
     var nav = document.createElement("nav");
     nav.className = "navbar";
     nav.setAttribute("role", "navigation");
-    nav.setAttribute("aria-label", "Primary");
+    nav.setAttribute("aria-label", "主导航");
 
     var brand = document.createElement("a");
     brand.className = "navbar-brand";
@@ -155,11 +155,11 @@
     var links = document.createElement("div");
     links.className = "navbar-links";
     [
-      ["Blog", "index.html", "blog"],
+      ["博客", "index.html", "blog"],
       ["Wiki", "https://wiki.opskumu.com"],
       ["Issues", "https://github.com/opskumu/issues"],
       ["GitHub", "https://github.com/opskumu"],
-      ["About", "https://opskumu.com/"]
+      ["关于", "https://opskumu.com/"]
     ].forEach(function (item) {
       var link = document.createElement("a");
       link.textContent = item[0];
@@ -227,8 +227,13 @@
       }
     });
 
-    Array.prototype.forEach.call(document.querySelectorAll(".content img"), function (img) {
-      if (!img.getAttribute("loading")) img.setAttribute("loading", "lazy");
+    Array.prototype.forEach.call(document.querySelectorAll(".content img"), function (img, index) {
+      if (!img.getAttribute("loading")) {
+        img.setAttribute("loading", index === 0 ? "eager" : "lazy");
+      }
+      if (index === 0 && !img.getAttribute("fetchpriority")) {
+        img.setAttribute("fetchpriority", "high");
+      }
       if (!img.getAttribute("decoding")) img.setAttribute("decoding", "async");
     });
   };
@@ -250,7 +255,14 @@
       if (match) dateSpan.textContent = match[1];
     }
 
-    if (document.body.classList.contains("index-page") || !header || !title) {
+    if (document.body.classList.contains("index-page")) {
+      postamble.textContent = "";
+      postamble.classList.add("is-compact");
+      if (creator) postamble.appendChild(creator);
+      return;
+    }
+
+    if (!header || !title) {
       return;
     }
 

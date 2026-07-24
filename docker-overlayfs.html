@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker OverlayFS 驱动</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="本文为 Use the OverlayFS storage driver 译文，一直以来对 OverlayFS 工作机制不太理解，趁着间隙把 Docker 官方的文档看了一遍。虽然不涉及到底层的技术实现，但是基本的工作机制，通过这篇文章差不多可以了解个大概了。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
-<meta name="twitter:card" content="summary"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/docker-overlayfs.html"/>
 <meta property="og:title" content="Docker OverlayFS 驱动"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="本文为 Use the OverlayFS storage driver 译文，一直以来对 OverlayFS 工作机制不太理解，趁着间隙把 Docker 官方的文档看了一遍。虽然不涉及到底层的技术实现，但是基本的工作机制，通过这篇文章差不多可以了解个大概了。"/>
 <meta property="og:url" content="https://blog.opskumu.com/docker-overlayfs.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2018-09-05T00:00:00+08:00"/>
+<meta property="og:image" content="https://blog.opskumu.com/images/overlay_constructs.jpg"/>
 <meta name="twitter:title" content="Docker OverlayFS 驱动"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="本文为 Use the OverlayFS storage driver 译文，一直以来对 OverlayFS 工作机制不太理解，趁着间隙把 Docker 官方的文档看了一遍。虽然不涉及到底层的技术实现，但是基本的工作机制，通过这篇文章差不多可以了解个大概了。"/>
+<meta name="twitter:image" content="https://blog.opskumu.com/images/overlay_constructs.jpg"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,35 +38,35 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgef14bbd">1. 先决条件</a></li>
-<li><a href="#org78b5516">2. 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</a></li>
-<li><a href="#org0bb4171">3. <code>overlay2</code> 驱动是如何工作的</a>
+<li><a href="#section-8f3573e11ba3">1. 先决条件</a></li>
+<li><a href="#section-9d0ca35ee2dc">2. 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</a></li>
+<li><a href="#section-032f31378a2c">3. <code>overlay2</code> 驱动是如何工作的</a>
 <ul>
-<li><a href="#orgec03931">3.1. 磁盘上的镜像和容器层</a></li>
+<li><a href="#section-1da14401e376">3.1. 磁盘上的镜像和容器层</a></li>
 </ul>
 </li>
-<li><a href="#orgb02d9fd">4. <code>overlay</code> 驱动是如何工作的</a>
+<li><a href="#section-f0b02a16af9b">4. <code>overlay</code> 驱动是如何工作的</a>
 <ul>
-<li><a href="#orge0fe8a9">4.1. 磁盘上的镜像和容器层</a>
+<li><a href="#section-1da14401e376-2">4.1. 磁盘上的镜像和容器层</a>
 <ul>
-<li><a href="#org21e3548">4.1.1. 镜像层</a></li>
-<li><a href="#org7ef000b">4.1.2. 容器层</a></li>
+<li><a href="#section-ba9f2b00a33e">4.1.1. 镜像层</a></li>
+<li><a href="#section-aeddcbf30c9a">4.1.2. 容器层</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgcb134c2">5. 容器是如何通过 <code>overlay</code> 或 <code>overlay2</code> 读写的</a>
+<li><a href="#section-48978a2c68c7">5. 容器是如何通过 <code>overlay</code> 或 <code>overlay2</code> 读写的</a>
 <ul>
-<li><a href="#orgf61fb18">5.1. 读取文件</a></li>
-<li><a href="#orgc129caf">5.2. 修改文件或目录</a></li>
+<li><a href="#section-dc995cddfa91">5.1. 读取文件</a></li>
+<li><a href="#section-e10cfc592120">5.2. 修改文件或目录</a></li>
 </ul>
 </li>
-<li><a href="#orgae72bf1">6. OverlayFS 和 Docker 性能</a>
+<li><a href="#section-815f65a09557">6. OverlayFS 和 Docker 性能</a>
 <ul>
-<li><a href="#orgbee4832">6.1. 性能最佳实践</a></li>
+<li><a href="#section-acdd8a80b2fd">6.1. 性能最佳实践</a></li>
 </ul>
 </li>
-<li><a href="#orgfe4f841">7. OverlayFS 兼容性限制</a></li>
+<li><a href="#section-cb9520e14a0e">7. OverlayFS 兼容性限制</a></li>
 </ul>
 </div>
 </nav>
@@ -81,8 +85,8 @@ OverlayFS 是类似 AUFS 的现代联合文件系统（union filesystem），但
 Note：如果你使用 OverlayFS，使用 <code>overlay2</code> 而不是 <code>overlay</code> 驱动，因为 <code>overlay2</code> 在 inode 利用率上更高效。要使用新的驱动，你需要系统内核版本 4.0 或者更高版本，除非你是使用 RHEL 或者 CentOS 用户，此时需要内核版本在 3.10.0-514 或更高版本。
 </p>
 </blockquote>
-<div id="outline-container-orgef14bbd" class="outline-2">
-<h2 id="orgef14bbd"><span class="section-number-2">1.</span> 先决条件</h2>
+<div id="outline-container-section-8f3573e11ba3" class="outline-2">
+<h2 id="section-8f3573e11ba3"><span class="section-number-2">1.</span> 先决条件</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 除了上述的系统内核版本，使用 OverlayFS 还需要以下条件：
@@ -105,8 +109,8 @@ xfs_info /PATH/TO/DEVICE | grep ftype   # 验证是否已支持
 </div>
 </div>
 </div>
-<div id="outline-container-org78b5516" class="outline-2">
-<h2 id="org78b5516"><span class="section-number-2">2.</span> 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</h2>
+<div id="outline-container-section-9d0ca35ee2dc" class="outline-2">
+<h2 id="section-9d0ca35ee2dc"><span class="section-number-2">2.</span> 配置 <code>overlay</code> 或 <code>overlay2</code> 驱动</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 满足使用 OverlayFS 的条件后，通过 <code>/etc/docker/daemon.json</code> 加入 <code>overlay2</code> 存储配置项，重启 docker daemon 即可生效。
@@ -120,8 +124,8 @@ xfs_info /PATH/TO/DEVICE | grep ftype   # 验证是否已支持
 </div>
 </div>
 </div>
-<div id="outline-container-org0bb4171" class="outline-2">
-<h2 id="org0bb4171"><span class="section-number-2">3.</span> <code>overlay2</code> 驱动是如何工作的</h2>
+<div id="outline-container-section-032f31378a2c" class="outline-2">
+<h2 id="section-032f31378a2c"><span class="section-number-2">3.</span> <code>overlay2</code> 驱动是如何工作的</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且将它们呈现为单个目录。这些目录统称为层（layers），统一过程称为联合挂载（union mount）。OverlayFS 把下层目录称为 <code>lowerdir</code> ，上层目录称为 <code>upperdir</code> ，统一视图通过称为 <code>merged</code> 自身目录暴露。
@@ -131,8 +135,8 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 <code>overlay</code> 驱动仅适用单个 lower OverlayFS 层，因此需要通过硬链接来实现多层镜像， <code>overlay2</code> 驱动原生支持 128 个 lower OverlayFS 层。这个功能为与层相关的命令如 <code>docker build</code> 和 <code>docker commit</code> 提供了更好的性能，并且在后备文件系统上消耗更少的 inode。
 </p>
 </div>
-<div id="outline-container-orgec03931" class="outline-3">
-<h3 id="orgec03931"><span class="section-number-3">3.1.</span> 磁盘上的镜像和容器层</h3>
+<div id="outline-container-section-1da14401e376" class="outline-3">
+<h3 id="section-1da14401e376"><span class="section-number-3">3.1.</span> 磁盘上的镜像和容器层</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 当通过 <code>docker pull ubuntu</code> 下载一个五层镜像后，你可以在 <code>/var/lib/docker/overlay2</code> 目录下看到 6 个目录。
@@ -215,8 +219,8 @@ workdir=9186877cdf386d0a3b016149cf30c208f326dca307529e646afce5b3f83f5304/work)
 </div>
 </div>
 </div>
-<div id="outline-container-orgb02d9fd" class="outline-2">
-<h2 id="orgb02d9fd"><span class="section-number-2">4.</span> <code>overlay</code> 驱动是如何工作的</h2>
+<div id="outline-container-section-f0b02a16af9b" class="outline-2">
+<h2 id="section-f0b02a16af9b"><span class="section-number-2">4.</span> <code>overlay</code> 驱动是如何工作的</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且将它们呈现为单个目录。这些目录统称为层（layers），统一过程称为联合挂载（union mount）。OverlayFS 把下层目录称为 <code>lowerdir</code> ，上层目录称为 <code>upperdir</code> ，统一视图通过称为 <code>merged</code> 自身目录暴露。
@@ -227,8 +231,8 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 
 
-<figure id="org1cb537d">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/overlay_constructs.jpg" alt="overlay_constructs.jpg">
+<figure id="generated-1">
+<img src="images/overlay_constructs.jpg" alt="overlay_constructs.jpg" decoding="async" loading="eager" fetchpriority="high" width="754" height="193">
 
 </figure>
 
@@ -244,8 +248,8 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 为了创建一个容器， <code>overlay</code> 驱动组合顶层的目录以及容器的新目录。镜像的顶层是叠加层中的 <code>lowerdir</code> ，并且是只读挂载的。容器的新目录是 <code>upperdir</code> 并且是可写的。
 </p>
 </div>
-<div id="outline-container-orge0fe8a9" class="outline-3">
-<h3 id="orge0fe8a9"><span class="section-number-3">4.1.</span> 磁盘上的镜像和容器层</h3>
+<div id="outline-container-section-1da14401e376-2" class="outline-3">
+<h3 id="section-1da14401e376-2"><span class="section-number-3">4.1.</span> 磁盘上的镜像和容器层</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 <code>docker pull</code> 命令暂时了一个 Docker 主机下载一个包含五层的 Docker 镜像。
@@ -267,8 +271,8 @@ Status: Downloaded newer image for ubuntu:latest
 </pre>
 </div>
 </div>
-<div id="outline-container-org21e3548" class="outline-4">
-<h4 id="org21e3548"><span class="section-number-4">4.1.1.</span> 镜像层</h4>
+<div id="outline-container-section-ba9f2b00a33e" class="outline-4">
+<h4 id="section-ba9f2b00a33e"><span class="section-number-4">4.1.1.</span> 镜像层</h4>
 <div class="outline-text-4" id="text-4-1-1">
 <p>
 每个镜像层都在 <code>/var/lib/docker/overlay/</code> 目录下有自己的目录。
@@ -299,8 +303,8 @@ $ ls -i /var/lib/docker/overlay/55f1e14c361b90570df46371b20ce6d480c434981cbda5fd
 </div>
 </div>
 </div>
-<div id="outline-container-org7ef000b" class="outline-4">
-<h4 id="org7ef000b"><span class="section-number-4">4.1.2.</span> 容器层</h4>
+<div id="outline-container-section-aeddcbf30c9a" class="outline-4">
+<h4 id="section-aeddcbf30c9a"><span class="section-number-4">4.1.2.</span> 容器层</h4>
 <div class="outline-text-4" id="text-4-1-2">
 <p>
 容器层也是在 <code>/var/lib/docker/overlay/</code> 目录下。如果你使用 <code>ls -l</code> 命令列出运行容器的子目录，可以看到三个目录和一个文件存在： 
@@ -360,12 +364,12 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 </div>
 </div>
 </div>
-<div id="outline-container-orgcb134c2" class="outline-2">
-<h2 id="orgcb134c2"><span class="section-number-2">5.</span> 容器是如何通过 <code>overlay</code> 或 <code>overlay2</code> 读写的</h2>
+<div id="outline-container-section-48978a2c68c7" class="outline-2">
+<h2 id="section-48978a2c68c7"><span class="section-number-2">5.</span> 容器是如何通过 <code>overlay</code> 或 <code>overlay2</code> 读写的</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-orgf61fb18" class="outline-3">
-<h3 id="orgf61fb18"><span class="section-number-3">5.1.</span> 读取文件</h3>
+<div id="outline-container-section-dc995cddfa91" class="outline-3">
+<h3 id="section-dc995cddfa91"><span class="section-number-3">5.1.</span> 读取文件</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 考虑三个容器通过 <code>overlay</code> 打开文件读取的场景。
@@ -378,8 +382,8 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc129caf" class="outline-3">
-<h3 id="orgc129caf"><span class="section-number-3">5.2.</span> 修改文件或目录</h3>
+<div id="outline-container-section-e10cfc592120" class="outline-3">
+<h3 id="section-e10cfc592120"><span class="section-number-3">5.2.</span> 修改文件或目录</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 同样分三个场景来介绍修改。
@@ -398,8 +402,8 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 </div>
 </div>
 </div>
-<div id="outline-container-orgae72bf1" class="outline-2">
-<h2 id="orgae72bf1"><span class="section-number-2">6.</span> OverlayFS 和 Docker 性能</h2>
+<div id="outline-container-section-815f65a09557" class="outline-2">
+<h2 id="section-815f65a09557"><span class="section-number-2">6.</span> OverlayFS 和 Docker 性能</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 <code>overlay2</code> 和 <code>overlay</code> 驱动比 <code>aufs</code> 和 <code>devicemapper</code> 拥有更好的性能。在某些情况下， <code>overlay2</code> 的性能表现可能比 <code>btrfs</code> 还要好。不过要注意以下几点：
@@ -411,8 +415,8 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 <li><b>Inode limits</b> ：使用 <code>overlay</code> 存储驱动会导致过多的 inode 损耗。特别是 Docker 主机上存在大量的镜像和容器时尤为明显。格式化文件系统增加可用的 inode 数量是唯一的解决方式。为了避免这个问题，因此建议尽可能的使用 <code>overlay2</code> 。</li>
 </ul>
 </div>
-<div id="outline-container-orgbee4832" class="outline-3">
-<h3 id="orgbee4832"><span class="section-number-3">6.1.</span> 性能最佳实践</h3>
+<div id="outline-container-section-acdd8a80b2fd" class="outline-3">
+<h3 id="section-acdd8a80b2fd"><span class="section-number-3">6.1.</span> 性能最佳实践</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 以下通用性能最佳实践也适用于 OverlayFS。
@@ -425,8 +429,8 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 </div>
 </div>
 </div>
-<div id="outline-container-orgfe4f841" class="outline-2">
-<h2 id="orgfe4f841"><span class="section-number-2">7.</span> OverlayFS 兼容性限制</h2>
+<div id="outline-container-section-cb9520e14a0e" class="outline-2">
+<h2 id="section-cb9520e14a0e"><span class="section-number-2">7.</span> OverlayFS 兼容性限制</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li><b>open(2)</b> ：OverlayFS 只实现了 POSIX 标准的子集。这可能导致某些 OverlayFS 操作破坏了 POSIX 标准。其中一个操作就是 copy-up 操作。假设你的应用调用 <code>fd1=open("foo", O_RDONLY)</code> 和 <code>fd2=open("foo", O_RDWR)</code> 。在这个案例中，你的应用期望 <code>fd1</code> 和 <code>fd2</code> 引用同一个文件。但是，因为发生了 copy-up 操作导致第二次调用 <code>open(2)</code> ，文件描述符指向的是不同的文件。 <code>fd1</code> 继续引用镜像层（ <code>lowerdir</code> ）而 <code>fd2</code> 引用的文件在容器层（ <code>upperdir</code> ）。解决方式是 <code>touch</code> 这些文件，引发 copy-up 操作发生。所有的后续 <code>open(2)</code> 操作无论是读写访问模式都引用容器层( <code>upperdir</code> )的文件。
@@ -438,9 +442,9 @@ workdir=/var/lib/docker/overlay/ec444863a55a.../work)
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="kubernetes-upgrade-notes.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">Kubernetes 版本升级标注</span><span class="article-nav-date">2018-09-07</span></a><a class="article-nav-link article-nav-older" href="2018-summer.html"><span class="article-nav-label">Older</span><span class="article-nav-title">夏日二三事</span><span class="article-nav-date">2018-08-28</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="kubernetes-upgrade-notes.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">Kubernetes 版本升级标注</span><span class="article-nav-date">2018-09-07</span></a><a class="article-nav-link article-nav-older" href="2018-summer.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">夏日二三事</span><span class="article-nav-date">2018-08-28</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2018-09-05 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2018-09-05 Wed 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>挖财 Kubernetes 容器化之路</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="挖财内部对容器化项目的代号为 K2 （乔戈里峰），乔戈里峰是世界第二高峰，但攀登极富挑战，寓意就是面对挑战，勇攀高峰 ；）。项目从 2016 年 11 月到现在已经有三年的时间了，如今挖财内部测试环境早已全部 Docker 容器化，而线上环境也运行着重要的业务。经历从零到一的整个落地过程，回顾下来，这座高峰算是拿…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
-<meta name="twitter:card" content="summary"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/wacai-docker.html"/>
 <meta property="og:title" content="挖财 Kubernetes 容器化之路"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="挖财内部对容器化项目的代号为 K2 （乔戈里峰），乔戈里峰是世界第二高峰，但攀登极富挑战，寓意就是面对挑战，勇攀高峰 ；）。项目从 2016 年 11 月到现在已经有三年的时间了，如今挖财内部测试环境早已全部 Docker 容器化，而线上环境也运行着重要的业务。经历从零到一的整个落地过程，回顾下来，这座高峰算是拿…"/>
 <meta property="og:url" content="https://blog.opskumu.com/wacai-docker.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2019-11-26T00:00:00+08:00"/>
+<meta property="og:image" content="https://blog.opskumu.com/images/k2-first-commit.png"/>
 <meta name="twitter:title" content="挖财 Kubernetes 容器化之路"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="挖财内部对容器化项目的代号为 K2 （乔戈里峰），乔戈里峰是世界第二高峰，但攀登极富挑战，寓意就是面对挑战，勇攀高峰 ；）。项目从 2016 年 11 月到现在已经有三年的时间了，如今挖财内部测试环境早已全部 Docker 容器化，而线上环境也运行着重要的业务。经历从零到一的整个落地过程，回顾下来，这座高峰算是拿…"/>
+<meta name="twitter:image" content="https://blog.opskumu.com/images/k2-first-commit.png"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,39 +38,39 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd28bbc7">1. 时间线</a></li>
-<li><a href="#orgd4d2ecd">2. 现状</a>
+<li><a href="#section-4f8ef92599cf">1. 时间线</a></li>
+<li><a href="#section-37690d622ef4">2. 现状</a>
 <ul>
-<li><a href="#org1b8b828">2.1. 测试环境</a></li>
-<li><a href="#orgdbe66b9">2.2. 线上环境</a></li>
+<li><a href="#section-7a4cfb2662f7">2.1. 测试环境</a></li>
+<li><a href="#section-62638884bf12">2.2. 线上环境</a></li>
 </ul>
 </li>
-<li><a href="#orgab09511">3. 技术选型</a>
+<li><a href="#section-3260094e5bca">3. 技术选型</a>
 <ul>
-<li><a href="#org74da12d">3.1. 原生方案 or 自研</a></li>
-<li><a href="#org81deff0">3.2. 镜像构建</a></li>
-<li><a href="#orgc975322">3.3. 网络</a></li>
-<li><a href="#org4764a9b">3.4. 日志</a></li>
-<li><a href="#orgb89469f">3.5. 监控告警</a></li>
-<li><a href="#org4f5036e">3.6. 用户行为分析和统计</a></li>
-<li><a href="#orgdead44e">3.7. 其它</a></li>
+<li><a href="#section-01109193fd75">3.1. 原生方案 or 自研</a></li>
+<li><a href="#section-f9802af66879">3.2. 镜像构建</a></li>
+<li><a href="#section-0cbda6b52442">3.3. 网络</a></li>
+<li><a href="#section-4de50894b8c1">3.4. 日志</a></li>
+<li><a href="#section-6dae2cfd4fc2">3.5. 监控告警</a></li>
+<li><a href="#section-a3e7ffeceb9a">3.6. 用户行为分析和统计</a></li>
+<li><a href="#section-295c71ff9869">3.7. 其它</a></li>
 </ul>
 </li>
-<li><a href="#org8622f51">4. 趟过的坑</a>
+<li><a href="#section-9bd3c67e2e4d">4. 趟过的坑</a>
 <ul>
-<li><a href="#org10782ad">4.1. Kubernetes DNS 解析偶尔丢包 5s 延迟问题</a></li>
-<li><a href="#org5a04b7d">4.2. Java 程序在 Docker 中运行的资源问题</a></li>
-<li><a href="#orgb7b6a4c">4.3. 容器中的僵尸进程</a></li>
-<li><a href="#org48e3ba0">4.4. 容器内存监控数据的问题</a></li>
-<li><a href="#orge3c5e79">4.5. Calico CNI 网络 IP 没有正常回收的问题</a></li>
-<li><a href="#org77b8410">4.6. Pod 通过 Service IP 访问不了自己的问题</a></li>
-<li><a href="#org18063e2">4.7. 容器内自定义时间的问题</a></li>
+<li><a href="#section-13aa535ecc6b">4.1. Kubernetes DNS 解析偶尔丢包 5s 延迟问题</a></li>
+<li><a href="#section-341f1cd1776c">4.2. Java 程序在 Docker 中运行的资源问题</a></li>
+<li><a href="#section-fd1355678b38">4.3. 容器中的僵尸进程</a></li>
+<li><a href="#section-0532b9248762">4.4. 容器内存监控数据的问题</a></li>
+<li><a href="#section-4df8cc8e15f5">4.5. Calico CNI 网络 IP 没有正常回收的问题</a></li>
+<li><a href="#section-019059fd649a">4.6. Pod 通过 Service IP 访问不了自己的问题</a></li>
+<li><a href="#section-c9e87d51ca14">4.7. 容器内自定义时间的问题</a></li>
 </ul>
 </li>
-<li><a href="#org2a5b089">5. 其它</a>
+<li><a href="#section-295c71ff9869-2">5. 其它</a>
 <ul>
-<li><a href="#org140cdca">5.1. 技术之外，产品本身</a></li>
-<li><a href="#orgd7744b9">5.2. 基于容器的云原生应用设计原则</a></li>
+<li><a href="#section-a29821e45eaf">5.1. 技术之外，产品本身</a></li>
+<li><a href="#section-31831b45a28f">5.2. 基于容器的云原生应用设计原则</a></li>
 </ul>
 </li>
 </ul>
@@ -79,16 +83,16 @@
 <p>
 挖财内部对容器化项目的代号为 <code>K2</code> （乔戈里峰），乔戈里峰是世界第二高峰，但攀登极富挑战，寓意就是面对挑战，勇攀高峰 ；）。项目从 2016 年 11 月到现在已经有三年的时间了，如今挖财内部测试环境早已全部 Docker 容器化，而线上环境也运行着重要的业务。经历从零到一的整个落地过程，回顾下来，这座高峰算是拿下了。再看 K8s 技术本身现在也是遍地开花，早已赢得容器编排的战争，剩下来就是各个企业的落地实践。倒是 Docker 公司最近的境遇，这个创建 Docker 的企业沦落如此，多少有点令人唏嘘，唯有 Respect。
 </p>
-<div id="outline-container-orgd28bbc7" class="outline-2">
-<h2 id="orgd28bbc7"><span class="section-number-2">1.</span> 时间线</h2>
+<div id="outline-container-section-4f8ef92599cf" class="outline-2">
+<h2 id="section-4f8ef92599cf"><span class="section-number-2">1.</span> 时间线</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 看了一下项目提交的 Git 记录，第一次提交时间是 <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-11-01 Tue&gt;</span></span>。
 </p>
 
 
-<figure id="org0ecdeb9">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-first-commit.png" alt="k2-first-commit.png">
+<figure id="generated-1">
+<img src="images/k2-first-commit.png" alt="k2-first-commit.png" decoding="async" loading="eager" fetchpriority="high" width="792" height="277">
 
 </figure>
 
@@ -105,12 +109,12 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd4d2ecd" class="outline-2">
-<h2 id="orgd4d2ecd"><span class="section-number-2">2.</span> 现状</h2>
+<div id="outline-container-section-37690d622ef4" class="outline-2">
+<h2 id="section-37690d622ef4"><span class="section-number-2">2.</span> 现状</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org1b8b828" class="outline-3">
-<h3 id="org1b8b828"><span class="section-number-3">2.1.</span> 测试环境</h3>
+<div id="outline-container-section-7a4cfb2662f7" class="outline-3">
+<h3 id="section-7a4cfb2662f7"><span class="section-number-3">2.1.</span> 测试环境</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 当前测试环境有一个 K8s 集群（K8s 1.11.x），空间（ <code>namespace</code> ）总数有 500+，应用数（ <code>Deployment</code> + <code>StatefulSet</code> ） 4400+，实例数（ <code>Pod</code> ） 4000+（因为测试环境大部分应用都只有 1 个，有些是处于暂停状态，即 0 个副本，因此实例数少于应用数）。
@@ -123,8 +127,8 @@
 </blockquote>
 </div>
 </div>
-<div id="outline-container-orgdbe66b9" class="outline-3">
-<h3 id="orgdbe66b9"><span class="section-number-3">2.2.</span> 线上环境</h3>
+<div id="outline-container-section-62638884bf12" class="outline-3">
+<h3 id="section-62638884bf12"><span class="section-number-3">2.2.</span> 线上环境</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 线上环境有三个集群，一个机器学习集群（K8s 1.7.x），一个私有云集群（K8s 1.13.x），有个主体业务集群（K8s 1.13.x），粗率统计了一下，空间数 50+，应用数 500+，实例数 1000+。
@@ -138,20 +142,20 @@
 </div>
 </div>
 </div>
-<div id="outline-container-orgab09511" class="outline-2">
-<h2 id="orgab09511"><span class="section-number-2">3.</span> 技术选型</h2>
+<div id="outline-container-section-3260094e5bca" class="outline-2">
+<h2 id="section-3260094e5bca"><span class="section-number-2">3.</span> 技术选型</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org74da12d" class="outline-3">
-<h3 id="org74da12d"><span class="section-number-3">3.1.</span> 原生方案 or 自研</h3>
+<div id="outline-container-section-01109193fd75" class="outline-3">
+<h3 id="section-01109193fd75"><span class="section-number-3">3.1.</span> 原生方案 or 自研</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 对于是否使用原生方案，我们没有过多的犹豫，确定基于 K8s API 上层封装抽象，其它底层最大化使用原生方案。首先 K8s 肯定不会维护一个内部版本，对于一个快速迭代的项目，人力是一方面，后续的可维护性也是个大问题，而基于上层 API 的抽象和封装可以带来最大的灵活和便利性。针对客户端工具，内部有人建议开发命令行工具，摒弃 Dashboard。但是基于以往的经验，命令行工具的维护性以及用户上手成本相比 Dashboard 要更高。就拿 Docker 来说，虽然很火，但是实际能够熟练书写 Dockerfile 构建 Docker 镜像的开发、测试并不多，放到 2019 年来说这个比例依然不高。对于大部分用户 Dashboard 可以最大的简化上手难度，推广和维护性来说也更方便。
 </p>
 
 
-<figure id="org22b605e">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-kubernetes.png" alt="k2-kubernetes.png">
+<figure id="generated-2">
+<img src="images/k2-kubernetes.png" alt="k2-kubernetes.png" decoding="async" loading="lazy" width="501" height="381">
 
 </figure>
 
@@ -160,20 +164,20 @@
 </p>
 
 
-<figure id="orgd30264b">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-ns-dashboard.png" alt="k2-ns-dashboard.png">
+<figure id="generated-3">
+<img src="images/k2-ns-dashboard.png" alt="k2-ns-dashboard.png" decoding="async" loading="lazy" width="2523" height="838">
 
 </figure>
 
 
-<figure id="org1ef57ed">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-dashboard.png" alt="k2-app-dashboard.png">
+<figure id="generated-4">
+<img src="images/k2-app-dashboard.png" alt="k2-app-dashboard.png" decoding="async" loading="lazy" width="2522" height="538">
 
 </figure>
 
 
-<figure id="orgc95bb5f">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-view-dashboard.png" alt="k2-app-view-dashboard.png">
+<figure id="generated-5">
+<img src="images/k2-app-view-dashboard.png" alt="k2-app-view-dashboard.png" decoding="async" loading="lazy" width="2205" height="478">
 
 </figure>
 
@@ -182,26 +186,26 @@
 </p>
 
 
-<figure id="org31a83e6">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-clone.png" alt="k2-app-clone.png">
+<figure id="generated-6">
+<img src="images/k2-app-clone.png" alt="k2-app-clone.png" decoding="async" loading="lazy" width="2112" height="990">
 
 </figure>
 
 
-<figure id="orgcf43e5f">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-statefulset.png" alt="k2-app-statefulset.png">
+<figure id="generated-7">
+<img src="images/k2-app-statefulset.png" alt="k2-app-statefulset.png" decoding="async" loading="lazy" width="2166" height="792">
 
 </figure>
 
 
-<figure id="org1669d09">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-canary.png" alt="k2-app-canary.png">
+<figure id="generated-8">
+<img src="images/k2-app-canary.png" alt="k2-app-canary.png" decoding="async" loading="lazy" width="2026" height="1088">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-org81deff0" class="outline-3">
-<h3 id="org81deff0"><span class="section-number-3">3.2.</span> 镜像构建</h3>
+<div id="outline-container-section-f9802af66879" class="outline-3">
+<h3 id="section-f9802af66879"><span class="section-number-3">3.2.</span> 镜像构建</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li><a href="https://jenkins.io">Jenkins</a> + <a href="https://github.com/jenkinsci/kubernetes-plugin">Kubernetes Plugin</a> + <a href="https://goharbor.io/">Harbor</a></li>
@@ -224,8 +228,8 @@
 </p>
 </div>
 </div>
-<div id="outline-container-orgc975322" class="outline-3">
-<h3 id="orgc975322"><span class="section-number-3">3.3.</span> 网络</h3>
+<div id="outline-container-section-0cbda6b52442" class="outline-3">
+<h3 id="section-0cbda6b52442"><span class="section-number-3">3.3.</span> 网络</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
 <li><a href="https://www.projectcalico.org/">Calico</a> BGP 大三层网络方案</li>
@@ -236,14 +240,14 @@
 </p>
 
 
-<figure id="org95a7785">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-1.png" alt="calico-network-test-1.png">
+<figure id="generated-9">
+<img src="images/calico-network-test-1.png" alt="calico-network-test-1.png" decoding="async" loading="lazy" width="640" height="480">
 
 </figure>
 
 
-<figure id="org1d5e921">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/calico-network-test-2.png" alt="calico-network-test-2.png">
+<figure id="generated-10">
+<img src="images/calico-network-test-2.png" alt="calico-network-test-2.png" decoding="async" loading="lazy" width="640" height="480">
 
 </figure>
 
@@ -252,8 +256,8 @@
 </p>
 </div>
 </div>
-<div id="outline-container-org4764a9b" class="outline-3">
-<h3 id="org4764a9b"><span class="section-number-3">3.4.</span> 日志</h3>
+<div id="outline-container-section-4de50894b8c1" class="outline-3">
+<h3 id="section-4de50894b8c1"><span class="section-number-3">3.4.</span> 日志</h3>
 <div class="outline-text-3" id="text-3-4">
 <ul class="org-ul">
 <li>EFK（<a href="https://github.com/elastic/elasticsearch">Elasticsearch</a> + <a href="https://github.com/elastic/beats">Filebeat</a> + <a href="https://github.com/elastic/kibana">Kibana</a>）</li>
@@ -264,8 +268,8 @@
 </p>
 
 
-<figure id="orgb1f0656">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-log-volume.png" alt="k2-log-volume.png">
+<figure id="generated-11">
+<img src="images/k2-log-volume.png" alt="k2-log-volume.png" decoding="async" loading="lazy" width="351" height="241">
 
 </figure>
 
@@ -278,8 +282,8 @@
 </p>
 
 
-<figure id="org5526186">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-stdout-log.png" alt="k2-stdout-log.png">
+<figure id="generated-12">
+<img src="images/k2-stdout-log.png" alt="k2-stdout-log.png" decoding="async" loading="lazy" width="562" height="491">
 
 </figure>
 
@@ -288,8 +292,8 @@
 </p>
 </div>
 </div>
-<div id="outline-container-orgb89469f" class="outline-3">
-<h3 id="orgb89469f"><span class="section-number-3">3.5.</span> 监控告警</h3>
+<div id="outline-container-section-6dae2cfd4fc2" class="outline-3">
+<h3 id="section-6dae2cfd4fc2"><span class="section-number-3">3.5.</span> 监控告警</h3>
 <div class="outline-text-3" id="text-3-5">
 <ul class="org-ul">
 <li><a href="https://github.com/grafana/grafana">Grafana</a> + <a href="https://github.com/kubernetes/kube-state-metrics">kube-state-metrics</a> + <a href="https://github.com/prometheus">Prometheus</a> + K8s eventer（基于 K8s 事件告警，自研） + Alarmd（内部告警服务，自研）</li>
@@ -306,30 +310,30 @@
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org4f5036e" class="outline-3">
-<h3 id="org4f5036e"><span class="section-number-3">3.6.</span> 用户行为分析和统计</h3>
+<div id="outline-container-section-a3e7ffeceb9a" class="outline-3">
+<h3 id="section-a3e7ffeceb9a"><span class="section-number-3">3.6.</span> 用户行为分析和统计</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 针对用户在平台的操作，我们后端服务对相关的接口操作做了一些埋点，统一上报内部的 DataStat 平台，根据这些数据一方面是统计相关的数据，另外一方面则是分析用户的操作然后再改善平台（如根据访问频次确定核心用户，咨询他们采纳一些合理的意见等等）。
 </p>
 
 
-<figure id="org1f40d93">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-app-datastat.png" alt="k2-app-datastat.png">
+<figure id="generated-13">
+<img src="images/k2-app-datastat.png" alt="k2-app-datastat.png" decoding="async" loading="lazy" width="1678" height="1026">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-orgdead44e" class="outline-3">
-<h3 id="orgdead44e"><span class="section-number-3">3.7.</span> 其它</h3>
+<div id="outline-container-section-295c71ff9869" class="outline-3">
+<h3 id="section-295c71ff9869"><span class="section-number-3">3.7.</span> 其它</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 针对完整的组件和架构方案，可以具体看下图：
 </p>
 
 
-<figure id="org1b683fd">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/k2-Kubernetes-arch.png" alt="k2-Kubernetes-arch.png">
+<figure id="generated-14">
+<img src="images/k2-Kubernetes-arch.png" alt="k2-Kubernetes-arch.png" decoding="async" loading="lazy" width="1845" height="1335">
 
 </figure>
 
@@ -343,8 +347,8 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org8622f51" class="outline-2">
-<h2 id="org8622f51"><span class="section-number-2">4.</span> 趟过的坑</h2>
+<div id="outline-container-section-9bd3c67e2e4d" class="outline-2">
+<h2 id="section-9bd3c67e2e4d"><span class="section-number-2">4.</span> 趟过的坑</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><a href="https://github.com/opskumu/issues/issues/19">2018 遇到的问题集锦</a></li>
@@ -355,16 +359,16 @@
 以上是这两年遇到的一些关于 K8s 问题的碎片化记录，大部分的问题都记录了，感兴趣的可以点击查看。这里说一些使用 K8s 构建容器平台遇到的一些典型的问题：
 </p>
 </div>
-<div id="outline-container-org10782ad" class="outline-3">
-<h3 id="org10782ad"><span class="section-number-3">4.1.</span> Kubernetes DNS 解析偶尔丢包 5s 延迟问题</h3>
+<div id="outline-container-section-13aa535ecc6b" class="outline-3">
+<h3 id="section-13aa535ecc6b"><span class="section-number-3">4.1.</span> Kubernetes DNS 解析偶尔丢包 5s 延迟问题</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 从 2017 年平台上线之后，偶尔业务出现 DNS 请求超过 5s 的问题困扰了我很久。这个问题在社区 Issue <a href="https://github.com/kubernetes/kubernetes/issues/56903">DNS intermittent delays of 5s</a> 也讨论了很长一段时间，跨度为两年之久，直到现在虽然 Issue 已经关闭，底下时常还有一些讨论。Issue 中很清楚的描述了问题产生的原因，是内核 conntrack 模块本身的 bug。那如何解决呢，Issue 中也提到了很多方法，试过其中的大多数方式，有些并没有解决。其中除了升级内核，个人最建议的方式还是使用 <a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/dns/nodelocaldns">Nodelocal DNS Cache</a> 去解决这个问题，但是它也有一个问题，就是每次升级组件的时候，所在主机的 DNS 就会中断。
 </p>
 
 
-<figure id="org51b9d08">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-dns-cache.png" alt="nodelocal-dns-cache.png"> 
+<figure id="generated-15">
+<img src="images/nodelocal-dns-cache.png" alt="nodelocal-dns-cache.png" decoding="async" loading="lazy" width="800" height="600">
 
 </figure>
 
@@ -373,8 +377,8 @@
 </p>
 
 
-<figure id="org3c351bc">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/nodelocal-HA.png" alt="nodelocal-HA.png">
+<figure id="generated-16">
+<img src="images/nodelocal-HA.png" alt="nodelocal-HA.png" decoding="async" loading="lazy" width="800" height="600">
 
 </figure>
 
@@ -383,8 +387,8 @@
 </p>
 </div>
 </div>
-<div id="outline-container-org5a04b7d" class="outline-3">
-<h3 id="org5a04b7d"><span class="section-number-3">4.2.</span> Java 程序在 Docker 中运行的资源问题</h3>
+<div id="outline-container-section-341f1cd1776c" class="outline-3">
+<h3 id="section-341f1cd1776c"><span class="section-number-3">4.2.</span> Java 程序在 Docker 中运行的资源问题</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 这个严格来说不是 Java 本身的问题，只是早期 Java 对容器支持不好导致的。就拿容器中的 top、free 指令，新人在容器中使用这些指令的时候，通常对输出都会感到疑惑。比较彻底的一个解决方式就是借助 <a href="https://github.com/lxc/lxcfs">lxcfs</a> ，这样无论是 Java 程序的运行也好，还是 top、free 这些指令，它们从 /proc 下读取资源信息都是实际容器配置的资源限制。不过我更倾向于其它方式解决而不是 <a href="https://github.com/lxc/lxcfs">lxcfs</a> ，因为之前调研的时候 <a href="https://github.com/lxc/lxcfs">lxcfs</a> 本身也存在一些问题，另外也不想增加一层维护成本，针对 Java 程序遇到的问题从 Java 层面上解决。
@@ -399,8 +403,8 @@
 </p>
 </div>
 </div>
-<div id="outline-container-orgb7b6a4c" class="outline-3">
-<h3 id="orgb7b6a4c"><span class="section-number-3">4.3.</span> 容器中的僵尸进程</h3>
+<div id="outline-container-section-fd1355678b38" class="outline-3">
+<h3 id="section-fd1355678b38"><span class="section-number-3">4.3.</span> 容器中的僵尸进程</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
 正常情况下，如果一个容器运行一个进程，那么不太可能出现僵尸进程的问题。对于内部的 Java 程序是没有这个问题的，我们一个容器就跑一个程序，但是有些应用很多都是跑的多进程的（比如 Jenkins slave 构建容器），这类情况下就可能会出现僵尸进程。众所周知，容器不像操作系统，正常情况下它是没有 init 进程的，PID 为 1 的一般是应用本身，而普通进程一般是不会捕获僵尸进程的，这就导致了有些多进程容器中出现 N 多的僵尸进程。
@@ -439,8 +443,8 @@ CMD ["/my/script", "--with", "--args"]
 </p>
 </div>
 </div>
-<div id="outline-container-org48e3ba0" class="outline-3">
-<h3 id="org48e3ba0"><span class="section-number-3">4.4.</span> 容器内存监控数据的问题</h3>
+<div id="outline-container-section-0532b9248762" class="outline-3">
+<h3 id="section-0532b9248762"><span class="section-number-3">4.4.</span> 容器内存监控数据的问题</h3>
 <div class="outline-text-3" id="text-4-4">
 <p>
 其实容器内存这个问题困扰了我很久，查了很多资料之后，最初使用的监控数据是 <code>container_memory_working_set_bytes</code> ，比如这篇文章 <a href="https://blog.freshtracks.io/a-deep-dive-into-kubernetes-metrics-part-3-container-resource-metrics-361c5ee46e66">A Deep Dive into Kubernetes Metrics — Part 3 Container Resource Metrics</a> 也是推荐这个值的。
@@ -456,24 +460,24 @@ CMD ["/my/script", "--with", "--args"]
 </p>
 </div>
 </div>
-<div id="outline-container-orge3c5e79" class="outline-3">
-<h3 id="orge3c5e79"><span class="section-number-3">4.5.</span> Calico CNI 网络 IP 没有正常回收的问题</h3>
+<div id="outline-container-section-4df8cc8e15f5" class="outline-3">
+<h3 id="section-4df8cc8e15f5"><span class="section-number-3">4.5.</span> Calico CNI 网络 IP 没有正常回收的问题</h3>
 <div class="outline-text-3" id="text-4-5">
 <p>
 这个之前知乎相关的分享好像也提到过，也是一个比较恼人的问题，后来内部就专门写了个脚本，定时做一些清理释放的工作。
 </p>
 </div>
 </div>
-<div id="outline-container-org77b8410" class="outline-3">
-<h3 id="org77b8410"><span class="section-number-3">4.6.</span> Pod 通过 Service IP 访问不了自己的问题</h3>
+<div id="outline-container-section-019059fd649a" class="outline-3">
+<h3 id="section-019059fd649a"><span class="section-number-3">4.6.</span> Pod 通过 Service IP 访问不了自己的问题</h3>
 <div class="outline-text-3" id="text-4-6">
 <p>
 当 Pod 通过自身 Service IP 访问的时候，如果 kube-proxy 刚好调度的实例是 Pod 自身的话，这个时候就出现无法访问的问题。一开始排查以为是 <code>--hairpin-mode</code> 配置的问题，实际测试下来并不是。具体详细的排查流程已经更新到前文提到的 Issue 里面了 <a href="https://github.com/opskumu/issues/issues/23#issuecomment-547280434">Pod 无法通过 Service IP 访问自身</a> 。
 </p>
 </div>
 </div>
-<div id="outline-container-org18063e2" class="outline-3">
-<h3 id="org18063e2"><span class="section-number-3">4.7.</span> 容器内自定义时间的问题</h3>
+<div id="outline-container-section-c9e87d51ca14" class="outline-3">
+<h3 id="section-c9e87d51ca14"><span class="section-number-3">4.7.</span> 容器内自定义时间的问题</h3>
 <div class="outline-text-3" id="text-4-7">
 <p>
 测试需求偶尔会有自定义服务器时间的问题，但是在容器内这个问题基本还处于无解状态。
@@ -493,20 +497,20 @@ CMD ["/my/script", "--with", "--args"]
 </div>
 </div>
 </div>
-<div id="outline-container-org2a5b089" class="outline-2">
-<h2 id="org2a5b089"><span class="section-number-2">5.</span> 其它</h2>
+<div id="outline-container-section-295c71ff9869-2" class="outline-2">
+<h2 id="section-295c71ff9869-2"><span class="section-number-2">5.</span> 其它</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org140cdca" class="outline-3">
-<h3 id="org140cdca"><span class="section-number-3">5.1.</span> 技术之外，产品本身</h3>
+<div id="outline-container-section-a29821e45eaf" class="outline-3">
+<h3 id="section-a29821e45eaf"><span class="section-number-3">5.1.</span> 技术之外，产品本身</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 容器化相关，技术的比重是非常高的，如果容器底层不稳定，就没有上层一说了，但是又不能局限于技术。K2 这个项目可以在内部不断迭代的原因就是产品本身，2018 年初加入的 <a href="http://zhangjiee.com/">小伙伴</a> 给 K2 注入了很多产品化的实质性东西。从最初 K2 只是一个单一的容器平台，慢慢的和内部平台融合成为了现在的挖财云。各平台的聚合，本身就是技术的融合，也是入口的融合。融合的同时还解决了内部跨各个平台协作的效率问题，这些带来的效益是显而易见的。对比 1.0 时候的 K2，无论从用户体验，还是上手成本都有非常大的提升。
 </p>
 </div>
 </div>
-<div id="outline-container-orgd7744b9" class="outline-3">
-<h3 id="orgd7744b9"><span class="section-number-3">5.2.</span> 基于容器的云原生应用设计原则</h3>
+<div id="outline-container-section-31831b45a28f" class="outline-3">
+<h3 id="section-31831b45a28f"><span class="section-number-3">5.2.</span> 基于容器的云原生应用设计原则</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 关于应用在容器中运行要注意的一些原则，国外有人已经总结的相当好了，并且还出版了一本书 <a href="https://www.redhat.com/cms/managed-files/cm-oreilly-kubernetes-patterns-ebook-f19824-201910-en.pdf">《Kubernetes Patterns: Reusable Elements for Designing Cloud-Native Applications》</a> 。点击书籍链接可以直接下载，红帽已经将其开源，没有版权问题。以下直接翻译摘录一部分内容：
@@ -518,8 +522,8 @@ CMD ["/my/script", "--with", "--args"]
 </ul>
 
 
-<figure id="org521aeed">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/cloud-native-container-design-principles.png" alt="cloud-native-container-design-principles.png">
+<figure id="generated-17">
+<img src="images/cloud-native-container-design-principles.png" alt="cloud-native-container-design-principles.png" decoding="async" loading="lazy" width="1600" height="789">
 
 </figure>
 
@@ -547,9 +551,9 @@ CMD ["/my/script", "--with", "--args"]
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="bye-2019.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">2019，小结</span><span class="article-nav-date">2020-01-01</span></a><a class="article-nav-link article-nav-older" href="xinjiang-2019.html"><span class="article-nav-label">Older</span><span class="article-nav-title">北疆秋色</span><span class="article-nav-date">2019-10-10</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="bye-2019.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">2019，小结</span><span class="article-nav-date">2020-01-01</span></a><a class="article-nav-link article-nav-older" href="xinjiang-2019.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">北疆秋色</span><span class="article-nav-date">2019-10-10</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2019-11-26 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2019-11-26 Tue 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

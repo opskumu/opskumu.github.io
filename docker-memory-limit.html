@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 内存资源限制</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="➜ cat Dockerfile FROM ubuntu:latest RUN apt-get update &amp;&amp; \ apt-get install stress ➜ docker build -t ubuntu-stress:latest . 2. 内存测试 Runtime constraints on re…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/docker-memory-limit.html"/>
 <meta property="og:title" content="Docker 内存资源限制"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="➜ cat Dockerfile FROM ubuntu:latest RUN apt-get update &amp;&amp; \ apt-get install stress ➜ docker build -t ubuntu-stress:latest . 2. 内存测试 Runtime constraints on re…"/>
 <meta property="og:url" content="https://blog.opskumu.com/docker-memory-limit.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-03-08T00:00:00+08:00"/>
 <meta name="twitter:title" content="Docker 内存资源限制"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="➜ cat Dockerfile FROM ubuntu:latest RUN apt-get update &amp;&amp; \ apt-get install stress ➜ docker build -t ubuntu-stress:latest . 2. 内存测试 Runtime constraints on re…"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,22 +36,22 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org88ea6c6">1. 压测工具</a></li>
-<li><a href="#orgb6f45ca">2. 内存测试</a>
+<li><a href="#section-f8d177ec6045">1. 压测工具</a></li>
+<li><a href="#section-621db310aa2a">2. 内存测试</a>
 <ul>
-<li><a href="#orga027d8d">2.1. <code>-m ... --memory-swap ...</code></a></li>
-<li><a href="#org22932d8">2.2. <code>-m ... --memory-swappiness ...</code></a></li>
-<li><a href="#orgd9a4299">2.3. <code>--memory-reservation ...</code></a></li>
-<li><a href="#orgbcd2562">2.4. <code>--oom-kill-disable</code></a></li>
-<li><a href="#org877868a">2.5. <code>--kernel-memory</code></a></li>
+<li><a href="#section-0e739b445a37">2.1. <code>-m ... --memory-swap ...</code></a></li>
+<li><a href="#section-316b3a7fcd67">2.2. <code>-m ... --memory-swappiness ...</code></a></li>
+<li><a href="#section-13e85994dced">2.3. <code>--memory-reservation ...</code></a></li>
+<li><a href="#section-c523b895f2ef">2.4. <code>--oom-kill-disable</code></a></li>
+<li><a href="#section-3279387f5a87">2.5. <code>--kernel-memory</code></a></li>
 </ul>
 </li>
-<li><a href="#orgb6e8205">3. 内存资源限制 Docker 源码解析</a></li>
+<li><a href="#section-bbaa69f65199">3. 内存资源限制 Docker 源码解析</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org88ea6c6" class="outline-2">
-<h2 id="org88ea6c6"><span class="section-number-2">1.</span> 压测工具</h2>
+<div id="outline-container-section-f8d177ec6045" class="outline-2">
+<h2 id="section-f8d177ec6045"><span class="section-number-2">1.</span> 压测工具</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="http://people.seas.harvard.edu/~apw/stress/">stress</a></li>
@@ -70,8 +72,8 @@ RUN apt-get update &amp;&amp; \
 </div>
 </div>
 </div>
-<div id="outline-container-orgb6f45ca" class="outline-2">
-<h2 id="orgb6f45ca"><span class="section-number-2">2.</span> 内存测试</h2>
+<div id="outline-container-section-621db310aa2a" class="outline-2">
+<h2 id="section-621db310aa2a"><span class="section-number-2">2.</span> 内存测试</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><a href="https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources">Runtime constraints on resources</a></li>
@@ -125,8 +127,8 @@ RUN apt-get update &amp;&amp; \
 </pre>
 </div>
 </div>
-<div id="outline-container-orga027d8d" class="outline-3">
-<h3 id="orga027d8d"><span class="section-number-3">2.1.</span> <code>-m ... --memory-swap ...</code></h3>
+<div id="outline-container-section-0e739b445a37" class="outline-3">
+<h3 id="section-0e739b445a37"><span class="section-number-3">2.1.</span> <code>-m ... --memory-swap ...</code></h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 指定限制内存大小并且设置 memory-swap 值为 -1，表示容器程序使用内存受限，而 swap 空间使用不受限制（宿主 swap 支持使用多少则容器即可使用多少。如果 <code>--memory-swap</code> 设置小于 <code>--memory</code> 则设置不生效，使用默认设置）。
@@ -297,8 +299,8 @@ KiB Swap: 15625212 total,   366160 used, 15259052 free.  4102076 cached Mem
 </p>
 </div>
 </div>
-<div id="outline-container-org22932d8" class="outline-3">
-<h3 id="org22932d8"><span class="section-number-3">2.2.</span> <code>-m ... --memory-swappiness ...</code></h3>
+<div id="outline-container-section-316b3a7fcd67" class="outline-3">
+<h3 id="section-316b3a7fcd67"><span class="section-number-3">2.2.</span> <code>-m ... --memory-swappiness ...</code></h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 swappiness 可以认为是宿主 <code>/proc/sys/vm/swappiness</code> 设定：
@@ -326,16 +328,16 @@ root@e3fd6cc73849:/#
 </div>
 </div>
 </div>
-<div id="outline-container-orgd9a4299" class="outline-3">
-<h3 id="orgd9a4299"><span class="section-number-3">2.3.</span> <code>--memory-reservation ...</code></h3>
+<div id="outline-container-section-13e85994dced" class="outline-3">
+<h3 id="section-13e85994dced"><span class="section-number-3">2.3.</span> <code>--memory-reservation ...</code></h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 <code>--memory-reservation ...</code> 选项可以理解为内存的软限制。如果不设置 <code>-m</code> 选项，那么容器使用内存可以理解为是不受限的。按照官方的说法，memory reservation 设置可以确保容器不会长时间占用大量内存。
 </p>
 </div>
 </div>
-<div id="outline-container-orgbcd2562" class="outline-3">
-<h3 id="orgbcd2562"><span class="section-number-3">2.4.</span> <code>--oom-kill-disable</code></h3>
+<div id="outline-container-section-c523b895f2ef" class="outline-3">
+<h3 id="section-c523b895f2ef"><span class="section-number-3">2.4.</span> <code>--oom-kill-disable</code></h3>
 <div class="outline-text-3" id="text-2-4">
 <div class="org-src-container">
 <pre class="src src-nil">➜  ~ docker run -it --rm -m 100M --memory-swappiness=0 --oom-kill-disable ubuntu-stress:latest /bin/bash
@@ -358,8 +360,8 @@ stress: info: [17] dispatching hogs: 0 cpu, 0 io, 1 vm, 0 hdd
 </p>
 </div>
 </div>
-<div id="outline-container-org877868a" class="outline-3">
-<h3 id="org877868a"><span class="section-number-3">2.5.</span> <code>--kernel-memory</code></h3>
+<div id="outline-container-section-3279387f5a87" class="outline-3">
+<h3 id="section-3279387f5a87"><span class="section-number-3">2.5.</span> <code>--kernel-memory</code></h3>
 <div class="outline-text-3" id="text-2-5">
 <blockquote>
 <p>
@@ -379,8 +381,8 @@ Kernel memory is fundamentally different than user memory as kernel memory can't
 </div>
 </div>
 </div>
-<div id="outline-container-orgb6e8205" class="outline-2">
-<h2 id="orgb6e8205"><span class="section-number-2">3.</span> 内存资源限制 Docker 源码解析</h2>
+<div id="outline-container-section-bbaa69f65199" class="outline-2">
+<h2 id="section-bbaa69f65199"><span class="section-number-2">3.</span> 内存资源限制 Docker 源码解析</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 关于 Docker 资源限制主要是依赖 Linux cgroups 去实现的，关于 cgroups 资源限制实现可以参考：<a href="http://www.infoq.com/cn/articles/docker-kernel-knowledge-cgroups-resource-isolation/">Docker背后的内核知识-cgroups资源限制</a>, libcontainer 配置相关的选项：
@@ -453,9 +455,9 @@ root@fbe9b0abf665:/#
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="for-my-brother.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">马上毕业了，还能做些什么</span><span class="article-nav-date">2016-03-16</span></a><a class="article-nav-link article-nav-older" href="rbd-docker-plugin.html"><span class="article-nav-label">Older</span><span class="article-nav-title">Docker 使用 Ceph RBD Volume</span><span class="article-nav-date">2016-02-17</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="for-my-brother.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">马上毕业了，还能做些什么</span><span class="article-nav-date">2016-03-16</span></a><a class="article-nav-link article-nav-older" href="rbd-docker-plugin.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">Docker 使用 Ceph RBD Volume</span><span class="article-nav-date">2016-02-17</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2016-03-08 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2016-03-08 Tue 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>要不，慢点吧</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="九月的这一天，阳光明媚，秋意正浓，对于我这个半调子程序员来说，最好的选择当然是在家宅着了。一般周末的一天基本上都是在看书，看电影，打游戏中交替度过的，像这两天一睡就是一下午的情况太久没有过了。不过说来，这样的天气，好好慵懒这么一下，当真是相当美好，回味无穷。如果睡醒后，再出去跑那么几圈，那当真是再完美不过了。可是…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
-<meta name="twitter:card" content="summary"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/slow-down.html"/>
 <meta property="og:title" content="要不，慢点吧"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="九月的这一天，阳光明媚，秋意正浓，对于我这个半调子程序员来说，最好的选择当然是在家宅着了。一般周末的一天基本上都是在看书，看电影，打游戏中交替度过的，像这两天一睡就是一下午的情况太久没有过了。不过说来，这样的天气，好好慵懒这么一下，当真是相当美好，回味无穷。如果睡醒后，再出去跑那么几圈，那当真是再完美不过了。可是…"/>
 <meta property="og:url" content="https://blog.opskumu.com/slow-down.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2017-09-17T00:00:00+08:00"/>
+<meta property="og:image" content="https://blog.opskumu.com/images/running.jpg"/>
 <meta name="twitter:title" content="要不，慢点吧"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="九月的这一天，阳光明媚，秋意正浓，对于我这个半调子程序员来说，最好的选择当然是在家宅着了。一般周末的一天基本上都是在看书，看电影，打游戏中交替度过的，像这两天一睡就是一下午的情况太久没有过了。不过说来，这样的天气，好好慵懒这么一下，当真是相当美好，回味无穷。如果睡醒后，再出去跑那么几圈，那当真是再完美不过了。可是…"/>
+<meta name="twitter:image" content="https://blog.opskumu.com/images/running.jpg"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -43,8 +47,8 @@
 </p>
 
 
-<figure id="org0c8238d">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/running.jpg" alt="running.jpg">
+<figure id="generated-1">
+<img src="images/running.jpg" alt="running.jpg" decoding="async" loading="eager" fetchpriority="high" width="413" height="626">
 
 </figure>
 
@@ -64,9 +68,9 @@
 用村上在《当我谈跑步时，我谈些什么》中的一句话结尾吧，"Pain is inevitable, Suffering is optional"。我想，生活与跑步，道理都在这句话了吧，好坏也只能自己去体味。
 </p>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="graceful-shutdown-docker.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">如何优雅的关闭容器</span><span class="article-nav-date">2017-11-12</span></a><a class="article-nav-link article-nav-older" href="persistence.html"><span class="article-nav-label">Older</span><span class="article-nav-title">坚持这件小事儿</span><span class="article-nav-date">2017-09-09</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="graceful-shutdown-docker.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">如何优雅的关闭容器</span><span class="article-nav-date">2017-11-12</span></a><a class="article-nav-link article-nav-older" href="persistence.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">坚持这件小事儿</span><span class="article-nav-date">2017-09-09</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2017-09-09 Sat 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2017-09-17 Sun 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

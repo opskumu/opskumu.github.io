@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 使用 Ceph RBD Volume</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="go get github.com/yp-engineering/rbd-docker-plugin 完成之后编译的二进制路径为 $GOPATH/bin/rbd-docker-plugin ，拷贝到相应测试主机即可。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/rbd-docker-plugin.html"/>
 <meta property="og:title" content="Docker 使用 Ceph RBD Volume"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="go get github.com/yp-engineering/rbd-docker-plugin 完成之后编译的二进制路径为 $GOPATH/bin/rbd-docker-plugin ，拷贝到相应测试主机即可。"/>
 <meta property="og:url" content="https://blog.opskumu.com/rbd-docker-plugin.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-02-17T00:00:00+08:00"/>
 <meta name="twitter:title" content="Docker 使用 Ceph RBD Volume"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="go get github.com/yp-engineering/rbd-docker-plugin 完成之后编译的二进制路径为 $GOPATH/bin/rbd-docker-plugin ，拷贝到相应测试主机即可。"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,16 +36,16 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgba192b9">1. 环境说明</a></li>
-<li><a href="#org933c309">2. 环境构建</a></li>
-<li><a href="#org4aca758">3. 运行 rbd docker plugin</a></li>
-<li><a href="#org123ed75">4. docker 挂载 rbd volume 测试</a></li>
-<li><a href="#org1e2f538">5. 参考文档</a></li>
+<li><a href="#section-a07e0343915b">1. 环境说明</a></li>
+<li><a href="#section-802bd2177bf4">2. 环境构建</a></li>
+<li><a href="#section-e95ad3fc5618">3. 运行 rbd docker plugin</a></li>
+<li><a href="#section-c7be94339973">4. docker 挂载 rbd volume 测试</a></li>
+<li><a href="#section-1f23a7675291">5. 参考文档</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgba192b9" class="outline-2">
-<h2 id="orgba192b9"><span class="section-number-2">1.</span> 环境说明</h2>
+<div id="outline-container-section-a07e0343915b" class="outline-2">
+<h2 id="section-a07e0343915b"><span class="section-number-2">1.</span> 环境说明</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>OS: CentOS 7.1
@@ -62,8 +64,8 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org933c309" class="outline-2">
-<h2 id="org933c309"><span class="section-number-2">2.</span> 环境构建</h2>
+<div id="outline-container-section-802bd2177bf4" class="outline-2">
+<h2 id="section-802bd2177bf4"><span class="section-number-2">2.</span> 环境构建</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说明。
@@ -103,8 +105,8 @@ rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说�
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org4aca758" class="outline-2">
-<h2 id="org4aca758"><span class="section-number-2">3.</span> 运行 rbd docker plugin</h2>
+<div id="outline-container-section-e95ad3fc5618" class="outline-2">
+<h2 id="section-e95ad3fc5618"><span class="section-number-2">3.</span> 运行 rbd docker plugin</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-nil"># ceph osd pool create docker 128
@@ -132,8 +134,8 @@ rbd-volume-plugin: 2016/02/17 10:58:00 main.go:86: INFO: Opening Socket for Dock
 </div>
 </div>
 </div>
-<div id="outline-container-org123ed75" class="outline-2">
-<h2 id="org123ed75"><span class="section-number-2">4.</span> docker 挂载 rbd volume 测试</h2>
+<div id="outline-container-section-c7be94339973" class="outline-2">
+<h2 id="section-c7be94339973"><span class="section-number-2">4.</span> docker 挂载 rbd volume 测试</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
 <pre class="src src-nil"># docker run --volume-driver=rbd --volume foo:/mnt/foo -it busybox sh
@@ -163,8 +165,8 @@ rbd docker plugin driver 会做如下操作（前提是当前镜像不存在）�
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org1e2f538" class="outline-2">
-<h2 id="org1e2f538"><span class="section-number-2">5.</span> 参考文档</h2>
+<div id="outline-container-section-1f23a7675291" class="outline-2">
+<h2 id="section-1f23a7675291"><span class="section-number-2">5.</span> 参考文档</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><a href="http://www.sebastien-han.fr/blog/2015/08/17/getting-started-with-the-docker-rbd-volume-plugin/">Getting Started With the Docker RBD Volume Plugin</a></li>
@@ -173,9 +175,9 @@ rbd docker plugin driver 会做如下操作（前提是当前镜像不存在）�
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="docker-memory-limit.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">Docker 内存资源限制</span><span class="article-nav-date">2016-03-08</span></a><a class="article-nav-link article-nav-older" href="bye-2015.html"><span class="article-nav-label">Older</span><span class="article-nav-title">2015，小结</span><span class="article-nav-date">2016-01-01</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="docker-memory-limit.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">Docker 内存资源限制</span><span class="article-nav-date">2016-03-08</span></a><a class="article-nav-link article-nav-older" href="bye-2015.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">2015，小结</span><span class="article-nav-date">2016-01-01</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2016-02-17 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2016-02-17 Wed 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>自定义 Kubernetes CRD</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="我们知道 Kubernetes 提供 CRD 机制用以扩展资源，在某些场景下我们可以利用 CRD 扩展通过 Kubernetes 存储资源，也就是把 Kubernetes 当作存储来使用。按照官方的说法 CRD + Controller = Operator， kubebuilder 可以生成这样的代码框架，并且…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/kubernetes-crd.html"/>
 <meta property="og:title" content="自定义 Kubernetes CRD"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="我们知道 Kubernetes 提供 CRD 机制用以扩展资源，在某些场景下我们可以利用 CRD 扩展通过 Kubernetes 存储资源，也就是把 Kubernetes 当作存储来使用。按照官方的说法 CRD + Controller = Operator， kubebuilder 可以生成这样的代码框架，并且…"/>
 <meta property="og:url" content="https://blog.opskumu.com/kubernetes-crd.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2021-01-13T00:00:00+08:00"/>
 <meta name="twitter:title" content="自定义 Kubernetes CRD"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="我们知道 Kubernetes 提供 CRD 机制用以扩展资源，在某些场景下我们可以利用 CRD 扩展通过 Kubernetes 存储资源，也就是把 Kubernetes 当作存储来使用。按照官方的说法 CRD + Controller = Operator， kubebuilder 可以生成这样的代码框架，并且…"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,26 +36,26 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5c673b5">1. 理论概要</a></li>
-<li><a href="#orga2191c9">2. kubebuilder 安装</a></li>
-<li><a href="#org47306b7">3. kubebuilder 初始化</a></li>
-<li><a href="#orge46b867">4. kubebuilder 创建 API</a></li>
-<li><a href="#org8444ebd">5. 自定义代码并生成 client 代码</a></li>
-<li><a href="#org0ae8e86">6. 创建 CRD</a></li>
-<li><a href="#org1f86ac6">7. 参考文档</a></li>
+<li><a href="#section-0d45f8d58403">1. 理论概要</a></li>
+<li><a href="#section-4cac0c2563f9">2. kubebuilder 安装</a></li>
+<li><a href="#section-1fdaf6ecb91f">3. kubebuilder 初始化</a></li>
+<li><a href="#section-8e56c20bc67e">4. kubebuilder 创建 API</a></li>
+<li><a href="#section-892b4c068fa2">5. 自定义代码并生成 client 代码</a></li>
+<li><a href="#section-b6eeed77b0a8">6. 创建 CRD</a></li>
+<li><a href="#section-1f23a7675291">7. 参考文档</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org5c673b5" class="outline-2">
-<h2 id="org5c673b5"><span class="section-number-2">1.</span> 理论概要</h2>
+<div id="outline-container-section-0d45f8d58403" class="outline-2">
+<h2 id="section-0d45f8d58403"><span class="section-number-2">1.</span> 理论概要</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 我们知道 Kubernetes 提供 CRD 机制用以扩展资源，在某些场景下我们可以利用 CRD 扩展通过 Kubernetes 存储资源，也就是把 Kubernetes 当作存储来使用。按照官方的说法 CRD + Controller = Operator，<a href="https://github.com/kubernetes-sigs/kubebuilder">kubebuilder</a> 可以生成这样的代码框架，并且可自定义选择是否生成 Controller。client 相关代码则可以通过 <a href="https://github.com/kubernetes/code-generator">code-generator</a> 生成，生成 informer、lister、clientset 等系列代码。通过这种方式，我们只需要在生成的代码中填充业务代码，而无需关心框架之外的代码，这样可以极大地提升开发效率和降低 CRD 的上手门槛。本文通过引入 ConfigMapHistory 这个 CRD 为例，带你从零到一构建和部署 CRD。
 </p>
 </div>
 </div>
-<div id="outline-container-orga2191c9" class="outline-2">
-<h2 id="orga2191c9"><span class="section-number-2">2.</span> kubebuilder 安装</h2>
+<div id="outline-container-section-4cac0c2563f9" class="outline-2">
+<h2 id="section-4cac0c2563f9"><span class="section-number-2">2.</span> kubebuilder 安装</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 kubebuilder 安装文档可以参考官方文档 <a href="https://book.kubebuilder.io/quick-start.html#installation">Install kubebuilder</a> ：
@@ -74,8 +76,8 @@ kubebuilder 安装文档可以参考官方文档 <a href="https://book.kubebuild
 </div>
 </div>
 </div>
-<div id="outline-container-org47306b7" class="outline-2">
-<h2 id="org47306b7"><span class="section-number-2">3.</span> kubebuilder 初始化</h2>
+<div id="outline-container-section-1fdaf6ecb91f" class="outline-2">
+<h2 id="section-1fdaf6ecb91f"><span class="section-number-2">3.</span> kubebuilder 初始化</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 kubebuilder 代码初始化：
@@ -119,8 +121,8 @@ kubebuilder edit --multigroup=true
 </div>
 </div>
 </div>
-<div id="outline-container-orge46b867" class="outline-2">
-<h2 id="orge46b867"><span class="section-number-2">4.</span> kubebuilder 创建 API</h2>
+<div id="outline-container-section-8e56c20bc67e" class="outline-2">
+<h2 id="section-8e56c20bc67e"><span class="section-number-2">4.</span> kubebuilder 创建 API</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
 <pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">kubebuilder create api --group test --version v1 --kind ConfigMapHistory
@@ -137,8 +139,8 @@ Create Controller [y/n]  <span class="org-comment-delimiter"># </span><span clas
 </div>
 </div>
 </div>
-<div id="outline-container-org8444ebd" class="outline-2">
-<h2 id="org8444ebd"><span class="section-number-2">5.</span> 自定义代码并生成 client 代码</h2>
+<div id="outline-container-section-892b4c068fa2" class="outline-2">
+<h2 id="section-892b4c068fa2"><span class="section-number-2">5.</span> 自定义代码并生成 client 代码</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 默认生成 <code>apis/test/v1/configmaphistory_types.go</code> 代码如下：
@@ -370,8 +372,8 @@ Generating informers for test:v1 at github.com/opskumu/crd-example/generated/inf
 </p>
 </div>
 </div>
-<div id="outline-container-org0ae8e86" class="outline-2">
-<h2 id="org0ae8e86"><span class="section-number-2">6.</span> 创建 CRD</h2>
+<div id="outline-container-section-b6eeed77b0a8" class="outline-2">
+<h2 id="section-b6eeed77b0a8"><span class="section-number-2">6.</span> 创建 CRD</h2>
 <div class="outline-text-2" id="text-6">
 <div class="org-src-container">
 <pre class="src src-bash">kubectl create -f config/crd/bases/test.opskumu.com_configmaphistories.yaml
@@ -404,8 +406,8 @@ test   27s
 </p>
 </div>
 </div>
-<div id="outline-container-org1f86ac6" class="outline-2">
-<h2 id="org1f86ac6"><span class="section-number-2">7.</span> 参考文档</h2>
+<div id="outline-container-section-1f23a7675291" class="outline-2">
+<h2 id="section-1f23a7675291"><span class="section-number-2">7.</span> 参考文档</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li><a href="https://github.com/kubernetes/sample-controller">sample-controller</a></li>
@@ -415,9 +417,9 @@ test   27s
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="bye-2020.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">2020，小结</span><span class="article-nav-date">2021-02-16</span></a><a class="article-nav-link article-nav-older" href="kubernetes-mutating-webhook.html"><span class="article-nav-label">Older</span><span class="article-nav-title">自定义 Kubernetes 准入控制器</span><span class="article-nav-date">2021-01-12</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="bye-2020.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">2020，小结</span><span class="article-nav-date">2021-02-16</span></a><a class="article-nav-link article-nav-older" href="kubernetes-mutating-webhook.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">自定义 Kubernetes 准入控制器</span><span class="article-nav-date">2021-01-12</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2021-01-13 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2021-01-13 Wed 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

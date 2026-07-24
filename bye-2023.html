@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>2023，小结</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="今天等待吃晚饭的空隙，看到一位推友的德文签名，顺手点了下翻译，大意是 “你不能拥有生活的一切”。那么一瞬间，这句话击中我的内心并不断回响。是啊，我们都不曾拥有生活的一切，我又在挣扎些什么呢。如果用一句话来总结我的 2023 年的话，做了一些选择，然后就是陷入患得患失的精神状态中不可自拔。也是迎来 2024 年的时…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
-<meta name="twitter:card" content="summary"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/bye-2023.html"/>
 <meta property="og:title" content="2023，小结"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="今天等待吃晚饭的空隙，看到一位推友的德文签名，顺手点了下翻译，大意是 “你不能拥有生活的一切”。那么一瞬间，这句话击中我的内心并不断回响。是啊，我们都不曾拥有生活的一切，我又在挣扎些什么呢。如果用一句话来总结我的 2023 年的话，做了一些选择，然后就是陷入患得患失的精神状态中不可自拔。也是迎来 2024 年的时…"/>
 <meta property="og:url" content="https://blog.opskumu.com/bye-2023.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2024-01-02T00:00:00+08:00"/>
+<meta property="og:image" content="https://blog.opskumu.com/images/today.jpg"/>
 <meta name="twitter:title" content="2023，小结"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="今天等待吃晚饭的空隙，看到一位推友的德文签名，顺手点了下翻译，大意是 “你不能拥有生活的一切”。那么一瞬间，这句话击中我的内心并不断回响。是啊，我们都不曾拥有生活的一切，我又在挣扎些什么呢。如果用一句话来总结我的 2023 年的话，做了一些选择，然后就是陷入患得患失的精神状态中不可自拔。也是迎来 2024 年的时…"/>
+<meta name="twitter:image" content="https://blog.opskumu.com/images/today.jpg"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,17 +38,17 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5d2e243">1. 关于工作</a></li>
-<li><a href="#org292743a">2. 关于生活</a></li>
-<li><a href="#org8865666">3. 再见，2023</a></li>
+<li><a href="#section-2f9bd92f5bc8">1. 关于工作</a></li>
+<li><a href="#section-ccfebb633cc5">2. 关于生活</a></li>
+<li><a href="#section-8e2d2290040f">3. 再见，2023</a></li>
 </ul>
 </div>
 </nav>
 <p>
 今天等待吃晚饭的空隙，看到一位推友的德文签名，顺手点了下翻译，大意是 “你不能拥有生活的一切”。那么一瞬间，这句话击中我的内心并不断回响。是啊，我们都不曾拥有生活的一切，我又在挣扎些什么呢。如果用一句话来总结我的 2023 年的话，做了一些选择，然后就是陷入患得患失的精神状态中不可自拔。也是迎来 2024 年的时候，才开始有点跳脱出这种状态。
 </p>
-<div id="outline-container-org5d2e243" class="outline-2">
-<h2 id="org5d2e243"><span class="section-number-2">1.</span> 关于工作</h2>
+<div id="outline-container-section-2f9bd92f5bc8" class="outline-2">
+<h2 id="section-2f9bd92f5bc8"><span class="section-number-2">1.</span> 关于工作</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 回到刚刚提到的患得患失的状态，主要起因还是在于年中关于工作的选择。当时，因为一些原因选择了内部转岗，离开了从事两年多 SRE 工作的团队。去的团队，是内部专门做 Kubernetes 服务的业务团队，工作内容主要围绕稳定性进行。当时想着和 SRE 的工作多少还是有些关联的，技术栈也没什么实质性的区别，整体相对 SRE 工作应该也可以更聚焦专注一个方向。实际转岗之后，发现之前的一些想法还是想简单了。适应一段时间之后，发现之前遇到的一些问题这边一样存在，所谓的聚焦专注一个方向也并不存在，而要做的事情涉及到大量拉通对齐工作，这本也不是我擅长的。用一个朋友的话说，我 2023 年的几个决定都是对当下预估的太差，对未来预估又太好，导致最后落差太大。
@@ -59,8 +63,8 @@
 </p>
 </div>
 </div>
-<div id="outline-container-org292743a" class="outline-2">
-<h2 id="org292743a"><span class="section-number-2">2.</span> 关于生活</h2>
+<div id="outline-container-section-ccfebb633cc5" class="outline-2">
+<h2 id="section-ccfebb633cc5"><span class="section-number-2">2.</span> 关于生活</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 工作的事情也没有那么不开心，再说不开心的事情也可以说出来让大家开心一下不是。比如，去年迎接 2023 年的时候得了新冠，今年迎接 2024 年的时候得了乙流，赶巧都凑在一年的同一时刻，痛并深刻。
@@ -79,8 +83,8 @@
 </p>
 </div>
 </div>
-<div id="outline-container-org8865666" class="outline-2">
-<h2 id="org8865666"><span class="section-number-2">3.</span> 再见，2023</h2>
+<div id="outline-container-section-8e2d2290040f" class="outline-2">
+<h2 id="section-8e2d2290040f"><span class="section-number-2">3.</span> 再见，2023</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 最后，老规矩，你好，2024。再见，2023。
@@ -93,16 +97,16 @@
 </blockquote>
 
 
-<figure id="orge2ce9d5">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/today.jpg" alt="today.jpg">
+<figure id="generated-1">
+<img src="images/today.jpg" alt="today.jpg" decoding="async" loading="eager" fetchpriority="high" width="1279" height="808">
 
 </figure>
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-older" href="bye-2022.html"><span class="article-nav-label">Older</span><span class="article-nav-title">2022，小结</span><span class="article-nav-date">2023-01-27</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-older" href="bye-2022.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">2022，小结</span><span class="article-nav-date">2023-01-27</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2024-01-02 Tue 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2024-01-02 Tue 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

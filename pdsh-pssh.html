@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>批量主机管理 pdsh &amp; pssh</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="写这篇文章的时候，pdsh、pssh 还是运维管理人员的利器。而几年过去了，这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 了。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/pdsh-pssh.html"/>
 <meta property="og:title" content="批量主机管理 pdsh &amp;amp; pssh"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="写这篇文章的时候，pdsh、pssh 还是运维管理人员的利器。而几年过去了，这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 了。"/>
 <meta property="og:url" content="https://blog.opskumu.com/pdsh-pssh.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2013-06-19T00:00:00+08:00"/>
 <meta name="twitter:title" content="批量主机管理 pdsh &amp;amp; pssh"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="写这篇文章的时候，pdsh、pssh 还是运维管理人员的利器。而几年过去了，这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 了。"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,29 +36,29 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org833067b">1. pssh</a>
+<li><a href="#section-25cf9efed4db">1. pssh</a>
 <ul>
-<li><a href="#orgee32869">1.1. 安装</a></li>
-<li><a href="#orgdb75043">1.2. pssh相关参数</a></li>
-<li><a href="#orgf8c529c">1.3. 附加工具</a></li>
-<li><a href="#org92de57c">1.4. 使用实例</a></li>
-<li><a href="#org8783147">1.5. 参考文档</a></li>
+<li><a href="#section-087db63ab10b">1.1. 安装</a></li>
+<li><a href="#section-c199708bd009">1.2. pssh相关参数</a></li>
+<li><a href="#section-53b42b21e687">1.3. 附加工具</a></li>
+<li><a href="#section-9730b090eb69">1.4. 使用实例</a></li>
+<li><a href="#section-1f23a7675291">1.5. 参考文档</a></li>
 </ul>
 </li>
-<li><a href="#orgb5770c0">2. pdsh</a>
+<li><a href="#section-3d634a3a32cd">2. pdsh</a>
 <ul>
-<li><a href="#org1dcb85b">2.1. pdsh 基本用法</a></li>
-<li><a href="#org7d8cc49">2.2. 使用实例</a>
+<li><a href="#section-0de2dd51b6f3">2.1. pdsh 基本用法</a></li>
+<li><a href="#section-9730b090eb69-2">2.2. 使用实例</a>
 <ul>
-<li><a href="#org6a7db44">2.2.1. 单个主机测试</a></li>
-<li><a href="#orgc19a5ee">2.2.2. 多个主机测试</a></li>
-<li><a href="#org12dbdb7">2.2.3. 逗号分隔主机</a></li>
-<li><a href="#org967da1b">2.2.4. <code>-x</code> 排除某个主机</a></li>
-<li><a href="#orgdf32105">2.2.5. 主机组</a></li>
-<li><a href="#org982e042">2.2.6. <code>dshbak</code> 格式化输出</a></li>
+<li><a href="#section-8403d502f3ff">2.2.1. 单个主机测试</a></li>
+<li><a href="#section-66505f1b6dec">2.2.2. 多个主机测试</a></li>
+<li><a href="#section-007fbfd116b3">2.2.3. 逗号分隔主机</a></li>
+<li><a href="#section-08cc56a1fd1e">2.2.4. <code>-x</code> 排除某个主机</a></li>
+<li><a href="#section-aad5bae4ff2c">2.2.5. 主机组</a></li>
+<li><a href="#section-855d9ea279e2">2.2.6. <code>dshbak</code> 格式化输出</a></li>
 </ul>
 </li>
-<li><a href="#orgfb7c387">2.3. 参考文档</a></li>
+<li><a href="#section-1f23a7675291-2">2.3. 参考文档</a></li>
 </ul>
 </li>
 </ul>
@@ -65,15 +67,15 @@
 <p>
 写这篇文章的时候，pdsh、pssh 还是运维管理人员的利器。而几年过去了，这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 了。
 </p>
-<div id="outline-container-org833067b" class="outline-2">
-<h2 id="org833067b"><span class="section-number-2">1.</span> pssh</h2>
+<div id="outline-container-section-25cf9efed4db" class="outline-2">
+<h2 id="section-25cf9efed4db"><span class="section-number-2">1.</span> pssh</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>pssh</code> 是一个 python 编写可以在多台服务器上执行命令的工具，同时支持拷贝文件，是同类工具中很出色的，类似 <code>pdsh</code> 。为方便操作，使用前请在各个服务器上配置好密钥认证访问。项目地址: <a href="https://code.google.com/p/parallel-ssh">parallel-ssh</a>
 </p>
 </div>
-<div id="outline-container-orgee32869" class="outline-3">
-<h3 id="orgee32869"><span class="section-number-3">1.1.</span> 安装</h3>
+<div id="outline-container-section-087db63ab10b" class="outline-3">
+<h3 id="section-087db63ab10b"><span class="section-number-3">1.1.</span> 安装</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-nil">wget http://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz
@@ -84,8 +86,8 @@ python setup.py install
 </div>
 </div>
 </div>
-<div id="outline-container-orgdb75043" class="outline-3">
-<h3 id="orgdb75043"><span class="section-number-3">1.2.</span> pssh相关参数</h3>
+<div id="outline-container-section-c199708bd009" class="outline-3">
+<h3 id="section-c199708bd009"><span class="section-number-3">1.2.</span> pssh相关参数</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li><code>pssh</code> 在多个主机上并行地运行命令
@@ -110,8 +112,8 @@ python setup.py install
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf8c529c" class="outline-3">
-<h3 id="orgf8c529c"><span class="section-number-3">1.3.</span> 附加工具</h3>
+<div id="outline-container-section-53b42b21e687" class="outline-3">
+<h3 id="section-53b42b21e687"><span class="section-number-3">1.3.</span> 附加工具</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li><code>pscp</code> 传输文件到多个 hosts，类似 <code>scp</code>
@@ -130,8 +132,8 @@ python setup.py install
 </ul>
 </div>
 </div>
-<div id="outline-container-org92de57c" class="outline-3">
-<h3 id="org92de57c"><span class="section-number-3">1.4.</span> 使用实例</h3>
+<div id="outline-container-section-9730b090eb69" class="outline-3">
+<h3 id="section-9730b090eb69"><span class="section-number-3">1.4.</span> 使用实例</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 写入主机到文件中，语法为 <code>用户名@主机ip</code>
@@ -188,8 +190,8 @@ Stderr: Connection to 10.0.0.8 closed.
 </div>
 </div>
 </div>
-<div id="outline-container-org8783147" class="outline-3">
-<h3 id="org8783147"><span class="section-number-3">1.5.</span> 参考文档</h3>
+<div id="outline-container-section-1f23a7675291" class="outline-3">
+<h3 id="section-1f23a7675291"><span class="section-number-3">1.5.</span> 参考文档</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li><a href="http://linux.die.net/man/1/pssh">pssh</a></li>
@@ -198,15 +200,15 @@ Stderr: Connection to 10.0.0.8 closed.
 </div>
 </div>
 </div>
-<div id="outline-container-orgb5770c0" class="outline-2">
-<h2 id="orgb5770c0"><span class="section-number-2">2.</span> pdsh</h2>
+<div id="outline-container-section-3d634a3a32cd" class="outline-2">
+<h2 id="section-3d634a3a32cd"><span class="section-number-2">2.</span> pdsh</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>pdsh</code> (Parallel Distributed Shell) 可并行的执行对目标主机的操作，对于批量执行命令和分发任务有很大的帮助，在使用前需要配置 ssh 无密码登录，<a href="http://sourceforge.net/projects/pdsh/">点击下载</a>
 </p>
 </div>
-<div id="outline-container-org1dcb85b" class="outline-3">
-<h3 id="org1dcb85b"><span class="section-number-3">2.1.</span> pdsh 基本用法</h3>
+<div id="outline-container-section-0de2dd51b6f3" class="outline-3">
+<h3 id="section-0de2dd51b6f3"><span class="section-number-3">2.1.</span> pdsh 基本用法</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-nil">$ pdsh -h
@@ -234,12 +236,12 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </div>
 </div>
 </div>
-<div id="outline-container-org7d8cc49" class="outline-3">
-<h3 id="org7d8cc49"><span class="section-number-3">2.2.</span> 使用实例</h3>
+<div id="outline-container-section-9730b090eb69-2" class="outline-3">
+<h3 id="section-9730b090eb69-2"><span class="section-number-3">2.2.</span> 使用实例</h3>
 <div class="outline-text-3" id="text-2-2">
 </div>
-<div id="outline-container-org6a7db44" class="outline-4">
-<h4 id="org6a7db44"><span class="section-number-4">2.2.1.</span> 单个主机测试</h4>
+<div id="outline-container-section-8403d502f3ff" class="outline-4">
+<h4 id="section-8403d502f3ff"><span class="section-number-4">2.2.1.</span> 单个主机测试</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <div class="org-src-container">
 <pre class="src src-nil">$ pdsh -w 192.168.0.231 -l root uptime
@@ -248,8 +250,8 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </div>
 </div>
 </div>
-<div id="outline-container-orgc19a5ee" class="outline-4">
-<h4 id="orgc19a5ee"><span class="section-number-4">2.2.2.</span> 多个主机测试</h4>
+<div id="outline-container-section-66505f1b6dec" class="outline-4">
+<h4 id="section-66505f1b6dec"><span class="section-number-4">2.2.2.</span> 多个主机测试</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <div class="org-src-container">
 <pre class="src src-nil">$ pdsh -w 192.168.0.[231-233] -l root uptime
@@ -260,8 +262,8 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </div>
 </div>
 </div>
-<div id="outline-container-org12dbdb7" class="outline-4">
-<h4 id="org12dbdb7"><span class="section-number-4">2.2.3.</span> 逗号分隔主机</h4>
+<div id="outline-container-section-007fbfd116b3" class="outline-4">
+<h4 id="section-007fbfd116b3"><span class="section-number-4">2.2.3.</span> 逗号分隔主机</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <div class="org-src-container">
 <pre class="src src-nil">$ pdsh -w 192.168.0.231,192.168.0.234 -l root uptime
@@ -271,8 +273,8 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </div>
 </div>
 </div>
-<div id="outline-container-org967da1b" class="outline-4">
-<h4 id="org967da1b"><span class="section-number-4">2.2.4.</span> <code>-x</code> 排除某个主机</h4>
+<div id="outline-container-section-08cc56a1fd1e" class="outline-4">
+<h4 id="section-08cc56a1fd1e"><span class="section-number-4">2.2.4.</span> <code>-x</code> 排除某个主机</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <div class="org-src-container">
 <pre class="src src-nil">$ pdsh -w 192.168.0.[231-233] -x 192.168.0.232 -l root uptime
@@ -282,8 +284,8 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </div>
 </div>
 </div>
-<div id="outline-container-orgdf32105" class="outline-4">
-<h4 id="orgdf32105"><span class="section-number-4">2.2.5.</span> 主机组</h4>
+<div id="outline-container-section-aad5bae4ff2c" class="outline-4">
+<h4 id="section-aad5bae4ff2c"><span class="section-number-4">2.2.5.</span> 主机组</h4>
 <div class="outline-text-4" id="text-2-2-5">
 <p>
 对于 <code>-g</code> 组，把对应的主机写入到 <code>/etc/dsh/group/</code> 或 <code>~/.dsh/group/</code> 目录下的文件中即可，文件名就是对应组名
@@ -308,8 +310,8 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </div>
 </div>
 </div>
-<div id="outline-container-org982e042" class="outline-4">
-<h4 id="org982e042"><span class="section-number-4">2.2.6.</span> <code>dshbak</code> 格式化输出</h4>
+<div id="outline-container-section-855d9ea279e2" class="outline-4">
+<h4 id="section-855d9ea279e2"><span class="section-number-4">2.2.6.</span> <code>dshbak</code> 格式化输出</h4>
 <div class="outline-text-4" id="text-2-2-6">
 <p>
 <code>pdsh</code> 的缺省输出格式为主机名加该主机的输出，在主机或输出多时会比较混乱，可以采用 <code>dshbak</code> 做一些格式化，让输出更清晰。
@@ -343,8 +345,8 @@ Wed Jun 19 16:24:19 CST 2013
 </div>
 </div>
 </div>
-<div id="outline-container-orgfb7c387" class="outline-3">
-<h3 id="orgfb7c387"><span class="section-number-3">2.3.</span> 参考文档</h3>
+<div id="outline-container-section-1f23a7675291-2" class="outline-3">
+<h3 id="section-1f23a7675291-2"><span class="section-number-3">2.3.</span> 参考文档</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li><a href="https://code.google.com/p/pdsh/wiki/UsingPDSH">Using PDSH</a></li>
@@ -353,9 +355,9 @@ Wed Jun 19 16:24:19 CST 2013
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="tmux.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">终端利器 Tmux</span><span class="article-nav-date">2013-08-06</span></a><a class="article-nav-link article-nav-older" href="top.html"><span class="article-nav-label">Older</span><span class="article-nav-title">top command tips</span><span class="article-nav-date">2013-06-07</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="tmux.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">终端利器 Tmux</span><span class="article-nav-date">2013-08-06</span></a><a class="article-nav-link article-nav-older" href="top.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">top command tips</span><span class="article-nav-date">2013-06-07</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2013-06-19 Wed 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2013-06-19 Wed 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>

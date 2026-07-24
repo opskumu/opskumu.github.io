@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- 2026-05-16 Sat 16:04 -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 学习笔记</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog." />
+<meta name="description" content="Docker 使用客户端-服务器 (C/S) 架构模式。Docker 客户端会与 Docker 守护进程进行通信。Docker 守护进程会处理复杂繁重的任务，例如建立、运行、发布你的 Docker 容器。Docker 客户端和守护进程可以运行在同一个系统上，当然你也可以使用 Docker 客户端去连接一个远程的 …" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
 <link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
-<meta property="og:type" content="article"/>
 <meta property="og:locale" content="zh_CN"/>
-<meta name="twitter:card" content="summary"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
 <script defer src="js/site.js"></script>
 <link rel="canonical" href="https://blog.opskumu.com/docker.html"/>
 <meta property="og:title" content="Docker 学习笔记"/>
-<meta property="og:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta property="og:description" content="Docker 使用客户端-服务器 (C/S) 架构模式。Docker 客户端会与 Docker 守护进程进行通信。Docker 守护进程会处理复杂繁重的任务，例如建立、运行、发布你的 Docker 容器。Docker 客户端和守护进程可以运行在同一个系统上，当然你也可以使用 Docker 客户端去连接一个远程的 …"/>
 <meta property="og:url" content="https://blog.opskumu.com/docker.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2014-12-22T00:00:00+08:00"/>
+<meta property="og:image" content="https://blog.opskumu.com/images/docker_arch.png"/>
 <meta name="twitter:title" content="Docker 学习笔记"/>
-<meta name="twitter:description" content="Personal notes on Kubernetes, Linux, Emacs, and tools — Kumu's blog."/>
+<meta name="twitter:description" content="Docker 使用客户端-服务器 (C/S) 架构模式。Docker 客户端会与 Docker 守护进程进行通信。Docker 守护进程会处理复杂繁重的任务，例如建立、运行、发布你的 Docker 容器。Docker 客户端和守护进程可以运行在同一个系统上，当然你也可以使用 Docker 客户端去连接一个远程的 …"/>
+<meta name="twitter:image" content="https://blog.opskumu.com/images/docker_arch.png"/>
+<link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到主要内容</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">博客</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">关于</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -34,180 +38,180 @@
 <h2>&#30446;&#24405;</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4dfa800">1. Docker 简介</a>
+<li><a href="#section-855746898079">1. Docker 简介</a>
 <ul>
-<li><a href="#org94bf7f0">1.1. Docker 守护进程</a></li>
-<li><a href="#org40d35d1">1.2. Docker 客户端</a></li>
-<li><a href="#org93932cd">1.3. Docker 内部</a>
+<li><a href="#section-fea333bb0e46">1.1. Docker 守护进程</a></li>
+<li><a href="#section-332e3696df55">1.2. Docker 客户端</a></li>
+<li><a href="#section-fb33dc7404b4">1.3. Docker 内部</a>
 <ul>
-<li><a href="#org1ba7742">1.3.1. Docker 镜像</a></li>
-<li><a href="#org542d07d">1.3.2. Docker 仓库</a></li>
-<li><a href="#org2360269">1.3.3. Docker 容器</a></li>
+<li><a href="#section-61ae7034b6b1">1.3.1. Docker 镜像</a></li>
+<li><a href="#section-16221f36b662">1.3.2. Docker 仓库</a></li>
+<li><a href="#section-728f1a4fb8e5">1.3.3. Docker 容器</a></li>
 </ul>
 </li>
-<li><a href="#orge51973b">1.4. libcontainer</a></li>
-<li><a href="#org69ba2a9">1.5. 命名空间「Namespaces」</a>
+<li><a href="#section-4d019721a0fb">1.4. libcontainer</a></li>
+<li><a href="#section-9919defcbce1">1.5. 命名空间「Namespaces」</a>
 <ul>
-<li><a href="#org560efe4">1.5.1. pid namespace</a></li>
-<li><a href="#orga062c5d">1.5.2. mnt namespace</a></li>
-<li><a href="#orgf380488">1.5.3. net namespace</a></li>
-<li><a href="#org2a6aed2">1.5.4. uts namespace</a></li>
-<li><a href="#org0eec2d2">1.5.5. ipc namespace</a></li>
-<li><a href="#org5490c3d">1.5.6. user namespace</a></li>
-<li><a href="#org06c250d">1.5.7. Reference</a></li>
+<li><a href="#section-e6070d278060">1.5.1. pid namespace</a></li>
+<li><a href="#section-7507bbe17551">1.5.2. mnt namespace</a></li>
+<li><a href="#section-7acc86ead0a4">1.5.3. net namespace</a></li>
+<li><a href="#section-05ec44291c86">1.5.4. uts namespace</a></li>
+<li><a href="#section-e45db2a8dbc5">1.5.5. ipc namespace</a></li>
+<li><a href="#section-8a388f072ede">1.5.6. user namespace</a></li>
+<li><a href="#section-02ab610f4245">1.5.7. Reference</a></li>
 </ul>
 </li>
-<li><a href="#org76bd2cc">1.6. 资源配额「cgroups」</a></li>
+<li><a href="#section-288b9f50c8ff">1.6. 资源配额「cgroups」</a></li>
 </ul>
 </li>
-<li><a href="#orgb3030a6">2. Docker 安装</a></li>
-<li><a href="#orgdd2364c">3. Docker 基础用法</a>
+<li><a href="#section-023ac0fafde3">2. Docker 安装</a></li>
+<li><a href="#section-be14d26739ca">3. Docker 基础用法</a>
 <ul>
-<li><a href="#org5436e06">3.1. Search images</a></li>
-<li><a href="#org41599e0">3.2. Pull images</a></li>
-<li><a href="#org9ce9cbe">3.3. Running an interactive shell</a></li>
-<li><a href="#orgbe5e193">3.4. 相关快捷键</a></li>
+<li><a href="#section-1d03c025bb84">3.1. Search images</a></li>
+<li><a href="#section-7ca7ad45b055">3.2. Pull images</a></li>
+<li><a href="#section-068b3c011183">3.3. Running an interactive shell</a></li>
+<li><a href="#section-5a6983d2aeb6">3.4. 相关快捷键</a></li>
 </ul>
 </li>
-<li><a href="#orgcd2216f">4. Docker 命令帮助</a>
+<li><a href="#section-5a5592999a69">4. Docker 命令帮助</a>
 <ul>
-<li><a href="#org9808686">4.1. docker help</a>
+<li><a href="#section-41f841017610">4.1. docker help</a>
 <ul>
-<li><a href="#org7af2fd4">4.1.1. docker command</a></li>
-<li><a href="#orgb2a1e30">4.1.2. docker option</a></li>
+<li><a href="#section-d36b513d668b">4.1.1. docker command</a></li>
+<li><a href="#section-670b236f54d2">4.1.2. docker option</a></li>
 </ul>
 </li>
-<li><a href="#org8c5333a">4.2. docker search</a></li>
-<li><a href="#orgcb13e49">4.3. docker info</a></li>
-<li><a href="#org1226651">4.4. docker pull &amp;&amp; docker push</a></li>
-<li><a href="#orgb80cff7">4.5. docker images</a></li>
-<li><a href="#org6dfc306">4.6. docker rmi</a></li>
-<li><a href="#org03788d3">4.7. docker run</a></li>
-<li><a href="#org3dd4ccc">4.8. docker start|stop|kill&#x2026; &#x2026;</a></li>
-<li><a href="#org8940232">4.9. Docker 1.3 新增特性和命令</a>
+<li><a href="#section-f24f165eba54">4.2. docker search</a></li>
+<li><a href="#section-c59521be2579">4.3. docker info</a></li>
+<li><a href="#section-e21fdc3ec971">4.4. docker pull &amp;&amp; docker push</a></li>
+<li><a href="#section-57e5029c4aa1">4.5. docker images</a></li>
+<li><a href="#section-cbfd9ca8fc6d">4.6. docker rmi</a></li>
+<li><a href="#section-247f398fbcae">4.7. docker run</a></li>
+<li><a href="#section-64d8ecca50da">4.8. docker start|stop|kill&#x2026; &#x2026;</a></li>
+<li><a href="#section-cff92f068533">4.9. Docker 1.3 新增特性和命令</a>
 <ul>
-<li><a href="#org121c77e">4.9.1. Digital Signature Verification</a></li>
-<li><a href="#orgcc8aefd">4.9.2. Inject new processes with <code>docker exec</code></a></li>
-<li><a href="#org01afa8c">4.9.3. Tune container lifecycles with <code>docker create</code></a></li>
-<li><a href="#orgdd8f00a">4.9.4. Security Options</a></li>
+<li><a href="#section-63c77915c649">4.9.1. Digital Signature Verification</a></li>
+<li><a href="#section-8cee98f49564">4.9.2. Inject new processes with <code>docker exec</code></a></li>
+<li><a href="#section-03ada4f1db90">4.9.3. Tune container lifecycles with <code>docker create</code></a></li>
+<li><a href="#section-937a47f59e13">4.9.4. Security Options</a></li>
 </ul>
 </li>
-<li><a href="#org7b3f6ca">4.10. Docker 1.5 新特性</a></li>
+<li><a href="#section-cb7160c34df9">4.10. Docker 1.5 新特性</a></li>
 </ul>
 </li>
-<li><a href="#orgea360e6">5. Docker 端口映射</a>
+<li><a href="#section-d5c00e41d19c">5. Docker 端口映射</a>
 <ul>
-<li><a href="#org8ae3923">5.1. 自动映射端口</a></li>
-<li><a href="#org325f959">5.2. 绑定端口到指定接口</a>
+<li><a href="#section-d553c9e7fe78">5.1. 自动映射端口</a></li>
+<li><a href="#section-8e5ea44a0f0e">5.2. 绑定端口到指定接口</a>
 <ul>
-<li><a href="#orgd58e12a">5.2.1. 绑定 TCP 端口</a></li>
-<li><a href="#org5853516">5.2.2. 绑定 UDP 端口</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org6ecb109">6. Docker 网络配置</a>
-<ul>
-<li><a href="#org7764bd1">6.1. Docker 四种网络模式</a>
-<ul>
-<li><a href="#org9078908">6.1.1. host 模式</a></li>
-<li><a href="#org5bb96ef">6.1.2. container 模式</a></li>
-<li><a href="#orgc79355d">6.1.3. none模式</a></li>
-<li><a href="#org75df7e1">6.1.4. bridge模式</a></li>
-</ul>
-</li>
-<li><a href="#org9d65d12">6.2. 列出当前主机网桥</a></li>
-<li><a href="#org07acae6">6.3. 查看当前 docker0 ip</a></li>
-<li><a href="#orgc76227c">6.4. 运行一个容器</a>
-<ul>
-<li><a href="#org7a154c8">6.4.1. 使用特定范围的 IP</a></li>
-</ul>
-</li>
-<li><a href="#orge684e24">6.5. 不同主机间容器通信</a>
-<ul>
-<li><a href="#org11380fe">6.5.1. 安装相应依赖软件</a></li>
-<li><a href="#org766724c">6.5.2. 桥接网络</a></li>
-<li><a href="#orgf1acc75">6.5.3. pipework</a></li>
+<li><a href="#section-ec181b5b8af0">5.2.1. 绑定 TCP 端口</a></li>
+<li><a href="#section-4e084976ec0c">5.2.2. 绑定 UDP 端口</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgfa3ebed">7. Dockerfile</a>
+<li><a href="#section-72281d95df31">6. Docker 网络配置</a>
 <ul>
-<li><a href="#org0b43915">7.1. FROM</a></li>
-<li><a href="#orged388a8">7.2. MAINTAINER</a></li>
-<li><a href="#orgd58e8a7">7.3. CMD</a></li>
-<li><a href="#org4369b1d">7.4. EXPOSE</a></li>
-<li><a href="#org08fa27a">7.5. ENV</a></li>
-<li><a href="#org049e2de">7.6. ADD</a></li>
-<li><a href="#org1950841">7.7. COPY</a></li>
-<li><a href="#orgfd158d1">7.8. ENTRYPOINT</a>
+<li><a href="#section-bda2683efcad">6.1. Docker 四种网络模式</a>
 <ul>
-<li><a href="#org7fa96be">7.8.1. Exec form ENTRYPOINT 例子</a></li>
-<li><a href="#orgd64127e">7.8.2. Shell form ENTRYPOINT 例子</a></li>
+<li><a href="#section-c4d99fc285e7">6.1.1. host 模式</a></li>
+<li><a href="#section-8cde1241cf4f">6.1.2. container 模式</a></li>
+<li><a href="#section-edabca1b5fec">6.1.3. none模式</a></li>
+<li><a href="#section-794eb51c2309">6.1.4. bridge模式</a></li>
 </ul>
 </li>
-<li><a href="#org7aa7743">7.9. VOLUME</a></li>
-<li><a href="#orga14e094">7.10. USER</a></li>
-<li><a href="#org5a9b4c3">7.11. WORKDIR</a></li>
-<li><a href="#org0a390f0">7.12. ONBUILD</a></li>
-<li><a href="#orgb92af89">7.13. Dockerfile Examples</a></li>
-<li><a href="#org12aa18e">7.14. docker build</a></li>
-<li><a href="#org763f7ba">7.15. dockerfile 最佳实践</a>
+<li><a href="#section-d92a6d3e5a7e">6.2. 列出当前主机网桥</a></li>
+<li><a href="#section-b499fd391b43">6.3. 查看当前 docker0 ip</a></li>
+<li><a href="#section-ec33af8df650">6.4. 运行一个容器</a>
 <ul>
-<li><a href="#org6fdc462">7.15.1. Dockerfile 指令</a></li>
+<li><a href="#section-e2445693b311">6.4.1. 使用特定范围的 IP</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#orge595640">8. 容器数据管理</a>
+<li><a href="#section-22a3f781fdb1">6.5. 不同主机间容器通信</a>
 <ul>
-<li><a href="#org4002ff8">8.1. 数据卷</a>
-<ul>
-<li><a href="#orgac9605a">8.1.1. 添加一个数据卷</a></li>
-<li><a href="#org8503507">8.1.2. 挂载宿主机目录为一个数据卷</a></li>
-</ul>
-</li>
-<li><a href="#orgad77146">8.2. 创建和挂载一个数据卷容器</a></li>
-<li><a href="#orgc929e65">8.3. 备份、恢复或迁移数据卷</a>
-<ul>
-<li><a href="#org7c51500">8.3.1. 备份</a></li>
-<li><a href="#org3a9cb1c">8.3.2. 恢复</a></li>
-</ul>
-</li>
-<li><a href="#org3bc24d7">8.4. 删除 Volumes</a></li>
-</ul>
-</li>
-<li><a href="#orgaa8ff76">9. 链接容器</a>
-<ul>
-<li><a href="#orgcfd8302">9.1. 容器命名</a></li>
-<li><a href="#orga44789f">9.2. 链接容器</a>
-<ul>
-<li><a href="#org217b4fe">9.2.1. 环境变量</a></li>
-<li><a href="#org44867ed">9.2.2. 更新 <code>/etc/hosts</code> 文件</a></li>
+<li><a href="#section-d4369dfc9ecb">6.5.1. 安装相应依赖软件</a></li>
+<li><a href="#section-535c0478e6fa">6.5.2. 桥接网络</a></li>
+<li><a href="#section-de873f9f4833">6.5.3. pipework</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org2011402">10. 构建私有库</a>
+<li><a href="#section-558c49b60456">7. Dockerfile</a>
 <ul>
-<li><a href="#orge2cf454">10.1. 快速构建</a></li>
-<li><a href="#org65379b4">10.2. 不使用容器构建 registry</a>
+<li><a href="#section-0b1e95cfd977">7.1. FROM</a></li>
+<li><a href="#section-86416ef3eeb4">7.2. MAINTAINER</a></li>
+<li><a href="#section-abac36149cf8">7.3. CMD</a></li>
+<li><a href="#section-0d23a9d9da66">7.4. EXPOSE</a></li>
+<li><a href="#section-920f8f5815b3">7.5. ENV</a></li>
+<li><a href="#section-58d1bbce297d">7.6. ADD</a></li>
+<li><a href="#section-f84e2e2dadd8">7.7. COPY</a></li>
+<li><a href="#section-e89dd390584c">7.8. ENTRYPOINT</a>
 <ul>
-<li><a href="#org57b9401">10.2.1. 安装必要的软件</a></li>
-<li><a href="#orgcac6ef7">10.2.2. 配置 docker-registry</a></li>
-<li><a href="#org4130792">10.2.3. 运行</a></li>
-<li><a href="#org5235d43">10.2.4. 高级启动方式 「不推荐」</a></li>
+<li><a href="#section-d3d32b8512fc">7.8.1. Exec form ENTRYPOINT 例子</a></li>
+<li><a href="#section-f1fbb050a7ea">7.8.2. Shell form ENTRYPOINT 例子</a></li>
 </ul>
 </li>
-<li><a href="#orge69d877">10.3. 提交指定容器到私有库</a></li>
+<li><a href="#section-d387fc8d57b2">7.9. VOLUME</a></li>
+<li><a href="#section-12dea96fec20">7.10. USER</a></li>
+<li><a href="#section-a5b229b4b144">7.11. WORKDIR</a></li>
+<li><a href="#section-c9864602671d">7.12. ONBUILD</a></li>
+<li><a href="#section-e8c2da32b221">7.13. Dockerfile Examples</a></li>
+<li><a href="#section-b48577ef56cc">7.14. docker build</a></li>
+<li><a href="#section-b0f5f334cd30">7.15. dockerfile 最佳实践</a>
+<ul>
+<li><a href="#section-db9065cf9ea8">7.15.1. Dockerfile 指令</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#section-f7812c6ef20e">8. 容器数据管理</a>
+<ul>
+<li><a href="#section-859648d16509">8.1. 数据卷</a>
+<ul>
+<li><a href="#section-80ecf9378eee">8.1.1. 添加一个数据卷</a></li>
+<li><a href="#section-a108c6e3ded3">8.1.2. 挂载宿主机目录为一个数据卷</a></li>
+</ul>
+</li>
+<li><a href="#section-eee31e08e3db">8.2. 创建和挂载一个数据卷容器</a></li>
+<li><a href="#section-3963408d35c6">8.3. 备份、恢复或迁移数据卷</a>
+<ul>
+<li><a href="#section-2aadd3e0b683">8.3.1. 备份</a></li>
+<li><a href="#section-79748ca1c6e5">8.3.2. 恢复</a></li>
+</ul>
+</li>
+<li><a href="#section-c3a159bcf9fd">8.4. 删除 Volumes</a></li>
+</ul>
+</li>
+<li><a href="#section-b615654b35fd">9. 链接容器</a>
+<ul>
+<li><a href="#section-c85775f6853e">9.1. 容器命名</a></li>
+<li><a href="#section-b615654b35fd-2">9.2. 链接容器</a>
+<ul>
+<li><a href="#section-8da07705aba6">9.2.1. 环境变量</a></li>
+<li><a href="#section-88c5081f00d4">9.2.2. 更新 <code>/etc/hosts</code> 文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#section-6c0e85d075a8">10. 构建私有库</a>
+<ul>
+<li><a href="#section-e52097d79c9e">10.1. 快速构建</a></li>
+<li><a href="#section-eda3988251a9">10.2. 不使用容器构建 registry</a>
+<ul>
+<li><a href="#section-f2c208236f28">10.2.1. 安装必要的软件</a></li>
+<li><a href="#section-789d1d2f20e9">10.2.2. 配置 docker-registry</a></li>
+<li><a href="#section-0c3acd446f19">10.2.3. 运行</a></li>
+<li><a href="#section-66a5ce1796fe">10.2.4. 高级启动方式 「不推荐」</a></li>
+</ul>
+</li>
+<li><a href="#section-bbbbe62c1a2f">10.3. 提交指定容器到私有库</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org4dfa800" class="outline-2">
-<h2 id="org4dfa800"><span class="section-number-2">1.</span> Docker 简介</h2>
+<div id="outline-container-section-855746898079" class="outline-2">
+<h2 id="section-855746898079"><span class="section-number-2">1.</span> Docker 简介</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Docker 两个主要部件：
@@ -223,29 +227,29 @@ Docker 使用客户端-服务器 (C/S) 架构模式。Docker 客户端会与 Doc
 </p>
 
 
-<figure id="orgda78941">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_arch.png" alt="docker_arch.png">
+<figure id="generated-1">
+<img src="images/docker_arch.png" alt="docker_arch.png" decoding="async" loading="eager" fetchpriority="high" width="577" height="487">
 
 </figure>
 </div>
-<div id="outline-container-org94bf7f0" class="outline-3">
-<h3 id="org94bf7f0"><span class="section-number-3">1.1.</span> Docker 守护进程</h3>
+<div id="outline-container-section-fea333bb0e46" class="outline-3">
+<h3 id="section-fea333bb0e46"><span class="section-number-3">1.1.</span> Docker 守护进程</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 如上图所示，Docker 守护进程运行在一台主机上。用户并不直接和守护进程进行交互，而是通过 Docker 客户端间接和其通信。
 </p>
 </div>
 </div>
-<div id="outline-container-org40d35d1" class="outline-3">
-<h3 id="org40d35d1"><span class="section-number-3">1.2.</span> Docker 客户端</h3>
+<div id="outline-container-section-332e3696df55" class="outline-3">
+<h3 id="section-332e3696df55"><span class="section-number-3">1.2.</span> Docker 客户端</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Docker 客户端，实际上是 docker 的二进制程序，是主要的用户与 Docker 交互方式。它接收用户指令并且与背后的 Docker 守护进程通信，如此来回往复。
 </p>
 </div>
 </div>
-<div id="outline-container-org93932cd" class="outline-3">
-<h3 id="org93932cd"><span class="section-number-3">1.3.</span> Docker 内部</h3>
+<div id="outline-container-section-fb33dc7404b4" class="outline-3">
+<h3 id="section-fb33dc7404b4"><span class="section-number-3">1.3.</span> Docker 内部</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 要理解 Docker 内部构建，需要理解以下三种部件：
@@ -257,24 +261,24 @@ Docker 客户端，实际上是 docker 的二进制程序，是主要的用户�
 <li>Docker 容器 - Docker containers</li>
 </ul>
 </div>
-<div id="outline-container-org1ba7742" class="outline-4">
-<h4 id="org1ba7742"><span class="section-number-4">1.3.1.</span> Docker 镜像</h4>
+<div id="outline-container-section-61ae7034b6b1" class="outline-4">
+<h4 id="section-61ae7034b6b1"><span class="section-number-4">1.3.1.</span> Docker 镜像</h4>
 <div class="outline-text-4" id="text-1-3-1">
 <p>
 Docker 镜像是 Docker 容器运行时的只读模板，每一个镜像由一系列的层 (layers) 组成。Docker 使用 UnionFS 来将这些层联合到单独的镜像中。UnionFS 允许独立文件系统中的文件和文件夹(称之为分支)被透明覆盖，形成一个单独连贯的文件系统。正因为有了这些层的存在，Docker 是如此的轻量。当你改变了一个 Docker 镜像，比如升级到某个程序到新的版本，一个新的层会被创建。因此，不用替换整个原先的镜像或者重新建立(在使用虚拟机的时候你可能会这么做)，只是一个新的层被添加或升级了。现在你不用重新发布整个镜像，只需要升级，层使得分发 Docker 镜像变得简单和快速。
 </p>
 </div>
 </div>
-<div id="outline-container-org542d07d" class="outline-4">
-<h4 id="org542d07d"><span class="section-number-4">1.3.2.</span> Docker 仓库</h4>
+<div id="outline-container-section-16221f36b662" class="outline-4">
+<h4 id="section-16221f36b662"><span class="section-number-4">1.3.2.</span> Docker 仓库</h4>
 <div class="outline-text-4" id="text-1-3-2">
 <p>
 Docker 仓库用来保存镜像，可以理解为代码控制中的代码仓库。同样的，Docker 仓库也有公有和私有的概念。公有的 Docker 仓库名字是 Docker Hub。Docker Hub 提供了庞大的镜像集合供使用。这些镜像可以是自己创建，或者在别人的镜像基础上创建。Docker 仓库是 Docker 的分发部分。
 </p>
 </div>
 </div>
-<div id="outline-container-org2360269" class="outline-4">
-<h4 id="org2360269"><span class="section-number-4">1.3.3.</span> Docker 容器</h4>
+<div id="outline-container-section-728f1a4fb8e5" class="outline-4">
+<h4 id="section-728f1a4fb8e5"><span class="section-number-4">1.3.3.</span> Docker 容器</h4>
 <div class="outline-text-4" id="text-1-3-3">
 <p>
 Docker 容器和文件夹很类似，一个Docker容器包含了所有的某个应用运行所需要的环境。每一个 Docker 容器都是从 Docker 镜像创建的。Docker 容器可以运行、开始、停止、移动和删除。每一个 Docker 容器都是独立和安全的应用平台，Docker 容器是 Docker 的运行部分。
@@ -282,8 +286,8 @@ Docker 容器和文件夹很类似，一个Docker容器包含了所有的某个�
 </div>
 </div>
 </div>
-<div id="outline-container-orge51973b" class="outline-3">
-<h3 id="orge51973b"><span class="section-number-3">1.4.</span> libcontainer</h3>
+<div id="outline-container-section-4d019721a0fb" class="outline-3">
+<h3 id="section-4d019721a0fb"><span class="section-number-3">1.4.</span> libcontainer</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 Docker 从 0.9 版本开始使用 libcontainer 替代 lxc，libcontainer 和 Linux
@@ -291,8 +295,8 @@ Docker 从 0.9 版本开始使用 libcontainer 替代 lxc，libcontainer 和 Lin
 </p>
 
 
-<figure id="orgb79bf59">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libcontainer-linux.png" alt="libcontainer-linux.png">
+<figure id="generated-2">
+<img src="images/libcontainer-linux.png" alt="libcontainer-linux.png" decoding="async" loading="lazy" width="770" height="577">
 
 </figure>
 
@@ -301,12 +305,12 @@ Docker 从 0.9 版本开始使用 libcontainer 替代 lxc，libcontainer 和 Lin
 </ul>
 </div>
 </div>
-<div id="outline-container-org69ba2a9" class="outline-3">
-<h3 id="org69ba2a9"><span class="section-number-3">1.5.</span> 命名空间「Namespaces」</h3>
+<div id="outline-container-section-9919defcbce1" class="outline-3">
+<h3 id="section-9919defcbce1"><span class="section-number-3">1.5.</span> 命名空间「Namespaces」</h3>
 <div class="outline-text-3" id="text-1-5">
 </div>
-<div id="outline-container-org560efe4" class="outline-4">
-<h4 id="org560efe4"><span class="section-number-4">1.5.1.</span> pid namespace</h4>
+<div id="outline-container-section-e6070d278060" class="outline-4">
+<h4 id="section-e6070d278060"><span class="section-number-4">1.5.1.</span> pid namespace</h4>
 <div class="outline-text-4" id="text-1-5-1">
 <p>
 不同用户的进程就是通过 pid namespace 隔离开的，且不同 namespace 中可以有相同 PID。具有以下特征:
@@ -324,16 +328,16 @@ Docker 从 0.9 版本开始使用 libcontainer 替代 lxc，libcontainer 和 Lin
 </p>
 </div>
 </div>
-<div id="outline-container-orga062c5d" class="outline-4">
-<h4 id="orga062c5d"><span class="section-number-4">1.5.2.</span> mnt namespace</h4>
+<div id="outline-container-section-7507bbe17551" class="outline-4">
+<h4 id="section-7507bbe17551"><span class="section-number-4">1.5.2.</span> mnt namespace</h4>
 <div class="outline-text-4" id="text-1-5-2">
 <p>
 类似 chroot，将一个进程放到一个特定的目录执行。mnt namespace 允许不同 namespace 的进程看到的文件结构不同，这样每个 namespace 中的进程所看到的文件目录就被隔离开了。同 chroot 不同，每个 namespace 中的 container 在 /proc/mounts 的信息只包含所在 namespace 的 mount point。
 </p>
 </div>
 </div>
-<div id="outline-container-orgf380488" class="outline-4">
-<h4 id="orgf380488"><span class="section-number-4">1.5.3.</span> net namespace</h4>
+<div id="outline-container-section-7acc86ead0a4" class="outline-4">
+<h4 id="section-7acc86ead0a4"><span class="section-number-4">1.5.3.</span> net namespace</h4>
 <div class="outline-text-4" id="text-1-5-3">
 <p>
 网络隔离是通过 net namespace 实现的， 每个 net namespace 有独立的 network devices, IP addresses, IP routing tables, /proc/net 目录。这样每个 container 的网络就能隔离开来。 docker 默认采用 veth 的方式将 container 中的虚拟网卡同 host 上的一个 docker bridge
@@ -345,8 +349,8 @@ Docker 从 0.9 版本开始使用 libcontainer 替代 lxc，libcontainer 和 Lin
 </p>
 </div>
 </div>
-<div id="outline-container-org2a6aed2" class="outline-4">
-<h4 id="org2a6aed2"><span class="section-number-4">1.5.4.</span> uts namespace</h4>
+<div id="outline-container-section-05ec44291c86" class="outline-4">
+<h4 id="section-05ec44291c86"><span class="section-number-4">1.5.4.</span> uts namespace</h4>
 <div class="outline-text-4" id="text-1-5-4">
 <p>
 UTS ("UNIX Time-sharing System") namespace 允许每个 container 拥有独立的 hostname 和 domain name, 使其在网络上可以被视作一个独立的节点而非 Host 上的一个进程。
@@ -357,8 +361,8 @@ UTS ("UNIX Time-sharing System") namespace 允许每个 container 拥有独立�
 </p>
 </div>
 </div>
-<div id="outline-container-org0eec2d2" class="outline-4">
-<h4 id="org0eec2d2"><span class="section-number-4">1.5.5.</span> ipc namespace</h4>
+<div id="outline-container-section-e45db2a8dbc5" class="outline-4">
+<h4 id="section-e45db2a8dbc5"><span class="section-number-4">1.5.5.</span> ipc namespace</h4>
 <div class="outline-text-4" id="text-1-5-5">
 <p>
 container 中进程交互还是采用 Linux 常见的进程间交互方法 (interprocess communication - IPC), 包括常见的信号量、消息队列和共享内存。然而同 VM 不同，container 的进程间交互实际上还是 host 上具有相同 pid namespace
@@ -370,8 +374,8 @@ container 中进程交互还是采用 Linux 常见的进程间交互方法 (inte
 </p>
 </div>
 </div>
-<div id="outline-container-org5490c3d" class="outline-4">
-<h4 id="org5490c3d"><span class="section-number-4">1.5.6.</span> user namespace</h4>
+<div id="outline-container-section-8a388f072ede" class="outline-4">
+<h4 id="section-8a388f072ede"><span class="section-number-4">1.5.6.</span> user namespace</h4>
 <div class="outline-text-4" id="text-1-5-6">
 <p>
 每个 container 可以有不同的 user 和 group id, 也就是说可以以 container 内部的用户在 container 内部执行程序而非 Host 上的用户。
@@ -382,8 +386,8 @@ container 中进程交互还是采用 Linux 常见的进程间交互方法 (inte
 </p>
 </div>
 </div>
-<div id="outline-container-org06c250d" class="outline-4">
-<h4 id="org06c250d"><span class="section-number-4">1.5.7.</span> Reference</h4>
+<div id="outline-container-section-02ab610f4245" class="outline-4">
+<h4 id="section-02ab610f4245"><span class="section-number-4">1.5.7.</span> Reference</h4>
 <div class="outline-text-4" id="text-1-5-7">
 <ul class="org-ul">
 <li><a href="http://tiewei.github.io/cloud/Docker-Getting-Start/">Docker Getting Start: Related Knowledge</a></li>
@@ -392,8 +396,8 @@ container 中进程交互还是采用 Linux 常见的进程间交互方法 (inte
 </div>
 </div>
 </div>
-<div id="outline-container-org76bd2cc" class="outline-3">
-<h3 id="org76bd2cc"><span class="section-number-3">1.6.</span> 资源配额「cgroups」</h3>
+<div id="outline-container-section-288b9f50c8ff" class="outline-3">
+<h3 id="section-288b9f50c8ff"><span class="section-number-3">1.6.</span> 资源配额「cgroups」</h3>
 <div class="outline-text-3" id="text-1-6">
 <p>
 cgroups 实现了对资源的配额和度量。 cgroups 的使用非常简单，提供类似文件的接口，在 /cgroup 目录下新建一个文件夹即可新建一个 group，在此文件夹中新建 task 文件，并将 pid 写入该文件，即可实现对该进程的资源控制。具体的资源配置选项可以在该文件夹中新建子 subsystem ，{子系统前缀}.{资源项} 是典型的配置方法， 如 memory.usage_in_bytes 就定义了该 group 在 subsystem memory 中的一个内存限制选项。 另外，cgroups 中的 subsystem 可以随意组合，一个 subsystem 可以在不同的 group 中，也可以一个 group 包含多个 subsystem - 也就是说一个 subsystem。
@@ -424,8 +428,8 @@ cgroups 实现了对资源的配额和度量。 cgroups 的使用非常简单，
 </div>
 </div>
 </div>
-<div id="outline-container-orgb3030a6" class="outline-2">
-<h2 id="orgb3030a6"><span class="section-number-2">2.</span> Docker 安装</h2>
+<div id="outline-container-section-023ac0fafde3" class="outline-2">
+<h2 id="section-023ac0fafde3"><span class="section-number-2">2.</span> Docker 安装</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 docker 的相关安装方法这里不作介绍，具体安装参考 <a href="https://docs.docker.com/installation/">官方文档</a>
@@ -450,8 +454,8 @@ Git commit (server): 39fa2fa/1.3.2
 </div>
 </div>
 </div>
-<div id="outline-container-orgdd2364c" class="outline-2">
-<h2 id="orgdd2364c"><span class="section-number-2">3.</span> Docker 基础用法</h2>
+<div id="outline-container-section-be14d26739ca" class="outline-2">
+<h2 id="section-be14d26739ca"><span class="section-number-2">3.</span> Docker 基础用法</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 <a href="https://registry.hub.docker.com/">Docker HUB</a> ：Docker镜像首页，包括官方镜像和其它公开镜像
@@ -461,8 +465,8 @@ Git commit (server): 39fa2fa/1.3.2
 因为国情的原因，国内下载 Docker HUB 官方的相关镜像比较慢，可以使用 <a href="http://daocloud.com/">Daocloud</a> 镜像加速。
 </p>
 </div>
-<div id="outline-container-org5436e06" class="outline-3">
-<h3 id="org5436e06"><span class="section-number-3">3.1.</span> Search images</h3>
+<div id="outline-container-section-1d03c025bb84" class="outline-3">
+<h3 id="section-1d03c025bb84"><span class="section-number-3">3.1.</span> Search images</h3>
 <div class="outline-text-3" id="text-3-1">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker search ubuntu
@@ -470,8 +474,8 @@ Git commit (server): 39fa2fa/1.3.2
 </div>
 </div>
 </div>
-<div id="outline-container-org41599e0" class="outline-3">
-<h3 id="org41599e0"><span class="section-number-3">3.2.</span> Pull images</h3>
+<div id="outline-container-section-7ca7ad45b055" class="outline-3">
+<h3 id="section-7ca7ad45b055"><span class="section-number-3">3.2.</span> Pull images</h3>
 <div class="outline-text-3" id="text-3-2">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker pull ubuntu # 获取 ubuntu 官方镜像
@@ -480,8 +484,8 @@ $ sudo docker images # 查看当前镜像列表
 </div>
 </div>
 </div>
-<div id="outline-container-org9ce9cbe" class="outline-3">
-<h3 id="org9ce9cbe"><span class="section-number-3">3.3.</span> Running an interactive shell</h3>
+<div id="outline-container-section-068b3c011183" class="outline-3">
+<h3 id="section-068b3c011183"><span class="section-number-3">3.3.</span> Running an interactive shell</h3>
 <div class="outline-text-3" id="text-3-3">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker run -i -t ubuntu:14.04 /bin/bash
@@ -508,8 +512,8 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 </div>
 </div>
 </div>
-<div id="outline-container-orgbe5e193" class="outline-3">
-<h3 id="orgbe5e193"><span class="section-number-3">3.4.</span> 相关快捷键</h3>
+<div id="outline-container-section-5a6983d2aeb6" class="outline-3">
+<h3 id="section-5a6983d2aeb6"><span class="section-number-3">3.4.</span> 相关快捷键</h3>
 <div class="outline-text-3" id="text-3-4">
 <ul class="org-ul">
 <li>退出： <code>Ctrl-D</code> or <code>exit</code></li>
@@ -519,16 +523,16 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 </div>
 </div>
 </div>
-<div id="outline-container-orgcd2216f" class="outline-2">
-<h2 id="orgcd2216f"><span class="section-number-2">4.</span> Docker 命令帮助</h2>
+<div id="outline-container-section-5a5592999a69" class="outline-2">
+<h2 id="section-5a5592999a69"><span class="section-number-2">4.</span> Docker 命令帮助</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org9808686" class="outline-3">
-<h3 id="org9808686"><span class="section-number-3">4.1.</span> docker help</h3>
+<div id="outline-container-section-41f841017610" class="outline-3">
+<h3 id="section-41f841017610"><span class="section-number-3">4.1.</span> docker help</h3>
 <div class="outline-text-3" id="text-4-1">
 </div>
-<div id="outline-container-org7af2fd4" class="outline-4">
-<h4 id="org7af2fd4"><span class="section-number-4">4.1.1.</span> docker command</h4>
+<div id="outline-container-section-d36b513d668b" class="outline-4">
+<h4 id="section-d36b513d668b"><span class="section-number-4">4.1.1.</span> docker command</h4>
 <div class="outline-text-4" id="text-4-1-1">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker   # docker 命令帮助
@@ -586,8 +590,8 @@ Run 'docker COMMAND --help' for more information on a command.
 </div>
 </div>
 </div>
-<div id="outline-container-orgb2a1e30" class="outline-4">
-<h4 id="orgb2a1e30"><span class="section-number-4">4.1.2.</span> docker option</h4>
+<div id="outline-container-section-670b236f54d2" class="outline-4">
+<h4 id="section-670b236f54d2"><span class="section-number-4">4.1.2.</span> docker option</h4>
 <div class="outline-text-4" id="text-4-1-2">
 <div class="org-src-container">
 <pre class="src src-nil">Usage of docker:
@@ -632,8 +636,8 @@ Run 'docker COMMAND --help' for more information on a command.
 </div>
 </div>
 </div>
-<div id="outline-container-org8c5333a" class="outline-3">
-<h3 id="org8c5333a"><span class="section-number-3">4.2.</span> docker search</h3>
+<div id="outline-container-section-f24f165eba54" class="outline-3">
+<h3 id="section-f24f165eba54"><span class="section-number-3">4.2.</span> docker search</h3>
 <div class="outline-text-3" id="text-4-2">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker search --help
@@ -661,8 +665,8 @@ ubuntu    Official Ubuntu base image   425       [OK]
 </div>
 </div>
 </div>
-<div id="outline-container-orgcb13e49" class="outline-3">
-<h3 id="orgcb13e49"><span class="section-number-3">4.3.</span> docker info</h3>
+<div id="outline-container-section-c59521be2579" class="outline-3">
+<h3 id="section-c59521be2579"><span class="section-number-3">4.3.</span> docker info</h3>
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker info
@@ -685,8 +689,8 @@ Operating System: CentOS Linux 7 (Core)
 </div>
 </div>
 </div>
-<div id="outline-container-org1226651" class="outline-3">
-<h3 id="org1226651"><span class="section-number-3">4.4.</span> docker pull &amp;&amp; docker push</h3>
+<div id="outline-container-section-e21fdc3ec971" class="outline-3">
+<h3 id="section-e21fdc3ec971"><span class="section-number-3">4.4.</span> docker pull &amp;&amp; docker push</h3>
 <div class="outline-text-3" id="text-4-4">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker pull --help           # pull 拉取镜像
@@ -724,8 +728,8 @@ $ sudo docker push 192.168.0.100:5000/ubuntu:14.04
 </div>
 </div>
 </div>
-<div id="outline-container-orgb80cff7" class="outline-3">
-<h3 id="orgb80cff7"><span class="section-number-3">4.5.</span> docker images</h3>
+<div id="outline-container-section-57e5029c4aa1" class="outline-3">
+<h3 id="section-57e5029c4aa1"><span class="section-number-3">4.5.</span> docker images</h3>
 <div class="outline-text-3" id="text-4-5">
 <p>
 列出当前系统镜像
@@ -762,8 +766,8 @@ ubuntu                     14.04-ssh           6334d3ac099a        7 weeks ago  
 </div>
 </div>
 </div>
-<div id="outline-container-org6dfc306" class="outline-3">
-<h3 id="org6dfc306"><span class="section-number-3">4.6.</span> docker rmi</h3>
+<div id="outline-container-section-cbfd9ca8fc6d" class="outline-3">
+<h3 id="section-cbfd9ca8fc6d"><span class="section-number-3">4.6.</span> docker rmi</h3>
 <div class="outline-text-3" id="text-4-6">
 <p>
 删除一个或者多个镜像
@@ -782,8 +786,8 @@ Remove one or more images
 </div>
 </div>
 </div>
-<div id="outline-container-org03788d3" class="outline-3">
-<h3 id="org03788d3"><span class="section-number-3">4.7.</span> docker run</h3>
+<div id="outline-container-section-247f398fbcae" class="outline-3">
+<h3 id="section-247f398fbcae"><span class="section-number-3">4.7.</span> docker run</h3>
 <div class="outline-text-3" id="text-4-7">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker run --help
@@ -869,8 +873,8 @@ By default all groups have 1024 shares. A group with 100 shares will get a ~10% 
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org3dd4ccc" class="outline-3">
-<h3 id="org3dd4ccc"><span class="section-number-3">4.8.</span> docker start|stop|kill&#x2026; &#x2026;</h3>
+<div id="outline-container-section-64d8ecca50da" class="outline-3">
+<h3 id="section-64d8ecca50da"><span class="section-number-3">4.8.</span> docker start|stop|kill&#x2026; &#x2026;</h3>
 <div class="outline-text-3" id="text-4-8">
 <ul class="org-ul">
 <li>docker start CONTAINER [CONTAINER&#x2026;]
@@ -936,20 +940,20 @@ By default all groups have 1024 shares. A group with 100 shares will get a ~10% 
 </p>
 </div>
 </div>
-<div id="outline-container-org8940232" class="outline-3">
-<h3 id="org8940232"><span class="section-number-3">4.9.</span> Docker 1.3 新增特性和命令</h3>
+<div id="outline-container-section-cff92f068533" class="outline-3">
+<h3 id="section-cff92f068533"><span class="section-number-3">4.9.</span> Docker 1.3 新增特性和命令</h3>
 <div class="outline-text-3" id="text-4-9">
 </div>
-<div id="outline-container-org121c77e" class="outline-4">
-<h4 id="org121c77e"><span class="section-number-4">4.9.1.</span> Digital Signature Verification</h4>
+<div id="outline-container-section-63c77915c649" class="outline-4">
+<h4 id="section-63c77915c649"><span class="section-number-4">4.9.1.</span> Digital Signature Verification</h4>
 <div class="outline-text-4" id="text-4-9-1">
 <p>
 Docker 1.3 版本将使用数字签名自动验证所有官方库的来源和完整性，如果一个官方镜像被篡改或者被破坏，目前 Docker 只会对这种情况发出警告而并不阻止容器的运行。
 </p>
 </div>
 </div>
-<div id="outline-container-orgcc8aefd" class="outline-4">
-<h4 id="orgcc8aefd"><span class="section-number-4">4.9.2.</span> Inject new processes with <code>docker exec</code></h4>
+<div id="outline-container-section-8cee98f49564" class="outline-4">
+<h4 id="section-8cee98f49564"><span class="section-number-4">4.9.2.</span> Inject new processes with <code>docker exec</code></h4>
 <div class="outline-text-4" id="text-4-9-2">
 <div class="org-src-container">
 <pre class="src src-nil">docker exec --help
@@ -978,8 +982,8 @@ Run a command in an existing container
 </p>
 </div>
 </div>
-<div id="outline-container-org01afa8c" class="outline-4">
-<h4 id="org01afa8c"><span class="section-number-4">4.9.3.</span> Tune container lifecycles with <code>docker create</code></h4>
+<div id="outline-container-section-03ada4f1db90" class="outline-4">
+<h4 id="section-03ada4f1db90"><span class="section-number-4">4.9.3.</span> Tune container lifecycles with <code>docker create</code></h4>
 <div class="outline-text-4" id="text-4-9-3">
 <p>
 我们可以通过 <code>docker run &lt;image name&gt;</code> 命令创建一个容器并运行其中的程序，因为有很多用户要求创建容器的时候不启动容器，所以 <code>docker create</code> 应运而生了。
@@ -1002,8 +1006,8 @@ bash-4.2#
 </div>
 </div>
 </div>
-<div id="outline-container-orgdd8f00a" class="outline-4">
-<h4 id="orgdd8f00a"><span class="section-number-4">4.9.4.</span> Security Options</h4>
+<div id="outline-container-section-937a47f59e13" class="outline-4">
+<h4 id="section-937a47f59e13"><span class="section-number-4">4.9.4.</span> Security Options</h4>
 <div class="outline-text-4" id="text-4-9-4">
 <p>
 通过 <code>--security-opt</code> 选项，运行容器时用户可自定义 SELinux 和 AppArmor 卷标和配置。
@@ -1024,8 +1028,8 @@ bash-4.2#
 </div>
 </div>
 </div>
-<div id="outline-container-org7b3f6ca" class="outline-3">
-<h3 id="org7b3f6ca"><span class="section-number-3">4.10.</span> Docker 1.5 新特性</h3>
+<div id="outline-container-section-cb7160c34df9" class="outline-3">
+<h3 id="section-cb7160c34df9"><span class="section-number-3">4.10.</span> Docker 1.5 新特性</h3>
 <div class="outline-text-3" id="text-4-10">
 <p>
 参考文档：<a href="http://dockerone.com/article/202">Docker 1.5 新特性</a>
@@ -1033,8 +1037,8 @@ bash-4.2#
 </div>
 </div>
 </div>
-<div id="outline-container-orgea360e6" class="outline-2">
-<h2 id="orgea360e6"><span class="section-number-2">5.</span> Docker 端口映射</h2>
+<div id="outline-container-section-d5c00e41d19c" class="outline-2">
+<h2 id="section-d5c00e41d19c"><span class="section-number-2">5.</span> Docker 端口映射</h2>
 <div class="outline-text-2" id="text-5">
 <div class="org-src-container">
 <pre class="src src-nil"># Find IP address of container with ID &lt;container_id&gt; 通过容器 id 获取 ip
@@ -1050,8 +1054,8 @@ $ sudo docker inspect &lt;container_id&gt; | grep IPAddress | cut -d '"' -f 4
 Docker 解决了容器的这两个问题，并且给容器内部服务的访问提供了一个简单而可靠的方法。Docker 通过端口绑定主机系统的接口，允许非本地客户端访问容器内部运行的服务。为了简便的使得容器间通信，Docker 提供了这种连接机制。
 </p>
 </div>
-<div id="outline-container-org8ae3923" class="outline-3">
-<h3 id="org8ae3923"><span class="section-number-3">5.1.</span> 自动映射端口</h3>
+<div id="outline-container-section-d553c9e7fe78" class="outline-3">
+<h3 id="section-d553c9e7fe78"><span class="section-number-3">5.1.</span> 自动映射端口</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 <code>-P</code> 使用时需要指定 <code>--expose</code> 选项，指定需要对外提供服务的端口
@@ -1067,8 +1071,8 @@ Docker 解决了容器的这两个问题，并且给容器内部服务的访问�
 </p>
 </div>
 </div>
-<div id="outline-container-org325f959" class="outline-3">
-<h3 id="org325f959"><span class="section-number-3">5.2.</span> 绑定端口到指定接口</h3>
+<div id="outline-container-section-8e5ea44a0f0e" class="outline-3">
+<h3 id="section-8e5ea44a0f0e"><span class="section-number-3">5.2.</span> 绑定端口到指定接口</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 基本语法
@@ -1083,8 +1087,8 @@ Docker 解决了容器的这两个问题，并且给容器内部服务的访问�
 默认不指定绑定 ip 则监听所有网络接口。
 </p>
 </div>
-<div id="outline-container-orgd58e12a" class="outline-4">
-<h4 id="orgd58e12a"><span class="section-number-4">5.2.1.</span> 绑定 TCP 端口</h4>
+<div id="outline-container-section-ec181b5b8af0" class="outline-4">
+<h4 id="section-ec181b5b8af0"><span class="section-number-4">5.2.1.</span> 绑定 TCP 端口</h4>
 <div class="outline-text-4" id="text-5-2-1">
 <div class="org-src-container">
 <pre class="src src-nil"># Bind TCP port 8080 of the container to TCP port 80 on 127.0.0.1 of the host machine.
@@ -1099,8 +1103,8 @@ $ sudo docker run -p 8080 &lt;image&gt; &lt;cmd&gt;
 </div>
 </div>
 </div>
-<div id="outline-container-org5853516" class="outline-4">
-<h4 id="org5853516"><span class="section-number-4">5.2.2.</span> 绑定 UDP 端口</h4>
+<div id="outline-container-section-4e084976ec0c" class="outline-4">
+<h4 id="section-4e084976ec0c"><span class="section-number-4">5.2.2.</span> 绑定 UDP 端口</h4>
 <div class="outline-text-4" id="text-5-2-2">
 <div class="org-src-container">
 <pre class="src src-nil"># Bind UDP port 5353 of the container to UDP port 53 on 127.0.0.1 of the host machine.
@@ -1111,12 +1115,12 @@ $ sudo docker run -p 127.0.0.1:53:5353/udp &lt;image&gt; &lt;cmd&gt;
 </div>
 </div>
 </div>
-<div id="outline-container-org6ecb109" class="outline-2">
-<h2 id="org6ecb109"><span class="section-number-2">6.</span> Docker 网络配置</h2>
+<div id="outline-container-section-72281d95df31" class="outline-2">
+<h2 id="section-72281d95df31"><span class="section-number-2">6.</span> Docker 网络配置</h2>
 <div class="outline-text-2" id="text-6">
 
-<figure id="org2f66887">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_networking.png" alt="docker_networking.png">
+<figure id="generated-3">
+<img src="images/docker_networking.png" alt="docker_networking.png" decoding="async" loading="lazy" width="518" height="357">
 
 </figure>
 
@@ -1147,8 +1151,8 @@ Dokcer 通过使用 Linux 桥接提供容器之间的通信，docker0 桥接接�
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org7764bd1" class="outline-3">
-<h3 id="org7764bd1"><span class="section-number-3">6.1.</span> Docker 四种网络模式</h3>
+<div id="outline-container-section-bda2683efcad" class="outline-3">
+<h3 id="section-bda2683efcad"><span class="section-number-3">6.1.</span> Docker 四种网络模式</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 四种网络模式摘自<a href="http://www.infoq.com/cn/articles/docker-network-and-pipework-open-source-explanation-practice">Docker网络详解及 pipework 源码解读与实践</a>
@@ -1165,8 +1169,8 @@ docker run 创建 Docker 容器时，可以用 <code>--net</code> 选项指定�
 <li>bridge 模式，使用 &#x2013;net=bridge 指定，默认设置</li>
 </ul>
 </div>
-<div id="outline-container-org9078908" class="outline-4">
-<h4 id="org9078908"><span class="section-number-4">6.1.1.</span> host 模式</h4>
+<div id="outline-container-section-c4d99fc285e7" class="outline-4">
+<h4 id="section-c4d99fc285e7"><span class="section-number-4">6.1.1.</span> host 模式</h4>
 <div class="outline-text-4" id="text-6-1-1">
 <p>
 如果启动容器的时候使用 host 模式，那么这个容器将不会获得一个独立的 Network Namespace，而是和宿主机共用一个 Network Namespace。容器将不会虚拟出自己的网卡，配置自己的 IP 等，而是使用宿主机的 IP 和端口。
@@ -1177,28 +1181,28 @@ docker run 创建 Docker 容器时，可以用 <code>--net</code> 选项指定�
 </p>
 </div>
 </div>
-<div id="outline-container-org5bb96ef" class="outline-4">
-<h4 id="org5bb96ef"><span class="section-number-4">6.1.2.</span> container 模式</h4>
+<div id="outline-container-section-8cde1241cf4f" class="outline-4">
+<h4 id="section-8cde1241cf4f"><span class="section-number-4">6.1.2.</span> container 模式</h4>
 <div class="outline-text-4" id="text-6-1-2">
 <p>
 这个模式指定新创建的容器和已经存在的一个容器共享一个 Network Namespace，而不是和宿主机共享。新创建的容器不会创建自己的网卡，配置自己的 IP，而是和一个指定的容器共享 IP、端口范围等。同样，两个容器除了网络方面，其他的如文件系统、进程列表等还是隔离的。两个容器的进程可以通过 lo 网卡设备通信。
 </p>
 </div>
 </div>
-<div id="outline-container-orgc79355d" class="outline-4">
-<h4 id="orgc79355d"><span class="section-number-4">6.1.3.</span> none模式</h4>
+<div id="outline-container-section-edabca1b5fec" class="outline-4">
+<h4 id="section-edabca1b5fec"><span class="section-number-4">6.1.3.</span> none模式</h4>
 <div class="outline-text-4" id="text-6-1-3">
 <p>
 这个模式和前两个不同。在这种模式下，Docker 容器拥有自己的 Network Namespace，但是，并不为 Docker容器进行任何网络配置。也就是说，这个 Docker 容器没有网卡、IP、路由等信息。需要我们自己为 Docker 容器添加网卡、配置 IP 等。
 </p>
 </div>
 </div>
-<div id="outline-container-org75df7e1" class="outline-4">
-<h4 id="org75df7e1"><span class="section-number-4">6.1.4.</span> bridge模式</h4>
+<div id="outline-container-section-794eb51c2309" class="outline-4">
+<h4 id="section-794eb51c2309"><span class="section-number-4">6.1.4.</span> bridge模式</h4>
 <div class="outline-text-4" id="text-6-1-4">
 
-<figure id="orge3f2f9e">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/vethbridge.png" alt="vethbridge.png">
+<figure id="generated-4">
+<img src="images/vethbridge.png" alt="vethbridge.png" decoding="async" loading="lazy" width="548" height="332">
 
 </figure>
 
@@ -1212,8 +1216,8 @@ bridge 模式是 Docker 默认的网络设置，此模式会为每一个容器�
 </div>
 </div>
 </div>
-<div id="outline-container-org9d65d12" class="outline-3">
-<h3 id="org9d65d12"><span class="section-number-3">6.2.</span> 列出当前主机网桥</h3>
+<div id="outline-container-section-d92a6d3e5a7e" class="outline-3">
+<h3 id="section-d92a6d3e5a7e"><span class="section-number-3">6.2.</span> 列出当前主机网桥</h3>
 <div class="outline-text-3" id="text-6-2">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo brctl show  # brctl 工具依赖 bridge-utils 软件包
@@ -1223,8 +1227,8 @@ docker0 8000.000000000000 no
 </div>
 </div>
 </div>
-<div id="outline-container-org07acae6" class="outline-3">
-<h3 id="org07acae6"><span class="section-number-3">6.3.</span> 查看当前 docker0 ip</h3>
+<div id="outline-container-section-b499fd391b43" class="outline-3">
+<h3 id="section-b499fd391b43"><span class="section-number-3">6.3.</span> 查看当前 docker0 ip</h3>
 <div class="outline-text-3" id="text-6-3">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo ifconfig docker0
@@ -1238,8 +1242,8 @@ inet addr:172.17.42.1 Bcast:0.0.0.0 Mask:255.255.0.0
 </p>
 </div>
 </div>
-<div id="outline-container-orgc76227c" class="outline-3">
-<h3 id="orgc76227c"><span class="section-number-3">6.4.</span> 运行一个容器</h3>
+<div id="outline-container-section-ec33af8df650" class="outline-3">
+<h3 id="section-ec33af8df650"><span class="section-number-3">6.4.</span> 运行一个容器</h3>
 <div class="outline-text-3" id="text-6-4">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker run -t -i -d ubuntu /bin/bash
@@ -1254,8 +1258,8 @@ docker0 8000.fef213db5a66 no vethQCDY1N
 以上, docker0 扮演着 52f811c5d3d6 container 这个容器的虚拟接口 vethQCDY1N interface 桥接的角色。
 </p>
 </div>
-<div id="outline-container-org7a154c8" class="outline-4">
-<h4 id="org7a154c8"><span class="section-number-4">6.4.1.</span> 使用特定范围的 IP</h4>
+<div id="outline-container-section-e2445693b311" class="outline-4">
+<h4 id="section-e2445693b311"><span class="section-number-4">6.4.1.</span> 使用特定范围的 IP</h4>
 <div class="outline-text-4" id="text-6-4-1">
 <p>
 Docker 会尝试寻找没有被主机使用的 ip 段，尽管它适用于大多数情况下，但是它不是万能的，有时候我们还是需要对 ip 进一步规划。Docker 允许你管理 docker0 桥接或者通过 <code>-b</code> 选项自定义桥接网卡，需要安装 <code>bridge-utils</code> 软件包。
@@ -1318,8 +1322,8 @@ $ sudo service docker start
 </div>
 </div>
 </div>
-<div id="outline-container-orge684e24" class="outline-3">
-<h3 id="orge684e24"><span class="section-number-3">6.5.</span> 不同主机间容器通信</h3>
+<div id="outline-container-section-22a3f781fdb1" class="outline-3">
+<h3 id="section-22a3f781fdb1"><span class="section-number-3">6.5.</span> 不同主机间容器通信</h3>
 <div class="outline-text-3" id="text-6-5">
 <p>
 不同容器之间的通信可以借助于 pipework 这个工具：
@@ -1331,8 +1335,8 @@ $ sudo cp -rp pipework/pipework /usr/local/bin/
 </pre>
 </div>
 </div>
-<div id="outline-container-org11380fe" class="outline-4">
-<h4 id="org11380fe"><span class="section-number-4">6.5.1.</span> 安装相应依赖软件</h4>
+<div id="outline-container-section-d4369dfc9ecb" class="outline-4">
+<h4 id="section-d4369dfc9ecb"><span class="section-number-4">6.5.1.</span> 安装相应依赖软件</h4>
 <div class="outline-text-4" id="text-6-5-1">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo apt-get install iputils-arping bridge-utils -y
@@ -1340,8 +1344,8 @@ $ sudo cp -rp pipework/pipework /usr/local/bin/
 </div>
 </div>
 </div>
-<div id="outline-container-org766724c" class="outline-4">
-<h4 id="org766724c"><span class="section-number-4">6.5.2.</span> 桥接网络</h4>
+<div id="outline-container-section-535c0478e6fa" class="outline-4">
+<h4 id="section-535c0478e6fa"><span class="section-number-4">6.5.2.</span> 桥接网络</h4>
 <div class="outline-text-4" id="text-6-5-2">
 <p>
 桥接网络可以参考 <a href="https://github.com/opskumu/Day/blob/master/tips/tips.md">日常问题处理 Tips</a> 关于桥接的配置说明，这里不再赘述。
@@ -1387,12 +1391,12 @@ $ sudo systemctl start docker
 </div>
 </div>
 </div>
-<div id="outline-container-orgf1acc75" class="outline-4">
-<h4 id="orgf1acc75"><span class="section-number-4">6.5.3.</span> pipework</h4>
+<div id="outline-container-section-de873f9f4833" class="outline-4">
+<h4 id="section-de873f9f4833"><span class="section-number-4">6.5.3.</span> pipework</h4>
 <div class="outline-text-4" id="text-6-5-3">
 
-<figure id="orgdc75316">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_bridge.png" alt="docker_bridge.png">
+<figure id="generated-5">
+<img src="images/docker_bridge.png" alt="docker_bridge.png" decoding="async" loading="lazy" width="670" height="541">
 
 </figure>
 
@@ -1476,8 +1480,8 @@ $ sudo ip netns exec 6350 ip route    # 添加成功
 </div>
 </div>
 </div>
-<div id="outline-container-orgfa3ebed" class="outline-2">
-<h2 id="orgfa3ebed"><span class="section-number-2">7.</span> Dockerfile</h2>
+<div id="outline-container-section-558c49b60456" class="outline-2">
+<h2 id="section-558c49b60456"><span class="section-number-2">7.</span> Dockerfile</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 Docker 可以通过 Dockerfile 的内容来自动构建镜像。Dockerfile 是一个包含创建镜像所有命令的文本文件，通过 <code>docker build</code> 命令可以根据 Dockerfile 的内容构建镜像，在介绍如何构建之前先介绍下 Dockerfile 的基本语法结构。
@@ -1503,8 +1507,8 @@ Dockerfile 有以下指令选项:
 <li><code>ONBUILD</code></li>
 </ul>
 </div>
-<div id="outline-container-org0b43915" class="outline-3">
-<h3 id="org0b43915"><span class="section-number-3">7.1.</span> FROM</h3>
+<div id="outline-container-section-0b1e95cfd977" class="outline-3">
+<h3 id="section-0b1e95cfd977"><span class="section-number-3">7.1.</span> FROM</h3>
 <div class="outline-text-3" id="text-7-1">
 <p>
 用法:
@@ -1532,8 +1536,8 @@ Dockerfile 有以下指令选项:
 </ul>
 </div>
 </div>
-<div id="outline-container-orged388a8" class="outline-3">
-<h3 id="orged388a8"><span class="section-number-3">7.2.</span> MAINTAINER</h3>
+<div id="outline-container-section-86416ef3eeb4" class="outline-3">
+<h3 id="section-86416ef3eeb4"><span class="section-number-3">7.2.</span> MAINTAINER</h3>
 <div class="outline-text-3" id="text-7-2">
 <p>
 用法:
@@ -1584,8 +1588,8 @@ exec 方式会被解析为一个 JSON 数组，所以必须使用双引号而不
 </p>
 </div>
 </div>
-<div id="outline-container-orgd58e8a7" class="outline-3">
-<h3 id="orgd58e8a7"><span class="section-number-3">7.3.</span> CMD</h3>
+<div id="outline-container-section-abac36149cf8" class="outline-3">
+<h3 id="section-abac36149cf8"><span class="section-number-3">7.3.</span> CMD</h3>
 <div class="outline-text-3" id="text-7-3">
 <p>
 <code>CMD</code> 有三种使用方式:
@@ -1612,8 +1616,8 @@ exec 方式会被解析为一个 JSON 数组，所以必须使用双引号而不
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org4369b1d" class="outline-3">
-<h3 id="org4369b1d"><span class="section-number-3">7.4.</span> EXPOSE</h3>
+<div id="outline-container-section-0d23a9d9da66" class="outline-3">
+<h3 id="section-0d23a9d9da66"><span class="section-number-3">7.4.</span> EXPOSE</h3>
 <div class="outline-text-3" id="text-7-4">
 <div class="org-src-container">
 <pre class="src src-nil">EXPOSE &lt;port&gt; [&lt;port&gt;...]
@@ -1625,8 +1629,8 @@ exec 方式会被解析为一个 JSON 数组，所以必须使用双引号而不
 </p>
 </div>
 </div>
-<div id="outline-container-org08fa27a" class="outline-3">
-<h3 id="org08fa27a"><span class="section-number-3">7.5.</span> ENV</h3>
+<div id="outline-container-section-920f8f5815b3" class="outline-3">
+<h3 id="section-920f8f5815b3"><span class="section-number-3">7.5.</span> ENV</h3>
 <div class="outline-text-3" id="text-7-5">
 <div class="org-src-container">
 <pre class="src src-nil">ENV &lt;key&gt; &lt;value&gt;       # 只能设置一个变量
@@ -1660,8 +1664,8 @@ ENV myCat fluffy
 </div>
 </div>
 </div>
-<div id="outline-container-org049e2de" class="outline-3">
-<h3 id="org049e2de"><span class="section-number-3">7.6.</span> ADD</h3>
+<div id="outline-container-section-58d1bbce297d" class="outline-3">
+<h3 id="section-58d1bbce297d"><span class="section-number-3">7.6.</span> ADD</h3>
 <div class="outline-text-3" id="text-7-6">
 <div class="org-src-container">
 <pre class="src src-nil">ADD &lt;src&gt;... &lt;dest&gt;
@@ -1689,8 +1693,8 @@ ADD hom?.txt /mydir/    # ? is replaced with any single character
 </ul>
 </div>
 </div>
-<div id="outline-container-org1950841" class="outline-3">
-<h3 id="org1950841"><span class="section-number-3">7.7.</span> COPY</h3>
+<div id="outline-container-section-f84e2e2dadd8" class="outline-3">
+<h3 id="section-f84e2e2dadd8"><span class="section-number-3">7.7.</span> COPY</h3>
 <div class="outline-text-3" id="text-7-7">
 <div class="org-src-container">
 <pre class="src src-nil">COPY &lt;src&gt;... &lt;dest&gt;
@@ -1702,8 +1706,8 @@ ADD hom?.txt /mydir/    # ? is replaced with any single character
 </p>
 </div>
 </div>
-<div id="outline-container-orgfd158d1" class="outline-3">
-<h3 id="orgfd158d1"><span class="section-number-3">7.8.</span> ENTRYPOINT</h3>
+<div id="outline-container-section-e89dd390584c" class="outline-3">
+<h3 id="section-e89dd390584c"><span class="section-number-3">7.8.</span> ENTRYPOINT</h3>
 <div class="outline-text-3" id="text-7-8">
 <ul class="org-ul">
 <li>ENTRYPOINT ["executable", "param1", "param2"] (the preferred exec form，优先选择)</li>
@@ -1718,8 +1722,8 @@ ADD hom?.txt /mydir/    # ? is replaced with any single character
 每个 Dockerfile 中只能有一个 <code>ENTRYPOINT</code> ，当指定多个时，只有最后一个生效。
 </p>
 </div>
-<div id="outline-container-org7fa96be" class="outline-4">
-<h4 id="org7fa96be"><span class="section-number-4">7.8.1.</span> Exec form ENTRYPOINT 例子</h4>
+<div id="outline-container-section-d3d32b8512fc" class="outline-4">
+<h4 id="section-d3d32b8512fc"><span class="section-number-4">7.8.1.</span> Exec form ENTRYPOINT 例子</h4>
 <div class="outline-text-4" id="text-7-8-1">
 <p>
 通过 <code>ENTRYPOINT</code> 使用 exec form 方式设置稳定的默认命令和选项，而使用 <code>CMD</code> 添加默认之外经常被改动的选项。
@@ -1746,8 +1750,8 @@ ENTRYPOINT ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 </div>
 </div>
 </div>
-<div id="outline-container-orgd64127e" class="outline-4">
-<h4 id="orgd64127e"><span class="section-number-4">7.8.2.</span> Shell form ENTRYPOINT 例子</h4>
+<div id="outline-container-section-f1fbb050a7ea" class="outline-4">
+<h4 id="section-f1fbb050a7ea"><span class="section-number-4">7.8.2.</span> Shell form ENTRYPOINT 例子</h4>
 <div class="outline-text-4" id="text-7-8-2">
 <p>
 这种方式会在 <code>/bin/sh -c</code> 中执行，会忽略任何 <code>CMD</code> 或者 <code>docker run</code> 命令行选项，为了确保 <code>docker stop</code> 能够停止长时间运行 <code>ENTRYPOINT</code> 的容器，确保执行的时候使用 <code>exec</code> 选项。
@@ -1772,8 +1776,8 @@ CMD --ignored-param1 # --ignored-param2 ... --ignored-param3 ... 依此类推
 </div>
 </div>
 </div>
-<div id="outline-container-org7aa7743" class="outline-3">
-<h3 id="org7aa7743"><span class="section-number-3">7.9.</span> VOLUME</h3>
+<div id="outline-container-section-d387fc8d57b2" class="outline-3">
+<h3 id="section-d387fc8d57b2"><span class="section-number-3">7.9.</span> VOLUME</h3>
 <div class="outline-text-3" id="text-7-9">
 <div class="org-src-container">
 <pre class="src src-nil">VOLUME ["/data"]
@@ -1785,8 +1789,8 @@ CMD --ignored-param1 # --ignored-param2 ... --ignored-param3 ... 依此类推
 </p>
 </div>
 </div>
-<div id="outline-container-orga14e094" class="outline-3">
-<h3 id="orga14e094"><span class="section-number-3">7.10.</span> USER</h3>
+<div id="outline-container-section-12dea96fec20" class="outline-3">
+<h3 id="section-12dea96fec20"><span class="section-number-3">7.10.</span> USER</h3>
 <div class="outline-text-3" id="text-7-10">
 <div class="org-src-container">
 <pre class="src src-nil">USER daemon
@@ -1798,8 +1802,8 @@ CMD --ignored-param1 # --ignored-param2 ... --ignored-param3 ... 依此类推
 </p>
 </div>
 </div>
-<div id="outline-container-org5a9b4c3" class="outline-3">
-<h3 id="org5a9b4c3"><span class="section-number-3">7.11.</span> WORKDIR</h3>
+<div id="outline-container-section-a5b229b4b144" class="outline-3">
+<h3 id="section-a5b229b4b144"><span class="section-number-3">7.11.</span> WORKDIR</h3>
 <div class="outline-text-3" id="text-7-11">
 <div class="org-src-container">
 <pre class="src src-nil">WORKDIR /path/to/workdir
@@ -1837,8 +1841,8 @@ WORKDIR $DIRPATH/$DIRNAME
 </p>
 </div>
 </div>
-<div id="outline-container-org0a390f0" class="outline-3">
-<h3 id="org0a390f0"><span class="section-number-3">7.12.</span> ONBUILD</h3>
+<div id="outline-container-section-c9864602671d" class="outline-3">
+<h3 id="section-c9864602671d"><span class="section-number-3">7.12.</span> ONBUILD</h3>
 <div class="outline-text-3" id="text-7-12">
 <div class="org-src-container">
 <pre class="src src-nil">ONBUILD [INSTRUCTION]
@@ -1877,8 +1881,8 @@ RUN /usr/local/bin/python-build --dir /app/src
 </p>
 </div>
 </div>
-<div id="outline-container-orgb92af89" class="outline-3">
-<h3 id="orgb92af89"><span class="section-number-3">7.13.</span> Dockerfile Examples</h3>
+<div id="outline-container-section-e8c2da32b221" class="outline-3">
+<h3 id="section-e8c2da32b221"><span class="section-number-3">7.13.</span> Dockerfile Examples</h3>
 <div class="outline-text-3" id="text-7-13">
 <div class="org-src-container">
 <pre class="src src-nil"># Nginx
@@ -1925,8 +1929,8 @@ RUN echo moo &gt; oink
 </div>
 </div>
 </div>
-<div id="outline-container-org12aa18e" class="outline-3">
-<h3 id="org12aa18e"><span class="section-number-3">7.14.</span> docker build</h3>
+<div id="outline-container-section-b48577ef56cc" class="outline-3">
+<h3 id="section-b48577ef56cc"><span class="section-number-3">7.14.</span> docker build</h3>
 <div class="outline-text-3" id="text-7-14">
 <div class="org-src-container">
 <pre class="src src-nil">$ docker build --help
@@ -1948,8 +1952,8 @@ Build a new image from the source code at PATH
 </p>
 </div>
 </div>
-<div id="outline-container-org763f7ba" class="outline-3">
-<h3 id="org763f7ba"><span class="section-number-3">7.15.</span> dockerfile 最佳实践</h3>
+<div id="outline-container-section-b0f5f334cd30" class="outline-3">
+<h3 id="section-b0f5f334cd30"><span class="section-number-3">7.15.</span> dockerfile 最佳实践</h3>
 <div class="outline-text-3" id="text-7-15">
 <ul class="org-ul">
 <li>使用 <code>.dockerignore</code> 文件</li>
@@ -2019,8 +2023,8 @@ Build a new image from the source code at PATH
 </p>
 </blockquote>
 </div>
-<div id="outline-container-org6fdc462" class="outline-4">
-<h4 id="org6fdc462"><span class="section-number-4">7.15.1.</span> Dockerfile 指令</h4>
+<div id="outline-container-section-db9065cf9ea8" class="outline-4">
+<h4 id="section-db9065cf9ea8"><span class="section-number-4">7.15.1.</span> Dockerfile 指令</h4>
 <div class="outline-text-4" id="text-7-15-1">
 <ul class="org-ul">
 <li><code>FROM</code>: 只要可能就使用官方镜像库作为基础镜像</li>
@@ -2124,8 +2128,8 @@ RUN make -C /usr/src/things all
 </div>
 </div>
 </div>
-<div id="outline-container-orge595640" class="outline-2">
-<h2 id="orge595640"><span class="section-number-2">8.</span> 容器数据管理</h2>
+<div id="outline-container-section-f7812c6ef20e" class="outline-2">
+<h2 id="section-f7812c6ef20e"><span class="section-number-2">8.</span> 容器数据管理</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 docker管理数据的方式有两种：
@@ -2136,8 +2140,8 @@ docker管理数据的方式有两种：
 <li>数据卷容器</li>
 </ul>
 </div>
-<div id="outline-container-org4002ff8" class="outline-3">
-<h3 id="org4002ff8"><span class="section-number-3">8.1.</span> 数据卷</h3>
+<div id="outline-container-section-859648d16509" class="outline-3">
+<h3 id="section-859648d16509"><span class="section-number-3">8.1.</span> 数据卷</h3>
 <div class="outline-text-3" id="text-8-1">
 <p>
 数据卷是一个或多个容器专门指定绕过 <code>Union File System</code> 的目录，为持续性或共享数据提供一些有用的功能：
@@ -2150,8 +2154,8 @@ docker管理数据的方式有两种：
 <li>数据卷是持续性的，直到没有容器使用它们</li>
 </ul>
 </div>
-<div id="outline-container-orgac9605a" class="outline-4">
-<h4 id="orgac9605a"><span class="section-number-4">8.1.1.</span> 添加一个数据卷</h4>
+<div id="outline-container-section-80ecf9378eee" class="outline-4">
+<h4 id="section-80ecf9378eee"><span class="section-number-4">8.1.1.</span> 添加一个数据卷</h4>
 <div class="outline-text-4" id="text-8-1-1">
 <p>
 你可以使用 <code>-v</code> 选项添加一个数据卷，或者可以使用多次 <code>-v</code> 选项为一个 docker 容器运行挂载多个数据卷。
@@ -2194,8 +2198,8 @@ map[/data: /var/lib/docker/vfs/dir/151de401d268226f96d824fdf444e77a4500aed74c495
 </div>
 </div>
 </div>
-<div id="outline-container-org8503507" class="outline-4">
-<h4 id="org8503507"><span class="section-number-4">8.1.2.</span> 挂载宿主机目录为一个数据卷</h4>
+<div id="outline-container-section-a108c6e3ded3" class="outline-4">
+<h4 id="section-a108c6e3ded3"><span class="section-number-4">8.1.2.</span> 挂载宿主机目录为一个数据卷</h4>
 <div class="outline-text-4" id="text-8-1-2">
 <p>
 <code>-v</code> 选项除了可以创建卷，也可以挂载当前主机的一个目录到容器中。
@@ -2223,8 +2227,8 @@ bash-4.1# exit
 </div>
 </div>
 </div>
-<div id="outline-container-orgad77146" class="outline-3">
-<h3 id="orgad77146"><span class="section-number-3">8.2.</span> 创建和挂载一个数据卷容器</h3>
+<div id="outline-container-section-eee31e08e3db" class="outline-3">
+<h3 id="section-eee31e08e3db"><span class="section-number-3">8.2.</span> 创建和挂载一个数据卷容器</h3>
 <div class="outline-text-3" id="text-8-2">
 <p>
 如果你有一些持久性的数据并且想在容器间共享，或者想用在非持久性的容器上，最好的方法是创建一个数据卷容器，然后从此容器上挂载数据。
@@ -2267,18 +2271,18 @@ bash-4.1# exit
 </div>
 
 
-<figure id="org502db3f">
-<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/docker_data.png" alt="docker_data.png">
+<figure id="generated-6">
+<img src="images/docker_data.png" alt="docker_data.png" decoding="async" loading="lazy" width="652" height="209">
 
 </figure>
 </div>
 </div>
-<div id="outline-container-orgc929e65" class="outline-3">
-<h3 id="orgc929e65"><span class="section-number-3">8.3.</span> 备份、恢复或迁移数据卷</h3>
+<div id="outline-container-section-3963408d35c6" class="outline-3">
+<h3 id="section-3963408d35c6"><span class="section-number-3">8.3.</span> 备份、恢复或迁移数据卷</h3>
 <div class="outline-text-3" id="text-8-3">
 </div>
-<div id="outline-container-org7c51500" class="outline-4">
-<h4 id="org7c51500"><span class="section-number-4">8.3.1.</span> 备份</h4>
+<div id="outline-container-section-2aadd3e0b683" class="outline-4">
+<h4 id="section-2aadd3e0b683"><span class="section-number-4">8.3.1.</span> 备份</h4>
 <div class="outline-text-4" id="text-8-3-1">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo docker run --rm --volumes-from test -v $(pwd):/backup ubuntu:14.04 tar cvf /backup/test.tar /test
@@ -2302,8 +2306,8 @@ test.tar
 </div>
 </div>
 </div>
-<div id="outline-container-org3a9cb1c" class="outline-4">
-<h4 id="org3a9cb1c"><span class="section-number-4">8.3.2.</span> 恢复</h4>
+<div id="outline-container-section-79748ca1c6e5" class="outline-4">
+<h4 id="section-79748ca1c6e5"><span class="section-number-4">8.3.2.</span> 恢复</h4>
 <div class="outline-text-4" id="text-8-3-2">
 <p>
 你可以恢复给同一个容器或者另外的容器，新建容器并解压备份文件到新的容器数据卷
@@ -2323,8 +2327,8 @@ test/a
 </div>
 </div>
 </div>
-<div id="outline-container-org3bc24d7" class="outline-3">
-<h3 id="org3bc24d7"><span class="section-number-3">8.4.</span> 删除 Volumes</h3>
+<div id="outline-container-section-c3a159bcf9fd" class="outline-3">
+<h3 id="section-c3a159bcf9fd"><span class="section-number-3">8.4.</span> 删除 Volumes</h3>
 <div class="outline-text-3" id="text-8-4">
 <p>
 Volume 只有在下列情况下才能被删除：
@@ -2351,15 +2355,15 @@ Volume 只有在下列情况下才能被删除：
 </div>
 </div>
 </div>
-<div id="outline-container-orgaa8ff76" class="outline-2">
-<h2 id="orgaa8ff76"><span class="section-number-2">9.</span> 链接容器</h2>
+<div id="outline-container-section-b615654b35fd" class="outline-2">
+<h2 id="section-b615654b35fd"><span class="section-number-2">9.</span> 链接容器</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 docker 允许把多个容器连接在一起，相互交互信息。docker 链接会创建一种容器父子级别的关系，其中父容器可以看到其子容器提供的信息。
 </p>
 </div>
-<div id="outline-container-orgcfd8302" class="outline-3">
-<h3 id="orgcfd8302"><span class="section-number-3">9.1.</span> 容器命名</h3>
+<div id="outline-container-section-c85775f6853e" class="outline-3">
+<h3 id="section-c85775f6853e"><span class="section-number-3">9.1.</span> 容器命名</h3>
 <div class="outline-text-3" id="text-9-1">
 <p>
 在创建容器时，如果不指定容器的名字，则默认会自动创建一个名字，这里推荐给容器命名：
@@ -2388,8 +2392,8 @@ $ sudo docker  inspect --format="{% raw %}{{ .Nmae }}{% endraw %}" test
 </blockquote>
 </div>
 </div>
-<div id="outline-container-orga44789f" class="outline-3">
-<h3 id="orga44789f"><span class="section-number-3">9.2.</span> 链接容器</h3>
+<div id="outline-container-section-b615654b35fd-2" class="outline-3">
+<h3 id="section-b615654b35fd-2"><span class="section-number-3">9.2.</span> 链接容器</h3>
 <div class="outline-text-3" id="text-9-2">
 <p>
 链接允许容器间安全通信，使用 <code>--link</code> 选项创建链接。
@@ -2440,8 +2444,8 @@ Docker 主要通过以下两个方式提供连接信息给接收容器：
 <li>更新 <code>/etc/hosts</code> 文件</li>
 </ul>
 </div>
-<div id="outline-container-org217b4fe" class="outline-4">
-<h4 id="org217b4fe"><span class="section-number-4">9.2.1.</span> 环境变量</h4>
+<div id="outline-container-section-8da07705aba6" class="outline-4">
+<h4 id="section-8da07705aba6"><span class="section-number-4">9.2.1.</span> 环境变量</h4>
 <div class="outline-text-4" id="text-9-2-1">
 <p>
 当两个容器链接，Docker 会在目标容器上设置一些环境变量，以获取源容器的相关信息。
@@ -2475,8 +2479,8 @@ DB_PORT_5432_TCP_ADDR=172.17.0.5
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org44867ed" class="outline-4">
-<h4 id="org44867ed"><span class="section-number-4">9.2.2.</span> 更新 <code>/etc/hosts</code> 文件</h4>
+<div id="outline-container-section-88c5081f00d4" class="outline-4">
+<h4 id="section-88c5081f00d4"><span class="section-number-4">9.2.2.</span> 更新 <code>/etc/hosts</code> 文件</h4>
 <div class="outline-text-4" id="text-9-2-2">
 <p>
 除了环境变量，Docker 会在目标容器上添加相关主机条目到 <code>/etc/hosts</code> 中，上例中就是 web 容器。
@@ -2500,15 +2504,15 @@ root@aed84ee21bde:/opt/webapp# cat /etc/hosts
 </div>
 </div>
 </div>
-<div id="outline-container-org2011402" class="outline-2">
-<h2 id="org2011402"><span class="section-number-2">10.</span> 构建私有库</h2>
+<div id="outline-container-section-6c0e85d075a8" class="outline-2">
+<h2 id="section-6c0e85d075a8"><span class="section-number-2">10.</span> 构建私有库</h2>
 <div class="outline-text-2" id="text-10">
 <p>
 Docker 官方提供了 docker registry 的构建方法 <a href="https://github.com/docker/docker-registry">docker-registry</a>
 </p>
 </div>
-<div id="outline-container-orge2cf454" class="outline-3">
-<h3 id="orge2cf454"><span class="section-number-3">10.1.</span> 快速构建</h3>
+<div id="outline-container-section-e52097d79c9e" class="outline-3">
+<h3 id="section-e52097d79c9e"><span class="section-number-3">10.1.</span> 快速构建</h3>
 <div class="outline-text-3" id="text-10-1">
 <p>
 快速构建 docker registry 通过以下两步:
@@ -2524,12 +2528,12 @@ Docker 官方提供了 docker registry 的构建方法 <a href="https://github.c
 </p>
 </div>
 </div>
-<div id="outline-container-org65379b4" class="outline-3">
-<h3 id="org65379b4"><span class="section-number-3">10.2.</span> 不使用容器构建 registry</h3>
+<div id="outline-container-section-eda3988251a9" class="outline-3">
+<h3 id="section-eda3988251a9"><span class="section-number-3">10.2.</span> 不使用容器构建 registry</h3>
 <div class="outline-text-3" id="text-10-2">
 </div>
-<div id="outline-container-org57b9401" class="outline-4">
-<h4 id="org57b9401"><span class="section-number-4">10.2.1.</span> 安装必要的软件</h4>
+<div id="outline-container-section-f2c208236f28" class="outline-4">
+<h4 id="section-f2c208236f28"><span class="section-number-4">10.2.1.</span> 安装必要的软件</h4>
 <div class="outline-text-4" id="text-10-2-1">
 <div class="org-src-container">
 <pre class="src src-nil">$ sudo apt-get install build-essential python-dev libevent-dev python-pip liblzma-dev
@@ -2537,8 +2541,8 @@ Docker 官方提供了 docker registry 的构建方法 <a href="https://github.c
 </div>
 </div>
 </div>
-<div id="outline-container-orgcac6ef7" class="outline-4">
-<h4 id="orgcac6ef7"><span class="section-number-4">10.2.2.</span> 配置 docker-registry</h4>
+<div id="outline-container-section-789d1d2f20e9" class="outline-4">
+<h4 id="section-789d1d2f20e9"><span class="section-number-4">10.2.2.</span> 配置 docker-registry</h4>
 <div class="outline-text-4" id="text-10-2-2">
 <div class="org-src-container">
 <pre class="src src-nil">sudo pip install docker-registry
@@ -2559,8 +2563,8 @@ $ pip install .
 </div>
 </div>
 </div>
-<div id="outline-container-org4130792" class="outline-4">
-<h4 id="org4130792"><span class="section-number-4">10.2.3.</span> 运行</h4>
+<div id="outline-container-section-0c3acd446f19" class="outline-4">
+<h4 id="section-0c3acd446f19"><span class="section-number-4">10.2.3.</span> 运行</h4>
 <div class="outline-text-4" id="text-10-2-3">
 <div class="org-src-container">
 <pre class="src src-nil">docker-registry
@@ -2568,8 +2572,8 @@ $ pip install .
 </div>
 </div>
 </div>
-<div id="outline-container-org5235d43" class="outline-4">
-<h4 id="org5235d43"><span class="section-number-4">10.2.4.</span> 高级启动方式 「不推荐」</h4>
+<div id="outline-container-section-66a5ce1796fe" class="outline-4">
+<h4 id="section-66a5ce1796fe"><span class="section-number-4">10.2.4.</span> 高级启动方式 「不推荐」</h4>
 <div class="outline-text-4" id="text-10-2-4">
 <p>
 使用 <code>gunicorn</code> 控制:
@@ -2591,8 +2595,8 @@ $ pip install .
 </div>
 </div>
 </div>
-<div id="outline-container-orge69d877" class="outline-3">
-<h3 id="orge69d877"><span class="section-number-3">10.3.</span> 提交指定容器到私有库</h3>
+<div id="outline-container-section-bbbbe62c1a2f" class="outline-3">
+<h3 id="section-bbbbe62c1a2f"><span class="section-number-3">10.3.</span> 提交指定容器到私有库</h3>
 <div class="outline-text-3" id="text-10-3">
 <div class="org-src-container">
 <pre class="src src-nil">$ docker tag ubuntu:12.04 私有库IP:5000/ubuntu:12.04
@@ -2612,9 +2616,9 @@ $ docker push 私有库IP:5000/ubuntu
 </div>
 </div>
 </div>
-<nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="rsync.html"><span class="article-nav-label">Newer</span><span class="article-nav-title">rsync 备份备忘</span><span class="article-nav-date">2015-01-09</span></a><a class="article-nav-link article-nav-older" href="sublime.html"><span class="article-nav-label">Older</span><span class="article-nav-title">Sublime Text2 tips</span><span class="article-nav-date">2014-12-19</span></a></nav>
+<nav class="article-nav" aria-label="文章导航"><a class="article-nav-link article-nav-newer" href="rsync.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">rsync 备份备忘</span><span class="article-nav-date">2015-01-09</span></a><a class="article-nav-link article-nav-older" href="sublime.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">Sublime Text2 tips</span><span class="article-nav-date">2014-12-19</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2014-12-22 Mon 00:00</span><span class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 30.2 (<a href="https://orgmode.org">Org</a> mode 9.7.11)</span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2014-12-22 Mon 00:00</span><span class="creator">由 <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a> 生成</span>
 </div>
 </body>
 </html>
