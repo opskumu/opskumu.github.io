@@ -463,6 +463,18 @@ body.index-page .title {
   line-height: 1.68;
 }
 
+.content ul,
+.content ol {
+  margin: 0.75rem 0;
+  padding-left: 1.4rem;
+}
+
+.content li > ul,
+.content li > ol {
+  margin: 0.25rem 0;
+  padding-left: 1.2rem;
+}
+
 .content h1,
 .content h2,
 .content h3,
@@ -856,6 +868,16 @@ body.index-page .archive-toolbar button:active {
   .content {
     font-size: 1rem;
     line-height: 1.72;
+  }
+
+  .content ul,
+  .content ol {
+    padding-left: 1.25rem;
+  }
+
+  .content li > ul,
+  .content li > ol {
+    padding-left: 1.1rem;
   }
 
   .content table {
