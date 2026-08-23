@@ -129,7 +129,7 @@
     <id>https://blog.opskumu.com/borg.html</id>
     <link href="https://blog.opskumu.com/borg.html"/>
     <updated>2018-12-23T00:00:00+08:00</updated>
-    <summary type="text">本文是 Google Borg 论文的译文，从事 Kubernetes 相关的工作几年来，一直惦记着这篇论文，所以就花了一点时间翻译了一下。后续还需要花时间校正，有些翻译的名词个人觉得也不太合适，不过先凑合着看吧，自己完整过一遍还是感觉不一样的。</summary>
+    <summary type="text">Google Borg 系统是一个集群管理器，运行着数千个应用程序的数以十万计的作业，跨多个由数万台机器组成的集群。</summary>
   </entry>
   <entry>
     <title>Kubernetes Pod 亲和性和反亲和性</title>

@@ -227,9 +227,9 @@
     Array.prototype.forEach.call(document.querySelectorAll(".navbar-links a"), function (link) {
       link.classList.remove("active");
       link.removeAttribute("aria-current");
-      if (isIndex && link.getAttribute("data-nav") === "blog") {
+      if (link.getAttribute("data-nav") === "blog") {
         link.classList.add("active");
-        link.setAttribute("aria-current", "page");
+        link.setAttribute("aria-current", isIndex ? "page" : "location");
       }
     });
 
