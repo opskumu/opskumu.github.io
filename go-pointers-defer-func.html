@@ -8,13 +8,13 @@
 <meta name="description" content="package main import &quot;fmt&quot; type number int func main() { var m number var n *number // 定义 n 为指针类型 m = 1 n = &amp;m // 指针 n 赋值 fmt.Println(m) fmt.Println(n) // 输出地…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823d"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js"></script>
+<script defer src="js/site.js?v=20260823d"></script>
 <link rel="canonical" href="https://blog.opskumu.com/go-pointers-defer-func.html"/>
 <meta property="og:title" content="Go 指针、defer、匿名函数"/>
 <meta property="og:description" content="package main import &quot;fmt&quot; type number int func main() { var m number var n *number // 定义 n 为指针类型 m = 1 n = &amp;m // 指针 n 赋值 fmt.Println(m) fmt.Println(n) // 输出地…"/>
@@ -24,10 +24,11 @@
 <meta name="twitter:title" content="Go 指针、defer、匿名函数"/>
 <meta name="twitter:description" content="package main import &quot;fmt&quot; type number int func main() { var m number var n *number // 定义 n 为指针类型 m = 1 n = &amp;m // 指针 n 赋值 fmt.Println(m) fmt.Println(n) // 输出地…"/>
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Go 指针、defer、匿名函数","description":"package main import \"fmt\" type number int func main() { var m number var n *number // 定义 n 为指针类型 m = 1 n = &m // 指针 n 赋值 fmt.Println(m) fmt.Println(n) // 输出地…","url":"https://blog.opskumu.com/go-pointers-defer-func.html","mainEntityOfPage":"https://blog.opskumu.com/go-pointers-defer-func.html","inLanguage":"zh-CN","datePublished":"2016-04-20","dateModified":"2016-04-20","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -224,7 +225,7 @@ func main() {
 </div>
 <nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="k8s-ingress.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">Kubernetes Ingress 服务负载均衡</span><span class="article-nav-date">2016-11-09</span></a><a class="article-nav-link article-nav-older" href="docker-io-limit.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">Docker 磁盘 IO 资源限制</span><span class="article-nav-date">2016-03-27</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2016-04-20 Wed 00:00</span><span class="creator">Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2016-04-20 Wed 00:00</span><span class="creator"><a href="atom.xml">Atom 订阅</a><span class="postamble-sep" aria-hidden="true"> · </span>Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
 </div>
 </body>
 </html>

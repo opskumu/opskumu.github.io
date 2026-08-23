@@ -2,14 +2,19 @@
   "use strict";
 
   var labels = {
-    mainSkip: "Skip to main content",
-    tocSkip: "Skip to table of contents",
+    mainSkip: "跳到正文",
+    tocSkip: "跳到目录",
     articleMeta: "文章信息",
     readingTimeTitle: "预计阅读时间",
     minuteRead: "约 {minutes} 分钟",
     expandAll: "Expand all",
     collapseAll: "Collapse all",
     postsCount: "{count} 篇",
+    tocExpand: "展开",
+    tocCollapse: "收起",
+    zoomImage: "放大查看图片：{name}",
+    imageViewer: "图片查看器",
+    closeImage: "关闭图片",
     backToTop: "返回顶部",
     copyCode: "复制代码",
     copy: "复制",
@@ -29,7 +34,8 @@
       arrowUp: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path></svg>',
       copy: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>',
       check: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>',
-      xmark: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>'
+      xmark: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>',
+      zoom: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path><path d="M11 8v6"></path><path d="M8 11h6"></path></svg>'
     };
 
     return svg[name] || "";
@@ -144,7 +150,7 @@
     var nav = document.createElement("nav");
     nav.className = "navbar";
     nav.setAttribute("role", "navigation");
-    nav.setAttribute("aria-label", "Primary");
+    nav.setAttribute("aria-label", "主导航");
 
     var brand = document.createElement("a");
     brand.className = "navbar-brand";
@@ -380,6 +386,120 @@
     });
   };
 
+  var initTocDisclosure = function () {
+    var toc = document.querySelector("#table-of-contents");
+    if (!toc) return;
+
+    var heading = toc.querySelector("h2");
+    var panel = toc.querySelector("#text-table-of-contents");
+    if (!heading || !panel) return;
+
+    if (!panel.id) panel.id = "text-table-of-contents";
+
+    var headingText = document.createElement("span");
+    headingText.className = "toc-heading-text";
+    headingText.textContent = "目录";
+
+    var toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "toc-toggle";
+    toggle.setAttribute("aria-controls", panel.id);
+
+    heading.textContent = "";
+    heading.appendChild(headingText);
+    heading.appendChild(toggle);
+
+    var narrow = window.matchMedia("(max-width: 1319px)");
+    var collapsed = false;
+
+    var render = function () {
+      var collapsible = narrow.matches;
+      toc.classList.toggle("is-collapsible", collapsible);
+      if (!collapsible) collapsed = false;
+      toc.classList.toggle("is-collapsed", collapsible && collapsed);
+      panel.hidden = collapsible && collapsed;
+      toggle.hidden = !collapsible;
+      toggle.setAttribute("aria-expanded", String(!(collapsible && collapsed)));
+      toggle.textContent = collapsible && collapsed ? labels.tocExpand : labels.tocCollapse;
+    };
+
+    collapsed = narrow.matches;
+    render();
+
+    toggle.addEventListener("click", function () {
+      collapsed = !collapsed;
+      render();
+    });
+
+    if (narrow.addEventListener) narrow.addEventListener("change", render);
+    else if (narrow.addListener) narrow.addListener(render);
+  };
+
+  var initImageViewer = function () {
+    if (typeof window.HTMLDialogElement !== "function") return;
+
+    var images = Array.prototype.slice.call(document.querySelectorAll(".content figure img"));
+    if (!images.length) return;
+
+    var dialog = document.createElement("dialog");
+    dialog.className = "image-viewer";
+    dialog.setAttribute("aria-label", labels.imageViewer);
+
+    var close = document.createElement("button");
+    close.type = "button";
+    close.className = "image-viewer-close";
+    close.setAttribute("aria-label", labels.closeImage);
+    appendIcon(close, "xmark");
+
+    var viewerImage = document.createElement("img");
+    viewerImage.alt = "";
+
+    var caption = document.createElement("p");
+    caption.className = "image-viewer-caption";
+
+    dialog.appendChild(close);
+    dialog.appendChild(viewerImage);
+    dialog.appendChild(caption);
+    document.body.appendChild(dialog);
+
+    close.addEventListener("click", function () {
+      dialog.close();
+    });
+
+    dialog.addEventListener("click", function (event) {
+      if (event.target === dialog) dialog.close();
+    });
+
+    images.forEach(function (image) {
+      if (image.closest("a, button")) return;
+
+      var figure = image.closest("figure");
+      var figureCaption = figure && figure.querySelector("figcaption");
+      var name = (figureCaption && figureCaption.textContent.trim()) || image.alt || "图片";
+      var trigger = document.createElement("button");
+      trigger.type = "button";
+      trigger.className = "image-zoom-trigger";
+      trigger.setAttribute("aria-label", format(labels.zoomImage, { name: name }));
+
+      image.parentNode.insertBefore(trigger, image);
+      trigger.appendChild(image);
+
+      var hint = document.createElement("span");
+      hint.className = "image-zoom-hint";
+      hint.setAttribute("aria-hidden", "true");
+      appendIcon(hint, "zoom");
+      trigger.appendChild(hint);
+
+      trigger.addEventListener("click", function () {
+        viewerImage.src = image.currentSrc || image.src;
+        viewerImage.alt = image.alt || "";
+        caption.textContent = figureCaption ? figureCaption.textContent.trim() : "";
+        caption.hidden = !caption.textContent;
+        dialog.showModal();
+      });
+    });
+  };
+
   var initScrollEnhancements = function () {
     var button = document.createElement("button");
     button.type = "button";
@@ -540,8 +660,10 @@
     initChrome();
     initReadingTime();
     initArchive();
+    initTocDisclosure();
     initScrollEnhancements();
     initTocActiveState();
     initCodeCopy();
+    initImageViewer();
   });
 })();

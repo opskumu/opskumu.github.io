@@ -373,6 +373,13 @@ body.index-page #postamble .creator {
 }
 
 #table-of-contents h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#table-of-contents h2 {
   font-size: 1rem;
   margin: 0 0 0.5rem 0;
 }
@@ -407,6 +414,46 @@ body.index-page #postamble .creator {
   background: rgba(37, 99, 235, 0.14);
   color: #0f172a;
   font-weight: 600;
+}
+
+.toc-toggle {
+  min-width: 44px;
+  min-height: 44px;
+  margin: -0.55rem -0.55rem -0.55rem 0;
+  padding: 0 0.55rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--link);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.toc-toggle:hover {
+  background: var(--surface-tint);
+  color: var(--link-hover);
+}
+
+#table-of-contents.is-collapsed {
+  margin-bottom: 1.35rem;
+}
+
+@media (min-width: 1320px) {
+  #table-of-contents {
+    position: sticky;
+    top: 1rem;
+    float: right;
+    clear: right;
+    width: 220px;
+    max-height: calc(100vh - 2rem);
+    margin: 0 calc(-220px - 2rem) 2rem 2rem;
+    padding: 0.9rem;
+    overflow-y: auto;
+  }
+
+  #table-of-contents h2 {
+    margin-bottom: 0.4rem;
+  }
 }
 
 #table-of-contents ul ul {
@@ -492,9 +539,119 @@ body.index-page .title {
   margin-top: 1.3rem;
 }
 
+.content figure {
+  margin: 1.6rem 0;
+  padding: 0;
+  text-align: center;
+}
+
+.content figure img,
 .content img {
   max-width: 100%;
   height: auto;
+}
+
+.content figcaption {
+  max-width: 68ch;
+  margin: 0.6rem auto 0;
+  color: var(--muted-soft);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.image-zoom-trigger {
+  position: relative;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: zoom-in;
+  touch-action: manipulation;
+}
+
+.image-zoom-trigger img {
+  display: block;
+  margin: 0 auto;
+}
+
+.image-zoom-hint {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(23, 32, 51, 0.72);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  pointer-events: none;
+}
+
+.image-zoom-trigger:hover .image-zoom-hint,
+.image-zoom-trigger:focus-visible .image-zoom-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.image-viewer {
+  width: min(94vw, 1400px);
+  max-width: none;
+  max-height: 92vh;
+  margin: auto;
+  padding: 3.25rem 1rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.image-viewer::backdrop {
+  background: rgba(9, 14, 24, 0.82);
+  backdrop-filter: blur(3px);
+}
+
+.image-viewer > img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(92vh - 6.5rem);
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+}
+
+.image-viewer-close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.86);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.image-viewer-caption {
+  margin: 0.75rem auto 0;
+  color: #d8e1eb;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .content table {
@@ -721,6 +878,13 @@ body.index-page details.archive-year .outline-text-3 a {
   font-weight: 600;
 }
 
+body.index-page details.archive-year .outline-text-3 a:hover {
+  border-bottom: 0;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
 body.index-page .archive-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -805,7 +969,7 @@ body.index-page .archive-toolbar button:active {
   }
 
   #table-of-contents {
-    padding: 0.8rem 0;
+    padding: 0.8rem;
   }
 }
 
@@ -910,4 +1074,17 @@ body.index-page .archive-toolbar button:active {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .content figure {
+    margin-top: 1.35rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .image-zoom-hint {
+    width: 44px;
+    height: 44px;
+    opacity: 0.88;
+    transform: none;
+  }
+
 }

@@ -5,31 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kubernetes 访问控制</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="如上图，这是一个典型的 Kubernetes 集群组件图，通过上图我们可以看到 Kubernetes 各组件都是以 APIServer 作为网关通信的。为了安全，APIServer 一般通过 TLS 认证对外暴露，集群组件若要访问 APIServer 则需要相应的 TLS 证书。" />
+<meta name="description" content="介绍 Kubernetes API Server 的 TLS 双向认证、RBAC 授权、TLS bootstrapping 与 Node Authorization 访问控制机制。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823d"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js"></script>
+<script defer src="js/site.js?v=20260823d"></script>
 <link rel="canonical" href="https://blog.opskumu.com/kubernetes-access-controll.html"/>
 <meta property="og:title" content="Kubernetes 访问控制"/>
-<meta property="og:description" content="如上图，这是一个典型的 Kubernetes 集群组件图，通过上图我们可以看到 Kubernetes 各组件都是以 APIServer 作为网关通信的。为了安全，APIServer 一般通过 TLS 认证对外暴露，集群组件若要访问 APIServer 则需要相应的 TLS 证书。"/>
+<meta property="og:description" content="介绍 Kubernetes API Server 的 TLS 双向认证、RBAC 授权、TLS bootstrapping 与 Node Authorization 访问控制机制。"/>
 <meta property="og:url" content="https://blog.opskumu.com/kubernetes-access-controll.html"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2021-03-31T00:00:00+08:00"/>
 <meta property="og:image" content="https://blog.opskumu.com/images/components-of-kubernetes.png"/>
 <meta name="twitter:title" content="Kubernetes 访问控制"/>
-<meta name="twitter:description" content="如上图，这是一个典型的 Kubernetes 集群组件图，通过上图我们可以看到 Kubernetes 各组件都是以 APIServer 作为网关通信的。为了安全，APIServer 一般通过 TLS 认证对外暴露，集群组件若要访问 APIServer 则需要相应的 TLS 证书。"/>
+<meta name="twitter:description" content="介绍 Kubernetes API Server 的 TLS 双向认证、RBAC 授权、TLS bootstrapping 与 Node Authorization 访问控制机制。"/>
 <meta name="twitter:image" content="https://blog.opskumu.com/images/components-of-kubernetes.png"/>
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes 访问控制","description":"介绍 Kubernetes API Server 的 TLS 双向认证、RBAC 授权、TLS bootstrapping 与 Node Authorization 访问控制机制。","url":"https://blog.opskumu.com/kubernetes-access-controll.html","mainEntityOfPage":"https://blog.opskumu.com/kubernetes-access-controll.html","inLanguage":"zh-CN","datePublished":"2021-03-31","dateModified":"2021-03-31","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://blog.opskumu.com/images/components-of-kubernetes.png"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -48,8 +49,9 @@
 </nav>
 
 <figure id="generated-1">
-<img src="images/components-of-kubernetes.png" alt="components-of-kubernetes.png" decoding="async" loading="eager" fetchpriority="high" width="1982" height="936">
+<img src="images/components-of-kubernetes.png" alt="Kubernetes 集群控制面与节点组件" decoding="async" loading="eager" fetchpriority="high" width="1982" height="936">
 
+<figcaption><span class="figure-number">&#22270;1&nbsp; </span>Kubernetes 集群控制面与节点组件</figcaption>
 </figure>
 
 <p>
@@ -66,8 +68,9 @@
 
 
 <figure id="generated-2">
-<img src="images/access-control-overview.png" alt="access-control-overview.png" decoding="async" loading="lazy" width="2570" height="1162">
+<img src="images/access-control-overview.png" alt="Kubernetes API 请求的访问控制流程" decoding="async" loading="lazy" width="2570" height="1162">
 
+<figcaption><span class="figure-number">&#22270;2&nbsp; </span>Kubernetes API 请求的访问控制流程</figcaption>
 </figure>
 
 <p>
@@ -80,8 +83,9 @@
 
 
 <figure id="generated-3">
-<img src="images/kubernetes-authentication.png" alt="kubernetes-authentication.png" decoding="async" loading="lazy" width="2120" height="894">
+<img src="images/kubernetes-authentication.png" alt="Kubernetes API 支持的认证方式" decoding="async" loading="lazy" width="2120" height="894">
 
+<figcaption><span class="figure-number">&#22270;3&nbsp; </span>Kubernetes API 支持的认证方式</figcaption>
 </figure>
 
 <p>
@@ -100,8 +104,9 @@ APIServer 和集群组件通信使用 TLS 双向认证，顾名思义，客户�
 
 
 <figure id="generated-4">
-<img src="images/mutual-ssl.png" alt="mutual-ssl.png" decoding="async" loading="lazy" width="813" height="627">
+<img src="images/mutual-ssl.png" alt="TLS 双向认证握手流程" decoding="async" loading="lazy" width="813" height="627">
 
+<figcaption><span class="figure-number">&#22270;4&nbsp; </span>TLS 双向认证握手流程</figcaption>
 </figure>
 
 <p>
@@ -144,14 +149,16 @@ kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书�
 
 
 <figure id="generated-5">
-<img src="images/role-binding.png" alt="role-binding.png" decoding="async" loading="lazy" width="700" height="497">
+<img src="images/role-binding.png" alt="RoleBinding 在命名空间内关联角色与主体" decoding="async" loading="lazy" width="700" height="497">
 
+<figcaption><span class="figure-number">&#22270;5&nbsp; </span>RoleBinding 在命名空间内关联角色与主体</figcaption>
 </figure>
 
 
 <figure id="generated-6">
-<img src="images/cluster-role-binding.png" alt="cluster-role-binding.png" decoding="async" loading="lazy" width="729" height="517">
+<img src="images/cluster-role-binding.png" alt="ClusterRoleBinding 在集群范围关联角色与主体" decoding="async" loading="lazy" width="729" height="517">
 
+<figcaption><span class="figure-number">&#22270;6&nbsp; </span>ClusterRoleBinding 在集群范围关联角色与主体</figcaption>
 </figure>
 
 <p>
@@ -215,8 +222,9 @@ ClusterRoleBinding 中 subjects 则定义了 ServiceAccount 以及对应的空�
 
 
 <figure id="generated-7">
-<img src="images/bootstrapping-workflow.png" alt="bootstrapping-workflow.png" decoding="async" loading="lazy" width="1520" height="480">
+<img src="images/bootstrapping-workflow.png" alt="Kubelet TLS bootstrapping 工作流程" decoding="async" loading="lazy" width="1520" height="480">
 
+<figcaption><span class="figure-number">&#22270;7&nbsp; </span>Kubelet TLS bootstrapping 工作流程</figcaption>
 </figure>
 
 <p>
@@ -312,7 +320,7 @@ APIServer 可以通过 <code>--authorization-mode=Node</code> 开启 Node 授权
 </div>
 <nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="bye-2021.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">2021，小结</span><span class="article-nav-date">2022-01-23</span></a><a class="article-nav-link article-nav-older" href="bye-2020.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">2020，小结</span><span class="article-nav-date">2021-02-16</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2021-03-31 Wed 00:00</span><span class="creator">Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2021-03-31 Wed 00:00</span><span class="creator"><a href="atom.xml">Atom 订阅</a><span class="postamble-sep" aria-hidden="true"> · </span>Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
 </div>
 </body>
 </html>

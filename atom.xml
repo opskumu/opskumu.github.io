@@ -31,7 +31,7 @@
     <id>https://blog.opskumu.com/kubernetes-access-controll.html</id>
     <link href="https://blog.opskumu.com/kubernetes-access-controll.html"/>
     <updated>2021-03-31T00:00:00+08:00</updated>
-    <summary type="text">如上图，这是一个典型的 Kubernetes 集群组件图，通过上图我们可以看到 Kubernetes 各组件都是以 APIServer 作为网关通信的。为了安全，APIServer 一般通过 TLS 认证对外暴露，集群组件若要访问 APIServer 则需要相应的 TLS 证书。</summary>
+    <summary type="text">介绍 Kubernetes API Server 的 TLS 双向认证、RBAC 授权、TLS bootstrapping 与 Node Authorization 访问控制机制。</summary>
   </entry>
   <entry>
     <title>2020，小结</title>

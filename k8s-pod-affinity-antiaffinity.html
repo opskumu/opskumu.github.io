@@ -8,13 +8,13 @@
 <meta name="description" content="通过 Kubernetes 你可以将一个 pod 限制或倾向于在某些特定节点运行。有几种方式可以达到这个目的，它们都通过 label selectors 进行选择。通常情况下，这样的约束是不必要的，因为调度程序会自动进行合理的调度（如通过一系列的评分机制将 pods 合理分配到最优节点上，而不会将 pod 分配在…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823d"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js"></script>
+<script defer src="js/site.js?v=20260823d"></script>
 <link rel="canonical" href="https://blog.opskumu.com/k8s-pod-affinity-antiaffinity.html"/>
 <meta property="og:title" content="Kubernetes Pod 亲和性和反亲和性"/>
 <meta property="og:description" content="通过 Kubernetes 你可以将一个 pod 限制或倾向于在某些特定节点运行。有几种方式可以达到这个目的，它们都通过 label selectors 进行选择。通常情况下，这样的约束是不必要的，因为调度程序会自动进行合理的调度（如通过一系列的评分机制将 pods 合理分配到最优节点上，而不会将 pod 分配在…"/>
@@ -24,10 +24,11 @@
 <meta name="twitter:title" content="Kubernetes Pod 亲和性和反亲和性"/>
 <meta name="twitter:description" content="通过 Kubernetes 你可以将一个 pod 限制或倾向于在某些特定节点运行。有几种方式可以达到这个目的，它们都通过 label selectors 进行选择。通常情况下，这样的约束是不必要的，因为调度程序会自动进行合理的调度（如通过一系列的评分机制将 pods 合理分配到最优节点上，而不会将 pod 分配在…"/>
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes Pod 亲和性和反亲和性","description":"通过 Kubernetes 你可以将一个 pod 限制或倾向于在某些特定节点运行。有几种方式可以达到这个目的，它们都通过 label selectors 进行选择。通常情况下，这样的约束是不必要的，因为调度程序会自动进行合理的调度（如通过一系列的评分机制将 pods 合理分配到最优节点上，而不会将 pod 分配在…","url":"https://blog.opskumu.com/k8s-pod-affinity-antiaffinity.html","mainEntityOfPage":"https://blog.opskumu.com/k8s-pod-affinity-antiaffinity.html","inLanguage":"zh-CN","datePublished":"2018-11-18","dateModified":"2018-11-18","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -420,7 +421,7 @@ spec:
 </div>
 <nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="borg.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">Google 大规模集群管理器 Borg</span><span class="article-nav-date">2018-12-23</span></a><a class="article-nav-link article-nav-older" href="kubernetes-upgrade-notes.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">Kubernetes 版本升级标注</span><span class="article-nav-date">2018-09-07</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2018-11-18 Sun 00:00</span><span class="creator">Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2018-11-18 Sun 00:00</span><span class="creator"><a href="atom.xml">Atom 订阅</a><span class="postamble-sep" aria-hidden="true"> · </span>Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
 </div>
 </body>
 </html>

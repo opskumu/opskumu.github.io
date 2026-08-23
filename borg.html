@@ -8,13 +8,13 @@
 <meta name="description" content="本文是 Google Borg 论文的译文，从事 Kubernetes 相关的工作几年来，一直惦记着这篇论文，所以就花了一点时间翻译了一下。后续还需要花时间校正，有些翻译的名词个人觉得也不太合适，不过先凑合着看吧，自己完整过一遍还是感觉不一样的。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823d"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js"></script>
+<script defer src="js/site.js?v=20260823d"></script>
 <link rel="canonical" href="https://blog.opskumu.com/borg.html"/>
 <meta property="og:title" content="Google 大规模集群管理器 Borg"/>
 <meta property="og:description" content="本文是 Google Borg 论文的译文，从事 Kubernetes 相关的工作几年来，一直惦记着这篇论文，所以就花了一点时间翻译了一下。后续还需要花时间校正，有些翻译的名词个人觉得也不太合适，不过先凑合着看吧，自己完整过一遍还是感觉不一样的。"/>
@@ -26,10 +26,11 @@
 <meta name="twitter:description" content="本文是 Google Borg 论文的译文，从事 Kubernetes 相关的工作几年来，一直惦记着这篇论文，所以就花了一点时间翻译了一下。后续还需要花时间校正，有些翻译的名词个人觉得也不太合适，不过先凑合着看吧，自己完整过一遍还是感觉不一样的。"/>
 <meta name="twitter:image" content="https://blog.opskumu.com/images/borg-arch.png"/>
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Google 大规模集群管理器 Borg","description":"本文是 Google Borg 论文的译文，从事 Kubernetes 相关的工作几年来，一直惦记着这篇论文，所以就花了一点时间翻译了一下。后续还需要花时间校正，有些翻译的名词个人觉得也不太合适，不过先凑合着看吧，自己完整过一遍还是感觉不一样的。","url":"https://blog.opskumu.com/borg.html","mainEntityOfPage":"https://blog.opskumu.com/borg.html","inLanguage":"zh-CN","datePublished":"2018-12-23","dateModified":"2018-12-23","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://blog.opskumu.com/images/borg-arch.png"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -1047,7 +1048,7 @@ Kubernetes 架构进一步采用了这种思路：它的核心拥有一个 API s
 </div>
 <nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="bye-2018.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">2018，小结</span><span class="article-nav-date">2019-01-01</span></a><a class="article-nav-link article-nav-older" href="k8s-pod-affinity-antiaffinity.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">Kubernetes Pod 亲和性和反亲和性</span><span class="article-nav-date">2018-11-18</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2018-12-23 Sun 00:00</span><span class="creator">Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2018-12-23 Sun 00:00</span><span class="creator"><a href="atom.xml">Atom 订阅</a><span class="postamble-sep" aria-hidden="true"> · </span>Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
 </div>
 </body>
 </html>

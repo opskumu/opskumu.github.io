@@ -8,13 +8,13 @@
 <meta name="description" content="本文为 NGINX ingress controller - How it works 官方译文，这篇文章基本概括了 ingress-nginx 的工作机制，在这篇文章的基础上结合源码阅读对其原理会更深入。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823d"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js"></script>
+<script defer src="js/site.js?v=20260823d"></script>
 <link rel="canonical" href="https://blog.opskumu.com/how-k8s-ingress-works.html"/>
 <meta property="og:title" content="Nginx Ingress 控制器工作机制"/>
 <meta property="og:description" content="本文为 NGINX ingress controller - How it works 官方译文，这篇文章基本概括了 ingress-nginx 的工作机制，在这篇文章的基础上结合源码阅读对其原理会更深入。"/>
@@ -24,10 +24,11 @@
 <meta name="twitter:title" content="Nginx Ingress 控制器工作机制"/>
 <meta name="twitter:description" content="本文为 NGINX ingress controller - How it works 官方译文，这篇文章基本概括了 ingress-nginx 的工作机制，在这篇文章的基础上结合源码阅读对其原理会更深入。"/>
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Nginx Ingress 控制器工作机制","description":"本文为 NGINX ingress controller - How it works 官方译文，这篇文章基本概括了 ingress-nginx 的工作机制，在这篇文章的基础上结合源码阅读对其原理会更深入。","url":"https://blog.opskumu.com/how-k8s-ingress-works.html","mainEntityOfPage":"https://blog.opskumu.com/how-k8s-ingress-works.html","inLanguage":"zh-CN","datePublished":"2020-02-03","dateModified":"2020-02-03","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"}}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">Skip to main content</a><nav class="navbar" role="navigation" aria-label="Primary"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -163,7 +164,7 @@ Ingress controller 的目标是构造配置文件（nginx.conf）。这个需求
 </div>
 <nav class="article-nav" aria-label="Article navigation"><a class="article-nav-link article-nav-newer" href="client-go-under-the-hood.html"><span class="article-nav-label">上一篇</span><span class="article-nav-title">client-go 背后机制「译」</span><span class="article-nav-date">2020-06-10</span></a><a class="article-nav-link article-nav-older" href="kubernetes-ext-service.html"><span class="article-nav-label">下一篇</span><span class="article-nav-title">Kubernetes 外部服务映射</span><span class="article-nav-date">2020-01-20</span></a></nav>
 <div id="postamble" class="status">
-<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2020-02-03 Mon 00:00</span><span class="creator">Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
+<a class="author" href="https://blog.opskumu.com">Kumu</a><span class="postamble-sep" aria-hidden="true"> / </span><span class="date">2020-02-03 Mon 00:00</span><span class="creator"><a href="atom.xml">Atom 订阅</a><span class="postamble-sep" aria-hidden="true"> · </span>Generated with <a href="https://www.gnu.org/software/emacs/">Emacs</a> + <a href="https://orgmode.org/">Org</a></span>
 </div>
 </body>
 </html>
