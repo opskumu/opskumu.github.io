@@ -89,6 +89,10 @@ button:focus-visible {
   border-radius: 4px;
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 .content a {
   color: var(--link);
 }
@@ -117,8 +121,7 @@ button:focus-visible {
 
 .content sup a:hover {
   color: var(--link-hover);
-  text-decoration: underline;
-  text-underline-offset: 0.12em;
+  text-decoration: none;
 }
 
 #preamble.status {
@@ -876,13 +879,6 @@ body.index-page details.archive-year .outline-text-3 li {
 
 body.index-page details.archive-year .outline-text-3 a {
   font-weight: 600;
-}
-
-body.index-page details.archive-year .outline-text-3 a:hover {
-  border-bottom: 0;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.16em;
 }
 
 body.index-page .archive-toolbar {
