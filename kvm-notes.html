@@ -8,13 +8,13 @@
 <meta name="description" content="KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/AMD-V) 的 X86 硬件，是 Linux 完全原生的全虚拟化解决方案。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/kvm-notes.html"/>
 <meta property="og:title" content="KVM 学习笔记"/>
 <meta property="og:description" content="KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/AMD-V) 的 X86 硬件，是 Linux 完全原生的全虚拟化解决方案。"/>
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -185,11 +185,11 @@ VPID（Virtual-Processor Identifiers，虚拟处理器标识）。是对现在�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># grep -E 'ept|vpid' /proc/cpuinfo                  # 查看 cpu 是否支持相应特性
+<pre class="src src-nil"><code># grep -E 'ept|vpid' /proc/cpuinfo                  # 查看 cpu 是否支持相应特性
 # cat /sys/module/kvm_intel/parameters/{ept,vpid}   # 确认是否开启 ept 和 vpid
 Y
 Y
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -206,7 +206,7 @@ qemu-kvm 提供 <code>-drive</code> 参数来详细定义一个存储驱动器�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">-drive option[,option[,option[,...]]]
+<pre class="src src-nil"><code>-drive option[,option[,option[,...]]]
    Define a new drive. Valid options are:
 
    file=file            # 指定硬盘镜像,file=镜像文件名
@@ -224,7 +224,7 @@ qemu-kvm 提供 <code>-drive</code> 参数来详细定义一个存储驱动器�
        Can be used to specifiy format=raw to avoid interpreting an untrusted format
        header.
     ... ...
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -252,10 +252,10 @@ cache 不同模式工作原理图：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ qemu-img -h | grep Supported
+<pre class="src src-nil"><code>$ qemu-img -h | grep Supported
 Supported formats: raw cow qcow vdi vmdk cloop dmg bochs vpc vvfat
 qcow2 qed parallels nbd blkdebug host_cdrom host_floppy host_device file
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -296,9 +296,9 @@ qcow2 qed parallels nbd blkdebug host_cdrom host_floppy host_device file
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ qemu-img check CentOS6.4-x86_64.qcow2
+<pre class="src src-nil"><code>$ qemu-img check CentOS6.4-x86_64.qcow2
 No errors were found on the image.
-</pre>
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -310,11 +310,11 @@ No errors were found on the image.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ qemu-img create -f qcow2 test.qcow2 10G
+<pre class="src src-nil"><code>$ qemu-img create -f qcow2 test.qcow2 10G
 Formatting 'test.qcow2', fmt=qcow2 size=10737418240 encryption=off cluster_size=65536
 $ qemu-img create -f qcow2 test.raw 10G
 Formatting 'test.raw', fmt=qcow2 size=10737418240 encryption=off cluster_size=65536
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -330,7 +330,7 @@ Formatting 'test.raw', fmt=qcow2 size=10737418240 encryption=off cluster_size=65
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ qemu-img info test.qcow2
+<pre class="src src-nil"><code>$ qemu-img info test.qcow2
 image: test.qcow2
 file format: qcow2
 virtual size: 10G (10737418240 bytes)
@@ -353,12 +353,12 @@ image: test.dd
 file format: raw
 virtual size: 954M (1000000000 bytes)
 disk size: 954M
-</pre>
+</code></pre>
 </div>
 
 <ul class="org-ul">
 <li>（4） convert [-c] [-f fmt] [-O output_fmt] [-o options] filename
-[filename2 [&#x2026;]] output_filename</li>
+[filename2 [&hellip;]] output_filename</li>
 </ul>
 
 <p>
@@ -370,7 +370,7 @@ disk size: 954M
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ qemu-img info test.dd
+<pre class="src src-nil"><code>$ qemu-img info test.dd
 image: test.dd
 file format: raw
 virtual size: 954M (1000000000 bytes)
@@ -382,7 +382,7 @@ file format: qcow2
 virtual size: 954M (1000000000 bytes)
 disk size: 136K
 cluster_size: 65536
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -407,7 +407,7 @@ qemu-kvm 通过 <code>-net</code> 参数配置网络选项
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">-net
+<pre class="src src-nil"><code>-net
 nic[,vlan=n][,macaddr=mac][,model=type][,name=name][,addr=addr][,vectors=v]
     Create a new Network Interface Card and connect it to VLAN n (n = 0 is
     the default). The NIC is an rtl8139 by default on the PC target.
@@ -422,7 +422,7 @@ nic[,vlan=n][,macaddr=mac][,model=type][,name=name][,addr=addr][,vectors=v]
     "pcnet", "rtl8139", "e1000", "smc91c111", "lance" and "mcf_fec".  Not
     all devices are supported on all targets.  Use -net nic,model=?  for a
     list of available devices for your target.
-</pre>
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -448,10 +448,10 @@ qemu-kvm安装或者启动虚拟系统的时候如果需要和外界通信，那
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">/usr/libexec/qemu-kvm -m 1024 \
+<pre class="src src-nil"><code>/usr/libexec/qemu-kvm -m 1024 \
 -drive file=/data/images/CentOS6_4.qcow2,if=virtio \
 -net nic,model=virtio -net tap,script=no -nographic -vnc :0
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -459,10 +459,10 @@ qemu-kvm安装或者启动虚拟系统的时候如果需要和外界通信，那
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># ip link show dev tap0
+<pre class="src src-nil"><code># ip link show dev tap0
 37: tap0: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN qlen 500
     link/ether d2:b0:af:7b:23:0f brd ff:ff:ff:ff:ff:ff
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -470,12 +470,12 @@ qemu-kvm安装或者启动虚拟系统的时候如果需要和外界通信，那
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># brctl show br0
+<pre class="src src-nil"><code># brctl show br0
 bridge name bridge id       STP enabled interfaces
 br0     8000.b8975a626020   no      eth0
                             vnet0
                             vnet1
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -483,7 +483,7 @@ br0     8000.b8975a626020   no      eth0
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># ip link set tap0 up       # 使 tap0 状态变为 up
+<pre class="src src-nil"><code># ip link set tap0 up       # 使 tap0 状态变为 up
 # brctl addif br0 tap0      # 桥接 tap0 到 br0
 # brctl show br0
 bridge name bridge id       STP enabled interfaces
@@ -491,7 +491,7 @@ br0     8000.b8975a626020   no      eth0
                             tap0
                             vnet0
                             vnet1
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -503,10 +503,10 @@ br0     8000.b8975a626020   no      eth0
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">/usr/libexec/qemu-kvm -m 1024 \
+<pre class="src src-nil"><code>/usr/libexec/qemu-kvm -m 1024 \
         -drive file=/data/images/CentOS6_4.qcow2,if=virtio \
         -net nic,model=virtio -net tap,script=/tmp/qemu-ifup.sh -nographic -vnc :0
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -514,7 +514,7 @@ br0     8000.b8975a626020   no      eth0
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash"><span class="org-comment-delimiter"># </span><span class="org-comment">cat /tmp/qemu-ifup.sh
+<pre class="src src-bash"><code><span class="org-comment-delimiter"># </span><span class="org-comment">cat /tmp/qemu-ifup.sh
 </span><span class="org-comment-delimiter">#</span><span class="org-comment">!/bin/bash
 </span>
 <span class="org-comment-delimiter"># </span><span class="org-comment">&#26725;&#25509;&#32593;&#32476;&#35774;&#22791;
@@ -528,7 +528,7 @@ br0     8000.b8975a626020   no      eth0
    <span class="org-builtin">echo</span> <span class="org-string">"no interface!"</span>
    <span class="org-keyword">exit</span> 1
 <span class="org-keyword">fi</span>
-</pre>
+</code></pre>
 </div>
 </div>
 </div>

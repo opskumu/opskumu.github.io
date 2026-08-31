@@ -8,13 +8,13 @@
 <meta name="description" content="通过 Kubernetes 你可以将一个 pod 限制或倾向于在某些特定节点运行。有几种方式可以达到这个目的，它们都通过 label selectors 进行选择。通常情况下，这样的约束是不必要的，因为调度程序会自动进行合理的调度（如通过一系列的评分机制将 pods 合理分配到最优节点上，而不会将 pod 分配在…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/k8s-pod-affinity-antiaffinity.html"/>
 <meta property="og:title" content="Kubernetes Pod 亲和性和反亲和性"/>
 <meta property="og:description" content="通过 Kubernetes 你可以将一个 pod 限制或倾向于在某些特定节点运行。有几种方式可以达到这个目的，它们都通过 label selectors 进行选择。通常情况下，这样的约束是不必要的，因为调度程序会自动进行合理的调度（如通过一系列的评分机制将 pods 合理分配到最优节点上，而不会将 pod 分配在…"/>
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -77,11 +77,11 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ kubectl get nodes --show-labels
+<pre class="src src-nil"><code>$ kubectl get nodes --show-labels
 NAME       STATUS    ROLES     AGE       VERSION   LABELS
 minikube   Ready     &lt;none&gt;    1m        v1.10.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/
 hostname=minikube
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -89,12 +89,12 @@ hostname=minikube
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ kubectl label node minikube disktype=ssd
+<pre class="src src-nil"><code>$ kubectl label node minikube disktype=ssd
 node/minikube labeled
 $ kubectl get nodes --show-labels
 NAME       STATUS    ROLES     AGE       VERSION   LABELS
 minikube   Ready     &lt;none&gt;    5m        v1.10.0   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,disktype=ssd,kubernetes.io/hostname=minikube
-</pre>
+</code></pre>
 </div>
 
 <blockquote>
@@ -103,12 +103,12 @@ minikube   Ready     &lt;none&gt;    5m        v1.10.0   beta.kubernetes.io/arch
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ kubectl label node minikube disktype-
+<pre class="src src-nil"><code>$ kubectl label node minikube disktype-
 node/minikube labeled
 $ kubectl get node --show-labels
 NAME       STATUS    ROLES     AGE       VERSION   LABELS
 minikube   Ready     &lt;none&gt;    23m       v1.10.0 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=minikube
-</pre>
+</code></pre>
 </div>
 </blockquote>
 
@@ -117,7 +117,7 @@ minikube   Ready     &lt;none&gt;    23m       v1.10.0 beta.kubernetes.io/arch=a
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ cat nginx.yaml
+<pre class="src src-nil"><code>$ cat nginx.yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -133,7 +133,7 @@ spec:
     disktype: ssd
 $ kubectl create -f nginx.yaml
 pod/nginx created
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -141,10 +141,10 @@ pod/nginx created
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ kubectl get pods -o wide
+<pre class="src src-nil"><code>$ kubectl get pods -o wide
 NAME      READY     STATUS    RESTARTS   AGE       IP           NODE
 nginx     1/1       Running   0          1m        172.18.0.4   minikube
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -186,7 +186,7 @@ K8s 在 1.2 的时候以 alpha 的特性引入 node affinity。node affinity 通
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">apiVersion: v1
+<pre class="src src-nil"><code>apiVersion: v1
 kind: Pod
 metadata:
   name: with-node-affinity
@@ -212,7 +212,7 @@ spec:
   containers:
   - name: with-node-affinity
     image: k8s.gcr.io/pause:2.0
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -261,7 +261,7 @@ pod 亲和性和反亲和性需要大量的计算，会显著降低集群的调�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">apiVersion: v1
+<pre class="src src-nil"><code>apiVersion: v1
 kind: Pod
 metadata:
   name: with-pod-affinity
@@ -290,7 +290,7 @@ spec:
   containers:
   - name: with-pod-affinity
     image: k8s.gcr.io/pause:2.0
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -336,7 +336,7 @@ spec:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">apiVersion: apps/v1
+<pre class="src src-nil"><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-cache
@@ -363,7 +363,7 @@ spec:
       containers:
       - name: redis-server
         image: redis:3.2-alpine
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -371,7 +371,7 @@ redis-cache 规则表达 pod 不被调度在同一个节点上。web-server 规�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">apiVersion: apps/v1
+<pre class="src src-nil"><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: web-server
@@ -407,7 +407,7 @@ spec:
       containers:
       - name: web-app
         image: nginx:1.12-alpine
-</pre>
+</code></pre>
 </div>
 
 <blockquote>

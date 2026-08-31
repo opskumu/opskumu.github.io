@@ -8,13 +8,13 @@
 <meta name="description" content="完成之后编译的二进制路径为 $GOPATH/bin/rbd-docker-plugin ，拷贝到相应测试主机即可。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/rbd-docker-plugin.html"/>
 <meta property="og:title" content="Docker 使用 Ceph RBD Volume"/>
 <meta property="og:description" content="完成之后编译的二进制路径为 $GOPATH/bin/rbd-docker-plugin ，拷贝到相应测试主机即可。"/>
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -73,8 +73,8 @@ rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">go get github.com/yp-engineering/rbd-docker-plugin
-</pre>
+<pre class="src src-nil"><code>go get github.com/yp-engineering/rbd-docker-plugin
+</code></pre>
 </div>
 
 <p>
@@ -86,8 +86,8 @@ rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">yum install librados2-devel librbd1-devel ceph-common xfsprogs -y
-</pre>
+<pre class="src src-nil"><code>yum install librados2-devel librbd1-devel ceph-common xfsprogs -y
+</code></pre>
 </div>
 
 <p>
@@ -95,8 +95,8 @@ rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">docker run -d --net=host -e MON_IP=当前主机IP -e CEPH_NETWORK=当前主机所在网段 -v /etc/ceph:/etc/ceph -v /var/lib/ceph/:/var/lib/ceph ceph/demo
-</pre>
+<pre class="src src-nil"><code>docker run -d --net=host -e MON_IP=当前主机IP -e CEPH_NETWORK=当前主机所在网段 -v /etc/ceph:/etc/ceph -v /var/lib/ceph/:/var/lib/ceph ceph/demo
+</code></pre>
 </div>
 
 <blockquote>
@@ -110,7 +110,7 @@ rbd-docker-plugin 需要手动编译，Go 的开发环境构建这里不再说�
 <h2 id="section-e95ad3fc5618"><span class="section-number-2">3.</span> 运行 rbd docker plugin</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
-<pre class="src src-nil"># ceph osd pool create docker 128
+<pre class="src src-nil"><code># ceph osd pool create docker 128
 pool 'docker' created
 # ceph auth get-or-create client.docker mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=docker' -o /etc/ceph/ceph.client.docker.keyring
 # RBD_DOCKER_PLUGIN_DEBUG=1 rbd-docker-plugin --create --user=docker --pool=docker
@@ -120,7 +120,7 @@ rbd-volume-plugin: 2016/02/17 10:58:00 driver.go:496: INFO: connecting to Ceph a
 rbd-volume-plugin: 2016/02/17 10:58:00 main.go:82: INFO: Creating Docker VolumeDriver Handler
 rbd-volume-plugin: 2016/02/17 10:58:00 main.go:86: INFO: Opening Socket for Docker to connect: /run/docker/plugins/rbd.sock
 ... ...
-</pre>
+</code></pre>
 </div>
 
 <blockquote>
@@ -130,8 +130,8 @@ rbd-volume-plugin: 2016/02/17 10:58:00 main.go:86: INFO: Opening Socket for Dock
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-nil"># RBD_DOCKER_PLUGIN_DEBUG=1 rbd-docker-plugin --create
-</pre>
+<pre class="src src-nil"><code># RBD_DOCKER_PLUGIN_DEBUG=1 rbd-docker-plugin --create
+</code></pre>
 </div>
 </div>
 </div>
@@ -139,10 +139,10 @@ rbd-volume-plugin: 2016/02/17 10:58:00 main.go:86: INFO: Opening Socket for Dock
 <h2 id="section-c7be94339973"><span class="section-number-2">4.</span> docker 挂载 rbd volume 测试</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
-<pre class="src src-nil"># docker run --volume-driver=rbd --volume foo:/mnt/foo -it busybox sh
+<pre class="src src-nil"><code># docker run --volume-driver=rbd --volume foo:/mnt/foo -it busybox sh
 / # df -Th | grep -w '/mnt/foo' # 显示设备 rbd0 挂载在 /mnt/foo 命令下，挂载成功
 /dev/rbd0            xfs            20.0G     32.6M     20.0G   0% /mnt/foo
-</pre>
+</code></pre>
 </div>
 
 <p>

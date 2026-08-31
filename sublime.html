@@ -8,13 +8,13 @@
 <meta name="description" content="Kumu 的个人博客，记录 Kubernetes、Linux、Emacs 与工程实践。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/sublime.html"/>
 <meta property="og:title" content="Sublime Text2 tips"/>
 <meta property="og:description" content="Kumu 的个人博客，记录 Kubernetes、Linux、Emacs 与工程实践。"/>
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -74,12 +74,12 @@
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-nil">// The number of spaces a tab is considered equal to
+<pre class="src src-nil"><code>// The number of spaces a tab is considered equal to
 "tab_size": 4,
 
 // Set to true to insert spaces when tab is pressed
 "translate_tabs_to_spaces": true,
-</pre>
+</code></pre>
 </div>
 </div>
 <div id="outline-container-section-02ab610f4245" class="outline-3">
@@ -99,8 +99,8 @@
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-nil">"ignored_packages": ["Vintage"]
-</pre>
+<pre class="src src-nil"><code>"ignored_packages": ["Vintage"]
+</code></pre>
 </div>
 
 <p>
@@ -108,8 +108,8 @@ to:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">"ignored_packages": []
-</pre>
+<pre class="src src-nil"><code>"ignored_packages": []
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -125,8 +125,8 @@ add:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">"vintage_start_in_command_mode": true
-</pre>
+<pre class="src src-nil"><code>"vintage_start_in_command_mode": true
+</code></pre>
 </div>
 </div>
 <div id="outline-container-section-02ab610f4245-2" class="outline-3">
@@ -163,8 +163,8 @@ add:
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-python"><span class="org-keyword">import</span> urllib2,os; <span class="org-variable-name">pf</span><span class="org-operator">=</span><span class="org-string">'Package Control.sublime-package'</span>; <span class="org-variable-name">ipp</span> <span class="org-operator">=</span> sublime.installed_packages_path(); os.makedirs( ipp ) <span class="org-keyword">if</span> <span class="org-keyword">not</span> os.path.exists(ipp) <span class="org-keyword">else</span> <span class="org-constant">None</span>; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); <span class="org-builtin">open</span>( os.path.join( ipp, pf), <span class="org-string">'wb'</span> ).write( urllib2.urlopen( <span class="org-string">'http://sublime.wbond.net/'</span> <span class="org-operator">+</span>pf.replace( <span class="org-string">' '</span>,<span class="org-string">'%20'</span> )).read()); <span class="org-builtin">print</span>( <span class="org-string">'Please restart Sublime Text to finish installation'</span>)
-</pre>
+<pre class="src src-python"><code><span class="org-keyword">import</span> urllib2,os; <span class="org-variable-name">pf</span><span class="org-operator">=</span><span class="org-string">'Package Control.sublime-package'</span>; <span class="org-variable-name">ipp</span> <span class="org-operator">=</span> sublime.installed_packages_path(); os.makedirs( ipp ) <span class="org-keyword">if</span> <span class="org-keyword">not</span> os.path.exists(ipp) <span class="org-keyword">else</span> <span class="org-constant">None</span>; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); <span class="org-builtin">open</span>( os.path.join( ipp, pf), <span class="org-string">'wb'</span> ).write( urllib2.urlopen( <span class="org-string">'http://sublime.wbond.net/'</span> <span class="org-operator">+</span>pf.replace( <span class="org-string">' '</span>,<span class="org-string">'%20'</span> )).read()); <span class="org-builtin">print</span>( <span class="org-string">'Please restart Sublime Text to finish installation'</span>)
+</code></pre>
 </div>
 
 <p>

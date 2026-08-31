@@ -15,6 +15,9 @@
     zoomImage: "放大查看图片：{name}",
     imageViewer: "图片查看器",
     closeImage: "关闭图片",
+    previousImage: "上一张图片",
+    nextImage: "下一张图片",
+    imagePosition: "{current} / {total}",
     backToTop: "返回顶部",
     copyCode: "复制代码",
     copy: "复制",
@@ -35,6 +38,8 @@
       copy: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>',
       check: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>',
       xmark: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>',
+      chevronLeft: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>',
+      chevronRight: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>',
       zoom: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path><path d="M11 8v6"></path><path d="M8 11h6"></path></svg>'
     };
 
@@ -162,6 +167,7 @@
     links.className = "navbar-links";
     [
       ["Blog", "index.html", "blog"],
+      ["Images", "gallery.html", "images"],
       ["Wiki", "https://wiki.opskumu.com"],
       ["Issues", "https://github.com/opskumu/issues"],
       ["GitHub", "https://github.com/opskumu"],
@@ -185,6 +191,7 @@
   var initChrome = function () {
     var path = window.location.pathname;
     var isIndex = path === "/" || path === "/index.html" || path.endsWith("index.html");
+    var isGallery = path.endsWith("gallery.html");
 
     if (isIndex) {
       document.body.classList.add("index-page");
@@ -227,9 +234,13 @@
     Array.prototype.forEach.call(document.querySelectorAll(".navbar-links a"), function (link) {
       link.classList.remove("active");
       link.removeAttribute("aria-current");
-      if (link.getAttribute("data-nav") === "blog") {
+      var nav = link.getAttribute("data-nav");
+      if (nav === "blog" && !isGallery) {
         link.classList.add("active");
         link.setAttribute("aria-current", isIndex ? "page" : "location");
+      } else if (nav === "images" && isGallery) {
+        link.classList.add("active");
+        link.setAttribute("aria-current", "page");
       }
     });
 
@@ -261,7 +272,7 @@
       if (match) dateSpan.textContent = match[1];
     }
 
-    if (document.body.classList.contains("index-page")) {
+    if (document.body.classList.contains("index-page") || document.body.classList.contains("gallery-page")) {
       postamble.textContent = "";
       postamble.classList.add("is-compact");
       if (creator) postamble.appendChild(creator);
@@ -439,7 +450,22 @@
     if (typeof window.HTMLDialogElement !== "function") return;
 
     var images = Array.prototype.slice.call(document.querySelectorAll(".content figure img"));
-    if (!images.length) return;
+    var items = images.filter(function (image) {
+      return !image.closest("a, button");
+    }).map(function (image) {
+      var figure = image.closest("figure");
+      var figureCaption = figure && figure.querySelector("figcaption");
+      var captionLink = figureCaption && figureCaption.querySelector("a");
+      var captionText = (captionLink && captionLink.textContent.trim()) ||
+        (figureCaption && figureCaption.textContent.trim()) || "";
+
+      return {
+        image: image,
+        caption: captionText,
+        name: captionText || image.alt || "图片"
+      };
+    });
+    if (!items.length) return;
 
     var dialog = document.createElement("dialog");
     dialog.className = "image-viewer";
@@ -451,16 +477,54 @@
     close.setAttribute("aria-label", labels.closeImage);
     appendIcon(close, "xmark");
 
+    var previous = document.createElement("button");
+    previous.type = "button";
+    previous.className = "image-viewer-nav image-viewer-previous";
+    previous.setAttribute("aria-label", labels.previousImage);
+    appendIcon(previous, "chevronLeft");
+
+    var next = document.createElement("button");
+    next.type = "button";
+    next.className = "image-viewer-nav image-viewer-next";
+    next.setAttribute("aria-label", labels.nextImage);
+    appendIcon(next, "chevronRight");
+
     var viewerImage = document.createElement("img");
     viewerImage.alt = "";
 
     var caption = document.createElement("p");
     caption.className = "image-viewer-caption";
 
+    var position = document.createElement("p");
+    position.className = "image-viewer-position";
+    position.setAttribute("aria-live", "polite");
+
     dialog.appendChild(close);
+    dialog.appendChild(previous);
+    dialog.appendChild(next);
     dialog.appendChild(viewerImage);
     dialog.appendChild(caption);
+    dialog.appendChild(position);
     document.body.appendChild(dialog);
+
+    var currentIndex = 0;
+
+    var showImage = function (index) {
+      var item = items[index];
+      if (!item) return;
+
+      currentIndex = index;
+      viewerImage.src = item.image.currentSrc || item.image.src;
+      viewerImage.alt = item.image.alt || "";
+      caption.textContent = item.caption;
+      caption.hidden = !caption.textContent;
+      position.textContent = format(labels.imagePosition, {
+        current: index + 1,
+        total: items.length
+      });
+      previous.disabled = index === 0;
+      next.disabled = index === items.length - 1;
+    };
 
     close.addEventListener("click", function () {
       dialog.close();
@@ -470,16 +534,30 @@
       if (event.target === dialog) dialog.close();
     });
 
-    images.forEach(function (image) {
-      if (image.closest("a, button")) return;
+    previous.addEventListener("click", function () {
+      showImage(currentIndex - 1);
+    });
 
-      var figure = image.closest("figure");
-      var figureCaption = figure && figure.querySelector("figcaption");
-      var name = (figureCaption && figureCaption.textContent.trim()) || image.alt || "图片";
+    next.addEventListener("click", function () {
+      showImage(currentIndex + 1);
+    });
+
+    dialog.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowLeft" && !previous.disabled) {
+        event.preventDefault();
+        showImage(currentIndex - 1);
+      } else if (event.key === "ArrowRight" && !next.disabled) {
+        event.preventDefault();
+        showImage(currentIndex + 1);
+      }
+    });
+
+    items.forEach(function (item, index) {
+      var image = item.image;
       var trigger = document.createElement("button");
       trigger.type = "button";
       trigger.className = "image-zoom-trigger";
-      trigger.setAttribute("aria-label", format(labels.zoomImage, { name: name }));
+      trigger.setAttribute("aria-label", format(labels.zoomImage, { name: item.name }));
 
       image.parentNode.insertBefore(trigger, image);
       trigger.appendChild(image);
@@ -491,10 +569,7 @@
       trigger.appendChild(hint);
 
       trigger.addEventListener("click", function () {
-        viewerImage.src = image.currentSrc || image.src;
-        viewerImage.alt = image.alt || "";
-        caption.textContent = figureCaption ? figureCaption.textContent.trim() : "";
-        caption.hidden = !caption.textContent;
+        showImage(index);
         dialog.showModal();
       });
     });

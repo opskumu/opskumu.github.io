@@ -8,13 +8,13 @@
 <meta name="description" content="伴随着 Kubernetes 功能越来越多，代码量越来越大，相对的可能也就越来越复杂。我有时候在想使用 Kubernetes 的用户应该关心什么，不应该关心什么。对于一个新手来说，开始的时候首先应该弄清楚基本的工作流程。当然，如果你直接看 Kubernetes 的文档，一堆让人眼花缭乱的概念，多少会让人摸不着头脑…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/kubernetes-app.html"/>
 <meta property="og:title" content="一个 HTTP 应用在 Kubernetes 的运行形式"/>
 <meta property="og:description" content="伴随着 Kubernetes 功能越来越多，代码量越来越大，相对的可能也就越来越复杂。我有时候在想使用 Kubernetes 的用户应该关心什么，不应该关心什么。对于一个新手来说，开始的时候首先应该弄清楚基本的工作流程。当然，如果你直接看 Kubernetes 的文档，一堆让人眼花缭乱的概念，多少会让人摸不着头脑…"/>
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -84,7 +84,7 @@
 </p>
 
 <p>
-以上，说了 Pod、ReplicaSet、Deployment 之间的关系，如果要运行一个应用，那么最终我们只需要创建 Deployment 即可运行，Deployment 会自动创建和管理 ReplicaSet。它们之间的运行关系，简单来说就是 Deployment &#x2013;&gt; ReplicaSet &#x2013;&gt; Pod，对应图中这三者的关系。一层一层的抽象，看似复杂，当你了解之后就会明白，实际是相当优雅的。
+以上，说了 Pod、ReplicaSet、Deployment 之间的关系，如果要运行一个应用，那么最终我们只需要创建 Deployment 即可运行，Deployment 会自动创建和管理 ReplicaSet。它们之间的运行关系，简单来说就是 Deployment &ndash;&gt; ReplicaSet &ndash;&gt; Pod，对应图中这三者的关系。一层一层的抽象，看似复杂，当你了解之后就会明白，实际是相当优雅的。
 </p>
 </div>
 </div>

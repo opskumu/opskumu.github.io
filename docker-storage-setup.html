@@ -8,13 +8,13 @@
 <meta name="description" content="默认 CentOS7 下 Docker 使用的 Device Mapper 设备默认使用 loopback 设备，后端为自动生成的稀疏文件，如下:" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/docker-storage-setup.html"/>
 <meta property="og:title" content="Docker lvm device mapper"/>
 <meta property="og:description" content="默认 CentOS7 下 Docker 使用的 Device Mapper 设备默认使用 loopback 设备，后端为自动生成的稀疏文件，如下:"/>
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -55,11 +55,11 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># ls -lsh /var/lib/docker/devicemapper/devicemapper/
+<pre class="src src-nil"><code># ls -lsh /var/lib/docker/devicemapper/devicemapper/
 总用量 510M
 508M -rw-------. 1 root root 100G 10月 30 00:00 data
 1.9M -rw-------. 1 root root 2.0G 10月 30 00:00 metadata
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -71,7 +71,7 @@ Docker 在初始化的过程中，创建 data 和 metadata 这两个稀疏文件
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># docker info
+<pre class="src src-nil"><code># docker info
 Containers: 2
 Images: 13
 Storage Driver: devicemapper
@@ -101,7 +101,7 @@ loop1                                                                           
   ├─docker-253:1-100673362-61f1302169c719e4f671942d6158bba061a0b5081c98d40e8ca9749f1a521ca4 252:1    0   10G  0 dm
   └─docker-253:1-100673362-79c4340c3e06584d4e3630ad4a9b3a768066a52b0a04c9cb7bffa0b45bec8747 252:2    0   10G  0 dm
 ... ...
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -139,7 +139,7 @@ CentOS7 从 <code>docker-1.6.2-14.el7.centos.x86_64.rpm</code> 开始提供 <cod
 </ul></li>
 <li><code>POOL_AUTOEXTEND_THRESHOLD=60</code>
 <ul class="org-ul">
-<li>定义自动扩容的百分比，默认为当前 pool 使用 60% 时自动扩容，100 表示 disable，最小为 50 <a href="http://man7.org/linux/man-pages/man7/lvmthin.7.html">lvmthin &#x2014; LVM thin provisioning</a></li>
+<li>定义自动扩容的百分比，默认为当前 pool 使用 60% 时自动扩容，100 表示 disable，最小为 50 <a href="http://man7.org/linux/man-pages/man7/lvmthin.7.html">lvmthin &mdash; LVM thin provisioning</a></li>
 </ul></li>
 <li><code>POOL_AUTOEXTEND_PERCENT=20</code>
 <ul class="org-ul">
@@ -156,12 +156,12 @@ docker-storage-setup 设置之后自动扩容的实际配置在 <code>/etc/lvm/p
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># cat /etc/lvm/profile/docker-vg--docker-pool-extend.profile
+<pre class="src src-nil"><code># cat /etc/lvm/profile/docker-vg--docker-pool-extend.profile
 activation {
         thin_pool_autoextend_threshold=60
         thin_pool_autoextend_percent=20
 }
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -176,13 +176,13 @@ activation {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># systemctl stop docker # 停止当前运行的 docker
+<pre class="src src-nil"><code># systemctl stop docker # 停止当前运行的 docker
 # cat /etc/sysconfig/docker-storage-setup
 DEVS=/dev/vdc   # A quoted, space-separated list of devices to be used. 如果添加多个设备则以空格分隔 DEVS="/dev/sdc /dev/sdd /dev/sde"
 VG=docker-vg    # The volume group to use for docker storage.
 SETUP_LVM_THIN_POOL=yes
 # docker-storage-setup  # 执行 setup 操作，相关 lvm 将自动创建
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -190,11 +190,11 @@ SETUP_LVM_THIN_POOL=yes
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># cat /etc/sysconfig/docker-storage     # 配置已经自动修改
+<pre class="src src-nil"><code># cat /etc/sysconfig/docker-storage     # 配置已经自动修改
 DOCKER_STORAGE_OPTIONS=-s devicemapper --storage-opt dm.fs=xfs --storage-opt dm.thinpooldev=/dev/mapper/docker--vg-docker--pool
 # grep 'sysconfig/docker-storage' /usr/lib/systemd/system/docker.service
 EnvironmentFile=-/etc/sysconfig/docker-storage  # 可以看出 docker 启动会自动加载该配置文件
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -202,18 +202,18 @@ EnvironmentFile=-/etc/sysconfig/docker-storage  # 可以看出 docker 启动会�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># cat /etc/sysconfig/docker-storage-setup
+<pre class="src src-nil"><code># cat /etc/sysconfig/docker-storage-setup
 # DEVS=/dev/vdc     # 注释该行
 VG=docker-vg
 SETUP_LVM_THIN_POOL=yes
 # rm -rf /var/lib/docker
 # systemctl restart lvm2-monitor        # 确保 lvm2-monitor 服务运行
 # systemctl start docker
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-nil"># docker info
+<pre class="src src-nil"><code># docker info
 Containers: 39
 Images: 98
 Storage Driver: devicemapper
@@ -231,7 +231,7 @@ Storage Driver: devicemapper
  Udev Sync Supported: true
  Library Version: 1.02.93-RHEL7 (2015-01-28)
 ... ...
-</pre>
+</code></pre>
 </div>
 </div>
 </div>

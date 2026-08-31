@@ -8,13 +8,13 @@
 <meta name="description" content="系统的 ulimit 设置是生效的，此时可以定位 limits 这块的配置我们是没有问题的，排除 limits 配置这块的问题，那就需要考虑 kvm 本身这块的问题。CentOS 和 kvm 相关服务主要是 libvirtd 服务，查看 /etc/init.d/libvirtd 启动进程脚本找到相关逻辑：" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/kvm-ulimits.html"/>
 <meta property="og:title" content="KVM 进程 ulimit 设置未生效"/>
 <meta property="og:description" content="系统的 ulimit 设置是生效的，此时可以定位 limits 这块的配置我们是没有问题的，排除 limits 配置这块的问题，那就需要考虑 kvm 本身这块的问题。CentOS 和 kvm 相关服务主要是 libvirtd 服务，查看 /etc/init.d/libvirtd 启动进程脚本找到相关逻辑："/>
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -50,7 +50,7 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># ulimit -HSn 655350
+<pre class="src src-nil"><code># ulimit -HSn 655350
 # grep -vE '^#|^$'  /etc/security/limits.conf       # 配置文件也没有问题
 root soft nofile 655350
 root hard nofile 655350
@@ -60,7 +60,7 @@ root hard nofile 655350
 root       soft    nproc     unlimited
 # cat /proc/58189/limits  | grep 'open files'       # kvm 的 open files 值没有改变
 Max open files            1024                 4096                 files
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -72,12 +72,12 @@ Max open files            1024                 4096                 files
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">78      # LIBVIRTD_NOFILES_LIMIT from /etc/sysconfig/libvirtd is not handled
+<pre class="src src-nil"><code>78      # LIBVIRTD_NOFILES_LIMIT from /etc/sysconfig/libvirtd is not handled
 79      # automatically
 80      if [ -n "$LIBVIRTD_NOFILES_LIMIT" ]; then
 81          ulimit -n "$LIBVIRTD_NOFILES_LIMIT"
 82      fi
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -85,9 +85,9 @@ Max open files            1024                 4096                 files
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># Override the maximum number of opened files
+<pre class="src src-nil"><code># Override the maximum number of opened files
 #LIBVIRTD_NOFILES_LIMIT=2048
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -95,7 +95,7 @@ Max open files            1024                 4096                 files
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># ulimit -HSn 65535
+<pre class="src src-nil"><code># ulimit -HSn 65535
 # grep -i nofiles /etc/sysconfig/libvirtd
 LIBVIRTD_NOFILES_LIMIT=10240
 # /etc/init.d/libvirtd restart
@@ -106,7 +106,7 @@ Starting libvirtd daemon:                                  [  OK  ]
 2509
 # grep files /proc/2509/limits                                              # 配置生效
 Max open files            10240                10240                files
-</pre>
+</code></pre>
 </div>
 
 <p>

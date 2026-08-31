@@ -8,13 +8,13 @@
 <meta name="description" content="介绍 Kubernetes API Server 的 TLS 双向认证、RBAC 授权、TLS bootstrapping 与 Node Authorization 访问控制机制。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/kubernetes-access-controll.html"/>
 <meta property="og:title" content="Kubernetes 访问控制"/>
 <meta property="og:description" content="介绍 Kubernetes API Server 的 TLS 双向认证、RBAC 授权、TLS bootstrapping 与 Node Authorization 访问控制机制。"/>
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -118,7 +118,7 @@ kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">--etcd-cafile                        # etcd CA 证书
+<pre class="src src-nil"><code>--etcd-cafile                        # etcd CA 证书
 --etcd-certfile                      # APIServer 访问 etcd client 公钥
 --etcd-keyfile                       # APIServer 访问 etcd client 密钥
 --client-ca-file                     # 验证访问 APIServer 的 client CA 证书
@@ -131,7 +131,7 @@ kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书�
 --requestheader-client-ca-file       # 用于签名 --proxy-client-cert-file 和--proxy-client-key-file 指定的证书，启用 aggregator 时使用
 --proxy-client-cert-file             # 用于请求 aggregator client 公钥
 --proxy-client-key-file              # 用于请求 aggregator client 密钥
-</pre>
+</code></pre>
 </div>
 
 
@@ -170,7 +170,7 @@ kube-apiserver 涉及到的证书选项很多，以下为梳理之后的证书�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">apiVersion: rbac.authorization.k8s.io/v1
+<pre class="src src-nil"><code>apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: coredns   # 如果你要绑定权限，这里的 name 需要对应 TLS 证书中的 CN 字段
@@ -185,7 +185,7 @@ rules:
   verbs:
   - list
   - watch
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -193,7 +193,7 @@ ClusterRole 定义了 CoreDNS apiGroups 范围，可以访问的资源以及权�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">apiVersion: rbac.authorization.k8s.io/v1
+<pre class="src src-nil"><code>apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: coredns
@@ -205,7 +205,7 @@ subjects:
 - kind: ServiceAccount
   name: default
   namespace: kube-system
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -240,7 +240,7 @@ Kubelet 要启用 TLS bootstrapping，需要开启选项 <code>--bootstrap-kubec
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">apiVersion: v1
+<pre class="src src-nil"><code>apiVersion: v1
 kind: Config
 clusters:
 - cluster:
@@ -258,7 +258,7 @@ users:
 - name: kubelet-bootstrap
   user:
 token: 50bc4305185c3c2d8e31cab9223a8107 # APIServer 定义的 bootstrap token
-</pre>
+</code></pre>
 </div>
 </div>
 </div>

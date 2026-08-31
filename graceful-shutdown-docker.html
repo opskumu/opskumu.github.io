@@ -8,13 +8,13 @@
 <meta name="description" content="最近把 Docker 官方的 Docker Reference 文档又读了一遍，发现有些细节深究起来，还是有很多可挖的。针对写 Dockerfile ，大部分时候只要照葫芦画瓢，基本也不会有什么大的问题，但是如果再深入理解一下那就更有意思了。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/graceful-shutdown-docker.html"/>
 <meta property="og:title" content="如何优雅的关闭容器"/>
 <meta property="og:description" content="最近把 Docker 官方的 Docker Reference 文档又读了一遍，发现有些细节深究起来，还是有很多可挖的。针对写 Dockerfile ，大部分时候只要照葫芦画瓢，基本也不会有什么大的问题，但是如果再深入理解一下那就更有意思了。"/>
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -71,14 +71,14 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># kill -l
+<pre class="src src-nil"><code># kill -l
  1) SIGHUP       2) SIGINT       3) SIGQUIT      
  4) SIGILL       5) SIGTRAP      6) SIGABRT      
  7) SIGBUS       8) SIGFPE       9) SIGKILL
  10) SIGUSR1    11) SIGSEGV     12) SIGUSR2
  13) SIGPIPE    14) SIGALRM     15) SIGTERM
 ... ...
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -147,7 +147,7 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker stop --help
+<pre class="src src-nil"><code>➜  ~ docker stop --help
 
 Usage:  docker stop [OPTIONS] CONTAINER [CONTAINER...]
 
@@ -156,7 +156,7 @@ Stop one or more running containers
 Options:
       --help       Print usage
   -t, --time int   Seconds to wait for stop before killing it (default 10)
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -164,7 +164,7 @@ Options:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker kill --help
+<pre class="src src-nil"><code>➜  ~ docker kill --help
 
 Usage:  docker kill [OPTIONS] CONTAINER [CONTAINER...]
 
@@ -173,7 +173,7 @@ Kill one or more running containers
 Options:
       --help            Print usage
   -s, --signal string   Signal to send to the container (default "KILL")
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -193,7 +193,7 @@ Options:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">➜  ~ cat signals.go
+<pre class="src src-go"><code>➜  ~ cat signals.go
 package main
 
 import (
@@ -220,14 +220,14 @@ func main() {
     &lt;-done
     fmt.Println("exiting")
 }
-</pre>
+</code></pre>
 </div>
 </div>
 <div id="outline-container-section-294cde9a5986" class="outline-3">
 <h3 id="section-294cde9a5986"><span class="section-number-3">3.1.</span> 实例 1</h3>
 <div class="outline-text-3" id="text-3-1">
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ GOOS=linux GOARCH=amd64 go build signals.go
+<pre class="src src-nil"><code>➜  ~ GOOS=linux GOARCH=amd64 go build signals.go
 ➜  ~ ls
 Dockerfile signals    signals.go
 ➜  ~ cat Dockerfile
@@ -237,7 +237,7 @@ COPY signals /signals
 
 CMD ["/signals"]    # exec 格式执行
 ➜  ~ docker build -t signals .
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -245,20 +245,20 @@ CMD ["/signals"]    # exec 格式执行
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --name signals signals
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --name signals signals
 awaiting signal
 
 terminated
 exiting
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ time docker stop signals
+<pre class="src src-nil"><code>➜  ~ time docker stop signals
 signals
 docker stop signals  0.01s user 0.02s system 4% cpu 0.732 total
 ➜  ~
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -270,28 +270,28 @@ docker stop signals  0.01s user 0.02s system 4% cpu 0.732 total
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ cat Dockerfile
+<pre class="src src-nil"><code>➜  ~ cat Dockerfile
 FROM busybox
 
 COPY signals /signals
 
 CMD /signals        # shell 格式执行
 ➜  ~ docker build -t signals .
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --name signals signals
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --name signals signals
 awaiting signal
 ➜  ~
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ time docker stop signals
+<pre class="src src-nil"><code>➜  ~ time docker stop signals
 signals
 docker stop signals  0.01s user 0.01s system 0% cpu 10.719 total
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -311,7 +311,7 @@ docker stop signals  0.01s user 0.01s system 0% cpu 10.719 total
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ ls
+<pre class="src src-nil"><code>➜  ~ ls
 Dockerfile signals    signals.go start.sh
 ➜  ~ cat Dockerfile
 FROM busybox
@@ -325,7 +325,7 @@ CMD ["/start.sh"]
 
 /signals
 ➜  ~
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -333,18 +333,18 @@ CMD ["/start.sh"]
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --name signals signals
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --name signals signals
 awaiting signal
 ➜  ~
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ time docker stop signals
+<pre class="src src-nil"><code>➜  ~ time docker stop signals
 signals
 docker stop signals  0.01s user 0.02s system 0% cpu 10.765 total
 ➜  ~
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -352,29 +352,29 @@ docker stop signals  0.01s user 0.02s system 0% cpu 10.765 total
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ cat start.sh
+<pre class="src src-nil"><code>➜  ~ cat start.sh
 #!/bin/sh
 
 exec /signals   # 加入 exec 执行
 ➜  ~ docker build -t signals .
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --name signals signals
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --name signals signals
 awaiting signal
 
 terminated
 exiting
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ time docker stop signals
+<pre class="src src-nil"><code>➜  ~ time docker stop signals
 signals
 docker stop signals  0.02s user 0.02s system 4% cpu 0.744 total
 ➜  ~
-</pre>
+</code></pre>
 </div>
 
 <p>

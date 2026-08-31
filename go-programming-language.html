@@ -8,13 +8,13 @@
 <meta name="description" content="Kumu 的个人博客，记录 Kubernetes、Linux、Emacs 与工程实践。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/go-programming-language.html"/>
 <meta property="og:title" content="The Go Programming Language 摘要"/>
 <meta property="og:description" content="Kumu 的个人博客，记录 Kubernetes、Linux、Emacs 与工程实践。"/>
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -119,18 +119,18 @@ In Go, a string is in effect a read-only slice of bytes.
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-go">const s = "世界"
+<pre class="src src-go"><code>const s = "世界"
 fmt.Println(len(s))            // 输出结果为 6 表示字符串 s 占用 6 个字节，一个中文占用 3 个字节
 fmt.Println(len([]rune(s)))    // 输出结果为 2 表示字符串 s 转换成 rune 之后占用 2 个 rune 字符码
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-go">const s = "世界"
+<pre class="src src-go"><code>const s = "世界"
 for i, v := range s {
     fmt.Printf("%#U starts at byte position %d\n", v, i)
 }
-</pre>
+</code></pre>
 </div>
 
 <blockquote>
@@ -144,9 +144,9 @@ for i, v := range s {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">U+4E16 '世' starts at byte position 0
+<pre class="src src-go"><code>U+4E16 '世' starts at byte position 0
 U+754C '界' starts at byte position 3
-</pre>
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -176,8 +176,8 @@ U+754C '界' starts at byte position 3
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go">q := [...]int{1, 2, 3}
-</pre>
+<pre class="src src-go"><code>q := [...]int{1, 2, 3}
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -185,8 +185,8 @@ U+754C '界' starts at byte position 3
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go">symbol := [...]string{0: "$", 3: "¥"}    // 数组中指定了第一个和第四个索引值，未指定的自动取空字符串
-</pre>
+<pre class="src src-go"><code>symbol := [...]string{0: "$", 3: "¥"}    // 数组中指定了第一个和第四个索引值，未指定的自动取空字符串
+</code></pre>
 </div>
 </div>
 </div>
@@ -199,7 +199,7 @@ U+754C '界' starts at byte position 3
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go">package main
+<pre class="src src-go"><code>package main
 
 import "fmt"
 
@@ -222,7 +222,7 @@ func main() {
     fmt.Println(a) // 作用域问题，此处数组不会改变
     fmt.Println(s) // 因为 slice 中元素本身是指针，所以此处 "This" 会被替换成 "That"
 }
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -230,9 +230,9 @@ func main() {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">[This is a test]
+<pre class="src src-nil"><code>[This is a test]
 [That is a test]
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -254,7 +254,7 @@ func main() {
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go">type Circle struct {
+<pre class="src src-go"><code>type Circle struct {
     Point
     Radius int
 }
@@ -263,7 +263,7 @@ type Wheel struct {
     Circle
     Spokes int
 }
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -271,12 +271,12 @@ type Wheel struct {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">var w Wheel w.X = 8
+<pre class="src src-nil"><code>var w Wheel w.X = 8
 w.Y = 8 w.Radius = 5 w.Spokes = 20
 // equivalent to w.Circle.Point.X = 8
 // equivalent to w.Circle.Point.Y = 8
 // equivalent to w.Circle.Radius = 5
-</pre>
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -284,7 +284,7 @@ w.Y = 8 w.Radius = 5 w.Spokes = 20
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go">w = Wheel{Circle{Point{8, 8}, 5}, 20}
+<pre class="src src-go"><code>w = Wheel{Circle{Point{8, 8}, 5}, 20}
 
 w = Wheel{
     Circle: Circle{
@@ -295,7 +295,7 @@ w = Wheel{
 fmt.Printf("%#v\n", w)
 // Output:
 // Wheel{Circle:Circle{Point:Point{X:8, Y:8}, Radius:5}, Spokes:20}
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -317,11 +317,11 @@ fmt.Printf("%#v\n", w)
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-nil">func f(...int) {}
+<pre class="src src-nil"><code>func f(...int) {}
 func g([]int) {}
 fmt.Printf("%T\n", f) // "func(...int)"
 fmt.Printf("%T\n", g) // "func([]int)"
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -365,8 +365,8 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">ch := make(chan int) // ch has type 'chan int'
-</pre>
+<pre class="src src-go"><code>ch := make(chan int) // ch has type 'chan int'
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -385,8 +385,8 @@ fmt.Printf("%T\n", g) // "func([]int)"
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-go">import _ "image/png" // register PNG decoder
-</pre>
+<pre class="src src-go"><code>import _ "image/png" // register PNG decoder
+</code></pre>
 </div>
 </div>
 </div>

@@ -8,13 +8,13 @@
 <meta name="description" content="本文为 Use the OverlayFS storage driver 译文，一直以来对 OverlayFS 工作机制不太理解，趁着间隙把 Docker 官方的文档看了一遍。虽然不涉及到底层的技术实现，但是基本的工作机制，通过这篇文章差不多可以了解个大概了。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/docker-overlayfs.html"/>
 <meta property="og:title" content="Docker OverlayFS 驱动"/>
 <meta property="og:description" content="本文为 Use the OverlayFS storage driver 译文，一直以来对 OverlayFS 工作机制不太理解，趁着间隙把 Docker 官方的文档看了一遍。虽然不涉及到底层的技术实现，但是基本的工作机制，通过这篇文章差不多可以了解个大概了。"/>
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -104,9 +104,9 @@ Note：如果你使用 OverlayFS，使用 <code>overlay2</code> 而不是 <code>
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-nil">mkfs -t xfs -n ftype=1 /PATH/TO/DEVICE  # 开启 d_type 选项
+<pre class="src src-nil"><code>mkfs -t xfs -n ftype=1 /PATH/TO/DEVICE  # 开启 d_type 选项
 xfs_info /PATH/TO/DEVICE | grep ftype   # 验证是否已支持
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -118,10 +118,10 @@ xfs_info /PATH/TO/DEVICE | grep ftype   # 验证是否已支持
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">{
+<pre class="src src-nil"><code>{
   "storage-driver": "overlay2"
 }
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -144,7 +144,7 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ ls -l /var/lib/docker/overlay2
+<pre class="src src-nil"><code>$ ls -l /var/lib/docker/overlay2
 
 total 24
 drwx------ 5 root root 4096 Jun 20 07:36 223c2864175491657d238e2664251df13b63adb8d050924fd1bfcdb278b866f7
@@ -153,7 +153,7 @@ drwx------ 5 root root 4096 Jun 20 07:36 4e9fa83caff3e8f4cc83693fa407a4a9fac9573
 drwx------ 5 root root 4096 Jun 20 07:36 e8876a226237217ec61c4baf238a32992291d059fdac95ed6303bdff3f59cff5
 drwx------ 5 root root 4096 Jun 20 07:36 eca1e4e1694283e001f200a667bb3cb40853cf2d1b12c29feda7422fed78afed
 drwx------ 2 root root 4096 Jun 20 07:36 l
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -161,7 +161,7 @@ drwx------ 2 root root 4096 Jun 20 07:36 l
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ ls -l /var/lib/docker/overlay2/l
+<pre class="src src-nil"><code>$ ls -l /var/lib/docker/overlay2/l
 
 total 20
 lrwxrwxrwx 1 root root 72 Jun 20 07:36 6Y5IM2XC7TSNIJZZFLJCS6I4I4 -&gt; ../3a36935c9df35472229c57f4a27105a136f5e4dbef0f87905b2e506e494e348b/diff
@@ -169,7 +169,7 @@ lrwxrwxrwx 1 root root 72 Jun 20 07:36 B3WWEFKBG3PLLV737KZFIASSW7 -&gt; ../4e9fa
 lrwxrwxrwx 1 root root 72 Jun 20 07:36 JEYMODZYFCZFYSDABYXD5MF6YO -&gt; ../eca1e4e1694283e001f200a667bb3cb40853cf2d1b12c29feda7422fed78afed/diff
 lrwxrwxrwx 1 root root 72 Jun 20 07:36 NFYKDW6APBCCUCTOUSYDH4DXAT -&gt; ../223c2864175491657d238e2664251df13b63adb8d050924fd1bfcdb278b866f7/diff
 lrwxrwxrwx 1 root root 72 Jun 20 07:36 UL2MW33MSE3Q5VYIKBRN4ZAGQP -&gt; ../e8876a226237217ec61c4baf238a32992291d059fdac95ed6303bdff3f59cff5/diff
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -177,13 +177,13 @@ lrwxrwxrwx 1 root root 72 Jun 20 07:36 UL2MW33MSE3Q5VYIKBRN4ZAGQP -&gt; ../e8876
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ ls /var/lib/docker/overlay2/3a36935c9df35472229c57f4a27105a136f5e4dbef0f87905b2e506e494e348b/
+<pre class="src src-nil"><code>$ ls /var/lib/docker/overlay2/3a36935c9df35472229c57f4a27105a136f5e4dbef0f87905b2e506e494e348b/
 diff  link
 $ cat /var/lib/docker/overlay2/3a36935c9df35472229c57f4a27105a136f5e4dbef0f87905b2e506e494e348b/link
 6Y5IM2XC7TSNIJZZFLJCS6I4I4
 $ ls  /var/lib/docker/overlay2/3a36935c9df35472229c57f4a27105a136f5e4dbef0f87905b2e506e494e348b/diff
 bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -191,13 +191,13 @@ bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  s
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ ls /var/lib/docker/overlay2/223c2864175491657d238e2664251df13b63adb8d050924fd1bfcdb278b866f7
+<pre class="src src-nil"><code>$ ls /var/lib/docker/overlay2/223c2864175491657d238e2664251df13b63adb8d050924fd1bfcdb278b866f7
 diff  link  lower  merged  work
 $ cat /var/lib/docker/overlay2/223c2864175491657d238e2664251df13b63adb8d050924fd1bfcdb278b866f7/lower
 l/6Y5IM2XC7TSNIJZZFLJCS6I4I4
 $ ls /var/lib/docker/overlay2/223c2864175491657d238e2664251df13b63adb8d050924fd1bfcdb278b866f7/diff/
 etc  sbin  usr  var
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -205,13 +205,13 @@ etc  sbin  usr  var
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ mount | grep overlay
+<pre class="src src-nil"><code>$ mount | grep overlay
 overlay on /var/lib/docker/overlay2/9186877cdf386d0a3b016149cf30c208f326dca307529e646afce5b3f83f5304/merged
 type overlay (rw,relatime,
 lowerdir=l/DJA75GUWHWG7EWICFYX54FIOVT:l/B3WWEFKBG3PLLV737KZFIASSW7:l/JEYMODZYFCZFYSDABYXD5MF6YO:l/UL2MW33MSE3Q5VYIKBRN4ZAGQP:l/NFYKDW6APBCCUCTOUSYDH4DXAT:l/6Y5IM2XC7TSNIJZZFLJCS6I4I4,
 upperdir=9186877cdf386d0a3b016149cf30c208f326dca307529e646afce5b3f83f5304/diff,
 workdir=9186877cdf386d0a3b016149cf30c208f326dca307529e646afce5b3f83f5304/work)
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -257,7 +257,7 @@ OverlayFS 层（layers） 在单个 Linux 主机上分为两个目录，并且�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ docker pull ubuntu
+<pre class="src src-nil"><code>$ docker pull ubuntu
 
 Using default tag: latest
 latest: Pulling from library/ubuntu
@@ -269,7 +269,7 @@ e7491a747824: Pull complete
 a3ed95caeb02: Pull complete
 Digest: sha256:46fb5d001b88ad904c5c732b086b596b92cfb4a4840a3abd0e35dbb6870585e4
 Status: Downloaded newer image for ubuntu:latest
-</pre>
+</code></pre>
 </div>
 </div>
 <div id="outline-container-section-ba9f2b00a33e" class="outline-4">
@@ -280,7 +280,7 @@ Status: Downloaded newer image for ubuntu:latest
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ ls -l /var/lib/docker/overlay/
+<pre class="src src-nil"><code>$ ls -l /var/lib/docker/overlay/
 
 total 20
 drwx------ 3 root root 4096 Jun 20 16:11 38f3ed2eac129654acef11c32670b534670c3a06e483fce313d72e3e0a15baa8
@@ -288,7 +288,7 @@ drwx------ 3 root root 4096 Jun 20 16:11 55f1e14c361b90570df46371b20ce6d480c4349
 drwx------ 3 root root 4096 Jun 20 16:11 824c8a961a4f5e8fe4f4243dab57c5be798e7fd195f6d88ab06aea92ba931654
 drwx------ 3 root root 4096 Jun 20 16:11 ad0fe55125ebf599da124da175174a4b8c1878afe6907bf7c78570341f308461
 drwx------ 3 root root 4096 Jun 20 16:11 edab9b5e5bf73f2997524eebeac1de4cf9c8b904fa8ad3ec43b3504196aa3801
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -296,11 +296,11 @@ drwx------ 3 root root 4096 Jun 20 16:11 edab9b5e5bf73f2997524eebeac1de4cf9c8b90
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ ls -i /var/lib/docker/overlay/38f3ed2eac129654acef11c32670b534670c3a06e483fce313d72e3e0a15baa8/root/bin/ls
+<pre class="src src-nil"><code>$ ls -i /var/lib/docker/overlay/38f3ed2eac129654acef11c32670b534670c3a06e483fce313d72e3e0a15baa8/root/bin/ls
 19793696 /var/lib/docker/overlay/38f3ed2eac129654acef11c32670b534670c3a06e483fce313d72e3e0a15baa8/root/bin/ls
 $ ls -i /var/lib/docker/overlay/55f1e14c361b90570df46371b20ce6d480c434981cbda5fd68c6ff61aa0a5358/root/bin/ls
 19793696 /var/lib/docker/overlay/55f1e14c361b90570df46371b20ce6d480c434981cbda5fd68c6ff61aa0a5358/root/bin/ls
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -312,14 +312,14 @@ $ ls -i /var/lib/docker/overlay/55f1e14c361b90570df46371b20ce6d480c434981cbda5fd
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ ls -l /var/lib/docker/overlay/&lt;directory-of-running-container&gt;
+<pre class="src src-nil"><code>$ ls -l /var/lib/docker/overlay/&lt;directory-of-running-container&gt;
 
 total 16
 -rw-r--r-- 1 root root   64 Jun 20 16:39 lower-id
 drwxr-xr-x 1 root root 4096 Jun 20 16:39 merged
 drwxr-xr-x 4 root root 4096 Jun 20 16:39 upper
 drwx------ 3 root root 4096 Jun 20 16:39 work
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -327,9 +327,9 @@ drwx------ 3 root root 4096 Jun 20 16:39 work
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ cat /var/lib/docker/overlay/ec444863a55a9f1ca2df72223d459c5d940a721b2288ff86a3f27be28b53be6c/lower-id
+<pre class="src src-nil"><code>$ cat /var/lib/docker/overlay/ec444863a55a9f1ca2df72223d459c5d940a721b2288ff86a3f27be28b53be6c/lower-id
 55f1e14c361b90570df46371b20ce6d480c434981cbda5fd68c6ff61aa0a5358
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -349,13 +349,13 @@ drwx------ 3 root root 4096 Jun 20 16:39 work
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ mount | grep overlay
+<pre class="src src-nil"><code>$ mount | grep overlay
 
 overlay on /var/lib/docker/overlay/ec444863a55a.../merged
 type overlay (rw,relatime,lowerdir=/var/lib/docker/overlay/55f1e14c361b.../root,
 upperdir=/var/lib/docker/overlay/ec444863a55a.../upper,
 workdir=/var/lib/docker/overlay/ec444863a55a.../work)
-</pre>
+</code></pre>
 </div>
 
 <p>

@@ -8,13 +8,13 @@
 <meta name="description" content="Google Borg 系统是一个集群管理器，运行着数千个应用程序的数以十万计的作业，跨多个由数万台机器组成的集群。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/borg.html"/>
 <meta property="og:title" content="Google 大规模集群管理器 Borg"/>
 <meta property="og:description" content="Google Borg 系统是一个集群管理器，运行着数千个应用程序的数以十万计的作业，跨多个由数万台机器组成的集群。"/>
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -416,7 +416,7 @@ Borg 的主要目标之一是有效利用 Google 的主机，这是一笔巨大�
 </p>
 
 <p>
-我们的实验侧重于从某个时间点调度（打包）工作负载，而不是重放长期工作负载跟踪。一部分原因是为了避免应对打开和关闭队列模型困难，一部分是因为传统的完成时间指标不适用于我们的环境以及长期运行的服务，一部分是为了压实提供一个干净的信号，一部分是我们不相信结果会有显著差异，以及一部分实际问题：我们发现自己在某一时刻因为我们的实验消耗了 200000 Borg CPU 内核 &#x2013; 即使在 Google 这个规模上，这也是一项非常大的投资。
+我们的实验侧重于从某个时间点调度（打包）工作负载，而不是重放长期工作负载跟踪。一部分原因是为了避免应对打开和关闭队列模型困难，一部分是因为传统的完成时间指标不适用于我们的环境以及长期运行的服务，一部分是为了压实提供一个干净的信号，一部分是我们不相信结果会有显著差异，以及一部分实际问题：我们发现自己在某一时刻因为我们的实验消耗了 200000 Borg CPU 内核 &ndash; 即使在 Google 这个规模上，这也是一项非常大的投资。
 </p>
 
 <p>
@@ -464,7 +464,7 @@ Borg 的主要目标之一是有效利用 Google 的主机，这是一笔巨大�
 <ul class="org-ul">
 <li>我们发现 CPI 与同一时间间隔内的两次测量正相关：机器上的总体 CPU 使用率，以及（很大程度上独立地）机器上的任务数量；向机器添加 task 会使其它 tasks 的 CPI 增加 0.3%（使用适合数据的线性模型）；将机器 CPU 使用率提高 10% 会使 CPI 增加不到 2%。但即使相关性具有显著性，它们也只解释了我们在 CPI 测量中看到的 5% 的方差；其它因素占主导地位，例如应用和特定干扰模式的固有差异<sup><a href="#ref-24">24</a>,<a href="#ref-83">83</a></sup>。</li>
 
-<li>将我们从共享 cells 中采样的 CPI 与应用种类较少的专用 cells 比较，我们看到共享 cells 的平均 CPI 为 1.58（σ = 0.35），专用 cells 的平均 CPI 为 1.53（σ = 0.32）&#x2013; 即，共享 cells 中的 CPU 性能差大约 3%。</li>
+<li>将我们从共享 cells 中采样的 CPI 与应用种类较少的专用 cells 比较，我们看到共享 cells 的平均 CPI 为 1.58（σ = 0.35），专用 cells 的平均 CPI 为 1.53（σ = 0.32）&ndash; 即，共享 cells 中的 CPU 性能差大约 3%。</li>
 
 <li>为了解决应用在不同 cells 中可能有不同的 workload，甚至可能存在选择偏差（也许对干扰更敏感的程序已经被移入专用 cells）的担忧，我们查看了 Borglet 的 CPI，它会在两种类型 cells 的所有机器上运行。我们发现它在专用 cells 中的 CPI 为 1.20（σ = 0.29），在共享 cells 中的 CPI 为 1.43（σ = 0.45），这表明它在专用 cell 中的运行速度是在共享 cell 中的 1.19 倍，尽管这会过度放大轻负载机器的影响，使结果稍微偏向于专用 cells。</li>
 </ul>

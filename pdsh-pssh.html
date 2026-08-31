@@ -8,13 +8,13 @@
 <meta name="description" content="写这篇文章的时候，pdsh、pssh 还是运维管理人员的利器。而几年过去了，这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 了。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/pdsh-pssh.html"/>
 <meta property="og:title" content="批量主机管理 pdsh &amp;amp; pssh"/>
 <meta property="og:description" content="写这篇文章的时候，pdsh、pssh 还是运维管理人员的利器。而几年过去了，这俩工具已退出历史舞台，现在发光发热的已是 Ansible、Salt 了。"/>
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -79,11 +79,11 @@
 <h3 id="section-087db63ab10b"><span class="section-number-3">1.1.</span> 安装</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
-<pre class="src src-nil">wget http://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz
+<pre class="src src-nil"><code>wget http://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz
 tar zxvf pssh-2.3.1.tar.gz
 cd pssh-2.3.1/
 python setup.py install
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -141,10 +141,10 @@ python setup.py install
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ cat host.txt
+<pre class="src src-nil"><code>$ cat host.txt
 root@192.168.230.128
 kumu@10.0.0.8
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -152,12 +152,12 @@ kumu@10.0.0.8
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ pssh -i -h host.txt 'date'
+<pre class="src src-nil"><code>$ pssh -i -h host.txt 'date'
 [1] 16:32:38 [SUCCESS] root@192.168.230.128
 Mon Aug 12 16:32:38 CST 2013
 [2] 16:32:38 [SUCCESS] kumu@10.0.0.8
 Mon Aug 12 16:32:38 CST 2013
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -165,14 +165,14 @@ Mon Aug 12 16:32:38 CST 2013
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ pssh -x '-t -t -o StrictHostKeyChecking=no' -i -h host.txt date
+<pre class="src src-nil"><code>$ pssh -x '-t -t -o StrictHostKeyChecking=no' -i -h host.txt date
 [1] 17:20:01 [SUCCESS] root@192.168.230.128
 Mon Aug 12 17:20:01 CST 2013
 Stderr: Connection to 192.168.230.128 closed.
 [2] 17:20:01 [SUCCESS] kumu@10.0.0.8
 Mon Aug 12 17:20:01 CST 2013
 Stderr: Connection to 10.0.0.8 closed.
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -180,14 +180,14 @@ Stderr: Connection to 10.0.0.8 closed.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ pssh -x '-t -t -o StrictHostKeyChecking=no' -i -H 192.168.230.128 -H kumu@10.0.0.8 date
+<pre class="src src-nil"><code>$ pssh -x '-t -t -o StrictHostKeyChecking=no' -i -H 192.168.230.128 -H kumu@10.0.0.8 date
 [1] 17:22:58 [SUCCESS] 192.168.230.128
 Mon Aug 12 17:22:58 CST 2013
 Stderr: Connection to 192.168.230.128 closed.
 [2] 17:22:58 [SUCCESS] kumu@10.0.0.8
 Mon Aug 12 17:22:58 CST 2013
 Stderr: Connection to 10.0.0.8 closed.
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -212,7 +212,7 @@ Stderr: Connection to 10.0.0.8 closed.
 <h3 id="section-0de2dd51b6f3"><span class="section-number-3">2.1.</span> pdsh 基本用法</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
-<pre class="src src-nil">$ pdsh -h
+<pre class="src src-nil"><code>$ pdsh -h
 Usage: pdsh [-options] command ...
 -S                return largest of remote command return values
 -h                output usage menu and quit                获取帮助
@@ -233,7 +233,7 @@ Usage: pdsh [-options] command ...
 -g groupname      target hosts in dsh group "groupname"     指定 `dsh` 组名，编译安裝需要添加 `-g` 支持选项 `--with-dshgroups`
 -X groupname      exclude hosts in dsh group "groupname"    排除组，一般和 `-a` 连用
 available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命令模块，默认为 ssh
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -245,9 +245,9 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 <h4 id="section-8403d502f3ff"><span class="section-number-4">2.2.1.</span> 单个主机测试</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <div class="org-src-container">
-<pre class="src src-nil">$ pdsh -w 192.168.0.231 -l root uptime
+<pre class="src src-nil"><code>$ pdsh -w 192.168.0.231 -l root uptime
 192.168.0.231:  16:16:11 up 32 days, 22:14, ? users,  load average: 0.10, 0.14, 0.16
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -255,11 +255,11 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 <h4 id="section-66505f1b6dec"><span class="section-number-4">2.2.2.</span> 多个主机测试</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <div class="org-src-container">
-<pre class="src src-nil">$ pdsh -w 192.168.0.[231-233] -l root uptime
+<pre class="src src-nil"><code>$ pdsh -w 192.168.0.[231-233] -l root uptime
 192.168.0.233:  16:17:05 up 32 days, 22:17, ? users,  load average: 0.13, 0.12, 0.10
 192.168.0.232:  16:17:05 up 32 days, 22:17, ? users,  load average: 0.45, 0.34, 0.27
 192.168.0.231:  16:17:06 up 32 days, 22:15, ? users,  load average: 0.09, 0.13, 0.15
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -267,10 +267,10 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 <h4 id="section-007fbfd116b3"><span class="section-number-4">2.2.3.</span> 逗号分隔主机</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <div class="org-src-container">
-<pre class="src src-nil">$ pdsh -w 192.168.0.231,192.168.0.234 -l root uptime
+<pre class="src src-nil"><code>$ pdsh -w 192.168.0.231,192.168.0.234 -l root uptime
 192.168.0.234:  16:19:44 up 32 days, 22:19, ? users,  load average: 0.17, 0.21, 0.20
 192.168.0.231:  16:19:44 up 32 days, 22:17, ? users,  load average: 0.29, 0.18, 0.16
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -278,10 +278,10 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 <h4 id="section-08cc56a1fd1e"><span class="section-number-4">2.2.4.</span> <code>-x</code> 排除某个主机</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <div class="org-src-container">
-<pre class="src src-nil">$ pdsh -w 192.168.0.[231-233] -x 192.168.0.232 -l root uptime
+<pre class="src src-nil"><code>$ pdsh -w 192.168.0.[231-233] -x 192.168.0.232 -l root uptime
 192.168.0.233:  16:18:24 up 32 days, 22:19, ? users,  load average: 0.11, 0.12, 0.09
 192.168.0.231:  16:18:25 up 32 days, 22:16, ? users,  load average: 0.11, 0.13, 0.15
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -293,21 +293,21 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ cat ~/.dsh/group/dsh-test
+<pre class="src src-nil"><code>$ cat ~/.dsh/group/dsh-test
 192.168.0.231
 192.168.0.232
 192.168.0.233
 192.168.0.234
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ pdsh -g dsh-test -l root uptime
+<pre class="src src-nil"><code>$ pdsh -g dsh-test -l root uptime
 192.168.0.232:  16:21:38 up 32 days, 22:22, ? users,  load average: 0.01, 0.15, 0.21
 192.168.0.231:  16:21:38 up 32 days, 22:19, ? users,  load average: 0.17, 0.16, 0.16
 192.168.0.234:  16:21:39 up 32 days, 22:21, ? users,  load average: 0.15, 0.19, 0.19
 192.168.0.233:  16:21:40 up 32 days, 22:22, ? users,  load average: 0.15, 0.15, 0.10
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -319,12 +319,12 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ pdsh -g dsh-test -l root 'date'
+<pre class="src src-nil"><code>$ pdsh -g dsh-test -l root 'date'
 192.168.0.232: Wed Jun 19 16:24:40 CST 2013
 192.168.0.231: Wed Jun 19 16:24:40 CST 2013
 192.168.0.234: Wed Jun 19 16:24:40 CST 2013
 192.168.0.233: Wed Jun 19 16:24:40 CST 2013
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -332,7 +332,7 @@ available rcmd modules: exec,xcpu,ssh (default: ssh)        可用的执行命�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">$ pdsh -g dsh-test -l root 'date' | dshbak -c
+<pre class="src src-nil"><code>$ pdsh -g dsh-test -l root 'date' | dshbak -c
 ----------------
 192.168.0.[231-232,234]
 ----------------
@@ -341,7 +341,7 @@ Wed Jun 19 16:24:18 CST 2013
 192.168.0.233
 ----------------
 Wed Jun 19 16:24:19 CST 2013
-</pre>
+</code></pre>
 </div>
 </div>
 </div>

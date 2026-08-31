@@ -8,13 +8,13 @@
 <meta name="description" content="rsync 是类 unix 系统下的数据镜像备份工具，从软件的命名上就可以看出来了- remote sync。它的特性如下：" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/rsync.html"/>
 <meta property="og:title" content="rsync 备份备忘"/>
 <meta property="og:description" content="rsync 是类 unix 系统下的数据镜像备份工具，从软件的命名上就可以看出来了- remote sync。它的特性如下："/>
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -85,7 +85,7 @@
 <h2 id="section-c4bfc1bbf871"><span class="section-number-2">2.</span> rsync 选项</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
-<pre class="src src-nil">Usage: rsync [OPTION]... SRC [SRC]... DEST
+<pre class="src src-nil"><code>Usage: rsync [OPTION]... SRC [SRC]... DEST
   or   rsync [OPTION]... SRC [SRC]... [USER@]HOST:DEST
   or   rsync [OPTION]... SRC [SRC]... [USER@]HOST::DEST
   or   rsync [OPTION]... SRC [SRC]... rsync://[USER@]HOST[:PORT]/DEST
@@ -94,7 +94,7 @@
   or   rsync [OPTION]... rsync://[USER@]HOST[:PORT]/SRC [DEST]
 The ':' usages connect via remote shell, while '::' &amp; 'rsync://' usages connect
 to an rsync daemon, and require SRC or DEST to start with a module name.
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -114,13 +114,13 @@ to an rsync daemon, and require SRC or DEST to start with a module name.
 <li><code>-e</code> "ssh options" : specify the ssh as remote shell # 指定 ssh 作为远程 shell</li>
 <li><code>-a</code> : archive mode # 归档模式，表示以递归方式传输文件，并保持所有文件属性，等于 -rlptgoD
 <ul class="org-ul">
-<li><code>-r</code> (&#x2013;recursive) : 目录递归</li>
-<li><code>-l</code> (&#x2013;links) ：保留软链接</li>
-<li><code>-p</code> (&#x2013;perms) ：保留文件权限</li>
-<li><code>-t</code> (&#x2013;times) ：保留文件时间信息</li>
-<li><code>-g</code> (&#x2013;group) ：保留属组信息</li>
-<li><code>-o</code> (&#x2013;owner) ：保留文件属主信息</li>
-<li><code>-D</code> (&#x2013;devices) ：保留设备文件信息</li>
+<li><code>-r</code> (&ndash;recursive) : 目录递归</li>
+<li><code>-l</code> (&ndash;links) ：保留软链接</li>
+<li><code>-p</code> (&ndash;perms) ：保留文件权限</li>
+<li><code>-t</code> (&ndash;times) ：保留文件时间信息</li>
+<li><code>-g</code> (&ndash;group) ：保留属组信息</li>
+<li><code>-o</code> (&ndash;owner) ：保留文件属主信息</li>
+<li><code>-D</code> (&ndash;devices) ：保留设备文件信息</li>
 </ul></li>
 <li><code>-z</code> : 压缩文件</li>
 <li><code>-h</code> : 以可读方式输出</li>
@@ -145,9 +145,9 @@ to an rsync daemon, and require SRC or DEST to start with a module name.
 <h2 id="section-b24cef304c53"><span class="section-number-2">3.</span> 远程 Shell 方式</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
-<pre class="src src-nil">rsync [OPTION]... SRC [SRC]... [USER@]HOST:DEST # 执行“推”操作
+<pre class="src src-nil"><code>rsync [OPTION]... SRC [SRC]... [USER@]HOST:DEST # 执行“推”操作
 or   rsync [OPTION]... [USER@]HOST:SRC [DEST]   # 执行“拉”操作
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -155,11 +155,11 @@ or   rsync [OPTION]... [USER@]HOST:SRC [DEST]   # 执行“拉”操作
 <h2 id="section-7a63a192095f"><span class="section-number-2">4.</span> rsync C/S 方式</h2>
 <div class="outline-text-2" id="text-4">
 <div class="org-src-container">
-<pre class="src src-nil">rsync [OPTION]... SRC [SRC]... [USER@]HOST::DEST                    # 执行“推”操作
+<pre class="src src-nil"><code>rsync [OPTION]... SRC [SRC]... [USER@]HOST::DEST                    # 执行“推”操作
 or   rsync [OPTION]... SRC [SRC]... rsync://[USER@]HOST[:PORT]/DEST # 执行“推”操作
 or   rsync [OPTION]... [USER@]HOST::SRC [DEST]                      # 执行“拉”操作
 or   rsync [OPTION]... rsync://[USER@]HOST[:PORT]/SRC [DEST]        # 执行“拉”操作
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -167,7 +167,7 @@ C/S 方式需要配置服务端，下面是一个配置文件示例：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># /etc/rsyncd.conf
+<pre class="src src-nil"><code># /etc/rsyncd.conf
 
 uid = root
 gid = root
@@ -194,7 +194,7 @@ use chroot = yes
     exclude = .svn .git
     secrets file = /etc/rsync-secret
     hosts allow = 192.168.80.0/24 172.16.0.10
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -202,7 +202,7 @@ use chroot = yes
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># cat /etc/rsync-secret
+<pre class="src src-nil"><code># cat /etc/rsync-secret
 data:123321
 home:123456
 test:654321
@@ -211,7 +211,7 @@ test:654321
 + mysql56/***
 - *
 # 以上规则表示匹配所有 mysql56 目录下的内容，其它都不同步
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -232,7 +232,7 @@ The daemon filter chain is built from the "filter", "include from", "include", "
 </p>
 
 <p>
-The "filter" parameter takes a space-separated list of daemon filter rules, though it is smart enough to know not to split a token at an internal space in a rule (e.g. "- /foo - /bar" is parsed as two rules). You may specify one or more merge-file rules using the normal syntax. Only one "filter" parameter can apply to a given module in the config file, so put all the rules you want in a single parameter. Note that per-directory merge-file rules do not provide as much protection as global rules, but they can be used to make &#x2013;delete work better during a client download operation if the per-dir merge files are included in the transfer and the client requests that they be used.
+The "filter" parameter takes a space-separated list of daemon filter rules, though it is smart enough to know not to split a token at an internal space in a rule (e.g. "- /foo - /bar" is parsed as two rules). You may specify one or more merge-file rules using the normal syntax. Only one "filter" parameter can apply to a given module in the config file, so put all the rules you want in a single parameter. Note that per-directory merge-file rules do not provide as much protection as global rules, but they can be used to make &ndash;delete work better during a client download operation if the per-dir merge files are included in the transfer and the client requests that they be used.
 </p>
 </blockquote>
 </div>
@@ -245,8 +245,8 @@ The "filter" parameter takes a space-separated list of daemon filter rules, thou
 <h3 id="section-8b3f736710e5"><span class="section-number-3">5.1.</span> 常用命令</h3>
 <div class="outline-text-3" id="text-5-1">
 <div class="org-src-container">
-<pre class="src src-nil">RSYNC_PASSWORD=123321 rsync -havAEHXi -n --numeric-ids --delete --stats --progress [SRC] [DEST]
-</pre>
+<pre class="src src-nil"><code>RSYNC_PASSWORD=123321 rsync -havAEHXi -n --numeric-ids --delete --stats --progress [SRC] [DEST]
+</code></pre>
 </div>
 
 <p>
@@ -262,8 +262,8 @@ The "filter" parameter takes a space-separated list of daemon filter rules, thou
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">RSYNC_PASSWORD=123321 rsync -havAEHXi -n --numeric-ids --delete --stats --progress -e "ssh -p 22222" [USER@]HOST:SRC [DEST]
-</pre>
+<pre class="src src-nil"><code>RSYNC_PASSWORD=123321 rsync -havAEHXi -n --numeric-ids --delete --stats --progress -e "ssh -p 22222" [USER@]HOST:SRC [DEST]
+</code></pre>
 </div>
 </div>
 </div>
@@ -271,8 +271,8 @@ The "filter" parameter takes a space-separated list of daemon filter rules, thou
 <h3 id="section-792211f027be"><span class="section-number-3">5.3.</span> 查看服务器同步资源</h3>
 <div class="outline-text-3" id="text-5-3">
 <div class="org-src-container">
-<pre class="src src-nil">RSYNC_PASSWORD=123321 rsync --list-only data@192.168.80.150::bak-data
-</pre>
+<pre class="src src-nil"><code>RSYNC_PASSWORD=123321 rsync --list-only data@192.168.80.150::bak-data
+</code></pre>
 </div>
 
 <p>
@@ -280,8 +280,8 @@ OR
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">RSYNC_PASSWORD=123321 rsync --list-only rsync://data@192.168.80.150/bak-data
-</pre>
+<pre class="src src-nil"><code>RSYNC_PASSWORD=123321 rsync --list-only rsync://data@192.168.80.150/bak-data
+</code></pre>
 </div>
 </div>
 </div>

@@ -5,32 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docker 磁盘 IO 资源限制</title>
 <meta name="author" content="Kumu" />
-<meta name="description" content="默认，所有的容器对于 IO 操作「block IO bandwidth – blkio」都拥有相同优先级。可以通过 --blkio-weight 修改容器 blkio 权重。 --blkio-weight 权重值在 10 ~ 1000 之间。" />
+<meta name="description" content="默认，所有的容器对于 IO 操作「block IO bandwidth &amp;ndash; blkio」都拥有相同优先级。可以通过 --blkio-weight 修改容器 blkio 权重。 --blkio-weight 权重值在 10 ~ 1000 之间。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/docker-io-limit.html"/>
 <meta property="og:title" content="Docker 磁盘 IO 资源限制"/>
-<meta property="og:description" content="默认，所有的容器对于 IO 操作「block IO bandwidth – blkio」都拥有相同优先级。可以通过 --blkio-weight 修改容器 blkio 权重。 --blkio-weight 权重值在 10 ~ 1000 之间。"/>
+<meta property="og:description" content="默认，所有的容器对于 IO 操作「block IO bandwidth &amp;ndash; blkio」都拥有相同优先级。可以通过 --blkio-weight 修改容器 blkio 权重。 --blkio-weight 权重值在 10 ~ 1000 之间。"/>
 <meta property="og:url" content="https://blog.opskumu.com/docker-io-limit.html"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2016-03-27T00:00:00+08:00"/>
 <meta property="og:image" content="https://blog.opskumu.com/images/io-write-bps.png"/>
 <meta name="twitter:title" content="Docker 磁盘 IO 资源限制"/>
-<meta name="twitter:description" content="默认，所有的容器对于 IO 操作「block IO bandwidth – blkio」都拥有相同优先级。可以通过 --blkio-weight 修改容器 blkio 权重。 --blkio-weight 权重值在 10 ~ 1000 之间。"/>
+<meta name="twitter:description" content="默认，所有的容器对于 IO 操作「block IO bandwidth &amp;ndash; blkio」都拥有相同优先级。可以通过 --blkio-weight 修改容器 blkio 权重。 --blkio-weight 权重值在 10 ~ 1000 之间。"/>
 <meta name="twitter:image" content="https://blog.opskumu.com/images/io-write-bps.png"/>
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Docker 磁盘 IO 资源限制","description":"默认，所有的容器对于 IO 操作「block IO bandwidth – blkio」都拥有相同优先级。可以通过 --blkio-weight 修改容器 blkio 权重。 --blkio-weight 权重值在 10 ~ 1000 之间。","url":"https://blog.opskumu.com/docker-io-limit.html","mainEntityOfPage":"https://blog.opskumu.com/docker-io-limit.html","inLanguage":"zh-CN","datePublished":"2016-03-27","dateModified":"2016-03-27","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://blog.opskumu.com/images/io-write-bps.png"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Docker 磁盘 IO 资源限制","description":"默认，所有的容器对于 IO 操作「block IO bandwidth &ndash; blkio」都拥有相同优先级。可以通过 --blkio-weight 修改容器 blkio 权重。 --blkio-weight 权重值在 10 ~ 1000 之间。","url":"https://blog.opskumu.com/docker-io-limit.html","mainEntityOfPage":"https://blog.opskumu.com/docker-io-limit.html","inLanguage":"zh-CN","datePublished":"2016-03-27","dateModified":"2016-03-27","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://blog.opskumu.com/images/io-write-bps.png"}</script>
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -102,7 +102,7 @@ constraints on resources</a></li>
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker help run | grep -E 'bps|IO'
+<pre class="src src-nil"><code>➜  ~ docker help run | grep -E 'bps|IO'
 Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
   --blkio-weight                  Block IO (relative weight), between 10 and 1000
   --blkio-weight-device=[]        Block IO weight (relative device weight)
@@ -111,7 +111,7 @@ Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
   --device-write-bps=[]           Limit write rate (bytes per second) to a device
   --device-write-iops=[]          Limit write rate (IO per second) to a device
 ➜  ~
-</pre>
+</code></pre>
 </div>
 </div>
 <div id="outline-container-section-9251af64e1e9" class="outline-3">
@@ -122,7 +122,7 @@ Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 </ul>
 
 <p>
-默认，所有的容器对于 IO 操作「block IO bandwidth &#x2013; blkio」都拥有相同优先级。可以通过 <code>--blkio-weight</code> 修改容器 blkio 权重。 <code>--blkio-weight</code> 权重值在 10 ~ 1000 之间。 
+默认，所有的容器对于 IO 操作「block IO bandwidth &ndash; blkio」都拥有相同优先级。可以通过 <code>--blkio-weight</code> 修改容器 blkio 权重。 <code>--blkio-weight</code> 权重值在 10 ~ 1000 之间。
 </p>
 
 <blockquote>
@@ -136,12 +136,12 @@ Note: The blkio weight setting is only available for direct IO.  Buffered IO is 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ cat /sys/block/sda/queue/scheduler
+<pre class="src src-nil"><code>➜  ~ cat /sys/block/sda/queue/scheduler
 noop [deadline] cfq
 ➜  ~ sudo sh -c "echo cfq &gt; /sys/block/sda/queue/scheduler"
 ➜  ~ cat /sys/block/sda/queue/scheduler
 noop deadline [cfq]
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -149,11 +149,11 @@ noop deadline [cfq]
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --blkio-weight 100 ubuntu-stress:latest /bin/bash
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --blkio-weight 100 ubuntu-stress:latest /bin/bash
 root@0b6770ee80e0:/#
 ➜  ~ docker run -it --rm --blkio-weight 1000 ubuntu-stress:latest /bin/bash
 root@6778b6b39686:/#
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -161,7 +161,7 @@ root@6778b6b39686:/#
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">root@0b6770ee80e0:/# time dd if=/dev/zero of=test.out bs=1M count=1024 oflag=direct
+<pre class="src src-nil"><code>root@0b6770ee80e0:/# time dd if=/dev/zero of=test.out bs=1M count=1024 oflag=direct
 1024+0 records in
 1024+0 records out
 1073741824 bytes (1.1 GB) copied, 122.442 s, 8.8 MB/s
@@ -178,11 +178,11 @@ real    2m2.574s
 user    0m0.020s
 sys     0m0.480s
 root@6778b6b39686:/#
-</pre>
+</code></pre>
 </div>
 
 <p>
-测试下来，效果不是很理想，没有获得官方文档中的效果，类似的问题可以在相关的 issue 上找到，如 <a href="https://github.com/docker/docker/issues/16173">&#x2013;blkio-weight doesn't take effect in docker Docker version 1.8.1 #16173</a>
+测试下来，效果不是很理想，没有获得官方文档中的效果，类似的问题可以在相关的 issue 上找到，如 <a href="https://github.com/docker/docker/issues/16173">&ndash;blkio-weight doesn't take effect in docker Docker version 1.8.1 #16173</a>
 </p>
 
 <p>
@@ -204,8 +204,8 @@ You'll find that the proportion of time is the same as the proportion of blkio w
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --blkio-weight-device "/dev/sda:100" ubuntu-stress:latest /bin/bash
-</pre>
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --blkio-weight-device "/dev/sda:100" ubuntu-stress:latest /bin/bash
+</code></pre>
 </div>
 </div>
 </div>
@@ -217,12 +217,12 @@ You'll find that the proportion of time is the same as the proportion of blkio w
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --device-write-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --device-write-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
 root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 100+0 records in
 100+0 records out
 104857600 bytes (105 MB) copied, 100.064 s, 1.0 MB/s    # 可以得知写入的平均速度是 1.0 MB/s
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -240,8 +240,8 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --device-read-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
-</pre>
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --device-read-bps /dev/sda:1mb ubuntu-stress:latest /bin/bash
+</code></pre>
 </div>
 </div>
 </div>
@@ -253,12 +253,12 @@ root@ffa51b81987c:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --device-write-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --device-write-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
 root@c2a2fa232594:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 100+0 records in
 100+0 records out
 104857600 bytes (105 MB) copied, 42.6987 s, 2.5 MB/s
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -266,7 +266,7 @@ root@c2a2fa232594:/# dd if=/dev/zero of=test.out bs=1M count=100 oflag=direct
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ iostat 1
+<pre class="src src-nil"><code>➜  ~ iostat 1
 ... ...
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
            1.13    0.00    0.13   23.46    0.00   75.28
@@ -274,7 +274,7 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
 sda              10.00         0.00      2610.00          0       5220
 ... ...
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -282,8 +282,8 @@ sda              10.00         0.00      2610.00          0       5220
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">➜  ~ docker run -it --rm --device-read-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
-</pre>
+<pre class="src src-nil"><code>➜  ~ docker run -it --rm --device-read-iops /dev/sda:5 ubuntu-stress:latest /bin/bash
+</code></pre>
 </div>
 
 <p>

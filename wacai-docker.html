@@ -8,13 +8,13 @@
 <meta name="description" content="挖财内部对容器化项目的代号为 K2 （乔戈里峰），乔戈里峰是世界第二高峰，但攀登极富挑战，寓意就是面对挑战，勇攀高峰 ；）。项目从 2016 年 11 月到现在已经有三年的时间了，如今挖财内部测试环境早已全部 Docker 容器化，而线上环境也运行着重要的业务。经历从零到一的整个落地过程，回顾下来，这座高峰算是拿…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/wacai-docker.html"/>
 <meta property="og:title" content="挖财 Kubernetes 容器化之路"/>
 <meta property="og:description" content="挖财内部对容器化项目的代号为 K2 （乔戈里峰），乔戈里峰是世界第二高峰，但攀登极富挑战，寓意就是面对挑战，勇攀高峰 ；）。项目从 2016 年 11 月到现在已经有三年的时间了，如今挖财内部测试环境早已全部 Docker 容器化，而线上环境也运行着重要的业务。经历从零到一的整个落地过程，回顾下来，这座高峰算是拿…"/>
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -88,7 +88,7 @@
 <h2 id="section-4f8ef92599cf"><span class="section-number-2">1.</span> 时间线</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-看了一下项目提交的 Git 记录，第一次提交时间是 <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-11-01 Tue&gt;</span></span>。
+看了一下项目提交的 Git 记录，第一次提交时间是 <span class="timestamp-wrapper"><time class="timestamp" datetime="2016-11-01">&lt;2016-11-01 Tue&gt;</time></span>。
 </p>
 
 
@@ -416,7 +416,7 @@ docker 1.13.x 之后支持 <code>--init</code> 选项（集成 <a href="https://
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># Add Tini
+<pre class="src src-nil"><code># Add Tini
 ENV TINI_VERSION v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
@@ -425,22 +425,22 @@ ENTRYPOINT ["/tini", "--"]
 # Run your program under Tini
 CMD ["/your/program", "-and", "-its", "arguments"]
 # or docker run your-image /your/program ...
-</pre>
+</code></pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-nil"># Runs "/usr/bin/dumb-init -- /my/script --with --args"
+<pre class="src src-nil"><code># Runs "/usr/bin/dumb-init -- /my/script --with --args"
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
 # or if you use --rewrite or other cli flags
 # ENTRYPOINT ["dumb-init", "--rewrite", "2:3", "--"]
 
 CMD ["/my/script", "--with", "--args"]
-</pre>
+</code></pre>
 </div>
 
 <p>
-不过比起直接集成 init 工具，更建议的是在 K8s 层解决这个问题。我们都知道，每个 K8s Pod 有一个 <a href="https://github.com/kubernetes/kubernetes/blob/master/build/pause/pause.c">pause</a> 容器组件，一般我们说起它的功能就是 Pod 内容器共享网络。其实除了共享网络还有睡觉之外，它还会捕获僵尸进程。默认 K8s Pod 内的 PID namespace 是不共享的，早期我们可以通过 kubelet <code>--docker-disable-shared-pid=false</code> 选项开启 Pod 内 PID namespace 共享，如此对应节点的 Pod 中 PID 为 1 的进程就是 pause 了，它便可以捕获处理僵尸进程了。kubelet 选项有一个坏处，就是调度到节点的 Pod 都会共享 PID namespace，社区就觉得应该移除这个选项，在 Pod 层实现，社区讨论见 <a href="https://github.com/kubernetes/kubernetes/issues/41938">Remove `&#x2013;docker-disable-shared-pid` from kubelet</a> 。在 K8s 1.10 就开始支持 Pod Spec 添加 <code>ShareProcessNamespace</code> 字段，支持在 Pod 层开启 PID namespace 共享。
+不过比起直接集成 init 工具，更建议的是在 K8s 层解决这个问题。我们都知道，每个 K8s Pod 有一个 <a href="https://github.com/kubernetes/kubernetes/blob/master/build/pause/pause.c">pause</a> 容器组件，一般我们说起它的功能就是 Pod 内容器共享网络。其实除了共享网络还有睡觉之外，它还会捕获僵尸进程。默认 K8s Pod 内的 PID namespace 是不共享的，早期我们可以通过 kubelet <code>--docker-disable-shared-pid=false</code> 选项开启 Pod 内 PID namespace 共享，如此对应节点的 Pod 中 PID 为 1 的进程就是 pause 了，它便可以捕获处理僵尸进程了。kubelet 选项有一个坏处，就是调度到节点的 Pod 都会共享 PID namespace，社区就觉得应该移除这个选项，在 Pod 层实现，社区讨论见 <a href="https://github.com/kubernetes/kubernetes/issues/41938">Remove `&ndash;docker-disable-shared-pid` from kubelet</a> 。在 K8s 1.10 就开始支持 Pod Spec 添加 <code>ShareProcessNamespace</code> 字段，支持在 Pod 层开启 PID namespace 共享。
 </p>
 </div>
 </div>
@@ -452,8 +452,8 @@ CMD ["/my/script", "--with", "--args"]
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">The better metric is container_memory_working_set_bytes as this is what the OOM killer is watching for.
-</pre>
+<pre class="src src-nil"><code>The better metric is container_memory_working_set_bytes as this is what the OOM killer is watching for.
+</code></pre>
 </div>
 
 <p>

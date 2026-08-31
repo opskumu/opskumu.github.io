@@ -8,13 +8,13 @@
 <meta name="description" content="除了 Kubernetes 默认的 admission controller，我们可以使用 admission webhooks 作为准入链的一部分。admission webhooks 调用 webhook 服务以在 pod 创建时变更配置，如注入标签，或者在准入过程中验证 pod 配置。下图为准入控制器流程：" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/kubernetes-mutating-webhook.html"/>
 <meta property="og:title" content="自定义 Kubernetes 准入控制器"/>
 <meta property="og:description" content="除了 Kubernetes 默认的 admission controller，我们可以使用 admission webhooks 作为准入链的一部分。admission webhooks 调用 webhook 服务以在 pod 创建时变更配置，如注入标签，或者在准入过程中验证 pod 配置。下图为准入控制器流程："/>
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -111,7 +111,7 @@ Admission webhooks 可以使用如下几个场景：
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">package main
+<pre class="src src-go"><code>package main
 
 import (
         "flag"
@@ -179,7 +179,7 @@ func main() {
                 os.Exit(1)
         }
 }
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -187,7 +187,7 @@ func main() {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-go">package main
+<pre class="src src-go"><code>package main
 
 import (
         "context"
@@ -259,7 +259,7 @@ func (p *podMutate) InjectDecoder(d *admission.Decoder) error {
         p.decoder = d
         return nil
 }
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -279,7 +279,7 @@ func (p *podMutate) InjectDecoder(d *admission.Decoder) error {
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">[ req ]
+<pre class="src src-nil"><code>[ req ]
 default_bits = 2048
 prompt = no
 default_md = sha256
@@ -308,7 +308,7 @@ basicConstraints=CA:FALSE
 keyUsage=keyEncipherment,dataEncipherment
 extendedKeyUsage=serverAuth,clientAuth
 subjectAltName=@alt_names
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -316,12 +316,12 @@ subjectAltName=@alt_names
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">openssl genrsa -out ca.key 2048
+<pre class="src src-bash"><code>openssl genrsa -out ca.key 2048
 openssl req -x509 -new -nodes -key ca.key -subj <span class="org-string">"/CN=pod-admission-webhook.kube-system.svc"</span> -days 10000 -out ca.crt
 openssl genrsa -out tls.key 2048
 openssl req -new -key tls.key -out tls.csr -config csr.conf
 openssl x509 -req -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt -days 10000 -extensions v3_ext -extfile csr.conf
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -341,7 +341,7 @@ openssl x509 -req -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-yaml">apiVersion: admissionregistration.k8s.io/v1
+<pre class="src src-yaml"><code>apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   name: pod-admission-webhook
@@ -364,7 +364,7 @@ webhooks:
       pod-admission-webhook-injection: enabled
   sideEffects: None
   admissionReviewVersions: ["v1", "v1beta1"]
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -372,8 +372,8 @@ webhooks:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">kubectl label ns &lt;namespace&gt; pod-admission-webhook-injection=enabled
-</pre>
+<pre class="src src-bash"><code>kubectl label ns &lt;namespace&gt; pod-admission-webhook-injection=enabled
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -381,8 +381,8 @@ webhooks:
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-bash">kubectl create secret tls pod-admission-webhook --dry-run=client --cert=tls.crt --key=tls.key --namespace kube-system -o yaml &gt; secret.yaml
-</pre>
+<pre class="src src-bash"><code>kubectl create secret tls pod-admission-webhook --dry-run=client --cert=tls.crt --key=tls.key --namespace kube-system -o yaml &gt; secret.yaml
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -390,7 +390,7 @@ webhooks:
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-yaml">apiVersion: v1
+<pre class="src src-yaml"><code>apiVersion: v1
 kind: Service
 metadata:
   labels:
@@ -406,7 +406,7 @@ spec:
   selector:
     app: pod-admission-webhook
   type: ClusterIP
-</pre>
+</code></pre>
 </div>
 
 <ul class="org-ul">
@@ -414,7 +414,7 @@ spec:
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-yaml">apiVersion: apps/v1
+<pre class="src src-yaml"><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pod-admission-webhook
@@ -463,7 +463,7 @@ spec:
       - name: webhook-certs
         secret:
           secretName: pod-admission-webhook
-</pre>
+</code></pre>
 </div>
 
 <p>

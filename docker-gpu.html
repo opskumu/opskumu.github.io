@@ -8,13 +8,13 @@
 <meta name="description" content="在讲解 Docker 中使用 GPU 之前，需要先在当前宿主上安装好 CUDA，本文介绍的是基于 CentOS7 的安装，关于更多 Linux 的安装方法，可以参考官方文档 NVIDIA CUDA Installation Guide for Linux 。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260823f"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260823f"></script>
+<script defer src="js/site.js?v=20260831e"></script>
 <link rel="canonical" href="https://blog.opskumu.com/docker-gpu.html"/>
 <meta property="og:title" content="Docker 中玩转 GPU"/>
 <meta property="og:description" content="在讲解 Docker 中使用 GPU 之前，需要先在当前宿主上安装好 CUDA，本文介绍的是基于 CentOS7 的安装，关于更多 Linux 的安装方法，可以参考官方文档 NVIDIA CUDA Installation Guide for Linux 。"/>
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="preamble" class="status">
-<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
+<a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
 <div id="content" class="content">
 <header>
@@ -62,11 +62,11 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># lspci | grep -i nvidia
+<pre class="src src-nil"><code># lspci | grep -i nvidia
 # 显示当前主机有两个 GPU 设备
 03:00.0 3D controller: NVIDIA Corporation Device 1b38 (rev a1)
 82:00.0 3D controller: NVIDIA Corporation Device 1b38 (rev a1)
-</pre>
+</code></pre>
 </div>
 </div>
 <div id="outline-container-section-6c5b643e38b9" class="outline-3">
@@ -87,11 +87,11 @@
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">rpm -ivh https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-repo-rhel7-8.0.61-1.x86_64.rpm
+<pre class="src src-nil"><code>rpm -ivh https://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/cuda-repo-rhel7-8.0.61-1.x86_64.rpm
 yum clean all
 yum install -y cuda
 reboot              // 安装完成之后重启系统
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -99,12 +99,12 @@ reboot              // 安装完成之后重启系统
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># cat /etc/profile.d/cuda.sh
+<pre class="src src-nil"><code># cat /etc/profile.d/cuda.sh
 # cuda
 export PATH=/usr/local/cuda-8.0/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:/usr/local/cuda-8.0/extras/CUPTI/lib64:$LD_LIBRARY_PATH
 # source /etc/profile.d/cuda.sh
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -118,12 +118,12 @@ cuDNN 是专门针对深度框架设计的一套 GPU 计算加速方案，支持
 </blockquote>
 
 <div class="org-src-container">
-<pre class="src src-nil">tar xf cudnn-8.0-linux-x64-v6.0-tgz
+<pre class="src src-nil"><code>tar xf cudnn-8.0-linux-x64-v6.0-tgz
 cd cuda
 rsync -av include/* /usr/local/cuda/include/
 rsync -av lib64/* /usr/local/cuda/lib64/
 ldconfig
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -131,7 +131,7 @@ ldconfig
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># nvidia-smi
+<pre class="src src-nil"><code># nvidia-smi
 Fri Jul 14 23:19:38 2017
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 375.51                 Driver Version: 375.51                    |
@@ -153,7 +153,7 @@ Fri Jul 14 23:19:38 2017
 |    0     76077    C   python                                         161MiB |
 |    1     42340    C   /data/program/miniconda/envs/py35/bin/python  9559MiB |
 +-----------------------------------------------------------------------------+
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
@@ -176,7 +176,7 @@ nvidia 官方提供了 nvidia-docker 可以直接驱动 GPU 设备，具体文�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil"># export DEVICES=$(\ls /dev/nvidia* | xargs -I{} echo '--device {}:{}')
+<pre class="src src-nil"><code># export DEVICES=$(\ls /dev/nvidia* | xargs -I{} echo '--device {}:{}')
 # docker run -it --rm $DEVICES -v /usr/lib64/nvidia/:/usr/local/nvidia/lib64 tensorflow/tensorflow:latest-gpu bash
 root@b37235b80e1a:/notebooks# python
 Python 2.7.12 (default, Nov 19 2016, 06:48:10)
@@ -200,7 +200,7 @@ Device mapping:
 ... ...
 [[ 22.  28.]
 [ 49.  64.]]
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -230,7 +230,7 @@ K8s 现在已经支持 GPU 的资源调度了，具体可以看官方的介绍 <
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">apiVersion: v1
+<pre class="src src-nil"><code>apiVersion: v1
 kind: Pod
 metadata:
   name: test-gpu
@@ -252,7 +252,7 @@ spec:
     volumeMounts:
         - mountPath: /usr/local/nvidia/lib64
           name: lib
-</pre>
+</code></pre>
 </div>
 
 <p>
@@ -271,11 +271,11 @@ spec:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-nil">... ...
+<pre class="src src-nil"><code>... ...
         securityContext:
           privileged: true
 ... ...
-</pre>
+</code></pre>
 </div>
 </div>
 </div>
