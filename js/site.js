@@ -22,7 +22,9 @@
     copyCode: "复制代码",
     copy: "复制",
     copied: "已复制",
-    copyFailed: "复制失败"
+    copyFailed: "复制失败",
+    copySectionLink: "复制本节链接",
+    sectionLinkCopied: "链接已复制"
   };
 
   var format = function (template, values) {
@@ -324,6 +326,67 @@
     sep.setAttribute("aria-hidden", "true");
     sep.textContent = "/";
     return sep;
+  };
+
+  var fallbackCopy = function (text) {
+    var textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "absolute";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    var ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } catch (_error) {
+      ok = false;
+    }
+    document.body.removeChild(textarea);
+    return ok;
+  };
+
+  var copyText = function (text, done) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        done(true);
+      }).catch(function () {
+        done(fallbackCopy(text));
+      });
+    } else {
+      done(fallbackCopy(text));
+    }
+  };
+
+  var initSectionLinks = function () {
+    if (!document.body.classList.contains("article-page")) return;
+    var content = document.querySelector("#content");
+    if (!content) return;
+
+    Array.prototype.forEach.call(content.querySelectorAll(".outline-2 > h2[id]"), function (heading) {
+      var link = document.createElement("a");
+      link.className = "heading-anchor";
+      link.href = "#" + encodeURIComponent(heading.id);
+      link.setAttribute("aria-label", labels.copySectionLink);
+      link.title = labels.copySectionLink;
+      link.textContent = "#";
+      link.addEventListener("click", function () {
+        var url = window.location.href.split("#")[0] + "#" + encodeURIComponent(heading.id);
+        copyText(url, function (ok) {
+          if (!ok) return;
+          link.textContent = "✓";
+          link.setAttribute("aria-label", labels.sectionLinkCopied);
+          link.title = labels.sectionLinkCopied;
+          window.setTimeout(function () {
+            link.textContent = "#";
+            link.setAttribute("aria-label", labels.copySectionLink);
+            link.title = labels.copySectionLink;
+          }, 1400);
+        });
+      });
+      heading.appendChild(link);
+    });
   };
 
   var initArchive = function () {
@@ -644,13 +707,34 @@
       if (target) byId.set(target, link);
     });
 
-    if (!("IntersectionObserver" in window) || byId.size === 0) return;
+    if (byId.size === 0) return;
 
     var clear = function () {
       links.forEach(function (link) {
         link.classList.remove("active");
       });
     };
+
+    var activate = function (link) {
+      clear();
+      link.classList.add("active");
+    };
+
+    var activateFromHash = function () {
+      var id;
+      try {
+        id = decodeURIComponent(window.location.hash.slice(1));
+      } catch (_error) {
+        return;
+      }
+      var link = byId.get(document.getElementById(id));
+      if (link) activate(link);
+    };
+
+    activateFromHash();
+    window.addEventListener("hashchange", activateFromHash);
+
+    if (!("IntersectionObserver" in window)) return;
 
     var observer = new IntersectionObserver(function (entries) {
       var visible = entries.filter(function (entry) {
@@ -664,8 +748,7 @@
       var link = byId.get(visible.target);
       if (!link) return;
 
-      clear();
-      link.classList.add("active");
+      activate(link);
     }, { rootMargin: "-20% 0px -70% 0px", threshold: [0.01, 0.1, 0.25, 0.5] });
 
     byId.forEach(function (_link, element) {
@@ -676,25 +759,6 @@
   var initCodeCopy = function () {
     var blocks = Array.prototype.slice.call(document.querySelectorAll(".org-src-container > pre.src"));
     if (!blocks.length) return;
-
-    var fallbackCopy = function (text) {
-      var textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.setAttribute("readonly", "");
-      textarea.style.position = "absolute";
-      textarea.style.left = "-9999px";
-      document.body.appendChild(textarea);
-      textarea.select();
-
-      var ok = false;
-      try {
-        ok = document.execCommand("copy");
-      } catch (_error) {
-        ok = false;
-      }
-      document.body.removeChild(textarea);
-      return ok;
-    };
 
     blocks.forEach(function (pre) {
       var container = pre.parentElement;
@@ -725,15 +789,7 @@
           }, 1400);
         };
 
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(function () {
-            done(true);
-          }).catch(function () {
-            done(fallbackCopy(text));
-          });
-        } else {
-          done(fallbackCopy(text));
-        }
+        copyText(text, done);
       });
 
       container.appendChild(button);
@@ -749,6 +805,7 @@
     initTocDisclosure();
     initScrollEnhancements();
     initTocActiveState();
+    initSectionLinks();
     initCodeCopy();
     initImageViewer();
   });

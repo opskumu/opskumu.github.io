@@ -8,13 +8,13 @@
 <meta name="description" content="如果节点没有运行 etcd，那么需要通过 ETCD_ENDPOINTS 指定 etcd 地址，否则将无法操作：" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260929k"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260929r"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary"/>
 <meta name="theme-color" content="#f5f7f6"/>
-<script defer src="js/site.js?v=20260929f"></script>
+<script defer src="js/site.js?v=20260929i"></script>
 <link rel="canonical" href="https://blog.opskumu.com/calico.html"/>
 <meta property="og:title" content="Calico 备忘"/>
 <meta property="og:description" content="如果节点没有运行 etcd，那么需要通过 ETCD_ENDPOINTS 指定 etcd 地址，否则将无法操作："/>
@@ -578,6 +578,7 @@ spec:
 </code></pre>
 </div>
 
+<div class="table-scroll">
 <table>
 
 
@@ -622,7 +623,8 @@ spec:
 </tbody>
 </table>
 
-<blockquote>
+
+</div><blockquote>
 <p>
 此处 node 官方文档标明为主机名，另外实际测试中如果此处指定 calico node 启动时指定的节点名「非主机名」时，跨容器路由会有问题，所以此处必须标注为主机名。
 </p>
