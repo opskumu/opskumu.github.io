@@ -525,6 +525,11 @@ body.article-page .content p {
   font-family: var(--reading-font);
 }
 
+body.article-page .content :is(ul.org-ul, ol.org-ol) li {
+  font-family: var(--reading-font);
+  line-height: inherit;
+}
+
 body.article-page .content > header {
   margin: 0 0 1.9rem;
   padding: 0 0 1.35rem;
