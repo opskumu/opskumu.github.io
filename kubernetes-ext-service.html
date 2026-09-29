@@ -8,13 +8,13 @@
 <meta name="description" content="集群内的应用有时候需要调用外部的服务，我们知道集群内部服务调用都是通过 Service 互相访问，那么针对外部的服务是否也可以保持统一使用 Service 呢？答案是肯定的，通过 Service 访问外部服务，除了方式统一以外，还能带来其他好处。如配置统一，不同环境（空间）相同应用访问外部不同环境的数据库，可以通…" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260929g"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260831e"></script>
+<meta name="theme-color" content="#f5f7f6"/>
+<script defer src="js/site.js?v=20260929f"></script>
 <link rel="canonical" href="https://blog.opskumu.com/kubernetes-ext-service.html"/>
 <meta property="og:title" content="Kubernetes 外部服务映射"/>
 <meta property="og:description" content="集群内的应用有时候需要调用外部的服务，我们知道集群内部服务调用都是通过 Service 互相访问，那么针对外部的服务是否也可以保持统一使用 Service 呢？答案是肯定的，通过 Service 访问外部服务，除了方式统一以外，还能带来其他好处。如配置统一，不同环境（空间）相同应用访问外部不同环境的数据库，可以通…"/>
@@ -28,7 +28,7 @@
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Kubernetes 外部服务映射","description":"集群内的应用有时候需要调用外部的服务，我们知道集群内部服务调用都是通过 Service 互相访问，那么针对外部的服务是否也可以保持统一使用 Service 呢？答案是肯定的，通过 Service 访问外部服务，除了方式统一以外，还能带来其他好处。如配置统一，不同环境（空间）相同应用访问外部不同环境的数据库，可以通…","url":"https://blog.opskumu.com/kubernetes-ext-service.html","mainEntityOfPage":"https://blog.opskumu.com/kubernetes-ext-service.html","inLanguage":"zh-CN","datePublished":"2020-01-20","dateModified":"2020-01-20","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://blog.opskumu.com/images/external-service.png"}</script>
 </head>
-<body>
+<body class="article-page">
 <div id="preamble" class="status">
 <a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>

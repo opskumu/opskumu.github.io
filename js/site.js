@@ -384,6 +384,17 @@
       h3.remove();
     });
 
+    Array.prototype.forEach.call(root.querySelectorAll("details.archive-year li"), function (item) {
+      var first = item.firstChild;
+      var match = first && first.nodeType === 3 && (first.textContent || "").match(/^\s*(\d{4}-\d{2}-\d{2})\s*$/);
+      if (!match) return;
+      var date = document.createElement("time");
+      date.className = "archive-date";
+      date.dateTime = match[1];
+      date.textContent = match[1];
+      item.replaceChild(date, first);
+    });
+
     toolbar.addEventListener("click", function (event) {
       var target = event.target && event.target.closest ? event.target.closest("button[data-action]") : null;
       if (!target) return;

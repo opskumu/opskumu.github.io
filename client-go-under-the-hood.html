@@ -8,13 +8,13 @@
 <meta name="description" content="client-go 库囊括了各种机制，你可以在开发自定义控制器的时候使用它们。这些机制定义在 tools/cache 目录下。 下图展示了 client-go 库中各组件工作机制，以及和你编写的自定义控制器的交互点。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260831e"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20260929g"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="theme-color" content="#ffffff"/>
-<script defer src="js/site.js?v=20260831e"></script>
+<meta name="theme-color" content="#f5f7f6"/>
+<script defer src="js/site.js?v=20260929f"></script>
 <link rel="canonical" href="https://blog.opskumu.com/client-go-under-the-hood.html"/>
 <meta property="og:title" content="client-go 背后机制「译」"/>
 <meta property="og:description" content="client-go 库囊括了各种机制，你可以在开发自定义控制器的时候使用它们。这些机制定义在 tools/cache 目录下。 下图展示了 client-go 库中各组件工作机制，以及和你编写的自定义控制器的交互点。"/>
@@ -28,7 +28,7 @@
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"client-go 背后机制「译」","description":"client-go 库囊括了各种机制，你可以在开发自定义控制器的时候使用它们。这些机制定义在 tools/cache 目录下。 下图展示了 client-go 库中各组件工作机制，以及和你编写的自定义控制器的交互点。","url":"https://blog.opskumu.com/client-go-under-the-hood.html","mainEntityOfPage":"https://blog.opskumu.com/client-go-under-the-hood.html","inLanguage":"zh-CN","datePublished":"2020-06-10","dateModified":"2020-06-10","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://blog.opskumu.com/images/client-go-controller-interaction.jpeg"}</script>
 </head>
-<body>
+<body class="article-page">
 <div id="preamble" class="status">
 <a class="skip-link" href="#content">跳到正文</a><nav class="navbar" role="navigation" aria-label="主导航"><a class="navbar-brand" href="index.html">Kumu's Blog</a><div class="navbar-links"><a href="index.html" data-nav="blog">Blog</a><a href="gallery.html" data-nav="images">Images</a><a href="https://wiki.opskumu.com" target="_blank" rel="noopener noreferrer">Wiki</a><a href="https://github.com/opskumu/issues" target="_blank" rel="noopener noreferrer">Issues</a><a href="https://github.com/opskumu" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://opskumu.com/" target="_blank" rel="noopener noreferrer">About</a></div></nav>
 </div>
