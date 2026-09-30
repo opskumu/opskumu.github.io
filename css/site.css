@@ -1060,6 +1060,12 @@ pre.src :is(.org-comment, .org-comment-delimiter, .hljs-comment,
   opacity: 1;
 }
 
+@media (max-width: 640px), (hover: none) {
+  .code-copy-btn {
+    opacity: 0.88;
+  }
+}
+
 .code-copy-btn .label {
   display: none;
 }
@@ -1169,9 +1175,9 @@ body.index-page details.archive-year .outline-text-3 li {
 body.index-page .archive-date {
   display: inline-block;
   margin-right: 0.7rem;
-  color: #89959a;
+  color: var(--muted-soft);
   font-family: "Lucida Grande", "Helvetica Neue", Helvetica, sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1492,9 +1498,9 @@ body.gallery-page .gallery-content {
 }
 
 .gallery-card figcaption > span {
-  color: #94a3b8;
+  color: var(--muted-soft);
   font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1573,6 +1579,13 @@ body.gallery-page .gallery-content {
 }
 
 @media (max-width: 640px) {
+  #table-of-contents a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.4rem;
+  }
+
   body {
     font-size: 16px;
   }
@@ -1758,6 +1771,11 @@ body.gallery-page .gallery-content {
 
   .gallery-years {
     margin-bottom: 2.25rem;
+    scrollbar-width: none;
+  }
+
+  .gallery-years::-webkit-scrollbar {
+    display: none;
   }
 
   .gallery-years-hint {
