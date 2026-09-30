@@ -414,7 +414,11 @@
 
     var archiveHeader = root.querySelector("h2");
     if (archiveHeader && archiveHeader.parentElement) {
-      archiveHeader.parentElement.insertBefore(toolbar, archiveHeader.nextSibling);
+      var headingRow = document.createElement("div");
+      headingRow.className = "archive-heading";
+      archiveHeader.parentElement.insertBefore(headingRow, archiveHeader);
+      headingRow.appendChild(archiveHeader);
+      headingRow.appendChild(toolbar);
     }
 
     var yearHeadings = Array.prototype.slice.call(root.querySelectorAll(".outline-3 > h3"));
