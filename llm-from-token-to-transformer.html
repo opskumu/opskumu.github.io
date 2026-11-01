@@ -15,6 +15,8 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#f5f7f6"/>
 <script defer src="js/site.js?v=20260930a"></script>
+<link rel="stylesheet" href="css/llm-temperature.css?v=20261101a"/>
+<script defer src="js/llm-temperature.js?v=20261101a"></script>
 <script>
   window.MathJax = {
     tex: {
@@ -712,8 +714,18 @@ p_i=\frac{\exp(z_i/\tau)}{\sum_j\exp(z_j/\tau)}
 </p>
 
 <p>
-对于正温度，候选排序不变，但概率的集中程度改变。下方固定三个候选的 logits 为 <code>[2, 1, -1]</code> ，下表比较不同温度下的概率分布。
+对于正温度，候选排序不变，但概率的集中程度改变。下方固定三个候选的 logits 为 <code>[2, 1, -1]</code> 。网页版可以拖动滑块观察概率变化，表格列出三个温度下的结果，便于对照和在其他格式中阅读。
 </p>
+
+<div class="llm-temperature" id="llm-temperature-demo" role="group" aria-labelledby="llm-temperature-title">
+  <p id="llm-temperature-title" class="llm-demo-title">温度与候选概率</p>
+  <label for="llm-temperature-input">温度 τ：<output id="llm-temperature-value" for="llm-temperature-input">1.00</output></label>
+  <input id="llm-temperature-input" type="range" min="0.1" max="2" step="0.05" value="1"/>
+  <div class="llm-prob-row"><span>候选 A</span><div class="llm-prob-track" aria-hidden="true"><div data-prob-bar="0" style="width:70.54%"></div></div><span data-prob-value="0">70.5%</span></div>
+  <div class="llm-prob-row"><span>候选 B</span><div class="llm-prob-track" aria-hidden="true"><div data-prob-bar="1" style="width:25.95%"></div></div><span data-prob-value="1">25.9%</span></div>
+  <div class="llm-prob-row"><span>候选 C</span><div class="llm-prob-track" aria-hidden="true"><div data-prob-bar="2" style="width:3.51%"></div></div><span data-prob-value="2">3.5%</span></div>
+  <p class="llm-demo-note" id="llm-temperature-status" aria-live="polite">τ = 1，保留原始分布。数值为教学示例。</p>
+</div>
 
 <div class="table-scroll">
 <table>
