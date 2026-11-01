@@ -8,15 +8,45 @@
 <meta name="description" content="从初学者视角，借助图解与计算示例理解 Token、神经网络、训练、注意力、Transformer 和自回归生成，并延伸到 KV Cache、上下文成本与幻觉。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260930d"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20261101a"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="theme-color" content="#f5f7f6"/>
 <script defer src="js/site.js?v=20260930a"></script>
-<link rel="stylesheet" href="css/llm-explainer.css?v=20261101a"/>
-<script defer src="js/llm-temperature.js?v=20261101a"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="js/vendor/mathjax/tex-svg.js?v=3.2.2">
+</script>
 <link rel="canonical" href="https://blog.opskumu.com/llm-from-token-to-transformer.html"/>
 <meta property="og:title" content="从 Token 到 Transformer：大语言模型如何训练与生成"/>
 <meta property="og:description" content="从初学者视角，借助图解与计算示例理解 Token、神经网络、训练、注意力、Transformer 和自回归生成，并延伸到 KV Cache、上下文成本与幻觉。"/>
@@ -223,11 +253,55 @@ BPE（Byte Pair Encoding）的一种常见训练方式是：从较小单位开�
 假设语料只有 <code>low low lower</code> ，为便于说明，先按字符切分，并禁止跨词边界合并：
 </p>
 
-<pre class="example" id="generated-2">
-初始：    l | o | w    l | o | w    l | o | w | e | r
-第一步： lo | w       lo | w       lo | w | e | r
-第二步： low          low          low | e | r
-</pre>
+<div class="table-scroll">
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">阶段</th>
+<th scope="col" class="org-left">第一个 low</th>
+<th scope="col" class="org-left">第二个 low</th>
+<th scope="col" class="org-left">lower</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">初始</td>
+<td class="org-left">l · o · w</td>
+<td class="org-left">l · o · w</td>
+<td class="org-left">l · o · w · e · r</td>
+</tr>
+
+<tr>
+<td class="org-left">合并 l + o</td>
+<td class="org-left">lo · w</td>
+<td class="org-left">lo · w</td>
+<td class="org-left">lo · w · e · r</td>
+</tr>
+
+<tr>
+<td class="org-left">合并 lo + w</td>
+<td class="org-left">low</td>
+<td class="org-left">low</td>
+<td class="org-left">low · e · r</td>
+</tr>
+</tbody>
+</table>
+
+
+</div><p>
+表中的 <code>·</code> 只用于标出 token 边界，不属于原始文本。每个单元格表示同一个词在该步骤的切分结果。
+</p>
 
 <p>
 第一步中， <code>l,o</code> 和 <code>o,w</code> 都出现三次；假设按预先约定的并列规则选择前者。合并后， <code>lo,w</code> 成为高频相邻对，再把它合并为 <code>low</code> 。真实分词器还可能使用字节表示、预切分、特殊 token 等机制。
@@ -270,7 +344,7 @@ BPE（Byte Pair Encoding）的一种常见训练方式是：从较小单位开�
 理解注意力之前，先看普通神经网络怎样处理一个向量。最基本的变换可以写为：
 </p>
 
-<pre class="example" id="generated-3">
+<pre class="example" id="generated-2">
 a = activation(x W + b)
 </pre>
 
@@ -290,7 +364,7 @@ a = activation(x W + b)
 MLP（多层感知机）就是多次组合这些运算。Transformer 中常见的一种两层前馈网络可以简写为：
 </p>
 
-<pre class="example" id="generated-4">
+<pre class="example" id="generated-3">
 MLP(x) = activation(x W1 + b1) W2 + b2
 </pre>
 
@@ -314,17 +388,21 @@ MLP(x) = activation(x W1 + b1) W2 + b2
 假设一句话由 x₁ 到 xₙ 组成，概率链式法则允许我们这样分解：
 </p>
 
-<div class="llm-math"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="序列概率等于各位置条件概率的乘积"><mrow><msub><mi>P</mi><mi>θ</mi></msub><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub><mo>)</mo><mo>=</mo><munderover><mo>∏</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>P</mi><mi>θ</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>|</mo><msub><mi>x</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub><mo>)</mo></mrow></math></div>
+<p>
+\[
+P_\theta(x_1,\ldots,x_n)=\prod_{t=1}^{n}P_\theta(x_t\mid x_{1:t-1})
+\]
+</p>
 
 <p>
-这里 <code>x_&lt;t</code> 的含义是位置 t 之前的所有 token，θ 表示模型参数。这组条件分布定义了模型自己的联合分布 Pθ。链式法则本身是恒等式；模型学习的是对真实数据分布的近似。
+这里 <code>x_{1:t-1}</code> 的含义是位置 t 之前的所有 token，θ 表示模型参数。这组条件分布定义了模型自己的联合分布 Pθ。链式法则本身是恒等式；模型学习的是对真实数据分布的近似。
 </p>
 
 <p>
 把一整段文字作为训练样本时，可以用其已有前缀作为输入，用紧接着的 token 作为目标。训练标签就在原文里，这通常称为自监督学习。
 </p>
 
-<pre class="example" id="generated-5">
+<pre class="example" id="generated-4">
 输入位置： &lt;开始&gt;    我      喜欢      学习
 预测目标：   我     喜欢     学习     &lt;结束&gt;
 </pre>
@@ -345,7 +423,11 @@ MLP(x) = activation(x W1 + b1) W2 + b2
 对于一段文本，典型的平均损失是：
 </p>
 
-<div class="llm-math"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="损失是各位置真实 token 的负对数概率的平均值"><mrow><mi mathvariant="script">L</mi><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>log</mi><msub><mi>P</mi><mi>θ</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>|</mo><msub><mi>x</mi><mrow><mo>&lt;</mo><mi>t</mi></mrow></msub><mo>)</mo></mrow></math></div>
+<p>
+\[
+\mathcal{L}=-\frac{1}{n}\sum_{t=1}^{n}\log P_\theta(x_t\mid x_{1:t-1})
+\]
+</p>
 
 <p>
 这就是下一 token 预测中的交叉熵，也可以从最大似然估计得到。训练并不要求每个上下文只能有唯一的合理续写：很多上下文确实有多种可能，模型需要在大量样本上学习这种分布。
@@ -400,7 +482,7 @@ MLP(x) = activation(x W1 + b1) W2 + b2
 对于每个位置的输入向量 h，分别乘上三个权重矩阵：
 </p>
 
-<pre class="example" id="generated-6">
+<pre class="example" id="generated-5">
 Q = H WQ      K = H WK      V = H WV
 </pre>
 
@@ -409,7 +491,7 @@ Q = H WQ      K = H WK      V = H WV
 </p>
 
 
-<figure id="generated-7">
+<figure id="generated-6">
 <img src="images/llm-attention.png" alt="注意力先计算当前 Query 与各个 Key 的匹配分数，经缩放、遮罩和 Softmax 得到权重，再对 Value 加权求和。示例权重为零点二、零点三、零点五。" width="1200" height="900" decoding="async" loading="lazy">
 
 <figcaption><span class="figure-number">&#22270;2&nbsp; </span>单头注意力的计算过程。示例分数与向量为教学构造，不是模型实测数据。</figcaption>
@@ -427,7 +509,7 @@ Q = H WQ      K = H WK      V = H WV
 假设某个位置得到的注意力权重是 <code>[0.2, 0.3, 0.5]</code> ，三个 Value 分别为 <code>v1 = [1, 0]</code> 、 <code>v2 = [0, 2]</code> 、 <code>v3 = [2, 2]</code> ，则输出是：
 </p>
 
-<pre class="example" id="generated-8">
+<pre class="example" id="generated-7">
 output = 0.2 × [1, 0] + 0.3 × [0, 2] + 0.5 × [2, 2]
        = [1.2, 1.6]
 </pre>
@@ -440,7 +522,11 @@ Value 3 的影响更大，但输出并不是把 Value 3 原样复制过来，而
 标准的缩放点积注意力写为：
 </p>
 
-<div class="llm-math"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="注意力等于 Q K 转置除以根号 d k 加遮罩，再经 Softmax 后乘 V"><mrow><mtext>Attention</mtext><mo>(</mo><mi>Q</mi><mo>,</mo><mi>K</mi><mo>,</mo><mi>V</mi><mo>)</mo><mo>=</mo><mtext>softmax</mtext><mo>(</mo><mfrac><mrow><mi>Q</mi><msup><mi>K</mi><mi>⊤</mi></msup></mrow><msqrt><msub><mi>d</mi><mi>k</mi></msub></msqrt></mfrac><mo>+</mo><mi>M</mi><mo>)</mo><mi>V</mi></mrow></math></div>
+<p>
+\[
+\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}+M\right)V
+\]
+</p>
 
 <p>
 这里 dₖ 是 Query 和 Key 的维度，M 是遮罩。若分量近似独立、均值为 0、方差为 1，点积的方差会随维度增长；除以维度的平方根，有助于控制分数尺度，避免 Softmax 过度饱和。这是理解该缩放项的一个经典动机，详见 <a href="https://arxiv.org/html/1706.03762v7#S3.SS2">Attention Is All You Need</a>。
@@ -463,7 +549,7 @@ Value 3 的影响更大，但输出并不是把 Value 3 原样复制过来，而
 </p>
 
 
-<figure id="generated-9">
+<figure id="generated-8">
 <img src="images/llm-training-generation.png" alt="左侧展示下三角因果遮罩，当前位置只能读取自己与过去；右侧展示训练可以同时预测各个已知位置的目标，常规生成则逐步扩展前缀。" width="1200" height="900" decoding="async" loading="lazy">
 
 <figcaption><span class="figure-number">&#22270;3&nbsp; </span>训练时所有目标已知，但每一行都通过遮罩限制可见范围；常规生成时则要等待新 token 出现。</figcaption>
@@ -532,7 +618,7 @@ Attention 负责跨位置汇总信息，MLP 负责对各个位置的表示进一
 </p>
 
 
-<figure id="generated-10">
+<figure id="generated-9">
 <img src="images/llm-transformer-block.png" alt="Pre-norm Transformer Block 先归一化并计算注意力，再加回残差；随后归一化并经过 MLP，再加回残差，输出进入下一层。" width="1200" height="900" decoding="async" loading="lazy">
 
 <figcaption><span class="figure-number">&#22270;4&nbsp; </span>一种常见的 Pre-norm Transformer Block。位置机制未在模块内部重复画出；不同模型的具体结构会有差异。</figcaption>
@@ -542,7 +628,7 @@ Attention 负责跨位置汇总信息，MLP 负责对各个位置的表示进一
 这个图对应的简化表达为：
 </p>
 
-<pre class="example" id="generated-11">
+<pre class="example" id="generated-10">
 u = h + Attention(Norm(h))
 y = u + MLP(Norm(u))
 </pre>
@@ -566,7 +652,7 @@ LayerNorm 通常沿每个位置的隐藏特征维度计算均值与方差，先�
 <a href="https://arxiv.org/abs/1910.07467">RMSNorm</a> 则不减均值，按均方根进行缩放，并通常保留可学习的缩放参数。可以简写为：
 </p>
 
-<pre class="example" id="generated-12">
+<pre class="example" id="generated-11">
 RMSNorm(h) = gamma * h / sqrt(mean(h * h) + epsilon)
 </pre>
 
@@ -619,21 +705,15 @@ RMSNorm(h) = gamma * h / sqrt(mean(h * h) + epsilon)
 对 logits z 使用温度 τ 后，候选 i 的概率为：
 </p>
 
-<div class="llm-math"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="候选 i 的概率等于 exp z i 除以温度，再除以所有候选指数值之和"><mrow><msub><mi>p</mi><mi>i</mi></msub><mo>=</mo><mfrac><mrow><mi>exp</mi><mo>(</mo><msub><mi>z</mi><mi>i</mi></msub><mo>/</mo><mi>τ</mi><mo>)</mo></mrow><mrow><munder><mo>∑</mo><mi>j</mi></munder><mi>exp</mi><mo>(</mo><msub><mi>z</mi><mi>j</mi></msub><mo>/</mo><mi>τ</mi><mo>)</mo></mrow></mfrac></mrow></math></div>
-
 <p>
-对于正温度，候选排序不变，但概率的集中程度改变。下方固定三个候选的 logits 为 <code>[2, 1, -1]</code> ，可以拖动滑块观察变化。
+\[
+p_i=\frac{\exp(z_i/\tau)}{\sum_j\exp(z_j/\tau)}
+\]
 </p>
 
-<div class="llm-temperature" id="llm-temperature-demo" role="group" aria-labelledby="llm-temperature-title">
-  <p id="llm-temperature-title" class="llm-demo-title">温度与候选概率</p>
-  <label for="llm-temperature-input">温度 τ：<output id="llm-temperature-value" for="llm-temperature-input">1.00</output></label>
-  <input id="llm-temperature-input" type="range" min="0.1" max="2" step="0.05" value="1"/>
-  <div class="llm-prob-row"><span>候选 A</span><div class="llm-prob-track"><div data-prob-bar="0" style="width:70.54%"></div></div><span data-prob-value="0">70.5%</span></div>
-  <div class="llm-prob-row"><span>候选 B</span><div class="llm-prob-track"><div data-prob-bar="1" style="width:25.95%"></div></div><span data-prob-value="1">25.9%</span></div>
-  <div class="llm-prob-row"><span>候选 C</span><div class="llm-prob-track"><div data-prob-bar="2" style="width:3.51%"></div></div><span data-prob-value="2">3.5%</span></div>
-  <p class="llm-demo-note" id="llm-temperature-status" aria-live="polite">τ = 1，保留原始分布。数值为教学示例。</p>
-</div>
+<p>
+对于正温度，候选排序不变，但概率的集中程度改变。下方固定三个候选的 logits 为 <code>[2, 1, -1]</code> ，下表比较不同温度下的概率分布。
+</p>
 
 <div class="table-scroll">
 <table>
@@ -750,7 +830,7 @@ Top-k 保留概率最高的 k 个候选，重新归一化后抽样。Top-p 则�
 普通未压缩 KV Cache 的大小可以粗略估算为：
 </p>
 
-<pre class="example" id="generated-13">
+<pre class="example" id="generated-12">
 KV 字节数 ≈ 2 × B × L × n × Hkv × dh × s
 </pre>
 
@@ -762,7 +842,7 @@ KV 字节数 ≈ 2 × B × L × n × Hkv × dh × s
 假设单请求、32 层、8 个 KV 头、每头 128 维、FP16，缓存 16,384 个 token：
 </p>
 
-<pre class="example" id="generated-14">
+<pre class="example" id="generated-13">
 2 × 1 × 32 × 16,384 × 8 × 128 × 2
 = 2,147,483,648 字节
 = 2 GiB
@@ -941,8 +1021,6 @@ KV 字节数 ≈ 2 × B × L × n × Hkv × dh × s
 <div id="outline-container-section-74b7a14935ed" class="outline-2">
 <h2 id="section-74b7a14935ed"><span class="section-number-2">11.</span> 视频出处与回看索引</h2>
 <div class="outline-text-2" id="text-11">
-<details class="llm-video-index"><summary>展开视频时间索引（按原视频顺序，正文已按学习依赖重排）</summary>
-
 <p>
 原帖：<a href="https://x.com/lesliedqbb/status/2114622983377666179">Dobby（@lesliedqbb）分享的视频</a>。下列时间均为帖子内视频的位置，部分边界取近似值。
 </p>
@@ -1009,8 +1087,6 @@ KV 字节数 ≈ 2 × B × L × n × Hkv × dh × s
 </div><p>
 相关官方课堂可对照 Stanford Online 发布的 <a href="https://www.youtube.com/watch?v=pwQ0l4hFCVI">CS229 Lecture 14: Transformers, In-Context Learning</a> 与 <a href="https://www.youtube.com/watch?v=fRM41w9jzQo">Lecture 7: Neural Networks 1 (Architecture)</a>。它们是相关课程来源入口，本文时间索引以 X 内嵌视频为准。
 </p>
-
-</details>
 </div>
 </div>
 <div id="outline-container-section-54709db3b7dc" class="outline-2">

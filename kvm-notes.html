@@ -8,7 +8,7 @@
 <meta name="description" content="KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/AMD-V) 的 X86 硬件，是 Linux 完全原生的全虚拟化解决方案。" />
 <meta name="generator" content="Org Mode" />
 <link rel="stylesheet" type="text/css" href="css/org.css"/>
-<link rel="stylesheet" type="text/css" href="css/site.css?v=20260930d"/>
+<link rel="stylesheet" type="text/css" href="css/site.css?v=20261101a"/>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <meta property="og:site_name" content="Kumu's Blog"/>
 <meta property="og:locale" content="zh_CN"/>
@@ -21,12 +21,12 @@
 <meta property="og:url" content="https://blog.opskumu.com/kvm-notes.html"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2015-06-02T00:00:00+08:00"/>
-<meta property="og:image" content="https://blog.opskumu.com/images/kvm.png"/>
+<meta property="og:image" content="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm.png"/>
 <meta name="twitter:title" content="KVM 学习笔记"/>
 <meta name="twitter:description" content="KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/AMD-V) 的 X86 硬件，是 Linux 完全原生的全虚拟化解决方案。"/>
-<meta name="twitter:image" content="https://blog.opskumu.com/images/kvm.png"/>
+<meta name="twitter:image" content="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm.png"/>
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"KVM 学习笔记","description":"KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/AMD-V) 的 X86 硬件，是 Linux 完全原生的全虚拟化解决方案。","url":"https://blog.opskumu.com/kvm-notes.html","mainEntityOfPage":"https://blog.opskumu.com/kvm-notes.html","inLanguage":"zh-CN","datePublished":"2015-06-02","dateModified":"2015-06-02","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://blog.opskumu.com/images/kvm.png"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"KVM 学习笔记","description":"KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/AMD-V) 的 X86 硬件，是 Linux 完全原生的全虚拟化解决方案。","url":"https://blog.opskumu.com/kvm-notes.html","mainEntityOfPage":"https://blog.opskumu.com/kvm-notes.html","inLanguage":"zh-CN","datePublished":"2015-06-02","dateModified":"2015-06-02","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm.png"}</script>
 </head>
 <body class="article-page">
 <div id="preamble" class="status">
@@ -99,7 +99,7 @@ KVM「Kernel-based Virtual Machine」，KVM 是基于虚拟化扩展 (Intel VT/A
 
 
 <figure id="generated-1">
-<img src="images/kvm.png" alt="kvm.png" decoding="async" loading="eager" fetchpriority="high" width="566" height="599">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm.png" alt="kvm.png" decoding="async" loading="eager" fetchpriority="high" width="566" height="599">
 
 </figure>
 
@@ -153,7 +153,7 @@ KVM 本身不执行任何模拟，需要用户空间应用程序 <code>QEMU</cod
 
 
 <figure id="generated-2">
-<img src="images/kvm-vcpu.png" alt="kvm-vcpu.png" decoding="async" loading="lazy" width="513" height="542">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-vcpu.png" alt="kvm-vcpu.png" decoding="async" loading="lazy" width="513" height="542">
 
 </figure>
 </div>
@@ -233,7 +233,7 @@ cache 不同模式工作原理图：
 
 
 <figure id="generated-3">
-<img src="images/kvm-cache.png" alt="kvm-cache.png" decoding="async" loading="lazy" width="462" height="681">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/kvm-cache.png" alt="kvm-cache.png" decoding="async" loading="lazy" width="462" height="681">
 
 </figure>
 
@@ -556,7 +556,7 @@ KVM 是必须使用硬件虚拟化辅助技术（如 Intel VT-x、AMD-V）的 hy
 
 
 <figure id="generated-4">
-<img src="images/qemu-emulated-io.jpg" alt="qemu-emulated-io.jpg" decoding="async" loading="lazy" width="1042" height="742">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-emulated-io.jpg" alt="qemu-emulated-io.jpg" decoding="async" loading="lazy" width="1042" height="742">
 
 </figure>
 
@@ -574,7 +574,7 @@ QEMU 模拟 I/O 设备的方式，其优点是可以通过软件模拟出各种�
 
 
 <figure id="generated-5">
-<img src="images/qemu-kvm-virtio.jpg" alt="qemu-kvm-virtio.jpg" decoding="async" loading="lazy" width="1029" height="646">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/qemu-kvm-virtio.jpg" alt="qemu-kvm-virtio.jpg" decoding="async" loading="lazy" width="1029" height="646">
 
 </figure>
 
@@ -592,7 +592,7 @@ virtio 半虚拟化驱动的方式，可以获得很好的 I/O 性能，其性�
 
 
 <figure id="generated-6">
-<img src="images/virtio-vhostnet.png" alt="virtio-vhostnet.png" decoding="async" loading="lazy" width="660" height="350">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/virtio-vhostnet.png" alt="virtio-vhostnet.png" decoding="async" loading="lazy" width="660" height="350">
 
 </figure>
 
@@ -614,7 +614,7 @@ virtio_blk 驱动使用 virtio API 为客户机提供了一个高效访问块设
 
 
 <figure id="generated-7">
-<img src="images/devassign-sriov.png" alt="devassign-sriov.png" decoding="async" loading="lazy" width="660" height="350">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/devassign-sriov.png" alt="devassign-sriov.png" decoding="async" loading="lazy" width="660" height="350">
 
 </figure>
 </div>
@@ -658,7 +658,7 @@ KVM 热插拔的操作可以参考 KVM 官方文档：
 <div class="outline-text-2" id="text-4">
 
 <figure id="generated-8">
-<img src="images/libvirt-support.png" alt="libvirt-support.png" decoding="async" loading="lazy" width="640" height="360">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-support.png" alt="libvirt-support.png" decoding="async" loading="lazy" width="640" height="360">
 
 </figure>
 </div>
@@ -680,7 +680,7 @@ libvirt 作为中间适配层，让底层 Hypervisor 对上层用户空间的管
 
 
 <figure id="generated-9">
-<img src="images/libvirt-manage-hypervisors.jpg" alt="libvirt-manage-hypervisors.jpg" decoding="async" loading="lazy" width="812" height="528">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/libvirt-manage-hypervisors.jpg" alt="libvirt-manage-hypervisors.jpg" decoding="async" loading="lazy" width="812" height="528">
 
 </figure>
 

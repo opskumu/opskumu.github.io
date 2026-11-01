@@ -734,6 +734,14 @@ body.index-page .title {
   text-align: center;
 }
 
+/* Native Org/LaTeX display math stays within the reading column. */
+.content mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25em 0;
+}
+
 .image-zoom-trigger {
   position: relative;
   max-width: 100%;
