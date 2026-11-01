@@ -1,0 +1,76 @@
+/* Styles scoped to the LLM article; formulas use native MathML. */
+.llm-math {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 0.7rem 0;
+  margin: 1.2rem 0;
+}
+.llm-math math {
+  font-size: 1.12em;
+}
+.llm-temperature {
+  margin: 1.6rem 0;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+}
+.llm-temperature .llm-demo-title {
+  margin-top: 0;
+  font-weight: 600;
+}
+.llm-temperature label,
+.llm-temperature output,
+.llm-prob-row > span:last-child {
+  font-variant-numeric: tabular-nums;
+}
+.llm-temperature input[type="range"] {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin: 0.3rem 0 0.6rem;
+  accent-color: var(--link);
+}
+.llm-temperature input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.llm-prob-row {
+  display: grid;
+  grid-template-columns: 4.3em minmax(0, 1fr) 4em;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.7rem 0;
+}
+.llm-prob-row > span:last-child {
+  text-align: right;
+}
+.llm-prob-track {
+  height: 22px;
+  background: var(--surface-tint);
+}
+.llm-prob-track > div {
+  height: 100%;
+  background: var(--link);
+}
+.llm-temperature .llm-demo-note {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.9em;
+}
+.llm-video-index {
+  margin: 1.2rem 0;
+}
+.llm-video-index summary {
+  cursor: pointer;
+  color: var(--link);
+  padding: 0.5rem 0;
+}
+.llm-video-index summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+@media (max-width: 480px) {
+  .llm-temperature { padding: 0.8rem; }
+  .llm-prob-row { gap: 0.4rem; }
+}

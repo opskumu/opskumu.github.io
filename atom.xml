@@ -4,7 +4,14 @@
   <id>https://blog.opskumu.com/</id>
   <link href="https://blog.opskumu.com/"/>
   <link rel="self" href="https://blog.opskumu.com/atom.xml"/>
-  <updated>2024-01-02T00:00:00+08:00</updated>
+  <updated>2026-11-01T00:00:00+08:00</updated>
+  <entry>
+    <title>从 Token 到 Transformer：大语言模型如何训练与生成</title>
+    <id>https://blog.opskumu.com/llm-from-token-to-transformer.html</id>
+    <link href="https://blog.opskumu.com/llm-from-token-to-transformer.html"/>
+    <updated>2026-11-01T00:00:00+08:00</updated>
+    <summary type="text">从初学者视角，借助图解与计算示例理解 Token、神经网络、训练、注意力、Transformer 和自回归生成，并延伸到 KV Cache、上下文成本与幻觉。</summary>
+  </entry>
   <entry>
     <title>2023，小结</title>
     <id>https://blog.opskumu.com/bye-2023.html</id>
@@ -137,12 +144,5 @@
     <link href="https://blog.opskumu.com/k8s-pod-affinity-antiaffinity.html"/>
     <updated>2018-11-18T00:00:00+08:00</updated>
     <summary type="text">通过 Kubernetes 你可以将一个 pod 限制或倾向于在某些特定节点运行。有几种方式可以达到这个目的，它们都通过 label selectors 进行选择。通常情况下，这样的约束是不必要的，因为调度程序会自动进行合理的调度（如通过一系列的评分机制将 pods 合理分配到最优节点上，而不会将 pod 分配在…</summary>
-  </entry>
-  <entry>
-    <title>Kubernetes 版本升级标注</title>
-    <id>https://blog.opskumu.com/kubernetes-upgrade-notes.html</id>
-    <link href="https://blog.opskumu.com/kubernetes-upgrade-notes.html"/>
-    <updated>2018-09-07T00:00:00+08:00</updated>
-    <summary type="text">作为从 0.14.x 版本开始追 Kubernetes 的我来说，有时候也不得不感慨，Kubernetes 社区的升级步伐越来越让人赶不上了，版本追的实在有些累了。但是，有些功能特性不升级还不行，某些版本的向下兼容性做的又不太好，导致每次版本变化较大的升级都让人提心吊胆。</summary>
   </entry>
 </feed>
