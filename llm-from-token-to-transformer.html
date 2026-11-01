@@ -55,12 +55,12 @@
 <meta property="og:url" content="https://blog.opskumu.com/llm-from-token-to-transformer.html"/>
 <meta property="og:type" content="article"/>
 <meta property="article:published_time" content="2026-11-01T00:00:00+08:00"/>
-<meta property="og:image" content="https://blog.opskumu.com/images/llm-pipeline.png"/>
+<meta property="og:image" content="https://opskumu.oss-cn-beijing.aliyuncs.com/images/llm-pipeline.png"/>
 <meta name="twitter:title" content="从 Token 到 Transformer：大语言模型如何训练与生成"/>
 <meta name="twitter:description" content="从初学者视角，借助图解与计算示例理解 Token、神经网络、训练、注意力、Transformer 和自回归生成，并延伸到 KV Cache、上下文成本与幻觉。"/>
-<meta name="twitter:image" content="https://blog.opskumu.com/images/llm-pipeline.png"/>
+<meta name="twitter:image" content="https://opskumu.oss-cn-beijing.aliyuncs.com/images/llm-pipeline.png"/>
 <link rel="alternate" type="application/atom+xml" title="Kumu's Blog" href="https://blog.opskumu.com/atom.xml"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"从 Token 到 Transformer：大语言模型如何训练与生成","description":"从初学者视角，借助图解与计算示例理解 Token、神经网络、训练、注意力、Transformer 和自回归生成，并延伸到 KV Cache、上下文成本与幻觉。","url":"https://blog.opskumu.com/llm-from-token-to-transformer.html","mainEntityOfPage":"https://blog.opskumu.com/llm-from-token-to-transformer.html","inLanguage":"zh-CN","datePublished":"2026-11-01","dateModified":"2026-11-01","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://blog.opskumu.com/images/llm-pipeline.png"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"从 Token 到 Transformer：大语言模型如何训练与生成","description":"从初学者视角，借助图解与计算示例理解 Token、神经网络、训练、注意力、Transformer 和自回归生成，并延伸到 KV Cache、上下文成本与幻觉。","url":"https://blog.opskumu.com/llm-from-token-to-transformer.html","mainEntityOfPage":"https://blog.opskumu.com/llm-from-token-to-transformer.html","inLanguage":"zh-CN","datePublished":"2026-11-01","dateModified":"2026-11-01","author":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"publisher":{"@type":"Person","name":"Kumu","url":"https://opskumu.com/"},"image":"https://opskumu.oss-cn-beijing.aliyuncs.com/images/llm-pipeline.png"}</script>
 </head>
 <body class="article-page">
 <div id="preamble" class="status">
@@ -160,7 +160,7 @@
 
 
 <figure id="generated-1">
-<img src="images/llm-pipeline.png" alt="大语言模型的数据流：文字经分词和向量表示进入多层 Transformer，再经词表投影、概率计算和选择得到新 token，新 token 回到上下文。" width="1200" height="850" decoding="async" loading="eager" fetchpriority="high">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/llm-pipeline.png" alt="大语言模型的数据流：文字经分词和向量表示进入多层 Transformer，再经词表投影、概率计算和选择得到新 token，新 token 回到上下文。" width="1200" height="850" decoding="async" loading="eager" fetchpriority="high">
 
 <figcaption><span class="figure-number">&#22270;1&nbsp; </span>从文字输入到下一个 token。选中的 token 会加入上下文，供下一轮生成使用。</figcaption>
 </figure>
@@ -494,7 +494,7 @@ Q = H WQ      K = H WK      V = H WV
 
 
 <figure id="generated-6">
-<img src="images/llm-attention.png" alt="注意力先计算当前 Query 与各个 Key 的匹配分数，经缩放、遮罩和 Softmax 得到权重，再对 Value 加权求和。示例权重为零点二、零点三、零点五。" width="1200" height="900" decoding="async" loading="lazy">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/llm-attention.png" alt="注意力先计算当前 Query 与各个 Key 的匹配分数，经缩放、遮罩和 Softmax 得到权重，再对 Value 加权求和。示例权重为零点二、零点三、零点五。" width="1200" height="900" decoding="async" loading="lazy">
 
 <figcaption><span class="figure-number">&#22270;2&nbsp; </span>单头注意力的计算过程。示例分数与向量为教学构造，不是模型实测数据。</figcaption>
 </figure>
@@ -552,7 +552,7 @@ Value 3 的影响更大，但输出并不是把 Value 3 原样复制过来，而
 
 
 <figure id="generated-8">
-<img src="images/llm-training-generation.png" alt="左侧展示下三角因果遮罩，当前位置只能读取自己与过去；右侧展示训练可以同时预测各个已知位置的目标，常规生成则逐步扩展前缀。" width="1200" height="900" decoding="async" loading="lazy">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/llm-training-generation.png" alt="左侧展示下三角因果遮罩，当前位置只能读取自己与过去；右侧展示训练可以同时预测各个已知位置的目标，常规生成则逐步扩展前缀。" width="1200" height="900" decoding="async" loading="lazy">
 
 <figcaption><span class="figure-number">&#22270;3&nbsp; </span>训练时所有目标已知，但每一行都通过遮罩限制可见范围；常规生成时则要等待新 token 出现。</figcaption>
 </figure>
@@ -621,7 +621,7 @@ Attention 负责跨位置汇总信息，MLP 负责对各个位置的表示进一
 
 
 <figure id="generated-9">
-<img src="images/llm-transformer-block.png" alt="Pre-norm Transformer Block 先归一化并计算注意力，再加回残差；随后归一化并经过 MLP，再加回残差，输出进入下一层。" width="1200" height="900" decoding="async" loading="lazy">
+<img src="https://opskumu.oss-cn-beijing.aliyuncs.com/images/llm-transformer-block.png" alt="Pre-norm Transformer Block 先归一化并计算注意力，再加回残差；随后归一化并经过 MLP，再加回残差，输出进入下一层。" width="1200" height="900" decoding="async" loading="lazy">
 
 <figcaption><span class="figure-number">&#22270;4&nbsp; </span>一种常见的 Pre-norm Transformer Block。位置机制未在模块内部重复画出；不同模型的具体结构会有差异。</figcaption>
 </figure>
@@ -831,11 +831,96 @@ Top-k 保留概率最高的 k 个候选，重新归一化后抽样。Top-p 则�
 <h3 id="section-5f727703b0f3"><span class="section-number-3">8.3.</span> KV Cache 为什么能加速，又为什么占显存</h3>
 <div class="outline-text-3" id="text-8-3">
 <p>
-在普通因果 Transformer 中，对于相同前缀、固定模型和位置设置，历史位置不会因未来新 token 而回头改变。因此，各层过去位置的 Key 与 Value 可以缓存复用。新一步主要计算新位置的 Query、Key、Value，再用新 Query 读取历史缓存。
+生成下一个 token 时，模型需要利用前面所有位置的信息。如果每生成一步，都把整个前缀重新送进模型，就会重复计算大量历史表示。KV Cache 的做法是： <b>把各层历史位置已经算好的 Key、Value 留下来，下一步直接复用。</b>
 </p>
 
 <p>
-它缓存的是中间向量，不是“模型已经写好的下一句话”，也不是保存最终答案的知识库。
+为什么历史结果可以复用？关键是前面介绍的 <b>因果遮罩</b> ：每个位置只能看到自己和更早的位置。对于固定的模型、相同前缀和位置设置，后面追加 token 不会改变前面位置的表示，因此也不会改变它们的 K、V。这里缓存的是 <b>每一层注意力所使用的 K、V</b> ，由该层的输入表示计算得到，并非只保存一次词嵌入。
+</p>
+
+<p>
+用一个简化例子串起 Prefill 和 Decode。假设“我”“喜欢”“学习”“数学”分别是一个 token，提示词是“我喜欢”，模型接下来依次选中了“学习”和“数学”：
+</p>
+
+<div class="table-scroll">
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">阶段</th>
+<th scope="col" class="org-left">本轮送入模型的 token</th>
+<th scope="col" class="org-left">本轮完成后的 KV Cache</th>
+<th scope="col" class="org-left">本轮输出用于选择</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Prefill</td>
+<td class="org-left">我、喜欢</td>
+<td class="org-left">我、喜欢对应的各层 K、V</td>
+<td class="org-left">第一个新 token：学习</td>
+</tr>
+
+<tr>
+<td class="org-left">第一次 Decode</td>
+<td class="org-left">学习</td>
+<td class="org-left">追加学习对应的各层 K、V</td>
+<td class="org-left">第二个新 token：数学</td>
+</tr>
+
+<tr>
+<td class="org-left">第二次 Decode</td>
+<td class="org-left">数学</td>
+<td class="org-left">追加数学对应的各层 K、V</td>
+<td class="org-left">再下一个 token</td>
+</tr>
+</tbody>
+</table>
+
+
+</div><p>
+Prefill 一次处理提示词的所有位置，建立缓存，并用最后一个提示词位置的输出预测第一个新 token。“学习”被选中时，还没有它的 K、V；它在下一轮作为输入经过模型时，才产生自己的 K、V 并加入缓存。
+</p>
+
+<p>
+在普通逐 token Decode 的某一层中，新位置 t 先算出自己的 q、k、v，再把新的 k、v 接在该层历史缓存后面。新 q 与所有相关位置的 K 计算匹配程度，得到权重后对 V 加权求和：
+</p>
+
+<p>
+\[
+K_{\mathrm{cache}}=[K_{\mathrm{past}};k_t],\qquad
+V_{\mathrm{cache}}=[V_{\mathrm{past}};v_t]
+\]
+</p>
+
+<p>
+\[
+o_t=\operatorname{softmax}\!\left(
+\frac{q_t K_{\mathrm{cache}}^{\mathsf T}}{\sqrt{d_h}}
+\right)V_{\mathrm{cache}}
+\]
+</p>
+
+<p>
+这里分号表示沿序列长度方向拼接，d_h 是每个注意力头的维度，o_t 是这个头在新位置的注意力输出。各层分别维护自己的缓存；新位置的表示逐层向后传递，最后用于预测下一个 token。
+</p>
+
+<p>
+<b>为什么通常不缓存 Q？</b> 历史位置的 Query 用来计算历史位置自己的注意力输出，那些输出已经处理完了。下一步需要的是新位置如何读取历史，因此只需要新 Query，以及历史和当前的 K、V。历史 Q 不参与这次读取，保留它们没有必要。
+</p>
+
+<p>
+这是一种 <b>用显存换取速度</b> 的方法。它缓存的是中间向量，不是“模型已经写好的下一句话”，也不是保存最终答案的知识库。修改前缀中的早期 token 时，受影响位置之后的缓存通常需要重新计算，不能直接沿用原来的结果。
 </p>
 
 <p>
@@ -861,11 +946,11 @@ KV 字节数 ≈ 2 × B × L × n × Hkv × dh × s
 </pre>
 
 <p>
-这还没有包括模型权重、工作缓冲区等占用。增加并发请求时，缓存也会成为重要的资源开销。Grouped-Query Attention 等设计通过减少 KV 头数，在结构上改变这一项成本；具体原理可以继续阅读 <a href="https://huggingface.co/docs/transformers/main/en/cache_explanation">KV Cache 文档</a>。
+这还没有包括模型权重、工作缓冲区等占用。增加并发请求时，缓存也会成为重要的资源开销。Grouped-Query Attention 等设计通过减少 KV 头数，在结构上改变这一项成本。
 </p>
 
 <p>
-有缓存时，标准稠密注意力每个新 token 仍需读取相关历史 Key、Value。它避免重复算历史表示，却不意味着上下文变长后，每步计算都完全不变。
+有缓存时，标准稠密注意力每个新 token 仍需读取相关历史 Key、Value。在层数、头数和维度固定时，这部分注意力计算量随缓存长度近似线性增长；KV Cache 避免了重复算历史表示，却不意味着上下文变长后，每步耗时都完全不变。普通自回归 Decode 也仍需逐步选出新 token。可进一步阅读 <a href="https://huggingface.co/docs/transformers/main/en/cache_explanation">Hugging Face 的 KV Cache 原理文档</a>。
 </p>
 </div>
 </div>
